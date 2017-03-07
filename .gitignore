@@ -1,3 +1,7 @@
-*.swf
 *.as3proj
 swfobject.js
+
+# Build folders and assets
+obj/
+assets/
+bin/
