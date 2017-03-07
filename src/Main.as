@@ -1,5 +1,6 @@
 package
  {
+	import Systems.VideoSystem;
 	import Systems.WaterSystem;
     import com.gestureworks.core.GestureWorks;
     import flash.text.TextField;
@@ -8,15 +9,20 @@ package
     public class Main extends GestureWorks
     {
 		private var myWater:WaterSystem;
+		private var myVideo:VideoSystem;
+		
 		
         public function Main():void
         {
             super();
 			gml = "gestures.gml"; // gml now required
-			trace(myWater);
+			
 			myWater = new WaterSystem();
+			myVideo = new VideoSystem();
 			addChild(myWater);
-			myWater.Ripple();
+			addChild(myVideo);
+			myWater.Init();
+			myVideo.Init();
         }
  
         override protected function gestureworksInit():void

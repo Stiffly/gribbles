@@ -23,7 +23,7 @@ package Systems
 			super();
 		}
 		
-		public function Ripple():void 
+		override public function Init():void 
 		{
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
@@ -33,12 +33,7 @@ package Systems
 			addChild(_target);
 			
 			
-			//var video:Video = new Video();
-			//video.src = "../assets/videos/undervatten.mov";
-			//video.autoplay = true;
-			//video.init();
-			//addChild(video);        
-			//video.play();
+
 			
 			
 			// create the Rippler instance to affect the Bitmap object
