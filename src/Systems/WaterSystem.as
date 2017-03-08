@@ -1,8 +1,6 @@
 package Systems 
 {
-
 	import be.nascom.flash.graphics.Rippler;
-    
     import flash.display.Bitmap;
     import flash.display.StageAlign;
     import flash.display.StageScaleMode;
@@ -13,10 +11,9 @@ package Systems
 	{
 		// Embed an image
 		[Embed(source="../../assets/images/DSC_7142.jpg")]
-		private var _sourceImage : Class;
-		
-		private var _target : Bitmap;
-		private var _rippler : Rippler;
+		private var m_SourceImage : Class;
+		private var m_Target : Bitmap;
+		private var m_Rippler : Rippler;
 		
 		public function WaterSystem():void 
 		{
@@ -28,26 +25,21 @@ package Systems
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			
-			// create a Bitmap displayobject and add it to the stage 
-			_target = new Bitmap(new _sourceImage().bitmapData);
-			addChild(_target);
-			
-			
+			// Create a Bitmap displayobject and add it to the stage 
+			m_Target = new Bitmap(new m_SourceImage().bitmapData);
+			addChild(m_Target);
 
+			// Create the Rippler instance to affect the Bitmap object
+			m_Rippler = new Rippler(m_Target, 20, 6);
 			
-			
-			// create the Rippler instance to affect the Bitmap object
-			_rippler = new Rippler(_target, 20, 6);
-			
-			// create the event listener for mouse movements
+			// Create the event listener for mouse movements
 			stage.addEventListener(MouseEvent.MOUSE_MOVE, handleMouseMove);
 		}
 		
-		// creates a ripple at mouse coordinates on mouse movement
+		// Creates a ripple at mouse coordinates on mouse movement
 		private function handleMouseMove(event : MouseEvent) : void
 		{
-			// the ripple point of impact is size 20 and has alpha 1
-			_rippler.drawRipple(_target.mouseX, _target.mouseY, 10, 1);
+			m_Rippler.drawRipple(m_Target.mouseX, m_Target.mouseY, 10, 1);
 		}
 	}
 

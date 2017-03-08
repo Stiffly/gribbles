@@ -20,8 +20,6 @@ package Systems
 			video.init();
 			addChild(video);        
 			video.play();
-		}
-		
-		
+		}		
 	}
 }

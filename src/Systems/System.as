@@ -9,8 +9,9 @@ package Systems
 		{
 			super();
 		}
-		
+		// A function to be overidden by child classes
 		public function Init():void { }
+		// A function to be overidden by child classes
 		public function Update():void { }
 	}
 
