@@ -9,8 +9,14 @@
 			<Text id="title" x="20" y="18" fontSize="30" color="0xFFFFFF" width="500" height="50" str="Wright Brothers Collection" />	
 		</Graphic>
 		
-		<Image id="wb-1" src="library/assets/wb0.jpg" x="10" y="108" scale=".6" />
-		<Image id="wb-2" src="library/assets/wb1.jpg" x="575" y="108" scale=".6" />
+		
+		<Image id="wb-1" src="../assets/images/1.jpg" x="10" y="108" scale=".6" />
+		<Image id="wb-2" src="../assets/images/2.jpg" x="575" y="108" scale=".6" />
+		<!--<Image id="wb-2" src="assets/images/2.jpg" x="10" y="108" scale=".6" />
+		<Image id="wb-3" src="assets/images/3.jpg" x="10" y="108" scale=".6" />
+		<Image id="wb-4" src="assets/images/4.jpg" x="10" y="108" scale=".6" />
+		<Image id="wb-5" src="assets/images/5.jpg" x="10" y="108" scale=".6" />
+		 <Image id="wb-2" src="library/assets/wb1.jpg" x="575" y="108" scale=".6" /> !-->
 
 	</Container>
 	

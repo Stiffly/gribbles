@@ -42,5 +42,4 @@ package Systems
 			m_Rippler.drawRipple(m_Target.mouseX, m_Target.mouseY, 10, 1);
 		}
 	}
-
 }
