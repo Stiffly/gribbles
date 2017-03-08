@@ -18,7 +18,8 @@ package
         {
 			// Calls super constructor (GestureWorks())
             super();
-			gml = "gestures.gml"; // gml now required
+			gml = "../lib/gml/gestures.gml"; // gml now required
+			//cml = "../lib/cml/main.cml"; // gml now required
 			
 			// Add systems here
 			systems.append(new WaterSystem());

@@ -18,7 +18,7 @@ package Systems
 			video.loop = true;
 			video.volume = 1;
 			video.init();
-			addChild(video);        
+			addChild(video);
 			video.play();
 		}		
 	}
