@@ -1,8 +1,8 @@
 package Systems 
 {
+	import flash.events.Event;
+	import com.gestureworks.cml.core.CMLParser;
 
-	import com.gestureworks.cml.elements.Video;
-	
 	public class VideoSystem extends Systems.System
 	{
 		public function VideoSystem():void 
@@ -12,14 +12,13 @@ package Systems
 		
 		override public function Init():void 
 		{
-			var video:Video = new Video();
-			video.src = "../assets/videos/undervatten.mov";
-			video.autoplay = true;
-			video.loop = true;
-			video.volume = 1;
-			video.init();
-			addChild(video);
-			video.play();
+			CMLParser.addEventListener(CMLParser.COMPLETE, cmlComplete); 
 		}		
+		
+		private function cmlComplete(event:Event):void
+		{
+			CMLParser.removeEventListener(CMLParser.COMPLETE, cmlComplete);
+		}
+		
 	}
 }
