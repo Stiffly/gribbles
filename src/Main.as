@@ -32,7 +32,6 @@ package
 		
 		private function cmlComplete(event:Event):void
 		{
-			
 			CMLParser.removeEventListener(CMLParser.COMPLETE, cmlComplete);
 		}
 		
