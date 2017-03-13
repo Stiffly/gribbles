@@ -3,6 +3,7 @@ package Systems
     import flash.display.Bitmap;
     import flash.display.StageAlign;
     import flash.display.StageScaleMode;
+	import flash.events.MouseEvent;
 	
 	import com.gestureworks.core.GestureWorks;
 	import com.gestureworks.events.GWGestureEvent;
@@ -13,6 +14,12 @@ package Systems
 
 	public class WaterSystem extends Systems.System
 	{
+		// Constructor
+		public function WaterSystem():void 
+		{
+			super();
+		}
+		
 		// Embed an image which will be used as a background
 		[Embed(source="../../assets/images/DSC_7142.jpg")]
 		private var m_SourceImage : Class;
@@ -21,11 +28,6 @@ package Systems
 		// The touch object, in this case the entire screen
 		private var m_TouchSprite : TouchSprite;
 
-		public function WaterSystem():void 
-		{
-			super();
-		}
-		
 		override public function Init():void 
 		{
 			// This makes the image fit-ish to the screen
@@ -46,8 +48,14 @@ package Systems
 			m_Rippler = new Rippler(m_TouchSprite, 20, 6);
 			
 			// Register the TAP event to the touchsprite
-			m_TouchSprite.gestureList = {"tap": true};
+			m_TouchSprite.gestureList = {"tap": true, "manipulate": true, "start": true};
 			m_TouchSprite.addEventListener(GWGestureEvent.TAP, handleTap);
+			m_TouchSprite.addEventListener(MouseEvent.MOUSE_MOVE, handleMouseMove);
+		}
+		
+		private function handleMouseMove(event :MouseEvent) : void 
+		{
+			m_Rippler.drawRipple(m_TouchSprite.mouseX, m_TouchSprite.mouseY, 10, 1);
 		}
 		
 		private function handleTap(event : GWGestureEvent) : void
@@ -56,7 +64,7 @@ package Systems
 			var x : int = event.value.tap_x;
 			var y : int = event.value.tap_y;
 			// Creates the water effect at the position of the Tap
-			m_Rippler.drawRipple(x, y, 20, 1);
+			m_Rippler.drawRipple(x, y, 10, 1);
 		}
 	}
 }
