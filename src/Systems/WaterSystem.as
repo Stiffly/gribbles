@@ -21,7 +21,8 @@ package Systems
 		}
 		
 		// Embed an image which will be used as a background
-		[Embed(source="../../assets/images/DSC_7142.jpg")]
+		// DSC_7142.jpg
+		[Embed(source="../../assets/images/bottenbild.jpg")]
 		private var m_SourceImage : Class;
 		// The "rippler" that instantiates water ripples at the surface 
 		private var m_Rippler : Rippler;

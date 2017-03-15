@@ -60,7 +60,7 @@ package Systems
 			}
 		}
 		
-				private function imageButtonHandler(event : StateEvent) : void
+		private function imageButtonHandler(event : StateEvent) : void
 		{
 			// Only on release
 			if (event.value == "down-state")
@@ -74,6 +74,5 @@ package Systems
 				image.touchEnabled = true;
 			}
 		}
-		
 	}
 }
