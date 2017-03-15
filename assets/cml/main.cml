@@ -4,7 +4,9 @@
 	
 <Stage color="0x000000">
 		
-<Include src="cml/AlbumViewer.cml" />
+<!-- This loads the album viewer !-->
+<Include src="cml/AlbumViewer.cml"/>
+<Include src="cml/Button.cml"/>
 
 </Stage>
 	
