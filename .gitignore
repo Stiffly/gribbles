@@ -3,5 +3,6 @@ swfobject.js
 
 # Build folders and assets
 obj/
-assets/
+assets/images
+assets/videos
 bin/
