@@ -2,6 +2,7 @@ package Systems
 {
 	import flash.display.Bitmap;
 	import flash.events.Event;
+	import flash.display.StageDisplayState;
 	import com.gestureworks.cml.components.AlbumViewer;
 	import com.gestureworks.cml.elements.Button;
 	import com.gestureworks.cml.core.CMLParser;
@@ -31,16 +32,16 @@ package Systems
 		{
 			CMLParser.removeEventListener(CMLParser.COMPLETE, cmlComplete);
 			
-			video = CMLObjectList.instance.getId("video-viewer"); // AlbumViewer
+			video = CMLObjectList.instance.getId("video-viewer");
 			hideAlbum(video);
 			
 			image = CMLObjectList.instance.getId("image-viewer");
-			hideAlbum(image);
+			//hideAlbum(image);
 			
-			button  = CMLObjectList.instance.getId("video-button"); // AlbumViewer
+			button  = CMLObjectList.instance.getId("video-button"); 
 			button.addEventListener(StateEvent.CHANGE, buttonHandler);
 			
-			imageButton  = CMLObjectList.instance.getId("image-button"); // AlbumViewer
+			imageButton  = CMLObjectList.instance.getId("image-button"); 
 			imageButton.addEventListener(StateEvent.CHANGE, imageButtonHandler);
 		}
 		

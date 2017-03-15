@@ -1,8 +1,6 @@
 package Systems 
 {
     import flash.display.Bitmap;
-    import flash.display.StageAlign;
-    import flash.display.StageScaleMode;
 	import flash.events.MouseEvent;
 	
 	import com.gestureworks.core.GestureWorks;
@@ -31,15 +29,14 @@ package Systems
 
 		override public function Init():void 
 		{
-			// This makes the image fit-ish to the screen
-			stage.scaleMode = StageScaleMode.NO_SCALE;
-			stage.align = StageAlign.TOP_LEFT;
-			
+
+
 			// Create the touch object wich will be used as the background for the application
 			m_TouchSprite = new TouchSprite();
 			// Fill the touch object with the "background image"
 			m_TouchSprite.graphics.beginBitmapFill(new m_SourceImage().bitmapData, null, true, true);
-			m_TouchSprite.graphics.drawRect(0, 0, 1920, 1080);
+			m_TouchSprite.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
+			//trace("w:" + stage.stageWidth + " h:" + stage.stageHeight);
 			m_TouchSprite.graphics.endFill();
 			
 			// Add the touch sprite to the stage
@@ -49,7 +46,7 @@ package Systems
 			m_Rippler = new Rippler(m_TouchSprite, 20, 6);
 			
 			// Register the TAP event to the touchsprite
-			m_TouchSprite.gestureList = {"tap": true, "manipulate": true, "start": true};
+			m_TouchSprite.gestureList = {"tap": true };
 			m_TouchSprite.addEventListener(GWGestureEvent.TAP, handleTap);
 			m_TouchSprite.addEventListener(MouseEvent.MOUSE_MOVE, handleMouseMove);
 		}
