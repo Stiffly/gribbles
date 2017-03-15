@@ -30,15 +30,14 @@ package Systems
 		private function cmlComplete(event:Event):void
 		{
 			CMLParser.removeEventListener(CMLParser.COMPLETE, cmlComplete);
-			video = CMLObjectList.instance.getId("av"); // AlbumViewer
-			video.alpha = 0.0;
-			video.touchEnabled = true;
+			
+			video = CMLObjectList.instance.getId("video-viewer"); // AlbumViewer
+			hideAlbum(video);
 			
 			image = CMLObjectList.instance.getId("image-viewer");
-			image.alpha = 0.0;
-			image.touchEnabled = true;
+			hideAlbum(image);
 			
-			button  = CMLObjectList.instance.getId("avbutton"); // AlbumViewer
+			button  = CMLObjectList.instance.getId("video-button"); // AlbumViewer
 			button.addEventListener(StateEvent.CHANGE, buttonHandler);
 			
 			imageButton  = CMLObjectList.instance.getId("image-button"); // AlbumViewer
@@ -50,14 +49,10 @@ package Systems
 			// Only on release
 			if (event.value == "down-state")
 				return;
-			if (video.alpha > 0) {
-				video.alpha = 0.0;
-				video.touchEnabled = false;
-			}
-			else if (video.alpha == 0) {
-				video.alpha = 1.0;
-				video.touchEnabled = true;
-			}
+			if (video.alpha > 0)
+				hideAlbum(video);
+			else if (video.alpha == 0)
+				showAlbum(video);
 		}
 		
 		private function imageButtonHandler(event : StateEvent) : void
@@ -65,14 +60,28 @@ package Systems
 			// Only on release
 			if (event.value == "down-state")
 				return;
-			if (image.alpha > 0) {
-				image.alpha = 0.0;
-				image.touchEnabled = false;
-			}
-			else if (image.alpha == 0) {
-				image.alpha = 1.0;
-				image.touchEnabled = true;
-			}
+			if (image.alpha > 0) 
+				hideAlbum(image);
+			else if (image.alpha == 0) 
+				showAlbum(image);
+		}
+		
+		private function showAlbum(album : AlbumViewer) : void 
+		{
+			album.alpha = 1.0;
+			album.touchEnabled = true;
+			album.x = 585;
+			album.y = 299;
+			album.scale = 1.0;
+			album.rotation = -10.0;
+		}
+		
+		private function hideAlbum(album : AlbumViewer) : void 
+		{
+			album.alpha = 0.0;
+			album.touchEnabled = false;
+			album.x = 13337;
+			album.y = 13337;
 		}
 	}
 }

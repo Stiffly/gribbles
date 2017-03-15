@@ -7,7 +7,7 @@ package
 	import Systems.VideoSystem;
 	import Systems.WaterSystem;
 	
-	[SWF(backgroundColor="0xFFF00", frameRate="60", width="1920", height="1080")]
+	[SWF(frameRate="60", width="1920", height="1080")]
     public class Main extends GestureWorks
     {		
 		private var systems:List = new List();

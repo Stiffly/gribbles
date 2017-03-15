@@ -22,7 +22,7 @@ package Systems
 		
 		// Embed an image which will be used as a background
 		// DSC_7142.jpg
-		[Embed(source="../../assets/images/bottenbild.jpg")]
+		[Embed(source="../../assets/images/bottenbild2.jpg")]
 		private var m_SourceImage : Class;
 		// The "rippler" that instantiates water ripples at the surface 
 		private var m_Rippler : Rippler;
@@ -39,7 +39,7 @@ package Systems
 			m_TouchSprite = new TouchSprite();
 			// Fill the touch object with the "background image"
 			m_TouchSprite.graphics.beginBitmapFill(new m_SourceImage().bitmapData, null, true, true);
-			m_TouchSprite.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
+			m_TouchSprite.graphics.drawRect(0, 0, 1920, 1080);
 			m_TouchSprite.graphics.endFill();
 			
 			// Add the touch sprite to the stage
