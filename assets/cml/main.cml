@@ -6,7 +6,9 @@
 		
 <!-- This loads the album viewer !-->
 <Include src="cml/AlbumViewer.cml"/>
-<Include src="cml/Button.cml"/>
+<Include src="cml/ImageViewer.cml"/>
+<Include src="cml/VideoButton.cml"/>
+<Include src="cml/ImageButton.cml"/>
 
 </Stage>
 	
