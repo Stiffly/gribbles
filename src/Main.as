@@ -16,8 +16,8 @@ package
         {
 			// Calls super constructor (GestureWorks())
             super();
-			gml = "../lib/gml/gestures.gml"; // gml now required
-			cml = "../lib/cml/AlbumViewer.cml";
+			gml = "../assets/gml/gestures.gml"; // gml now required
+			cml = "../assets/cml/main.cml";
 
 
 			// Add systems here

@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<cml rootDirectory="../" css="lib/cml/styles.css" tuio="false" simulator="false">
+<cml rootDirectory="../assets" css="../assets/cml/styles.css" tuio="false" simulator="true">
 
 	<LibraryKit>
-		<Library type="swf" src="../lib/cml/openexhibits_assets.swf" />	
+		<Library type="swf" src="../assets/cml/openexhibits_assets.swf" />	
 	</LibraryKit>
 
 	<AlbumViewer id="av" x="585" y="200" rotation="-10" autoTextLayout="false" linkAlbums="true" clusterBubbling="true" mouseChildren="true">
 
 		<Album id="front" loop="false" horizontal="true" applyMask="true" margin="8" mouseChildren="true" clusterBubbling="true" dragGesture="1-finger-drag">
-			<Video src="assets/videos/undervatten.mov" width="500" height="400" centerPlayButton="false" autoplay="true" loop="true">
+			<Video src="videos/undervatten.mov" width="500" height="400" centerPlayButton="false" autoplay="true" loop="true">
 				<Button initial="play" hit="play" down="play" up="play" dispatch="down:down" active="true">
 					<Graphic id="play" shape="triangle" height="100" rotation="90" x="300" y="150" alpha=".5"/> 						
 				</Button>
 			</Video>
-			<Image src="assets/images/1.jpg" width="500" height="400"/>						
-			<Image src="assets/images/2.jpg" width="500" height="400"/>						
-			<Image src="assets/images/3.jpg" width="500" height="400"/>						
-			<Image src="assets/images/4.jpg" width="500" height="400"/>						
-			<Image src="assets/images/5.jpg" width="500" height="400"/>						
-			<Image src="assets/images/6.jpg" width="500" height="400"/>						
-			<Image src="assets/images/7.jpg" width="500" height="400"/>						
+			<Image src="images/1.jpg" width="500" height="400"/>						
+			<Image src="images/2.jpg" width="500" height="400"/>						
+			<Image src="images/3.jpg" width="500" height="400"/>						
+			<Image src="images/4.jpg" width="500" height="400"/>						
+			<Image src="images/5.jpg" width="500" height="400"/>						
+			<Image src="images/6.jpg" width="500" height="400"/>						
+			<Image src="images/7.jpg" width="500" height="400"/>						
 		</Album>
 				
 		<Album id="back" alpha=".5" loop="false" applyMask="true" horizontal="true" margin="8" visible="false" dragGesture="1-finger-drag">
@@ -90,13 +90,13 @@
 			</TouchContainer>				
 		</Album>	
 
-		<Include src="lib/cml/frame.cml" />
+		<Include src="cml/frame.cml" />
 		
 		<Menu x="0" y="0" alpha="0.75" position="bottomRight" autohide="true" paddingBottom="10" paddingLeft="0" paddingRight="10" visible="false">			
-			<Include src="lib/cml/infoButton.cml"/>
+			<Include src="cml/infoButton.cml"/>
 			<!-- <Include src="lib/cml/closeButton.cml"/> !-->
-			<Include src="lib/cml/playButton.cml"/>
-			<Include src="lib/cml/pauseButton.cml"/> 
+			<Include src="cml/playButton.cml"/>
+			<Include src="cml/pauseButton.cml"/> 
 		</Menu>
 		
 		<GestureList>
