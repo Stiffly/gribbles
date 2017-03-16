@@ -9,24 +9,24 @@ package Systems
 	import com.gestureworks.cml.core.CMLObjectList;
 	import com.gestureworks.cml.events.StateEvent;
 	import flash.events.MouseEvent;
-	
+
 
 	public class VideoSystem extends Systems.System
-	{		
+	{
 		private var video : AlbumViewer;
 		private var image : AlbumViewer;
-		private var button : Button;
+		private var videoButton : Button;
 		private var imageButton : Button;
 		
-		public function VideoSystem():void 
+		public function VideoSystem():void
 		{
 			super();
 		}
 		
-		override public function Init():void 
+		override public function Init():void
 		{
 			CMLParser.addEventListener(CMLParser.COMPLETE, cmlComplete);
-		}		
+		}
 		
 		private function cmlComplete(event:Event):void
 		{
@@ -38,22 +38,28 @@ package Systems
 			image = CMLObjectList.instance.getId("image-viewer");
 			//hideAlbum(image);
 			
-			button  = CMLObjectList.instance.getId("video-button"); 
-			button.addEventListener(StateEvent.CHANGE, buttonHandler);
+			videoButton  = CMLObjectList.instance.getId("video-button");
+			videoButton.addEventListener(StateEvent.CHANGE, videoButtonHandler);
 			
-			imageButton  = CMLObjectList.instance.getId("image-button"); 
+			imageButton  = CMLObjectList.instance.getId("image-button");
 			imageButton.addEventListener(StateEvent.CHANGE, imageButtonHandler);
 		}
 		
-		private function buttonHandler(event : StateEvent) : void
+		private function videoButtonHandler(event : StateEvent) : void
 		{
+			var button :Button  = CMLObjectList.instance.getId(event.id);
 			// Only on release
-			if (event.value == "down-state")
+			if (event.value != "down-state")
 				return;
-			if (video.alpha > 0)
+			if (video.alpha > 0) {
 				hideAlbum(video);
-			else if (video.alpha == 0)
+				button.dispatch = "down";
+			}
+			else if (video.alpha == 0) {
 				showAlbum(video);
+				button.dispatch = "up";
+			}
+			
 		}
 		
 		private function imageButtonHandler(event : StateEvent) : void
@@ -61,23 +67,23 @@ package Systems
 			// Only on release
 			if (event.value == "down-state")
 				return;
-			if (image.alpha > 0) 
+			if (image.alpha > 0)
 				hideAlbum(image);
-			else if (image.alpha == 0) 
+			else if (image.alpha == 0)
 				showAlbum(image);
 		}
 		
-		private function showAlbum(album : AlbumViewer) : void 
+		private function showAlbum(album : AlbumViewer) : void
 		{
 			album.alpha = 1.0;
 			album.touchEnabled = true;
-			album.x = 585;
-			album.y = 299;
 			album.scale = 1.0;
+			album.x = stage.stageWidth / 2 - album.width / 2;
+			album.y = stage.stageHeight / 2 - album.height / 2;
 			album.rotation = -10.0;
 		}
 		
-		private function hideAlbum(album : AlbumViewer) : void 
+		private function hideAlbum(album : AlbumViewer) : void
 		{
 			album.alpha = 0.0;
 			album.touchEnabled = false;

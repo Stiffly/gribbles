@@ -2,13 +2,13 @@
 
 <cml>
 
-<Button id ="image-button" x="50" y="200" hit="#hit-area" initial="red" down="blue" up="red"
+<Button id ="image-button" x="50" y="200" hit="#hit-area" initial="up" down="down" up="up" out="up"
 	dispatch="initial:initial-state:down:down-state:up:up-state:over:over state:out:out-state" >		
+	
 	<Graphic id="hit-area" shape="rectangle" width="100" height="100" alpha="0" />		
+	<Image id="up" src="images/imcamerainv.png" shape="circle" radius="100" width="100" height="100" alpha="0.7" />
 
-	<Image id="red" src="images/imcamerainv.png" shape="circle" radius="100" width="100" height="100" alpha="0.7" />
-
-	<Image id="blue" src="images/imcamera.png" shape="circle" radius="100" width="100" height="100" alpha="0.7"/>
+	<Image id="down" src="images/imcamera.png" shape="circle" radius="100" width="100" height="100" alpha="0.7"/>
 </Button>
 
 </cml>
