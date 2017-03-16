@@ -4,6 +4,8 @@ package
     import flash.display.StageAlign;
     import flash.display.StageScaleMode;	
 	import flash.display.StageDisplayState;
+	 
+	import flash.ui.Mouse;
 	
 	import flash.text.TextField;
 	
@@ -49,6 +51,8 @@ package
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			stage.displayState = StageDisplayState.FULL_SCREEN;
+			
+			Mouse.hide();
 		}
     }
  }
