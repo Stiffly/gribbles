@@ -1,12 +1,13 @@
 package
  {
+	import com.adobe.tvsdk.mediacore.ABRControlParameters;
+	import flash.events.Event;
 	import flash.geom.Rectangle;
     import flash.display.StageAlign;
     import flash.display.StageScaleMode;	
 	import flash.display.StageDisplayState;
-	 
+	import flash.utils.getTimer;
 	import flash.ui.Mouse;
-	
 	import flash.text.TextField;
 	
     import com.gestureworks.core.GestureWorks;
@@ -20,6 +21,8 @@ package
     public class Main extends GestureWorks
     {		
 		private var systems:List = new List();
+		private var startTime:Number = 0;
+		private var FPScounter : TextField = new TextField(); 
 
         public function Main():void
         {
@@ -31,8 +34,6 @@ package
 			// Add systems here
 			systems.append(new WaterSystem());
 			systems.append(new VideoSystem());
-			
-
         }
 
         override protected function gestureworksInit():void
@@ -43,9 +44,7 @@ package
 				addChild(s);
 				s.Init();
 			}
-			var text : TextField = new TextField();
-			text.text = "Hällo world!";
-			addChild(text);
+
 			// This makes the image fit-ish to the screen
 			stage.fullScreenSourceRect = new Rectangle(0, 0, 1920, 1080);
 			stage.scaleMode = StageScaleMode.NO_SCALE;
@@ -53,6 +52,19 @@ package
 			stage.displayState = StageDisplayState.FULL_SCREEN;
 			
 			Mouse.hide();
+			
+			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			
+			FPScounter.text = "FPS: ";
+			addChild(FPScounter);
+		}
+		
+		private function onEnterFrame( event : Event) : void 
+		{
+			var dt : Number = (getTimer() - startTime) / 1000;
+			FPScounter.text = "FPS: " + Math.round (1 / dt);
+			
+			startTime = getTimer();
 		}
     }
  }
