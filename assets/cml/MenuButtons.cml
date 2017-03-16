@@ -4,14 +4,14 @@
 
 <Button id="image-button" x="50" y="200" hit="button-hit-box" initial="image-up" down="image-down" up="image-up"
 	dispatch="initial:initial-state:down:down-state:up:up-state:over:over state:out:out-state" >
-	<Graphic id="image-hit-box" />
+	<Graphic id="button-hit-box" />
 	<Image id="image-up" src="images/buttons/button-image-up.png" />
 	<Image id="image-down" src="images/buttons/button-image-down.png" />
 </Button>
 
-<Button id="video-button" x="50" y="50" hit="button-hit-box" initial="video-up" down="video-down" up="video-up" out="up" active="down"
+<Button id="video-button" x="50" y="50" hit="button-hit-box" initial="video-up" down="video-down" up="video-up"
 	dispatch="initial:initial-state:down:down-state:up:up-state:over:over state:out:out-state" >		
-	<Graphic id="image-hit-box"/>		
+	<Graphic id="button-hit-box"/>		
 	<Image id="video-up" src="images/buttons/button-video-up.png" />
 	<Image id="video-down" src="images/buttons/button-video-down.png" />
 </Button>

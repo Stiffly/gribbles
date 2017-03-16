@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<cml rootDirectory="../assets" css="../assets/cml/styles.css" tuio="false" simulator="true">
+<cml css="cml/styles.css" tuio="false" simulator="true">
 
 	<LibraryKit>
 		<Library type="swf" src="../assets/cml/openexhibits_assets.swf" />	
@@ -9,13 +9,13 @@
 	<AlbumViewer id="image-viewer" x="200" y="200" rotation="-10" autoTextLayout="false" linkAlbums="true" clusterBubbling="true" mouseChildren="true">
 
 		<Album id="front" loop="true" horizontal="true" applyMask="true" margin="8" mouseChildren="true" clusterBubbling="true" dragGesture="1-finger-drag">
-			<Image src="images/1.jpg" width="500" height="400"/>
-			<Image src="images/2.jpg" width="500" height="400"/>
-			<Image src="images/3.jpg" width="500" height="400"/>			
-			<Image src="images/4.jpg" width="500" height="400"/>			
-			<Image src="images/5.jpg" width="500" height="400"/>
-			<Image src="images/6.jpg" width="500" height="400"/>
-			<Image src="images/7.jpg" width="500" height="400"/>						
+			<Image src="images/content/1.jpg" width="500" height="400"/>
+			<Image src="images/content/2.jpg" width="500" height="400"/>
+			<Image src="images/content/3.jpg" width="500" height="400"/>			
+			<Image src="images/content/4.jpg" width="500" height="400"/>			
+			<Image src="images/content/5.jpg" width="500" height="400"/>
+			<Image src="images/content/6.jpg" width="500" height="400"/>
+			<Image src="images/content/7.jpg" width="500" height="400"/>						
 		</Album>
 				
 		<Album id="back" alpha=".5" loop="false" applyMask="true" horizontal="true" margin="8" visible="false" dragGesture="1-finger-drag">

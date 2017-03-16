@@ -1,0 +1,36 @@
+#button-hit-box {
+	x:0;
+	y:0;
+	shape:rectangle;
+	width:100; 
+	height:100;
+	alpha:0;
+}
+#video-up {
+	x:0;
+	y:0;
+	width:100;
+    height:100;
+    alpha:0.5;
+}
+#video-down {
+	x:0;
+	y:0;
+	width:100;
+    height:100;
+    alpha:0.5;
+}
+#image-up {
+	x:0;
+	y:0;
+	width:100;
+    height:100;
+    alpha:0.5;
+}
+#image-down {
+	x:0;
+	y:0;
+	width:100;
+    height:100;
+    alpha:0.5;
+}

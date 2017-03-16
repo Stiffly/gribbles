@@ -36,7 +36,7 @@ package Systems
 			hideAlbum(video);
 			
 			image = CMLObjectList.instance.getId("image-viewer");
-			//hideAlbum(image);
+			hideAlbum(image);
 			
 			videoButton  = CMLObjectList.instance.getId("video-button");
 			videoButton.addEventListener(StateEvent.CHANGE, videoButtonHandler);
@@ -49,7 +49,7 @@ package Systems
 		{
 			var button :Button  = CMLObjectList.instance.getId(event.id);
 			// Only on release
-			if (event.value != "down-state")
+			if (event.value == "down-state")
 				return;
 			if (video.alpha > 0) {
 				hideAlbum(video);

@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<cml rootDirectory="../assets/" css="cml/styles.css" tuio="false" simulator="true">
+<cml rootDirectory="../assets/" css="style.css" tuio="false" simulator="true">
 	
 <Stage color="0x000000">
 		
 <!-- This loads the album viewer !-->
 <Include src="cml/VideoViewer.cml"/>
 <Include src="cml/ImageViewer.cml"/>
-<Include src="cml/VideoButton.cml"/>
-<Include src="cml/ImageButton.cml"/>
+<Include src="cml/MenuButtons.cml"/>
 
 </Stage>
 	

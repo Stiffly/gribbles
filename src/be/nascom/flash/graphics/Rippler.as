@@ -39,19 +39,6 @@ package be.nascom.flash.graphics
      * 
      * The Rippler class creates an effect of rippling water on a source DisplayObject.
      * 
-     * @example The following code takes a DisplayObject on the stage and adds a ripple to it, assuming source is a DisplayObject already on the stage.
-     * 
-     *     <listing version="3.0">
-     *         import be.nascom.flash.graphics.Rippler;
-     *         
-     *         // create a Rippler instance to impact source, with a strength of 60 and a scale of 6.
-     *         // The source can be any DisplayObject on the stage, such as a Bitmap or MovieClip object.
-     *         var rippler : Rippler = new Rippler(source, 60, 6);
-     * 
-     *         // create a ripple with size 20 and alpha 1 with origin on position (200, 50)
-     *         rippler.drawRipple(100, 50, 20, 1);
-     * </listing>
-     * 
      * @author David Lenaerts
      * @mail david.lenaerts@nascom.be
      * 

@@ -1,5 +1,6 @@
 *.as3proj
 swfobject.js
+*.swc
 
 # Build folders and assets
 obj/
