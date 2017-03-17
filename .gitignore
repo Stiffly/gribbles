@@ -1,9 +1,9 @@
 *.as3proj
 swfobject.js
 *.swc
+*.old
 
 # Build folders and assets
-obj/
 assets/images
 assets/videos
 bin/
