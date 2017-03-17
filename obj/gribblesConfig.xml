@@ -8,11 +8,11 @@
   <compiler>
     <define append="true">
       <name>CONFIG::debug</name>
-      <value>false</value>
+      <value>true</value>
     </define>
     <define append="true">
       <name>CONFIG::release</name>
-      <value>true</value>
+      <value>false</value>
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
@@ -30,18 +30,16 @@
       <name>CONFIG::desktop</name>
       <value>true</value>
     </define>
-    <optimize>true</optimize>
-    <omit-trace-statements>true</omit-trace-statements>
-    <verbose-stacktraces>false</verbose-stacktraces>
+    <verbose-stacktraces>true</verbose-stacktraces>
     <source-path append="true">
       <path-element>C:\Users\multi\Documents\Adam\gribbles\src</path-element>
       <path-element>C:\Users\multi\Documents\Adam\gribbles\lib</path-element>
       <path-element>C:\Program Files (x86)\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
     <library-path append="true">
-      <path-element>C:\Open Exhibits\lib\GestureWorksGML_4.1.0.swc</path-element>
-      <path-element>C:\Open Exhibits\lib\GestureWorksCML_4.1.0.swc</path-element>
-      <path-element>C:\Open Exhibits\lib\GestureWorksAway3D_4.1.0.swc</path-element>
+      <path-element>C:\Users\multi\Documents\Adam\gribbles\lib\GestureWorksAway3D_4.1.0.swc</path-element>
+      <path-element>C:\Users\multi\Documents\Adam\gribbles\lib\GestureWorksCML_4.1.0.swc</path-element>
+      <path-element>C:\Users\multi\Documents\Adam\gribbles\lib\GestureWorksGML_4.1.0.swc</path-element>
     </library-path>
   </compiler>
   <file-specs>
@@ -50,7 +48,7 @@
   <default-background-color>#FFFFFF</default-background-color>
   <default-frame-rate>30</default-frame-rate>
   <default-size>
-    <width>1920</width>
-    <height>1080</height>
+    <width>800</width>
+    <height>600</height>
   </default-size>
 </flex-config>

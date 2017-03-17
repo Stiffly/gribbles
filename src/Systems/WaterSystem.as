@@ -20,7 +20,7 @@ package Systems
 		
 		// Embed an image which will be used as a background
 		// DSC_7142.jpg
-		[Embed(source="../../assets/images/content/bottenbild2.jpg")]
+		[Embed(source="../../bin/images/content/bottenbild2.jpg")]
 		private var m_SourceImage : Class;
 		// The "rippler" that instantiates water ripples at the surface 
 		private var m_Rippler : Rippler;
@@ -29,18 +29,16 @@ package Systems
 
 		override public function Init():void 
 		{
-
-
 			// Create the touch object wich will be used as the background for the application
 			m_TouchSprite = new TouchSprite();
 			// Fill the touch object with the "background image"
 			m_TouchSprite.graphics.beginBitmapFill(new m_SourceImage().bitmapData, null, true, true);
 			m_TouchSprite.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
-			//trace("w:" + stage.stageWidth + " h:" + stage.stageHeight);
 			m_TouchSprite.graphics.endFill();
 			
 			// Add the touch sprite to the stage
-			addChild(m_TouchSprite);
+			stage.addChild(m_TouchSprite);
+			stage.setChildIndex(m_TouchSprite, 1);	
 			
 			// Create the Rippler instance to affect the Bitmap object
 			m_Rippler = new Rippler(m_TouchSprite, 20, 6);

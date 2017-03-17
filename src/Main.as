@@ -1,3 +1,12 @@
+/*
+ * Main.as
+ * This is the entry point of the application.
+ * 
+ * author: Adam Byléhn
+ * contact: adambylehn@hotmail.com
+ * 
+ */
+
 package
  {
 	import flash.events.Event;
@@ -9,6 +18,7 @@ package
 	import flash.ui.Mouse;
 	import flash.text.TextField;
 	
+	import com.gestureworks.cml.core.CMLAir;	
     import com.gestureworks.core.GestureWorks;
     import com.gestureworks.cml.utils.List;
 	
@@ -16,25 +26,29 @@ package
 	import Systems.VideoSystem;
 	import Systems.WaterSystem;
 	
+	// Load CML Air classes
+	CMLAir;
+	
 	[SWF(frameRate="60", width="1920", height="1080")]
     public class Main extends GestureWorks
-    {		
+    {
 		private var systems:List = new List();
 		
 		private var passedFrames:int = 0;
 		private var startTime:Number = 0;
-		private var FPScounter : TextField = new TextField(); 
+		private var FPScounter : TextField = new TextField();
 
         public function Main():void
         {
 			// Calls super constructor (GestureWorks())
             super();
-			gml = "../assets/gml/gestures.gml"; // gml now required
-			cml = "../assets/cml/main.cml";
-			
+			cml = "main.cml";
+			gml = "gml/gestures.gml"; // gml now required
+
 			// Add systems here
 			systems.append(new WaterSystem());
-			systems.append(new VideoSystem());
+			//systems.append(new VideoSystem());
+
         }
 
         override protected function gestureworksInit():void
@@ -45,7 +59,6 @@ package
 				addChild(s);
 				s.Init();
 			}
-
 			// This makes the image fit-ish to the screen
 			stage.fullScreenSourceRect = new Rectangle(0, 0, 1920, 1080);
 			stage.scaleMode = StageScaleMode.NO_SCALE;

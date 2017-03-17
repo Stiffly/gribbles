@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<cml rootDirectory="/cmasdsadsadasdsadcml" css="style.css" tuio="false" simulator="true">
+	
+<Stage color="0x000000">
+		
+<!-- This loads the album viewer !-->
+<Include src="VideoViewer.cml"/>
+<Include src="ImageViewer.cml"/>
+<Include src="MenuButtons.cml"/>
+
+</Stage>
+	
+</cml>

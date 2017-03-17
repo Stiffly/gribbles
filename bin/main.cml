@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<cml rootDirectory="../assets/" css="style.css" tuio="false" simulator="true">
+<cml css="style.css" tuio="false" simulator="true">
 	
 <Stage color="0x000000">
 		

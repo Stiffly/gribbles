@@ -34,15 +34,22 @@ package Systems
 			
 			video = CMLObjectList.instance.getId("video-viewer");
 			hideAlbum(video);
+			stage.addChild(video);
+			
 			
 			image = CMLObjectList.instance.getId("image-viewer");
 			hideAlbum(image);
+			stage.addChild(image);
 			
 			videoButton  = CMLObjectList.instance.getId("video-button");
 			videoButton.addEventListener(StateEvent.CHANGE, videoButtonHandler);
+			stage.addChild(videoButton);
+			
 			
 			imageButton  = CMLObjectList.instance.getId("image-button");
 			imageButton.addEventListener(StateEvent.CHANGE, imageButtonHandler);
+			stage.addChild(imageButton);
+			
 		}
 		
 		private function videoButtonHandler(event : StateEvent) : void

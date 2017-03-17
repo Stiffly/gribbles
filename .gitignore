@@ -4,6 +4,5 @@ swfobject.js
 *.old
 
 # Build folders and assets
-assets/images
-assets/videos
-bin/
+bin/images/
+bin/videos/

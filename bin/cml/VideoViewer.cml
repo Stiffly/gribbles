@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<cml rootDirectory="../assets" css="../assets/cml/styles.css" tuio="false" simulator="true">
+<cml tuio="false" simulator="true">
 
 	<LibraryKit>
-		<Library type="swf" src="../assets/cml/openexhibits_assets.swf" />	
+		<Library type="swf" src="cml/openexhibits_assets.swf" />	
 	</LibraryKit>
 
 	<AlbumViewer id="video-viewer" x="585" y="200" rotation="-10" autoTextLayout="false" linkAlbums="true" clusterBubbling="true" mouseChildren="true">
