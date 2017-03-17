@@ -1,6 +1,5 @@
 package
  {
-	import com.adobe.tvsdk.mediacore.ABRControlParameters;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
     import flash.display.StageAlign;
