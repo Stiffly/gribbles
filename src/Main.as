@@ -56,15 +56,15 @@ package
 			
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			
-			FPScounter.text = "FPS: ";
 			addChild(FPScounter);
 		}
 		
 		private function onEnterFrame( event : Event) : void 
 		{
+			var updateFreq : int = 4; // Times per second
 			passedFrames++;
-			if ((getTimer() - startTime) / 1000 > 1) {
-				FPScounter.text = "FPS: " + passedFrames;
+			if ((getTimer() - startTime) / 1000 > 1 / updateFreq) {
+				FPScounter.text = "FPS: " + passedFrames * updateFreq;
 				startTime = getTimer();
 				passedFrames = 0;
 			}
