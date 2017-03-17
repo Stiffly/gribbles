@@ -21,6 +21,8 @@ package
     public class Main extends GestureWorks
     {		
 		private var systems:List = new List();
+		
+		private var passedFrames:int = 0;
 		private var startTime:Number = 0;
 		private var FPScounter : TextField = new TextField(); 
 
@@ -61,10 +63,12 @@ package
 		
 		private function onEnterFrame( event : Event) : void 
 		{
-			var dt : Number = (getTimer() - startTime) / 1000;
-			FPScounter.text = "FPS: " + Math.round (1 / dt);
-			
-			startTime = getTimer();
+			passedFrames++;
+			if ((getTimer() - startTime) / 1000 > 1) {
+				FPScounter.text = "FPS: " + passedFrames;
+				startTime = getTimer();
+				passedFrames = 0;
+			}
 		}
     }
  }
