@@ -1,3 +1,12 @@
+/*
+ * VideoSystem.as
+ * Keeps track of the "menu" buttons and loads the album viewers (audio / video)
+ * 
+ * author: Adam Byléhn
+ * contact: adambylehn@hotmail.com
+ * 
+ */
+
 package Systems 
 {
 	import flash.display.Bitmap;

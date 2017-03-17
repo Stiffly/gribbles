@@ -1,3 +1,12 @@
+/*
+ * System.as
+ * Super class that all the other system inherits from.
+ * 
+ * author: Adam Byléhn
+ * contact: adambylehn@hotmail.com
+ * 
+ */
+
 package Systems 
 {
 	//import com.gestureworks.core.GestureWorks;

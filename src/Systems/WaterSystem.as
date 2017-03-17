@@ -1,3 +1,12 @@
+/*
+ * WaterSystem.as
+ * Keeps track of the background image and it's corresponding water ripples.
+ * 
+ * author: Adam Byléhn
+ * contact: adambylehn@hotmail.com
+ * 
+ */
+
 package Systems 
 {
     import flash.display.Bitmap;
