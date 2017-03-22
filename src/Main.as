@@ -47,7 +47,7 @@ package
 
 			// Add systems here
 			systems.append(new WaterSystem());
-			systems.append(new VideoSystem());
+			//systems.append(new VideoSystem());
 
         }
 
@@ -59,17 +59,21 @@ package
 				addChild(s);
 				s.Init();
 			}
+			
+			// The following should be toggelable from a configuration file
+			
 			// This makes the image fit-ish to the screen
-			stage.fullScreenSourceRect = new Rectangle(0, 0, 1920, 1080);
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
+			// Enter fullscreen mode
+			stage.fullScreenSourceRect = new Rectangle(0, 0, 1920, 1080);
 			stage.displayState = StageDisplayState.FULL_SCREEN;
-			
+			// Hide mouse 
 			Mouse.hide();
 			
-			addEventListener(Event.ENTER_FRAME, onEnterFrame);
-			
-			addChild(FPScounter);
+			// Show FPS-counter
+			stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			stage.addChild(FPScounter);
 		}
 		
 		private function onEnterFrame( event : Event) : void 
