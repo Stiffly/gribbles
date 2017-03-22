@@ -14,16 +14,16 @@ package Systems
 	import com.gestureworks.cml.components.HTMLViewer;
 	 
 	public class HTMLSystem extends System
-	{
-		public function HTMLSystem():void
-		{
-			super();
-		}
-		
+	{	
 		private var m_HTMLViewer : HTMLViewer;
 		private var m_HTMLObj : Object;
 		private var m_Button : Button;
 		
+		public function HTMLSystem():void
+		{
+			super();
+		}
+
 		override public function Init():void
 		{
 			m_HTMLViewer = CMLObjectList.instance.getId("HTML-viewer");

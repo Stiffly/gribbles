@@ -27,6 +27,7 @@ package
 	import Systems.WaterSystem;	
 	import Systems.ImageSystem;
 	import Systems.HTMLSystem;
+	import Systems.PDFSystem;
 	
 	// Load CML Air classes
 	CMLAir;
@@ -49,7 +50,8 @@ package
 			gml = "gml/gestures.gml"; // gml now required
 
 			// Add systems here			
-			m_Systems.append(new HTMLSystem());
+			m_Systems.append(new HTMLSystem());			
+			m_Systems.append(new PDFSystem());
 			m_Systems.append(new WaterSystem());
 			m_Systems.append(new VideoSystem());
 			m_Systems.append(new ImageSystem());

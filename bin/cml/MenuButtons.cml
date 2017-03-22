@@ -23,4 +23,11 @@
 	<Image id="web-down" src="images/buttons/button-web-down.png" />
 </Button>
 
+<Button id="pdf-button" x="50" y="500" hit="button-hit-box" initial="pdf-up" down="pdf-down" up="pdf-up"
+	dispatch="initial:initial-state:down:down-state:up:up-state:over:over state:out:out-state" >		
+	<Graphic id="button-hit-box"/>		
+	<Image id="pdf-up" src="images/buttons/button-pdf-up.png" />
+	<Image id="pdf-down" src="images/buttons/button-pdf-down.png" />
+</Button>
+
 </cml>

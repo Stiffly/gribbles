@@ -6,18 +6,6 @@
 	<Library type="swf" src="cml/openexhibits_assets.swf" />	
 </LibraryKit>
 
-<!-- header -->
-<Text class="title">HTML Viewer</Text>
-<Text class="desc">
-	<p>The HTML Viewer is an AIR-EXCLUSIVE component that is primarily meant to display an HTML website on the front side and meta-data on the back side. 
-	The width and height of the component are automatically set to the dimensions of the HTML element.<br /><br />
-	This example demonstrates an HTML element on the front and an info panel on the back. The viewer can be scaled, and dragged. Add rotate if you like.</p><br />
-	<p>See also:<br />
-	Component<br />HTML<br />
-	</p>	 
-</Text>
-
-
 <!-- VIEWER -->
 <HTMLViewer id="HTML-viewer" x="550" y="105" back="#info" scale=".5">
 
