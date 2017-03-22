@@ -2,7 +2,7 @@
 
 <cml css="style.css" tuio="false" simulator="true">
 	
-<Stage color="0x000000">
+<Stage color="0xFFFFFF">
 		
 <!-- This loads the album viewer !-->
 <Include src="cml/VideoViewer.cml"/>

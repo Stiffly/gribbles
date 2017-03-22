@@ -1,14 +1,13 @@
-/*
- * Main.as
- * This is the entry point of the application.
- * 
- * author: Adam Byléhn
- * contact: adambylehn@hotmail.com
- * 
- */
-
 package
  {
+	/**
+	 * Main.as
+	 * This is the entry point of the application gribbles
+	 * 
+	 * @author Adam Byléhn
+	 * @contact adambylehn@hotmail.com
+	 */
+	 
 	import flash.events.Event;
 	import flash.geom.Rectangle;
     import flash.display.StageAlign;
@@ -21,46 +20,58 @@ package
 	import com.gestureworks.cml.core.CMLAir;	
     import com.gestureworks.core.GestureWorks;
     import com.gestureworks.cml.utils.List;
+	import com.gestureworks.cml.core.CMLParser;
 	
 	import Systems.System;
 	import Systems.VideoSystem;
-	import Systems.WaterSystem;
+	import Systems.WaterSystem;	
+	import Systems.ImageSystem;
 	
 	// Load CML Air classes
 	CMLAir;
 	
-	[SWF(frameRate="60", width="1920", height="1080")]
+	//[SWF(frameRate="0", width="1920", height="1080")]
     public class Main extends GestureWorks
     {
-		private var systems:List = new List();
+		private var m_Systems:List = new List();
 		
-		private var passedFrames:int = 0;
-		private var startTime:Number = 0;
-		private var FPScounter : TextField = new TextField();
+		private var m_PassedFrames:int = 0;
+		private var m_StartTime:Number = 0;
+		private var m_FPScounter : TextField = new TextField();
 
         public function Main():void
         {
+			trace("gribbles starting");
 			// Calls super constructor (GestureWorks())
             super();
 			cml = "main.cml";
 			gml = "gml/gestures.gml"; // gml now required
 
 			// Add systems here
-			systems.append(new WaterSystem());
-			systems.append(new VideoSystem());
-
+			m_Systems.append(new WaterSystem());
+			m_Systems.append(new VideoSystem());
+			m_Systems.append(new ImageSystem());
+			
+			CMLParser.addEventListener(CMLParser.COMPLETE, cmlComplete);
         }
 
-        override protected function gestureworksInit():void
-        {
+		// Is called when the parsing of the CML file is complete
+		private function cmlComplete(event:Event):void
+		{
+			trace("CML parsing complete");
+			CMLParser.removeEventListener(CMLParser.COMPLETE, cmlComplete);
 			// Loops over each system and intializes it
-			for each(var s:System in systems)
+			for each(var s:System in m_Systems)
 			{
 				addChild(s);
 				s.Init();
 			}
-			
-			// The following should be toggelable from a configuration file
+		}
+		
+        override protected function gestureworksInit():void
+        {
+			trace("Gestureworks initiated");
+			// The following should be toggleable from a configuration file
 			
 			// This makes the image fit-ish to the screen
 			stage.scaleMode = StageScaleMode.NO_SCALE;
@@ -73,17 +84,22 @@ package
 			
 			// Show FPS-counter
 			stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
-			stage.addChild(FPScounter);
+			stage.addChild(m_FPScounter);
 		}
 		
 		private function onEnterFrame( event : Event) : void 
 		{
-			var updateFreq : int = 4; // Times per second
-			passedFrames++;
-			if ((getTimer() - startTime) / 1000 > 1 / updateFreq) {
-				FPScounter.text = "FPS: " + passedFrames * updateFreq;
-				startTime = getTimer();
-				passedFrames = 0;
+			var updateFreq : int = 1; // Times per second
+			m_PassedFrames++;
+			if ((getTimer() - m_StartTime) / 1000 > 1 / updateFreq) {
+				m_FPScounter.text = "FPS: " + m_PassedFrames * updateFreq;
+				m_StartTime = getTimer();
+				m_PassedFrames = 0;
+			}
+			
+			for each(var s:System in m_Systems)
+			{
+				s.Update();
 			}
 		}
     }

@@ -1,14 +1,13 @@
-/*
- * WaterSystem.as
- * Keeps track of the background image and it's corresponding water ripples.
- * 
- * author: Adam Byléhn
- * contact: adambylehn@hotmail.com
- * 
- */
-
 package Systems 
 {
+	/**
+	 * WaterSystem.as
+	 * Keeps track of the background image and it's corresponding water ripples
+	 * 
+	 * @author Adam Byléhn
+	 * @contact adambylehn@hotmail.com
+	 */
+	
     import flash.display.Bitmap;
 	import flash.events.MouseEvent;
 	
@@ -16,8 +15,7 @@ package Systems
 	import com.gestureworks.events.GWGestureEvent;
 	import com.gestureworks.core.TouchSprite
 	
-	import be.nascom.flash.graphics.Rippler;	
-	import Systems.System;
+	import be.nascom.flash.graphics.Rippler;
 
 	public class WaterSystem extends Systems.System
 	{
