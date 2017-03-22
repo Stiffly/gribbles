@@ -1,19 +1,18 @@
 package Systems 
 {
 	/**
-	 * System.as
-	 * Super class that all the other system inherits from
-	 * 
-	 * @author Adam Byléhn
-	 * @contact adambylehn@hotmail.com
-	 */
+	* System.as
+	* Super class that all the other system inherits from
+	* 
+	* @author Adam Byléhn
+	* @contact adambylehn@hotmail.com
+	*/
 	
-	//import com.gestureworks.core.GestureWorks;
 	import flash.display.Sprite;
-	import com.gestureworks.cml.components.AlbumViewer;
+	import com.gestureworks.cml.core.CMLObjectList;	
 	import com.gestureworks.cml.components.Component;
 	import com.gestureworks.cml.elements.Button;
-	import com.gestureworks.cml.core.CMLObjectList;
+
 	
 	public class System extends Sprite
 	{

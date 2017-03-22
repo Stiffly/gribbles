@@ -1,12 +1,12 @@
 package
  {
 	/**
-	 * Main.as
-	 * This is the entry point of the application gribbles
-	 * 
-	 * @author Adam Byléhn
-	 * @contact adambylehn@hotmail.com
-	 */
+	* Main.as
+	* This is the entry point of the application gribbles
+	* 
+	* @author Adam Byléhn
+	* @contact adambylehn@hotmail.com
+	*/
 	 
 	import flash.events.Event;
 	import flash.geom.Rectangle;
@@ -26,6 +26,7 @@ package
 	import Systems.VideoSystem;
 	import Systems.WaterSystem;	
 	import Systems.ImageSystem;
+	import Systems.HTMLSystem;
 	
 	// Load CML Air classes
 	CMLAir;
@@ -42,12 +43,13 @@ package
         public function Main():void
         {
 			trace("gribbles starting");
-			// Calls super constructor (GestureWorks())
+			// Calls super constructor GestureWorks()
             super();
 			cml = "main.cml";
 			gml = "gml/gestures.gml"; // gml now required
 
-			// Add systems here
+			// Add systems here			
+			m_Systems.append(new HTMLSystem());
 			m_Systems.append(new WaterSystem());
 			m_Systems.append(new VideoSystem());
 			m_Systems.append(new ImageSystem());

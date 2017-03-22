@@ -1,20 +1,17 @@
 package Systems 
 {
 	/**
-	 * VideoSystem.as
-	 * Keeps track of the VideoViewer and its associated button
-	 * 
-	 * @author Adam Byléhn
-	 * @contact adambylehn@hotmail.com
-	 */
+	* VideoSystem.as
+	* Keeps track of the VideoViewer and its associated button
+	* 
+	* @author Adam Byléhn
+	* @contact adambylehn@hotmail.com
+	*/
 	
-	import flash.events.Event;	
-	import flash.events.MouseEvent;
-
-	import com.gestureworks.cml.elements.Button;	
-	import com.gestureworks.cml.components.AlbumViewer;
-	import com.gestureworks.cml.core.CMLObjectList;
+	import com.gestureworks.cml.core.CMLObjectList;	
 	import com.gestureworks.cml.events.StateEvent;
+	import com.gestureworks.cml.elements.Button;
+	import com.gestureworks.cml.components.AlbumViewer;
 
 	public class VideoSystem extends Systems.System
 	{

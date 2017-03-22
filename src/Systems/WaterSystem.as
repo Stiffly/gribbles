@@ -1,12 +1,12 @@
 package Systems 
 {
 	/**
-	 * WaterSystem.as
-	 * Keeps track of the background image and it's corresponding water ripples
-	 * 
-	 * @author Adam Byléhn
-	 * @contact adambylehn@hotmail.com
-	 */
+	* WaterSystem.as
+	* Keeps track of the background image and it's corresponding water ripples
+	* 
+	* @author Adam Byléhn
+	* @contact adambylehn@hotmail.com
+	*/
 	
     import flash.display.Bitmap;
 	import flash.events.MouseEvent;
@@ -26,7 +26,6 @@ package Systems
 		}
 		
 		// Embed an image which will be used as a background
-		// DSC_7142.jpg
 		[Embed(source="../../bin/images/content/bottenbild2.jpg")]
 		private var m_SourceImage : Class;
 		// The "rippler" that instantiates water ripples at the surface 

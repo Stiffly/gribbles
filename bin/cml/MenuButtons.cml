@@ -16,4 +16,11 @@
 	<Image id="video-down" src="images/buttons/button-video-down.png" />
 </Button>
 
+<Button id="web-button" x="50" y="350" hit="button-hit-box" initial="web-up" down="web-down" up="web-up"
+	dispatch="initial:initial-state:down:down-state:up:up-state:over:over state:out:out-state" >		
+	<Graphic id="button-hit-box"/>		
+	<Image id="web-up" src="images/buttons/button-web-up.png" />
+	<Image id="web-down" src="images/buttons/button-web-down.png" />
+</Button>
+
 </cml>
