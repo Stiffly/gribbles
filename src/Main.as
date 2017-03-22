@@ -47,7 +47,7 @@ package
 
 			// Add systems here
 			systems.append(new WaterSystem());
-			//systems.append(new VideoSystem());
+			systems.append(new VideoSystem());
 
         }
 

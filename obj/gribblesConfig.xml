@@ -34,6 +34,7 @@
     <source-path append="true">
       <path-element>C:\Users\multi\Documents\Adam\gribbles\src</path-element>
       <path-element>C:\Users\multi\Documents\Adam\gribbles\lib</path-element>
+      <path-element>C:\Users\multi\Documents\Adam\gribbles\assets</path-element>
       <path-element>C:\Program Files (x86)\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
     <library-path append="true">
