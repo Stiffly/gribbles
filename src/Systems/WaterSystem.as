@@ -47,7 +47,7 @@ package Systems
 			stage.setChildIndex(m_TouchSprite, 1);	
 			
 			// Create the Rippler instance to affect the Bitmap object
-			m_Rippler = new Rippler(m_TouchSprite, 20, 12);
+			m_Rippler = new Rippler(m_TouchSprite, 10, 6);
 			
 			// Register the TAP event to the touchsprite
 			m_TouchSprite.gestureList = {"tap": true };
@@ -57,7 +57,7 @@ package Systems
 		
 		private function handleMouseMove(event :MouseEvent) : void 
 		{
-			m_Rippler.drawRipple(m_TouchSprite.mouseX, m_TouchSprite.mouseY, 20, 1);
+			m_Rippler.drawRipple(m_TouchSprite.mouseX, m_TouchSprite.mouseY, 10, 1);
 		}
 		
 		private function handleTap(event : GWGestureEvent) : void
@@ -66,7 +66,7 @@ package Systems
 			var x : int = event.value.tap_x;
 			var y : int = event.value.tap_y;
 			// Creates the water effect at the position of the Tap
-			m_Rippler.drawRipple(x, y, 20, 1);
+			m_Rippler.drawRipple(x, y, 10, 1);
 		}
 	}
 }

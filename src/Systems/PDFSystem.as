@@ -29,7 +29,6 @@ package Systems
 		
 		override public function Init():void
 		{
-			/*
 			tc = new TouchContainer();
 			
 			tc.x = 700;
@@ -54,14 +53,13 @@ package Systems
 			//initialise touch container
 			stage.addChild(tc);
 			
-			*/
 
 			//stage.addChild(m_PDFViewer);
 			
-			m_PDFViewer = CMLObjectList.instance.getId("PDF-viewer");
+			//m_PDFViewer = CMLObjectList.instance.getId("PDF-viewer");
 			//hideComponent(m_PDFViewer);
 
-			stage.addChild(m_PDFViewer);
+			//stage.addChild(m_PDFViewer);
 			
 			/*m_Button  = CMLObjectList.instance.getId("pdf-button");
 			m_Button.addEventListener(StateEvent.CHANGE, buttonHandler);

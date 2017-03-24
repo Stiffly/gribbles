@@ -86,10 +86,10 @@ package
 			trace("Gestureworks initiated");			
 
 			// Hide mouse
-			Mouse.hide();
+			//Mouse.hide();
 			
 			// Show FPS-counter
-			//stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			stage.addChild(m_FPScounter);
 		}
 		
@@ -102,7 +102,7 @@ package
 				m_StartTime = getTimer();
 				m_PassedFrames = 0;
 			}
-			if (m_SystemsInitiated) {
+			if (m_SystemsInitiated == true) {
 				for each(var s:System in m_Systems) {
 					s.Update();
 				}

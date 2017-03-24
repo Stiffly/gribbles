@@ -14,7 +14,7 @@ package Systems
 	import com.gestureworks.cml.components.AlbumViewer;
 
 	public class ImageSystem extends System
-	{		
+	{
 		private var m_Image : AlbumViewer;
 		private var m_ImageObj : Object;
 		private var m_Button : Button;
