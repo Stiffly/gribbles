@@ -79,7 +79,7 @@
 
 		<Include src="cml/frame.cml" />
 		
-		<Menu x="0" y="0" alpha="0.75" position="bottomRight" autohide="true" paddingBottom="10" paddingLeft="0" paddingRight="10" visible="false">			
+		<Menu x="0" y="0" alpha="0.75" position="bottomRight" autohide="false" paddingBottom="10" paddingLeft="0" paddingRight="10" visible="true">			
 			<Include src="cml/infoButton.cml"/>
 			<!-- <Include src="lib/cml/closeButton.cml"/> !-->
 			<Include src="cml/playButton.cml"/>

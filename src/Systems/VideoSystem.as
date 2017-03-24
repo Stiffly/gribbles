@@ -27,6 +27,8 @@ package Systems
 		override public function Init():void
 		{
 			m_Video = CMLObjectList.instance.getId("video-viewer");
+			m_Video.maxScale = 3;
+			m_Video.minScale = 0.2;
 			hideComponent(m_Video);
 			stage.addChild(m_Video);
 			

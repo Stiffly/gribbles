@@ -9,7 +9,7 @@
 	<AlbumViewer id="video-viewer" x="585" y="200" rotation="-10" autoTextLayout="false" linkAlbums="true" clusterBubbling="true" mouseChildren="true">
 
 		<Album id="front" loop="true" horizontal="true" applyMask="true" margin="8" mouseChildren="true" clusterBubbling="true" dragGesture="1-finger-drag">
-			<Video src="videos/undervatten.mov" width="500" height="400" centerPlayButton="false" autoplay="true" loop="true">
+			<Video src="videos/undervatten.mov" width="500" height="400" centerPlayButton="false" autoplay="true" loop="true" progressBar="true">
 				<Button initial="play" hit="play" down="play" up="play" dispatch="down:down" active="true">
 					<Graphic id="play" shape="triangle" height="100" rotation="90" x="300" y="150" alpha=".5"/> 						
 				</Button>

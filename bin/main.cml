@@ -7,8 +7,9 @@
 <!-- This loads the album viewer !-->
 <Include src="cml/VideoViewer.cml"/>
 <Include src="cml/HTMLViewer.cml"/>
-<Include src="cml/PDFViewer.cml"/>
+<!-- <Include src="cml/PDFViewer.cml"/> -->
 <Include src="cml/ImageViewer.cml"/>
+<!--<Include src="cml/HTML-url.cml"/>-->
 <Include src="cml/MenuButtons.cml"/>
 
 </Stage>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<cml rootDirectory="assets/" css="styles.css" tuio="false" simulator="false">
+
+<TouchContainer id="dykrapport">
+<!-- AIR-EXCLUSIVE: The html element can load local or remote url addresses. -->
+<HTML src="dykrapport.pdf" x="0" y="0" width="400" height="300" />
+<Frame frameColor="0x232223" frameAlpha="0.3" frameThickness="20" frameShape="rectangle" targetParent="true" mouseChildren="false"/>
+
+<GestureList>
+	<Gesture ref="2-finger-drag" />
+	<Gesture ref="n-scale" />
+	<Gesture ref="n-rotate" />
+</GestureList>
+
+</TouchContainer>
+
+
+</cml>

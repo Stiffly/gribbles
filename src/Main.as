@@ -32,7 +32,7 @@ package
 	// Load CML Air classes
 	CMLAir;
 	
-	//[SWF(frameRate="0", width="1920", height="1080")]
+	[SWF(frameRate="0", width="1920", height="1080")]
     public class Main extends GestureWorks
     {
 		private var m_Systems:List = new List();
@@ -40,6 +40,8 @@ package
 		private var m_PassedFrames:int = 0;
 		private var m_StartTime:Number = 0;
 		private var m_FPScounter : TextField = new TextField();
+		
+		private var m_SystemsInitiated : Boolean = false;
 
         public function Main():void
         {
@@ -51,7 +53,7 @@ package
 
 			// Add systems here			
 			m_Systems.append(new HTMLSystem());			
-			m_Systems.append(new PDFSystem());
+			//m_Systems.append(new PDFSystem());
 			m_Systems.append(new WaterSystem());
 			m_Systems.append(new VideoSystem());
 			m_Systems.append(new ImageSystem());
@@ -70,24 +72,24 @@ package
 				addChild(s);
 				s.Init();
 			}
-		}
-		
-        override protected function gestureworksInit():void
-        {
-			trace("Gestureworks initiated");
-			// The following should be toggleable from a configuration file
-			
-			// This makes the image fit-ish to the screen
+			m_SystemsInitiated = true;
+			// This makes the image fit to the screen
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			// Enter fullscreen mode
 			stage.fullScreenSourceRect = new Rectangle(0, 0, 1920, 1080);
 			stage.displayState = StageDisplayState.FULL_SCREEN;
-			// Hide mouse 
+		}
+		
+        override protected function gestureworksInit():void
+        {
+			trace("Gestureworks initiated");			
+
+			// Hide mouse
 			Mouse.hide();
 			
 			// Show FPS-counter
-			stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			//stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			stage.addChild(m_FPScounter);
 		}
 		
@@ -100,10 +102,10 @@ package
 				m_StartTime = getTimer();
 				m_PassedFrames = 0;
 			}
-			
-			for each(var s:System in m_Systems)
-			{
-				s.Update();
+			if (m_SystemsInitiated) {
+				for each(var s:System in m_Systems) {
+					s.Update();
+				}
 			}
 		}
     }

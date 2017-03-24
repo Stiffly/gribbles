@@ -28,6 +28,8 @@ package Systems
 		{
 			m_HTMLViewer = CMLObjectList.instance.getId("HTML-viewer");
 			hideComponent(m_HTMLViewer);
+			m_HTMLViewer.maxScale = 2;
+			m_HTMLViewer.minScale = 0.2;
 			stage.addChild(m_HTMLViewer);
 			
 			m_Button  = CMLObjectList.instance.getId("web-button");

@@ -30,6 +30,9 @@ package Systems
 			hideComponent(m_Image);
 			stage.addChild(m_Image);
 			
+			m_Image.maxScale = 2;
+			m_Image.minScale = 0.2;
+			
 			m_Button  = CMLObjectList.instance.getId("image-button");
 			m_Button.addEventListener(StateEvent.CHANGE, imageButtonHandler);
 			stage.addChild(m_Button);
