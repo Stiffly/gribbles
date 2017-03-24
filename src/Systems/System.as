@@ -16,7 +16,7 @@ package Systems
 	
 	public class System extends Sprite
 	{
-		public function System():void 
+		public function System()
 		{
 			super();
 		}
@@ -43,9 +43,8 @@ package Systems
 			component.y = 13337;
 		}
 		
-		protected function switchButtonState( buttonID : String, buttonState : String, component : Object ) : void
+		protected function switchButtonState( buttonID : String, buttonState : String, component : Component ) : void
 		{
-			var button : Button  = CMLObjectList.instance.getId(buttonID);
 			if (buttonState == "down-state")
 				return;
 			if (component.alpha > 0) {
