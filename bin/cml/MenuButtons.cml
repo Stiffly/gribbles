@@ -30,4 +30,11 @@
 	<Image id="pdf-down" src="images/buttons/button-pdf-down.png" />
 </Button>
 
+<Button id="music-button" x="50" y="650" hit="button-hit-box" initial="music-up" down="music-down" up="music-up"
+	dispatch="initial:initial-state:down:down-state:up:up-state:over:over state:out:out-state" >		
+	<Graphic id="button-hit-box"/>		
+	<Image id="music-up" src="images/buttons/button-music-up.png" />
+	<Image id="music-down" src="images/buttons/button-music-down.png" />
+</Button>
+
 </cml>

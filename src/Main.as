@@ -18,10 +18,12 @@ package
 	import flash.ui.Mouse;
 	import flash.text.TextField;
 	
-	import com.gestureworks.cml.core.CMLAir;
-	import com.gestureworks.core.GestureWorksAIR;
+	import com.gestureworks.cml.core.CMLAir; CMLAir;
+	import com.gestureworks.core.GestureWorksAIR; GestureWorksAIR;
 	import com.gestureworks.cml.utils.List;
 	import com.gestureworks.cml.core.CMLParser;
+	
+	import com.gestureworks.managers.TUIOManager;
 	
 	import Systems.System;
 	import Systems.VideoSystem;
@@ -30,15 +32,12 @@ package
 	import Systems.HTMLSystem;
 	import Systems.PDFSystem;
 	import Systems.AudioSystem;
-	
-	// Load CML Air classes
-	CMLAir;
+		
 	
 	[SWF(frameRate = "0", width = "1920", height = "1080")]
 	public class Main extends GestureWorksAIR
 	{
 		private var m_Systems:List = new List();
-		
 		private var m_PassedFrames:int = 0;
 		private var m_StartTime:Number = 0;
 		private var m_FPScounter:TextField = new TextField();
@@ -55,6 +54,7 @@ package
 			cml = "main.cml";
 			gml = "gml/gestures.gml"; // gml now required
 			tuio = true;
+			
 			
 			// Add systems here			
 			m_Systems.append(new HTMLSystem());
@@ -92,7 +92,7 @@ package
 			trace("Gestureworks initiated");
 			
 			// Hide mouse
-			//Mouse.hide();
+			Mouse.hide();
 			
 			// Show FPS-counter
 			stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);

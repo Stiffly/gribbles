@@ -9,11 +9,13 @@ package Systems
 	*/
 	
 	import flash.display.Sprite;
+	import flash.utils.getQualifiedClassName
 	import com.gestureworks.cml.core.CMLObjectList;	
 	import com.gestureworks.cml.components.Component;
 	import com.gestureworks.cml.elements.TouchContainer;
 	import com.gestureworks.cml.elements.Button;
 	import com.gestureworks.cml.elements.Frame;
+	import com.gestureworks.cml.elements.WAV;
 
 	
 	public class System extends Sprite
@@ -35,6 +37,9 @@ package Systems
 			component.x = stage.stageWidth / 2 - component.width / 2;
 			component.y = stage.stageHeight / 2 - component.height / 2;
 			component.rotation = int(Math.round(Math.random() * 180)) - 90;
+			if (getQualifiedClassName(component.getChildAt(2)).search("WAV") != -1) {
+				WAV(component.getChildAt(2)).play();
+			}
 		}
 		
 		protected function hideComponent(component : Component) : void
@@ -43,17 +48,21 @@ package Systems
 			component.touchEnabled = false;
 			component.x = 13337; // "Hide" the component
 			component.y = 13337;
+			if (getQualifiedClassName(component.getChildAt(2)).search("WAV") != -1) {
+				WAV(component.getChildAt(2)).stop();
+			}
 		}
 		
 		protected function switchButtonState( buttonID : String, buttonState : String, component : Component ) : void
 		{
+			// On release
 			if (buttonState == "down-state")
 				return;
 			if (component.alpha > 0) {
-				hideComponent(component as Component);
+				hideComponent(component);
 			}
 			else if (component.alpha == 0) {
-				showComponent(component as Component);
+				showComponent(component);
 			}
 		}
 		

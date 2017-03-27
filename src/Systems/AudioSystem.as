@@ -21,7 +21,7 @@ package Systems
 	
 	public class AudioSystem extends System
 	{
-		private var m_WavPlayer:TouchContainer;
+		private var m_WavPlayer:WAVPlayer;
 		private var m_Button:Button;
 		
 		public function AudioSystem()
@@ -39,6 +39,7 @@ package Systems
 			m_WavPlayer = createViewer(new WAVPlayer(), x_pos, y_pos, width, height) as WAVPlayer;
 			
 			var wav:WAV = new WAV();
+			wav.className = "wav-component";
 			wav.src = "audio/water.wav";
 			wav.autoplay = true;
 			wav.display = "waveform";
@@ -46,9 +47,19 @@ package Systems
 			wav.height = height;
 			wav.loop = true;
 			wav.init();
+			wav.tuio = true;
 			m_WavPlayer.addChild(wav);
-			
 			stage.addChild(m_WavPlayer);
+			hideComponent(m_WavPlayer);
+			
+			m_Button = CMLObjectList.instance.getId("music-button");
+			m_Button.addEventListener(StateEvent.CHANGE, buttonHandler);
+			stage.addChild(m_Button);		
+		}
+		
+		public function buttonHandler(event:StateEvent):void
+		{
+			switchButtonState(event.id, event.value, m_WavPlayer);
 		}
 	}
 }
