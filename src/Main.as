@@ -28,6 +28,7 @@ package
 	import Systems.ImageSystem;
 	import Systems.HTMLSystem;
 	import Systems.PDFSystem;
+	import Systems.AudioSystem;
 	
 	// Load CML Air classes
 	CMLAir;
@@ -57,6 +58,7 @@ package
 			m_Systems.append(new WaterSystem());
 			m_Systems.append(new VideoSystem());
 			m_Systems.append(new ImageSystem());
+			m_Systems.append(new AudioSystem());
 			
 			CMLParser.addEventListener(CMLParser.COMPLETE, cmlComplete);
 		}

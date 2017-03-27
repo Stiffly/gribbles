@@ -29,32 +29,12 @@ package Systems
 		
 		override public function Init():void
 		{
-			var htmlContainer:TouchContainer = new TouchContainer();
-			htmlContainer.className = "html_container";
-			htmlContainer.visible = true;
-			htmlContainer.targetParent = true;
-			htmlContainer.mouseChildren = false;
-			htmlContainer.gestureEvents = false;
-			htmlContainer.init();
-			
-			var htmlframe:Frame = new Frame();
-			htmlframe.className = "frame_element";
-			htmlframe.init();
-			
-			m_HTMLViewer = new HTMLViewer();
-			m_HTMLViewer.x = 0;
-			m_HTMLViewer.y = 0;
-			m_HTMLViewer.width = 1280;
-			m_HTMLViewer.height = 720;
-			m_HTMLViewer.gestureEvents = true;
-			m_HTMLViewer.gestureList = {"n-drag": true, "n-scale": true, "n-rotate": true};
-			m_HTMLViewer.html = m_HTMLElement;
+			m_HTMLViewer = createViewer(new HTMLViewer(), 0, 0, 1280, 720) as HTMLViewer;
 			
 			m_HTMLElement = new HTML();
 			m_HTMLElement.className = "html_element";
 			m_HTMLElement.width = 1280;
 			m_HTMLElement.height = 720;
-			//htmlElement.baseURL = "http://www.blekingemuseum.se/pages/255";
 			m_HTMLElement.src = "http://www.blekingemuseum.se/pages/255";
 			m_HTMLElement.hideFlash = true;
 			m_HTMLElement.smooth = true;
@@ -62,9 +42,6 @@ package Systems
 			m_HTMLElement.init();
 			
 			m_HTMLViewer.addChild(m_HTMLElement);
-			m_HTMLViewer.addChild(htmlframe);
-			m_HTMLViewer.addChild(htmlContainer);
-			m_HTMLViewer.init();
 			
 			stage.addChild(m_HTMLViewer);
 			hideComponent(m_HTMLViewer);

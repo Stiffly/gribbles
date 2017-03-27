@@ -11,7 +11,9 @@ package Systems
 	import flash.display.Sprite;
 	import com.gestureworks.cml.core.CMLObjectList;	
 	import com.gestureworks.cml.components.Component;
+	import com.gestureworks.cml.elements.TouchContainer;
 	import com.gestureworks.cml.elements.Button;
+	import com.gestureworks.cml.elements.Frame;
 
 	
 	public class System extends Sprite
@@ -53,6 +55,34 @@ package Systems
 			else if (component.alpha == 0) {
 				showComponent(component as Component);
 			}
+		}
+		
+		protected function createViewer(component : Component, x : int, y : int, width : int, height : int) : Component
+		{
+			component.className = "component";
+			component.x = x;
+			component.y = y;
+			component.width = width;
+			component.height = height;			
+			component.gestureEvents = true;
+			component.gestureList = {"n-drag": true, "n-scale": true, "n-rotate": true};
+			
+			var container:TouchContainer = new TouchContainer();
+			container.className = "container";
+			container.visible = true;
+			container.targetParent = true;
+			container.mouseChildren = false;
+			container.gestureEvents = false;
+			container.init();
+			component.addChild(container);
+
+			var frame : Frame = new Frame();
+			frame.className = "frame";
+			frame.init();
+			component.addChild(frame);
+			
+			component.init();
+			return component;
 		}
 	}
 }

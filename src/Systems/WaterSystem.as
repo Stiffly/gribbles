@@ -19,12 +19,6 @@ package Systems
 	
 	public class WaterSystem extends Systems.System
 	{
-		// Constructor
-		public function WaterSystem()
-		{
-			super();
-		}
-		
 		// Embed an image which will be used as a background
 		[Embed(source = "../../bin/images/content/bottenbild2.jpg")]
 		private var m_SourceImage:Class;
@@ -32,6 +26,12 @@ package Systems
 		private var m_Rippler:Rippler;
 		// The touch object, in this case the entire screen
 		private var m_TouchSprite:TouchSprite;
+		
+		// Constructor
+		public function WaterSystem()
+		{
+			super();
+		}
 		
 		override public function Init():void
 		{
