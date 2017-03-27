@@ -28,6 +28,7 @@ package Systems
 			m_Video = CMLObjectList.instance.getId("video-viewer");
 			m_Video.maxScale = 3;
 			m_Video.minScale = 0.2;
+			m_Video.debugDisplay = true;
 			hideComponent(m_Video);
 			stage.addChild(m_Video);
 			

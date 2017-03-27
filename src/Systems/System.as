@@ -77,6 +77,8 @@ package Systems
 			component.gestureList = {"n-drag": true, "n-scale": true, "n-rotate": true};
 			component.maxScale = 2;
 			component.minScale = 0.2;
+			// Enable debugging information
+			component.debugDisplay = true;
 			
 			var container:TouchContainer = new TouchContainer();
 			container.className = "container";
@@ -86,6 +88,7 @@ package Systems
 			container.gestureEvents = false;
 			container.init();
 			component.addChild(container);
+			
 
 			var frame : Frame = new Frame();
 			frame.className = "frame";
