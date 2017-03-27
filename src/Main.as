@@ -8,6 +8,7 @@ package
 	 * @contact adambylehn@hotmail.com
 	 */
 	
+	import com.gestureworks.cml.elements.Text;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
 	import flash.display.StageAlign;
@@ -41,6 +42,8 @@ package
 		private var m_PassedFrames:int = 0;
 		private var m_StartTime:Number = 0;
 		private var m_FPScounter:TextField = new TextField();
+		private var m_ElapsedTime:int = 0;
+		private var m_ElapsedTimeText:TextField = new TextField();
 		
 		private var m_SystemsInitiated:Boolean = false;
 		
@@ -93,13 +96,16 @@ package
 			// Show FPS-counter
 			stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			stage.addChild(m_FPScounter);
+			m_ElapsedTimeText.y = 10;
+			stage.addChild(m_ElapsedTimeText);
 		}
 		
 		private function onEnterFrame(event:Event):void
 		{
 			var updateFreq:int = 1; // Times per second
 			m_PassedFrames++;
-			if ((getTimer() - m_StartTime) / 1000 > 1 / updateFreq)
+			var dt:Number = (getTimer() - m_StartTime) / 1000;
+			if (dt > 1 / updateFreq)
 			{
 				m_FPScounter.text = "FPS: " + m_PassedFrames * updateFreq;
 				m_StartTime = getTimer();
@@ -112,6 +118,8 @@ package
 					s.Update();
 				}
 			}
+			m_ElapsedTime += dt;
+			m_ElapsedTimeText.text = "Elapsed time: " + Math.floor(m_ElapsedTime / 60) + ":" + m_ElapsedTime % 60;
 		}
 	}
 }

@@ -44,6 +44,7 @@ package Systems
 			wav.display = "waveform";
 			wav.width = width;
 			wav.height = height;
+			wav.loop = true;
 			wav.init();
 			m_WavPlayer.addChild(wav);
 			
