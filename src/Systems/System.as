@@ -34,7 +34,7 @@ package Systems
 			component.scale = 1.0;
 			component.x = stage.stageWidth / 2 - component.width / 2;
 			component.y = stage.stageHeight / 2 - component.height / 2;
-			component.rotation = -10.0;
+			component.rotation = int(Math.round(Math.random() * 180)) - 90;
 		}
 		
 		protected function hideComponent(component : Component) : void
@@ -66,6 +66,8 @@ package Systems
 			component.height = height;			
 			component.gestureEvents = true;
 			component.gestureList = {"n-drag": true, "n-scale": true, "n-rotate": true};
+			component.maxScale = 2;
+			component.minScale = 0.2;
 			
 			var container:TouchContainer = new TouchContainer();
 			container.className = "container";

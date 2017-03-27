@@ -19,7 +19,7 @@ package
 	import flash.text.TextField;
 	
 	import com.gestureworks.cml.core.CMLAir;
-	import com.gestureworks.core.GestureWorks;
+	import com.gestureworks.core.GestureWorksAIR;
 	import com.gestureworks.cml.utils.List;
 	import com.gestureworks.cml.core.CMLParser;
 	
@@ -35,7 +35,7 @@ package
 	CMLAir;
 	
 	[SWF(frameRate = "0", width = "1920", height = "1080")]
-	public class Main extends GestureWorks
+	public class Main extends GestureWorksAIR
 	{
 		private var m_Systems:List = new List();
 		
@@ -54,6 +54,7 @@ package
 			super();
 			cml = "main.cml";
 			gml = "gml/gestures.gml"; // gml now required
+			tuio = true;
 			
 			// Add systems here			
 			m_Systems.append(new HTMLSystem());

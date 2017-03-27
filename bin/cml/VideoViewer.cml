@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<cml tuio="false" simulator="true">
+<cml tuio="true" simulator="true">
 
 	<LibraryKit>
 		<Library type="swf" src="cml/openexhibits_assets.swf" />	
