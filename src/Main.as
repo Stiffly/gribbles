@@ -23,8 +23,6 @@ package
 	import com.gestureworks.cml.utils.List;
 	import com.gestureworks.cml.core.CMLParser;
 	
-	import com.gestureworks.managers.TUIOManager;
-	
 	import Systems.System;
 	import Systems.VideoSystem;
 	import Systems.WaterSystem;
@@ -78,6 +76,7 @@ package
 				addChild(s);
 				s.Init();
 			}
+			// Do not update systems until they're all initiated
 			m_SystemsInitiated = true;
 			// This makes the image fit to the screen
 			stage.scaleMode = StageScaleMode.NO_SCALE;
@@ -119,6 +118,7 @@ package
 					s.Update();
 				}
 			}
+			// Elapsed time counter
 			m_ElapsedTime += dt;
 			m_ElapsedTimeText.text = "Elapsed time: " + Math.floor(m_ElapsedTime / 60) + ":" + m_ElapsedTime % 60;
 		}

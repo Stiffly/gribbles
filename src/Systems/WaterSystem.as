@@ -12,8 +12,8 @@ package Systems
 	import flash.events.MouseEvent;
 	
 	import com.gestureworks.core.GestureWorks;
-	import com.gestureworks.events.GWGestureEvent;
 	import com.gestureworks.core.TouchSprite
+	import flash.events.TouchEvent;
 	
 	import be.nascom.flash.graphics.Rippler;
 	
@@ -49,24 +49,13 @@ package Systems
 			// Create the Rippler instance to affect the Bitmap object
 			m_Rippler = new Rippler(m_TouchSprite, 10, 6);
 			
-			// Register the TAP event to the touchsprite
-			m_TouchSprite.gestureList = {"tap": true};
-			m_TouchSprite.addEventListener(GWGestureEvent.TAP, handleTap);
-			m_TouchSprite.addEventListener(MouseEvent.MOUSE_MOVE, handleMouseMove);
+			// Make the TouchSprite listen to the TOUCH_MOVE event
+			m_TouchSprite.addEventListener(TouchEvent.TOUCH_MOVE, handleDrag);
 		}
 		
-		private function handleMouseMove(event:MouseEvent):void
+		private function handleDrag(event:TouchEvent):void
 		{
-			m_Rippler.drawRipple(m_TouchSprite.mouseX, m_TouchSprite.mouseY, 10, 1);
-		}
-		
-		private function handleTap(event:GWGestureEvent):void
-		{
-			// Cast event values to integers (required by ripple function)
-			var x:int = event.value.tap_x;
-			var y:int = event.value.tap_y;
-			// Creates the water effect at the position of the Tap
-			m_Rippler.drawRipple(x, y, 10, 1);
+			m_Rippler.drawRipple(event.stageX, event.stageY, 10, 1);
 		}
 	}
 }
