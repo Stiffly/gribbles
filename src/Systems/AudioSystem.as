@@ -32,6 +32,9 @@ package Systems
 		
 		public override function Init():void
 		{
+			for each (var s:String in getFilesInDirectoryRelative("audio"))
+				trace(s);
+				
 			var x_pos:int = 300;
 			var y_pos:int = 300;
 			var width:int = 500;

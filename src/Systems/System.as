@@ -9,6 +9,7 @@ package Systems
 	*/
 	
 	import flash.display.Sprite;
+	import flash.filesystem.File;
 	import flash.utils.getQualifiedClassName
 	import com.gestureworks.cml.core.CMLObjectList;	
 	import com.gestureworks.cml.components.Component;
@@ -104,6 +105,17 @@ package Systems
 			
 			component.init();
 			return component;
+		}
+		
+		protected function getFilesInDirectoryRelative(directory:String) : Array
+		{
+			var root:File = File.applicationDirectory;
+			var subDirectory:File = root.resolvePath(directory);
+			var relativePaths:Array = new Array();
+			for each (var file : File in subDirectory.getDirectoryListing()) {
+				relativePaths.push(root.getRelativePath(file, true));
+			}
+			return relativePaths;
 		}
 	}
 }
