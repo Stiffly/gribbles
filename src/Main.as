@@ -8,7 +8,6 @@ package
 	 * @contact adambylehn@hotmail.com
 	 */
 	
-	import com.gestureworks.cml.elements.Text;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
 	import flash.display.StageAlign;

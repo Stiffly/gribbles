@@ -9,6 +9,7 @@ package Systems
 	 * @contact adambylehn@hotmail.com
 	 */
 	
+	import com.gestureworks.cml.components.Component;
 	import com.gestureworks.cml.core.CMLObjectList;
 	import com.gestureworks.cml.elements.Frame;
 	import com.gestureworks.cml.elements.TouchContainer;
@@ -21,8 +22,8 @@ package Systems
 	
 	public class AudioSystem extends System
 	{
-		private var m_WavPlayer:WAVPlayer;
-		private var m_MP3Player:MP3Player;
+		private var m_WavPlayers:Array = new Array();
+		private var m_MP3Players:Array = new Array();
 		private var m_Button:Button;
 		
 		public function AudioSystem()
@@ -32,43 +33,24 @@ package Systems
 		
 		public override function Init():void
 		{
-			for each (var s:String in getFilesInDirectoryRelative("audio"))
-				trace(s);
-				
 			var x_pos:int = 300;
 			var y_pos:int = 300;
 			var width:int = 500;
 			var height:int = 250;
 			
-			m_WavPlayer = createViewer(new WAVPlayer(), x_pos, y_pos, width, height) as WAVPlayer;
-			
-			var wav:WAV = new WAV();
-			wav.className = "wav-component";
-			wav.src = "audio/water.wav";
-			wav.autoplay = true;
-			wav.display = "waveform";
-			wav.width = width;
-			wav.height = height;
-			wav.loop = true;
-			wav.init();
-			m_WavPlayer.addChild(wav);
-			stage.addChild(m_WavPlayer);
-			hideComponent(m_WavPlayer);
-			
-			m_MP3Player = createViewer(new MP3Player(), x_pos, y_pos, width, height) as MP3Player;
-			
-			var mp3:MP3 = new MP3();
-			mp3.className = "mp3-component";
-			mp3.src = "audio/krabbe.mp3";
-			mp3.display = "waveform";
-			mp3.width = width;
-			mp3.height = height;
-			mp3.loop = true;
-			mp3.init();
-			m_MP3Player.addChild(mp3);
-			stage.addChild(m_MP3Player);
-			hideComponent(m_MP3Player);
-			
+			for each (var audioPath:String in getFilesInDirectoryRelative("audio"))
+			{
+				if (audioPath.search(".wav") != -1)
+				{
+					var wavPlayer:WAVPlayer = createViewer(new WAVPlayer(), x_pos, y_pos, width, height) as WAVPlayer;
+					setWAVroperties(wavPlayer, audioPath, width, height);
+				}
+				else if (audioPath.search(".mp3") != -1)
+				{
+					var mp3Player:MP3Player = createViewer(new MP3Player(), x_pos, y_pos, width, height) as MP3Player;
+					setMP3Properties(mp3Player, audioPath, width, height);
+				}
+			}
 			m_Button = CMLObjectList.instance.getId("music-button");
 			m_Button.addEventListener(StateEvent.CHANGE, buttonHandler);
 			stage.addChild(m_Button);
@@ -76,8 +58,49 @@ package Systems
 		
 		public function buttonHandler(event:StateEvent):void
 		{
-			//switchButtonState(event.value, m_WavPlayer);
-			switchButtonState(event.value, m_MP3Player);
+			for each (var wavPlayer:WAVPlayer in m_WavPlayers)
+			{
+				switchButtonState(event.value, wavPlayer);
+			}
+			for each (var mp3Player:MP3Player in m_MP3Players)
+			{
+				switchButtonState(event.value, mp3Player);
+			}
+		}
+		
+		public function setMP3Properties(component:Component, path:String, width:int, height:int):void
+		{
+			var mp3:MP3 = new MP3();
+			mp3.className = "mp3-component";
+			mp3.src = path;
+			mp3.display = "waveform";
+			mp3.width = width;
+			mp3.height = height;
+			mp3.loop = true;
+			mp3.init();
+			component.addChild(mp3);
+			stage.addChild(component);
+			hideComponent(component);
+			m_MP3Players.push(component);
+		}
+		
+		public function setWAVroperties(component:Component, path:String, width:int, height:int):void
+		{
+			var wav:WAV = new WAV();
+			wav.className = "wav-component";
+			wav.src = path;
+			wav.autoplay = true;
+			wav.display = "waveform";
+			wav.width = width;
+			wav.height = height;
+			wav.loop = true;
+			wav.init();
+			component.addChild(wav);
+			stage.addChild(component);
+			hideComponent(component);
+			
+			m_WavPlayers.push(component);
+		
 		}
 	}
 }
