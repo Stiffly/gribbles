@@ -15,7 +15,7 @@ package Systems
 	
 	public class VideoSystem extends Systems.System
 	{
-		private var m_Video:AlbumViewer;
+		private var m_VideoViewer:AlbumViewer;
 		private var m_Button:Button;
 		
 		public function VideoSystem()
@@ -25,12 +25,12 @@ package Systems
 		
 		override public function Init():void
 		{
-			m_Video = CMLObjectList.instance.getId("video-viewer");
-			m_Video.maxScale = 3;
-			m_Video.minScale = 0.2;
-			m_Video.debugDisplay = true;
-			hideComponent(m_Video);
-			stage.addChild(m_Video);
+			m_VideoViewer = CMLObjectList.instance.getId("video-viewer");
+			m_VideoViewer.maxScale = 3;
+			m_VideoViewer.minScale = 0.2;
+			m_VideoViewer.debugDisplay = true;
+			hideComponent(m_VideoViewer);
+			stage.addChild(m_VideoViewer);
 			
 			m_Button = CMLObjectList.instance.getId("video-button");
 			m_Button.addEventListener(StateEvent.CHANGE, videoButtonHandler);
@@ -39,7 +39,7 @@ package Systems
 		
 		private function videoButtonHandler(event:StateEvent):void
 		{
-			switchButtonState(event.id, event.value, m_Video);
+			switchButtonState(event.id, event.value, m_VideoViewer);
 		}
 	}
 }

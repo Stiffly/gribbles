@@ -15,7 +15,7 @@ package Systems
 	
 	public class ImageSystem extends System
 	{
-		private var m_Image:AlbumViewer;
+		private var m_ImageViewer:AlbumViewer;
 		private var m_Button:Button;
 		
 		public function ImageSystem()
@@ -25,13 +25,13 @@ package Systems
 		
 		override public function Init():void
 		{
-			m_Image = CMLObjectList.instance.getId("image-viewer");
-			hideComponent(m_Image);
-			stage.addChild(m_Image);
+			m_ImageViewer = CMLObjectList.instance.getId("image-viewer");
+			hideComponent(m_ImageViewer);
+			stage.addChild(m_ImageViewer);
 			
-			m_Image.maxScale = 2;
-			m_Image.minScale = 0.2;
-			m_Image.debugDisplay = true;
+			m_ImageViewer.maxScale = 2;
+			m_ImageViewer.minScale = 0.2;
+			m_ImageViewer.debugDisplay = true;
 			
 			m_Button = CMLObjectList.instance.getId("image-button");
 			m_Button.addEventListener(StateEvent.CHANGE, imageButtonHandler);
@@ -45,7 +45,7 @@ package Systems
 		
 		private function imageButtonHandler(event:StateEvent):void
 		{
-			switchButtonState(event.id, event.value, m_Image);
+			switchButtonState(event.id, event.value, m_ImageViewer);
 		}
 	}
 }
