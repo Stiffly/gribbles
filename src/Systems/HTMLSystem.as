@@ -21,6 +21,7 @@ package Systems
 		private var m_HTMLViewer:HTMLViewer;
 		private var m_HTMLElement:HTML;
 		private var m_Button:Button;
+		private var m_ApprovedURLs:Array;
 		
 		public function HTMLSystem()
 		{
@@ -29,13 +30,23 @@ package Systems
 		
 		override public function Init():void
 		{
+			m_ApprovedURLs = new Array (
+			"http://www.blekingemuseum.se/pages/275",
+			"http://www.blekingemuseum.se/pages/377",
+			"http://www.blekingemuseum.se/pages/378",
+			"http://www.blekingemuseum.se/pages/377",
+			"http://www.blekingemuseum.se/pages/380",
+			"http://www.blekingemuseum.se/pages/403",
+			"http://www.blekingemuseum.se/pages/423",
+			"http://www.blekingemuseum.se/pages/1223" );
+			
 			m_HTMLViewer = createViewer(new HTMLViewer(), 0, 0, 1280, 720) as HTMLViewer;
 			
 			m_HTMLElement = new HTML();
 			m_HTMLElement.className = "html_element";
 			m_HTMLElement.width = 1280;
 			m_HTMLElement.height = 720;
-			m_HTMLElement.src = "http://www.blekingemuseum.se/pages/255";
+			m_HTMLElement.src = "http://www.blekingemuseum.se/pages/275";
 			m_HTMLElement.hideFlash = true;
 			m_HTMLElement.smooth = true;
 			m_HTMLElement.hideFlashType = "display:none;";
@@ -54,7 +65,16 @@ package Systems
 		override public function Update():void
 		{
 			// TEMP: This should be listening to a "URL change"-event
-			m_HTMLElement.goBack();
+			var isSafeURL:Boolean = false;
+			for each (var safeURL:String in m_ApprovedURLs) {				
+				if (m_HTMLElement.src == safeURL) {
+					isSafeURL = true;
+				}
+			}
+			if (isSafeURL == false) {
+				m_HTMLElement.goBack();
+			}
+			trace(m_HTMLElement.src);
 		}
 		
 		private function buttonHandler(event:StateEvent):void
