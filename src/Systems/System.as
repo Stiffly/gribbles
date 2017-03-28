@@ -16,6 +16,7 @@ package Systems
 	import com.gestureworks.cml.elements.Button;
 	import com.gestureworks.cml.elements.Frame;
 	import com.gestureworks.cml.elements.WAV;
+	import com.gestureworks.cml.elements.MP3;
 
 	
 	public class System extends Sprite
@@ -40,6 +41,9 @@ package Systems
 			if (getQualifiedClassName(component.getChildAt(2)).search("WAV") != -1) {
 				WAV(component.getChildAt(2)).play();
 			}
+			if (getQualifiedClassName(component.getChildAt(2)).search("MP3") != -1) {
+				MP3(component.getChildAt(2)).play();
+			}
 		}
 		
 		protected function hideComponent(component : Component) : void
@@ -51,9 +55,12 @@ package Systems
 			if (getQualifiedClassName(component.getChildAt(2)).search("WAV") != -1) {
 				WAV(component.getChildAt(2)).stop();
 			}
+			if (getQualifiedClassName(component.getChildAt(2)).search("MP3") != -1) {
+				MP3(component.getChildAt(2)).stop();
+			}
 		}
 		
-		protected function switchButtonState( buttonID : String, buttonState : String, component : Component ) : void
+		protected function switchButtonState(buttonState : String, component : Component ) : void
 		{
 			// On release
 			if (buttonState == "down-state")

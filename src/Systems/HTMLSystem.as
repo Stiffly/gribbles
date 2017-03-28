@@ -74,12 +74,11 @@ package Systems
 			if (isSafeURL == false) {
 				m_HTMLElement.goBack();
 			}
-			trace(m_HTMLElement.src);
 		}
 		
 		private function buttonHandler(event:StateEvent):void
 		{
-			switchButtonState(event.id, event.value, m_HTMLViewer);
+			switchButtonState(event.value, m_HTMLViewer);
 		}
 	}
 }

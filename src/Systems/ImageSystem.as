@@ -45,7 +45,7 @@ package Systems
 		
 		private function imageButtonHandler(event:StateEvent):void
 		{
-			switchButtonState(event.id, event.value, m_ImageViewer);
+			switchButtonState(event.value, m_ImageViewer);
 		}
 	}
 }

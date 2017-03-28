@@ -22,6 +22,7 @@ package Systems
 	public class AudioSystem extends System
 	{
 		private var m_WavPlayer:WAVPlayer;
+		private var m_MP3Player:MP3Player;
 		private var m_Button:Button;
 		
 		public function AudioSystem()
@@ -47,19 +48,33 @@ package Systems
 			wav.height = height;
 			wav.loop = true;
 			wav.init();
-			wav.tuio = true;
 			m_WavPlayer.addChild(wav);
 			stage.addChild(m_WavPlayer);
 			hideComponent(m_WavPlayer);
 			
+			m_MP3Player = createViewer(new MP3Player(), x_pos, y_pos, width, height) as MP3Player;
+			
+			var mp3:MP3 = new MP3();
+			mp3.className = "mp3-component";
+			mp3.src = "audio/krabbe.mp3";
+			mp3.display = "waveform";
+			mp3.width = width;
+			mp3.height = height;
+			mp3.loop = true;
+			mp3.init();
+			m_MP3Player.addChild(mp3);
+			stage.addChild(m_MP3Player);
+			hideComponent(m_MP3Player);
+			
 			m_Button = CMLObjectList.instance.getId("music-button");
 			m_Button.addEventListener(StateEvent.CHANGE, buttonHandler);
-			stage.addChild(m_Button);		
+			stage.addChild(m_Button);
 		}
 		
 		public function buttonHandler(event:StateEvent):void
 		{
-			switchButtonState(event.id, event.value, m_WavPlayer);
+			//switchButtonState(event.value, m_WavPlayer);
+			switchButtonState(event.value, m_MP3Player);
 		}
 	}
 }
