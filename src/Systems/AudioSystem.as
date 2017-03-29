@@ -40,12 +40,12 @@ package Systems
 			
 			for each (var audioPath:String in getFilesInDirectoryRelative("audio"))
 			{
-				if (audioPath.search(".wav") != -1)
+				if (audioPath.toLowerCase().search(".wav") != -1)
 				{
 					var wavPlayer:WAVPlayer = createViewer(new WAVPlayer(), x_pos, y_pos, width, height) as WAVPlayer;
 					setWAVroperties(wavPlayer, audioPath, width, height);
 				}
-				else if (audioPath.search(".mp3") != -1)
+				else if (audioPath.toLowerCase().search(".mp3") != -1)
 				{
 					var mp3Player:MP3Player = createViewer(new MP3Player(), x_pos, y_pos, width, height) as MP3Player;
 					setMP3Properties(mp3Player, audioPath, width, height);
