@@ -30,7 +30,6 @@ package
 	import Systems.PDFSystem;
 	import Systems.AudioSystem;
 		
-	
 	[SWF(frameRate = "0", width = "1920", height = "1080")]
 	public class Main extends GestureWorksAIR
 	{
