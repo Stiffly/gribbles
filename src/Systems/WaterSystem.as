@@ -47,7 +47,7 @@ package Systems
 			stage.setChildIndex(m_TouchSprite, 1);
 			
 			// Create the Rippler instance to affect the Bitmap object
-			m_Rippler = new Rippler(m_TouchSprite, 10, 6);
+			m_Rippler = new Rippler(m_TouchSprite, 20, 10);
 			
 			// Make the TouchSprite listen to the TOUCH_MOVE event
 			m_TouchSprite.addEventListener(TouchEvent.TOUCH_MOVE, handleDrag);
@@ -55,7 +55,7 @@ package Systems
 		
 		private function handleDrag(event:TouchEvent):void
 		{
-			m_Rippler.drawRipple(event.stageX, event.stageY, 10, 1);
+			m_Rippler.drawRipple(event.stageX, event.stageY, 20, 1);
 		}
 	}
 }
