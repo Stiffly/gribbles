@@ -20,8 +20,8 @@ package Systems
 	
 	public class VideoSystem extends Systems.System
 	{
-		private var m_VideoViewer:AlbumViewer;
-		private var m_Button:Button;
+		private var _videoViewer:AlbumViewer;
+		private var _button:Button;
 		
 		public function VideoSystem()
 		{
@@ -30,11 +30,11 @@ package Systems
 		
 		override public function Init():void
 		{
-			m_VideoViewer = createViewer(new AlbumViewer(), 0, 0, 500, 400) as AlbumViewer;
-			m_VideoViewer.autoTextLayout = false;
-			m_VideoViewer.linkAlbums = true;
-			m_VideoViewer.clusterBubbling = true;
-			m_VideoViewer.mouseChildren = true;
+			_videoViewer = createViewer(new AlbumViewer(), 0, 0, 500, 400) as AlbumViewer;
+			_videoViewer.autoTextLayout = false;
+			_videoViewer.linkAlbums = true;
+			_videoViewer.clusterBubbling = true;
+			_videoViewer.mouseChildren = true;
 
 			
 			// Front
@@ -86,20 +86,20 @@ package Systems
 			}
 			
 			front.init();
-			m_VideoViewer.front = front;
-			m_VideoViewer.addChild(front);
-			m_VideoViewer.gestureList = {"2-finger-drag": true, "n-scale": true, "n-rotate": true};
-			hideComponent(m_VideoViewer);
-			stage.addChild(m_VideoViewer);
+			_videoViewer.front = front;
+			_videoViewer.addChild(front);
+			_videoViewer.gestureList = {"2-finger-drag": true, "n-scale": true, "n-rotate": true};
+			hideComponent(_videoViewer);
+			stage.addChild(_videoViewer);
 			
-			m_Button = CMLObjectList.instance.getId("video-button");
-			m_Button.addEventListener(StateEvent.CHANGE, videoButtonHandler);
-			stage.addChild(m_Button);
+			_button = CMLObjectList.instance.getId("video-button");
+			_button.addEventListener(StateEvent.CHANGE, videoButtonHandler);
+			stage.addChild(_button);
 		}
 		
 		private function videoButtonHandler(event:StateEvent):void
 		{
-			switchButtonState(event.value, m_VideoViewer);
+			switchButtonState(event.value, _videoViewer);
 		}
 	}
 }

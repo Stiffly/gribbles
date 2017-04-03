@@ -22,9 +22,9 @@ package Systems
 	
 	public class AudioSystem extends System
 	{
-		private var m_WavPlayers:Array = new Array();
-		private var m_MP3Players:Array = new Array();
-		private var m_Button:Button;
+		private var _WAVPlayer:Array = new Array();
+		private var _MP3Player:Array = new Array();
+		private var _button:Button;
 		
 		public function AudioSystem()
 		{
@@ -51,24 +51,24 @@ package Systems
 					setMP3Properties(mp3Player, audioPath, width, height);
 				}
 			}
-			m_Button = CMLObjectList.instance.getId("music-button");
-			m_Button.addEventListener(StateEvent.CHANGE, buttonHandler);
-			stage.addChild(m_Button);
+			_button = CMLObjectList.instance.getId("music-button");
+			_button.addEventListener(StateEvent.CHANGE, buttonHandler);
+			stage.addChild(_button);
 		}
 		
-		public function buttonHandler(event:StateEvent):void
+		private function buttonHandler(event:StateEvent):void
 		{
-			for each (var wavPlayer:WAVPlayer in m_WavPlayers)
+			for each (var wavPlayer:WAVPlayer in _WAVPlayer)
 			{
 				switchButtonState(event.value, wavPlayer);
 			}
-			for each (var mp3Player:MP3Player in m_MP3Players)
+			for each (var mp3Player:MP3Player in _MP3Player)
 			{
 				switchButtonState(event.value, mp3Player);
 			}
 		}
 		
-		public function setMP3Properties(component:Component, path:String, width:int, height:int):void
+		private function setMP3Properties(component:Component, path:String, width:int, height:int):void
 		{
 			var mp3:MP3 = new MP3();
 			mp3.className = "mp3-component";
@@ -81,10 +81,10 @@ package Systems
 			component.addChild(mp3);
 			stage.addChild(component);
 			hideComponent(component);
-			m_MP3Players.push(component);
+			_MP3Player.push(component);
 		}
 		
-		public function setWAVroperties(component:Component, path:String, width:int, height:int):void
+		private function setWAVroperties(component:Component, path:String, width:int, height:int):void
 		{
 			var wav:WAV = new WAV();
 			wav.className = "wav-component";
@@ -99,7 +99,7 @@ package Systems
 			stage.addChild(component);
 			hideComponent(component);
 			
-			m_WavPlayers.push(component);
+			_WAVPlayer.push(component);
 		
 		}
 	}

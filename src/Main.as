@@ -33,14 +33,14 @@ package
 	[SWF(frameRate = "0", width = "1920", height = "1080")]
 	public class Main extends GestureWorksAIR
 	{
-		private var m_Systems:List = new List();
-		private var m_PassedFrames:int = 0;
-		private var m_StartTime:Number = 0;
-		private var m_FPScounter:TextField = new TextField();
-		private var m_ElapsedTime:int = 0;
-		private var m_ElapsedTimeText:TextField = new TextField();
+		private var _systems:List = new List();
+		private var _passedFrames:int = 0;
+		private var _startTime:Number = 0;
+		private var _FPSCounter:TextField = new TextField();
+		private var _elapsedTime:int = 0;
+		private var _elapsedTimeText:TextField = new TextField();
 		
-		private var m_SystemsInitiated:Boolean = false;
+		private var _systemsAreInitiated:Boolean = false;
 		
 		public function Main()
 		{
@@ -53,12 +53,12 @@ package
 			
 			
 			// Add systems here			
-			m_Systems.append(new HTMLSystem());
+			_systems.append(new HTMLSystem());
 			//m_Systems.append(new PDFSystem());
-			m_Systems.append(new WaterSystem());
-			m_Systems.append(new VideoSystem());
-			m_Systems.append(new ImageSystem());
-			m_Systems.append(new AudioSystem());
+			_systems.append(new WaterSystem());
+			_systems.append(new VideoSystem());
+			_systems.append(new ImageSystem());
+			_systems.append(new AudioSystem());
 			
 			CMLParser.addEventListener(CMLParser.COMPLETE, cmlComplete);
 		}
@@ -69,13 +69,13 @@ package
 			trace("CML parsing complete");
 			CMLParser.removeEventListener(CMLParser.COMPLETE, cmlComplete);
 			// Loops over each system and intializes it
-			for each (var s:System in m_Systems)
+			for each (var s:System in _systems)
 			{
 				addChild(s);
 				s.Init();
 			}
 			// Do not update systems until they're all initiated
-			m_SystemsInitiated = true;
+			_systemsAreInitiated = true;
 			// This makes the image fit to the screen
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
@@ -93,32 +93,32 @@ package
 			
 			// Show FPS-counter
 			stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
-			stage.addChild(m_FPScounter);
-			m_ElapsedTimeText.y = 10;
-			stage.addChild(m_ElapsedTimeText);
+			stage.addChild(_FPSCounter);
+			_elapsedTimeText.y = 10;
+			stage.addChild(_elapsedTimeText);
 		}
 		
 		private function onEnterFrame(event:Event):void
 		{
 			var updateFreq:int = 1; // Times per second
-			m_PassedFrames++;
-			var dt:Number = (getTimer() - m_StartTime) / 1000;
+			_passedFrames++;
+			var dt:Number = (getTimer() - _startTime) / 1000;
 			if (dt > 1 / updateFreq)
 			{
-				m_FPScounter.text = "FPS: " + m_PassedFrames * updateFreq;
-				m_StartTime = getTimer();
-				m_PassedFrames = 0;
+				_FPSCounter.text = "FPS: " + _passedFrames * updateFreq;
+				_startTime = getTimer();
+				_passedFrames = 0;
 			}
-			if (m_SystemsInitiated)
+			if (_systemsAreInitiated)
 			{
-				for each (var s:System in m_Systems)
+				for each (var s:System in _systems)
 				{
 					s.Update();
 				}
 			}
 			// Elapsed time counter
-			m_ElapsedTime += dt;
-			m_ElapsedTimeText.text = "Elapsed time: " + Math.floor(m_ElapsedTime / 60) + ":" + m_ElapsedTime % 60;
+			_elapsedTime += dt;
+			_elapsedTimeText.text = "Elapsed time: " + Math.floor(_elapsedTime / 60) + ":" + _elapsedTime % 60;
 		}
 	}
 }

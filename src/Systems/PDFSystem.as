@@ -17,9 +17,9 @@ package Systems
 	
 	public class PDFSystem extends System
 	{
-		private var m_PDFViewer:HTMLViewer;
-		private var tc:TouchContainer;
-		private var m_PDF:HTML;
+		private var _PDFViewer:HTMLViewer;
+		private var _touchContainer:TouchContainer;
+		private var _PDF:HTML;
 		
 		public function PDFSystem()
 		{
@@ -28,29 +28,29 @@ package Systems
 		
 		override public function Init():void
 		{
-			tc = new TouchContainer();
+			_touchContainer = new TouchContainer();
 			
-			tc.x = 700;
-			tc.y = 300;
-			tc.alpha = 1;
-			tc.scale = 1;
+			_touchContainer.x = 700;
+			_touchContainer.y = 300;
+			_touchContainer.alpha = 1;
+			_touchContainer.scale = 1;
 			
 			//touch interactions
-			tc.gestureList = {"n-drag": true, "n-scale": true, "n-rotate": true};
+			_touchContainer.gestureList = {"n-drag": true, "n-scale": true, "n-rotate": true};
 			
 			//loading an image through image element
-			m_PDF = new HTML();
-			m_PDF.src = "dykrapport.pdf";
-			m_PDF.x = 0;
-			m_PDF.y = 0;
-			m_PDF.width = 600;
-			m_PDF.height = 500;
-			m_PDF.id = "img1";
-			m_PDF.scale = 1;
-			m_PDF.init();
-			tc.addChild(m_PDF);
+			_PDF = new HTML();
+			_PDF.src = "dykrapport.pdf";
+			_PDF.x = 0;
+			_PDF.y = 0;
+			_PDF.width = 600;
+			_PDF.height = 500;
+			_PDF.id = "img1";
+			_PDF.scale = 1;
+			_PDF.init();
+			_touchContainer.addChild(_PDF);
 			//initialise touch container
-			stage.addChild(tc);
+			stage.addChild(_touchContainer);
 		
 			//stage.addChild(m_PDFViewer);
 		
@@ -73,7 +73,7 @@ package Systems
 		
 		private function buttonHandler(event:StateEvent):void
 		{
-			switchButtonState(event.id, event.value, m_PDFViewer);
+			switchButtonState(event.id, event.value, _PDFViewer);
 		}
 	}
 

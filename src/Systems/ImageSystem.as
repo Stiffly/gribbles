@@ -17,8 +17,8 @@ package Systems
 	
 	public class ImageSystem extends System
 	{
-		private var m_ImageViewer:AlbumViewer;
-		private var m_Button:Button;
+		private var _imageViewer:AlbumViewer;
+		private var _button:Button;
 		
 		public function ImageSystem()
 		{
@@ -27,11 +27,11 @@ package Systems
 		
 		override public function Init():void
 		{
-			m_ImageViewer = createViewer(new AlbumViewer(), 0, 0, 500, 400) as AlbumViewer;
-			m_ImageViewer.autoTextLayout = false;
-			m_ImageViewer.linkAlbums = true;
-			m_ImageViewer.clusterBubbling = true;
-			m_ImageViewer.mouseChildren = true;
+			_imageViewer = createViewer(new AlbumViewer(), 0, 0, 500, 400) as AlbumViewer;
+			_imageViewer.autoTextLayout = false;
+			_imageViewer.linkAlbums = true;
+			_imageViewer.clusterBubbling = true;
+			_imageViewer.mouseChildren = true;
 			
 			// Front
 			var front:Album = new Album();
@@ -77,15 +77,15 @@ package Systems
 			}
 			
 			front.init();
-			m_ImageViewer.front = front;
-			m_ImageViewer.addChild(front);
-			m_ImageViewer.gestureList = {"2-finger-drag": true, "n-scale": true, "n-rotate": true};
-			stage.addChild(m_ImageViewer);
-			hideComponent(m_ImageViewer);
+			_imageViewer.front = front;
+			_imageViewer.addChild(front);
+			_imageViewer.gestureList = {"2-finger-drag": true, "n-scale": true, "n-rotate": true};
+			stage.addChild(_imageViewer);
+			hideComponent(_imageViewer);
 			
-			m_Button = CMLObjectList.instance.getId("image-button");
-			m_Button.addEventListener(StateEvent.CHANGE, imageButtonHandler);
-			stage.addChild(m_Button);
+			_button = CMLObjectList.instance.getId("image-button");
+			_button.addEventListener(StateEvent.CHANGE, imageButtonHandler);
+			stage.addChild(_button);
 		}
 		
 		override public function Update():void
@@ -95,7 +95,7 @@ package Systems
 		
 		private function imageButtonHandler(event:StateEvent):void
 		{
-			switchButtonState(event.value, m_ImageViewer);
+			switchButtonState(event.value, _imageViewer);
 		}
 	}
 }
