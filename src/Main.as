@@ -1,7 +1,7 @@
 package
 {
 	/**
-	 * Main.as
+	 * Main
 	 * This is the entry point of the application gribbles
 	 *
 	 * @author Adam Byléhn
@@ -50,7 +50,6 @@ package
 			cml = "main.cml";
 			gml = "gml/gestures.gml"; // gml now required
 			tuio = true;
-			
 			
 			// Add systems here			
 			_systems.append(new HTMLSystem());

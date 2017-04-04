@@ -1,7 +1,7 @@
 package Systems
 {
 	/**
-	 * PDFSystem.as
+	 * Systems.PDFSystem
 	 * The system that handles the PDFViewer
 	 *
 	 * @author Adam Byléhn

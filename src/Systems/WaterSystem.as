@@ -1,7 +1,7 @@
 package Systems
 {
 	/**
-	 * WaterSystem.as
+	 * Systems.WaterSystem
 	 * Keeps track of the background image and it's corresponding water ripples
 	 *
 	 * @author Adam Byléhn

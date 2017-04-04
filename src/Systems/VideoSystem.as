@@ -1,7 +1,7 @@
 package Systems
 {
 	/**
-	 * VideoSystem.as
+	 * Systems.VideoSystem
 	 * Keeps track of the VideoViewer and its associated button
 	 *
 	 * @author Adam Byléhn

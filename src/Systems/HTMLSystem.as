@@ -1,7 +1,7 @@
 package Systems
 {
 	/**
-	 * HTMLSystem.as
+	 * Systems.HTMLSystem
 	 * Handles the HTMLViewer and its associated button
 	 *
 	 * @author Adam

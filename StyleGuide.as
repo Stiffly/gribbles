@@ -1,6 +1,14 @@
 // package PackageName 
-package 
+package
 {
+	/**
+	 * PackageName.ClassName
+	 * Brief description of the class here
+	 *
+	 * @author John Doe
+	 * @contact jd@email.com
+	 */
+	
 	// Flash imports
 	import flash.geom.Vector3D;
 	// API imports
@@ -10,8 +18,8 @@ package
 	
 	public class MyClass extends MyMasterClass
 	{
-		// Member variables
-		// lowerCamelCase
+		// This is a comment
+		// _lowerCamelCase
 		private var _myPrivateMemberVariable:int = 0;
 		// UpperCamelCase
 		public var MyGlobalMemberVariable:Number = 0.123;
@@ -31,22 +39,29 @@ package
 		// Public member functions
 		public function PrintNumber():void
 		{
-			if (_myPrivateMemberVariable > 0) {
+			if (_myPrivateMemberVariable > 0)
+			{
 				trace("My positive number: " + _myPrivateMemberVariable);
-			} else if (_myPrivateMemberVariable < 0) {
+			}
+			else if (_myPrivateMemberVariable < 0)
+			{
 				trace("My negative number: " + _myPrivateMemberVariable);
-			} else {
+			}
+			else
+			{
 				trace("My number is zero");
 			}
 		}
 		
-		public function GetNthFibbonacci(n:int):int 
+		public function GetNthFibbonacci(n:int):int
 		{
+			// current is set to 0
 			var current:int = Math.cos(Math.PI / 2);
 			var prev:int = 1;
 			var prevprev:int = 1;
 			
-			for (var i:int = 2; i < n; i++) {
+			for (var i:int = 2; i < n; i++)
+			{
 				current = prev + prevprev;
 				prevprev = prev;
 				prev = current;

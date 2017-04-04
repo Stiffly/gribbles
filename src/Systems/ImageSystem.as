@@ -1,12 +1,14 @@
 package Systems
 {
 	/**
-	 * ImageSystem.as
+	 * Systems.ImageSystem
 	 * Keeps track of the ImageViewer and its associated button
 	 *
 	 * @author Adam Byléhn
 	 * @contact adambylehn@hotmail.com
 	 */
+	
+	import com.gestureworks.cml.utils.DisplayUtils;
 	
 	import com.gestureworks.cml.core.CMLObjectList;
 	import com.gestureworks.cml.events.StateEvent;
@@ -28,10 +30,13 @@ package Systems
 		override public function Init():void
 		{
 			_imageViewer = createViewer(new AlbumViewer(), 0, 0, 500, 400) as AlbumViewer;
+			_imageViewer.gestureList = {"2-finger-drag": true, "n-scale": true, "n-rotate": true};
 			_imageViewer.autoTextLayout = false;
 			_imageViewer.linkAlbums = true;
 			_imageViewer.clusterBubbling = true;
 			_imageViewer.mouseChildren = true;
+			
+			stage.addChild(_imageViewer);
 			
 			// Front
 			var front:Album = new Album();
@@ -43,26 +48,29 @@ package Systems
 			front.clusterBubbling = true;
 			front.dragGesture = "1-finger-drag";
 			
-			addFrame(_imageViewer);
-			addTouchContainer(_imageViewer);
-						
-			for each (var imageFile:String in getFilesInDirectoryRelative("images/content"))
-			{
-				var image:Image = new Image();
-				image.open(imageFile);
-				image.width = 500;
-				image.height = 400;
-				image.init();
-				front.addChild(image);
+			// Add images to album
+			for each (var imageFile:String in getFilesInDirectoryRelative("images/content")) {
+				front.addChild(getImage(imageFile));
 			}
 			
-			front.init();
 			_imageViewer.front = front;
 			_imageViewer.addChild(front);
-			_imageViewer.gestureList = {"2-finger-drag": true, "n-scale": true, "n-rotate": true};
-			stage.addChild(_imageViewer);
+
+			// Back
+			//_imageViewer.back = addInfoPanel(_imageViewer, "En bild", "Detta är en bild");
+			
+			// Add Frame, TouchContainer and ViewerMenu
+			addFrame(_imageViewer);
+			addTouchContainer(_imageViewer);
+			addViewerMenu(_imageViewer, true, false, false, false);
+			
+			// Initiate the album viewer and its children
+			DisplayUtils.initAll(_imageViewer);
+			
+			// Hid the album viewer
 			hideComponent(_imageViewer);
 			
+			// Create the button loaded from CML
 			_button = CMLObjectList.instance.getId("image-button");
 			_button.addEventListener(StateEvent.CHANGE, imageButtonHandler);
 			stage.addChild(_button);
@@ -73,9 +81,20 @@ package Systems
 		
 		}
 		
+		// On button click
 		private function imageButtonHandler(event:StateEvent):void
 		{
 			switchButtonState(event.value, _imageViewer);
+		}
+		
+		// Load an image from disk
+		private function getImage(source:String):Image
+		{
+			var image:Image = new Image();
+			image.open(source);
+			image.width = 500;
+			image.height = 400;
+			return image;
 		}
 	}
 }
