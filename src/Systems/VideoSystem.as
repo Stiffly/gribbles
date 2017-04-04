@@ -8,6 +8,8 @@ package Systems
 	 * @contact adambylehn@hotmail.com
 	 */
 	
+	import com.gestureworks.cml.utils.DisplayUtils;
+	 
 	import com.gestureworks.cml.components.VideoViewer;
 	import com.gestureworks.cml.core.CMLObjectList;
 	import com.gestureworks.cml.elements.Graphic;
@@ -35,6 +37,9 @@ package Systems
 			_videoViewer.linkAlbums = true;
 			_videoViewer.clusterBubbling = true;
 			_videoViewer.mouseChildren = true;
+			_videoViewer.gestureList = {"2-finger-drag": true, "n-scale": true, "n-rotate": true};
+
+			stage.addChild(_videoViewer);
 
 			
 			// Front
@@ -47,10 +52,6 @@ package Systems
 			front.clusterBubbling = true;
 			front.dragGesture = "1-finger-drag";
 			
-			addFrame(_videoViewer);
-			addTouchContainer(_videoViewer);
-
-			
 			for each (var videoFile:String in getFilesInDirectoryRelative("videos"))
 			{
 				var video:Video = new Video();
@@ -61,38 +62,18 @@ package Systems
 				video.autoplay = true;
 				video.loop = true;
 				video.progressBar = true;
-				video.init();
 				front.addChild(video);
-				/*
-				var playButton:Button = new Button();
-				playButton.initial = "play";
-				playButton.hit = "play";
-				playButton.down = "play";
-				playButton.up = "play";
-				playButton.dispatch = "down:down";
-				playButton.active = true;
-				playButton.init();
-				playButton.hideOnToggle;
-				video.addChild(playButton);
-				
-				var buttonGraphic:Graphic = new Graphic();
-				buttonGraphic.id = "play";
-				buttonGraphic.shape = "triangle";
-				buttonGraphic.height = 100;
-				buttonGraphic.rotation = 90;
-				buttonGraphic.x = 300;
-				buttonGraphic.y = 150;
-				buttonGraphic.alpha = 0.5;
-				buttonGraphic.init();
-				playButton.addChild(buttonGraphic);*/
 			}
-			
-			front.init();
 			_videoViewer.front = front;
 			_videoViewer.addChild(front);
-			_videoViewer.gestureList = {"2-finger-drag": true, "n-scale": true, "n-rotate": true};
+			
+			addFrame(_videoViewer);
+			addTouchContainer(_videoViewer);
+			addViewerMenu(_videoViewer, true, true, true, true);
+			
 			hideComponent(_videoViewer);
-			stage.addChild(_videoViewer);
+			
+			DisplayUtils.initAll(_videoViewer);
 			
 			_button = CMLObjectList.instance.getId("video-button");
 			_button.addEventListener(StateEvent.CHANGE, videoButtonHandler);

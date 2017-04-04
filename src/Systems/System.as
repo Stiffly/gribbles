@@ -119,7 +119,7 @@ package Systems
 		{
 			var menu:ViewerMenu = new ViewerMenu(info, close, play, pause);
 			menu.y = -65;
-			menu.paddingLeft = 400;
+			menu.paddingLeft = 15;
 			menu.autohide = false;
 			menu.visible = true;
 			component.addChild(menu);
