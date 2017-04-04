@@ -2,7 +2,7 @@ package Systems
 {
 	
 	/**
-	 * AudioSystem.as
+	 * Systems.AudioSystem
 	 * Keeps track of audiofiles (WAV/MP3)
 	 *
 	 * @author Adam Byléhn
@@ -83,10 +83,10 @@ package Systems
 			component.addChild(mp3);
 			stage.addChild(component);
 			
-			addInfoPanel(component, "Snack om Gribshunden", "En beskrivning om när Gribshunden sjönk.");
+			addInfoPanel(component, "Snack om Gribshunden", "En beskrivning om processen som leder till att Gribshunden sjunker.");
 			addFrame(component);
 			addTouchContainer(component);
-			addViewerMenu(component, true, false, true, true);
+			addViewerMenu(component, false, false, true, true);
 			
 			DisplayUtils.initAll(component);
 			

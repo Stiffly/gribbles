@@ -1,7 +1,7 @@
 package Systems 
 {
 	/**
-	* System.as
+	* Systems.System
 	* Super class that all the other system inherits from
 	* 
 	* @author Adam Byléhn
@@ -42,12 +42,12 @@ package Systems
 			component.x = stage.stageWidth / 2 - component.width / 2;
 			component.y = stage.stageHeight / 2 - component.height / 2;
 			component.rotation = int(Math.round(Math.random() * 180)) - 90;
-			if (getQualifiedClassName(component.getChildAt(0)).search("WAV") != -1) {
+			/*if (getQualifiedClassName(component.getChildAt(0)).search("WAV") != -1) {
 				WAV(component.getChildAt(0)).play();
 			}
 			if (getQualifiedClassName(component.getChildAt(0)).search("MP3") != -1) {
 				MP3(component.getChildAt(0)).play();
-			}
+			}*/
 		}
 		
 		protected function hideComponent(component : Component) : void
@@ -93,7 +93,7 @@ package Systems
 			return component;
 		}
 		
-		protected function addTouchContainer(component:Component):void
+		protected function addTouchContainer(component:Component):TouchContainer
 		{
 			var container:TouchContainer = new TouchContainer();
 			container.className = "container";
@@ -102,18 +102,20 @@ package Systems
 			container.mouseChildren = false;
 			container.gestureEvents = false;
 			component.addChild(container);
+			return container;
 		}
 		
-		protected function addFrame(component:Component):void
+		protected function addFrame(component:Component):Frame
 		{
 			var frame : Frame = new Frame();
 			frame.targetParent = true;
 			frame.mouseChildren = false;
 			frame.className = "frame";
 			component.addChild(frame);
+			return frame;
 		}
 		
-		protected function addViewerMenu(component:Component, info:Boolean, close:Boolean, play:Boolean, pause:Boolean):void
+		protected function addViewerMenu(component:Component, info:Boolean, close:Boolean, play:Boolean, pause:Boolean):ViewerMenu
 		{
 			var menu:ViewerMenu = new ViewerMenu(info, close, play, pause);
 			menu.y = -65;
@@ -121,16 +123,20 @@ package Systems
 			menu.autohide = false;
 			menu.visible = true;
 			component.addChild(menu);
+			return menu;
 		}
 		
-		protected function addInfoPanel(component:Component, title:String, descr:String):void
+		protected function addInfoPanel(component:Component, title:String, descr:String):InfoPanel
 		{
 			var infoPanel:InfoPanel = new InfoPanel();
 			infoPanel.bkgColor = 0x665533;
 			infoPanel.title = title;
 			infoPanel.descr = descr;
+			infoPanel.active = true;
+			infoPanel.visible = true;
 			component.addChild(infoPanel);
 			component.back = infoPanel;
+			return infoPanel;
 		}
 		
 		protected function getFilesInDirectoryRelative(directory:String) : Array
