@@ -47,6 +47,8 @@ package Systems
 			front.clusterBubbling = true;
 			front.dragGesture = "1-finger-drag";
 			
+			addFrame(_videoViewer);
+			addTouchContainer(_videoViewer);
 
 			
 			for each (var videoFile:String in getFilesInDirectoryRelative("videos"))

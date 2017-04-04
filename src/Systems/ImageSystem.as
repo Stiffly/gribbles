@@ -42,38 +42,18 @@ package Systems
 			front.mouseChildren = true;
 			front.clusterBubbling = true;
 			front.dragGesture = "1-finger-drag";
+			
+			addFrame(_imageViewer);
+			addTouchContainer(_imageViewer);
 						
 			for each (var imageFile:String in getFilesInDirectoryRelative("images/content"))
 			{
-				trace(imageFile);
 				var image:Image = new Image();
 				image.open(imageFile);
 				image.width = 500;
 				image.height = 400;
 				image.init();
 				front.addChild(image);
-				/*
-				   var playButton:Button = new Button();
-				   playButton.initial = "play";
-				   playButton.hit = "play";
-				   playButton.down = "play";
-				   playButton.up = "play";
-				   playButton.dispatch = "down:down";
-				   playButton.active = true;
-				   playButton.init();
-				   playButton.hideOnToggle;
-				   video.addChild(playButton);
-				
-				   var buttonGraphic:Graphic = new Graphic();
-				   buttonGraphic.id = "play";
-				   buttonGraphic.shape = "triangle";
-				   buttonGraphic.height = 100;
-				   buttonGraphic.rotation = 90;
-				   buttonGraphic.x = 300;
-				   buttonGraphic.y = 150;
-				   buttonGraphic.alpha = 0.5;
-				   buttonGraphic.init();
-				   playButton.addChild(buttonGraphic);*/
 			}
 			
 			front.init();

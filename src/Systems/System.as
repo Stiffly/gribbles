@@ -8,6 +8,7 @@ package Systems
 	* @contact adambylehn@hotmail.com
 	*/
 	
+	import com.gestureworks.core.GestureWorks;
 	import flash.display.Sprite;
 	import flash.filesystem.File;
 	import flash.utils.getQualifiedClassName
@@ -18,9 +19,11 @@ package Systems
 	import com.gestureworks.cml.elements.Frame;
 	import com.gestureworks.cml.elements.WAV;
 	import com.gestureworks.cml.elements.MP3;
+	import ui.ViewerMenu;
+	import ui.InfoPanel;
 
 	
-	public class System extends Sprite
+	public class System extends GestureWorks
 	{
 		public function System()
 		{
@@ -39,11 +42,11 @@ package Systems
 			component.x = stage.stageWidth / 2 - component.width / 2;
 			component.y = stage.stageHeight / 2 - component.height / 2;
 			component.rotation = int(Math.round(Math.random() * 180)) - 90;
-			if (getQualifiedClassName(component.getChildAt(2)).search("WAV") != -1) {
-				WAV(component.getChildAt(2)).play();
+			if (getQualifiedClassName(component.getChildAt(0)).search("WAV") != -1) {
+				WAV(component.getChildAt(0)).play();
 			}
-			if (getQualifiedClassName(component.getChildAt(2)).search("MP3") != -1) {
-				MP3(component.getChildAt(2)).play();
+			if (getQualifiedClassName(component.getChildAt(0)).search("MP3") != -1) {
+				MP3(component.getChildAt(0)).play();
 			}
 		}
 		
@@ -53,11 +56,11 @@ package Systems
 			component.touchEnabled = false;
 			component.x = 13337; // "Hide" the component
 			component.y = 13337;
-			if (getQualifiedClassName(component.getChildAt(2)).search("WAV") != -1) {
-				WAV(component.getChildAt(2)).stop();
+			if (getQualifiedClassName(component.getChildAt(0)).search("WAV") != -1) {
+				WAV(component.getChildAt(0)).stop();
 			}
-			if (getQualifiedClassName(component.getChildAt(2)).search("MP3") != -1) {
-				MP3(component.getChildAt(2)).stop();
+			if (getQualifiedClassName(component.getChildAt(0)).search("MP3") != -1) {
+				MP3(component.getChildAt(0)).stop();
 			}
 		}
 		
@@ -86,25 +89,48 @@ package Systems
 			component.maxScale = 2;
 			component.minScale = 0.2;
 			// Enable debugging information
-			component.debugDisplay = true;
-			
+			//component.debugDisplay = true;
+			return component;
+		}
+		
+		protected function addTouchContainer(component:Component):void
+		{
 			var container:TouchContainer = new TouchContainer();
 			container.className = "container";
 			container.visible = true;
 			container.targetParent = true;
 			container.mouseChildren = false;
 			container.gestureEvents = false;
-			container.init();
 			component.addChild(container);
-			
-
+		}
+		
+		protected function addFrame(component:Component):void
+		{
 			var frame : Frame = new Frame();
+			frame.targetParent = true;
+			frame.mouseChildren = false;
 			frame.className = "frame";
-			frame.init();
 			component.addChild(frame);
-			
-			component.init();
-			return component;
+		}
+		
+		protected function addViewerMenu(component:Component, info:Boolean, close:Boolean, play:Boolean, pause:Boolean):void
+		{
+			var menu:ViewerMenu = new ViewerMenu(info, close, play, pause);
+			menu.y = -65;
+			menu.paddingLeft = 400;
+			menu.autohide = false;
+			menu.visible = true;
+			component.addChild(menu);
+		}
+		
+		protected function addInfoPanel(component:Component, title:String, descr:String):void
+		{
+			var infoPanel:InfoPanel = new InfoPanel();
+			infoPanel.bkgColor = 0x665533;
+			infoPanel.title = title;
+			infoPanel.descr = descr;
+			component.addChild(infoPanel);
+			component.back = infoPanel;
 		}
 		
 		protected function getFilesInDirectoryRelative(directory:String) : Array

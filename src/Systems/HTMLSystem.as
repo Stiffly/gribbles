@@ -42,6 +42,7 @@ package Systems
 			
 			_HTMLViewer = createViewer(new HTMLViewer(), 0, 0, 1280, 720) as HTMLViewer;
 			
+			
 			_HTMLElement = new HTML();
 			_HTMLElement.className = "html_element";
 			_HTMLElement.width = 1280;
@@ -51,6 +52,9 @@ package Systems
 			_HTMLElement.smooth = true;
 			_HTMLElement.hideFlashType = "display:none;";
 			_HTMLElement.init();
+			
+			addFrame(_HTMLViewer);
+			addTouchContainer(_HTMLViewer);
 			
 			_HTMLViewer.addChild(_HTMLElement);
 			
