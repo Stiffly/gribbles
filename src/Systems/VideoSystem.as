@@ -34,14 +34,13 @@ package Systems
 		{
 			_videoViewer = createViewer(new AlbumViewer(), 0, 0, 500, 400) as AlbumViewer;
 			_videoViewer.autoTextLayout = false;
-			_videoViewer.linkAlbums = true;
+			_videoViewer.linkAlbums = false;
 			_videoViewer.clusterBubbling = true;
 			_videoViewer.mouseChildren = true;
 			_videoViewer.gestureList = {"2-finger-drag": true, "n-scale": true, "n-rotate": true};
 
 			stage.addChild(_videoViewer);
 
-			
 			// Front
 			var front:Album = new Album();
 			front.loop = true;
@@ -67,9 +66,10 @@ package Systems
 			_videoViewer.front = front;
 			_videoViewer.addChild(front);
 			
+			addInfoPanel(_videoViewer, "Video", "Det här är en video");
 			addFrame(_videoViewer);
 			addTouchContainer(_videoViewer);
-			addViewerMenu(_videoViewer, true, true, true, true);
+			addViewerMenu(_videoViewer, true, true, true);
 			
 			hideComponent(_videoViewer);
 			

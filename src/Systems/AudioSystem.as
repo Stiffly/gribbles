@@ -86,7 +86,7 @@ package Systems
 			addInfoPanel(component, "Snack om Gribshunden", "En beskrivning om processen som leder till att Gribshunden sjunker.");
 			addFrame(component);
 			addTouchContainer(component);
-			addViewerMenu(component, false, false, true, true);
+			addViewerMenu(component, true, true, true);
 			
 			DisplayUtils.initAll(component);
 			

@@ -41,7 +41,7 @@ package Systems
 			component.scale = 1.0;
 			component.x = stage.stageWidth / 2 - component.width / 2;
 			component.y = stage.stageHeight / 2 - component.height / 2;
-			component.rotation = int(Math.round(Math.random() * 180)) - 90;
+			//component.rotation = int(Math.round(Math.random() * 180)) - 90;
 			/*if (getQualifiedClassName(component.getChildAt(0)).search("WAV") != -1) {
 				WAV(component.getChildAt(0)).play();
 			}
@@ -109,15 +109,15 @@ package Systems
 		{
 			var frame : Frame = new Frame();
 			frame.targetParent = true;
-			frame.mouseChildren = false;
+			frame.mouseChildren = false;   
 			frame.className = "frame";
 			component.addChild(frame);
 			return frame;
 		}
 		
-		protected function addViewerMenu(component:Component, info:Boolean, close:Boolean, play:Boolean, pause:Boolean):ViewerMenu
+		protected function addViewerMenu(component:Component, info:Boolean, play:Boolean, pause:Boolean):ViewerMenu
 		{
-			var menu:ViewerMenu = new ViewerMenu(info, close, play, pause);
+			var menu:ViewerMenu = new ViewerMenu(info, false, play, pause);
 			menu.y = -65;
 			menu.paddingLeft = 15;
 			menu.autohide = false;
@@ -131,9 +131,7 @@ package Systems
 			var infoPanel:InfoPanel = new InfoPanel();
 			infoPanel.bkgColor = 0x665533;
 			infoPanel.title = title;
-			infoPanel.descr = descr;
-			infoPanel.active = true;
-			infoPanel.visible = true;
+			infoPanel.descrHTML = "<meta charset=\"utf-8\">" + descr;
 			component.addChild(infoPanel);
 			component.back = infoPanel;
 			return infoPanel;

@@ -32,7 +32,7 @@ package Systems
 			_imageViewer = createViewer(new AlbumViewer(), 0, 0, 500, 400) as AlbumViewer;
 			_imageViewer.gestureList = {"2-finger-drag": true, "n-scale": true, "n-rotate": true};
 			_imageViewer.autoTextLayout = false;
-			_imageViewer.linkAlbums = true;
+			_imageViewer.linkAlbums = false;
 			_imageViewer.clusterBubbling = true;
 			_imageViewer.mouseChildren = true;
 			
@@ -57,12 +57,12 @@ package Systems
 			_imageViewer.addChild(front);
 
 			// Back
-			//_imageViewer.back = addInfoPanel(_imageViewer, "En bild", "Detta är en bild");
+			addInfoPanel(_imageViewer, "En bild", "Detta är en bild");
 			
 			// Add Frame, TouchContainer and ViewerMenu
 			addFrame(_imageViewer);
 			addTouchContainer(_imageViewer);
-			addViewerMenu(_imageViewer, true, false, false, false);
+			addViewerMenu(_imageViewer, true, false, false);
 			
 			// Initiate the album viewer and its children
 			DisplayUtils.initAll(_imageViewer);
