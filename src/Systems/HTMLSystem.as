@@ -8,6 +8,8 @@ package Systems
 	 * @contact adambylehn@hotmail.com
 	 */
 	
+	import com.gestureworks.cml.utils.DisplayUtils;
+	
 	import com.gestureworks.cml.core.CMLObjectList;
 	import com.gestureworks.cml.events.StateEvent;
 	import com.gestureworks.cml.elements.Button;
@@ -42,24 +44,24 @@ package Systems
 			
 			_HTMLViewer = createViewer(new HTMLViewer(), 0, 0, 1280, 720) as HTMLViewer;
 			
-			
 			_HTMLElement = new HTML();
 			_HTMLElement.className = "html_element";
 			_HTMLElement.width = 1280;
 			_HTMLElement.height = 720;
 			_HTMLElement.src = "http://www.blekingemuseum.se/pages/275";
 			_HTMLElement.hideFlash = true;
-			_HTMLElement.smooth = true;
+			_HTMLElement.smooth = false;
 			_HTMLElement.hideFlashType = "display:none;";
-			_HTMLElement.init();
 			
 			addFrame(_HTMLViewer);
-			addTouchContainer(_HTMLViewer);
+			//addTouchContainer(_HTMLViewer);
 			
 			_HTMLViewer.addChild(_HTMLElement);
 			
 			stage.addChild(_HTMLViewer);
 			hideComponent(_HTMLViewer);
+			
+			DisplayUtils.initAll(_HTMLViewer);
 			
 			_button = CMLObjectList.instance.getId("web-button");
 			_button.addEventListener(StateEvent.CHANGE, buttonHandler);

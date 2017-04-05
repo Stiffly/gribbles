@@ -61,12 +61,13 @@ package Systems
 				video.autoplay = true;
 				video.loop = true;
 				video.progressBar = true;
+				video.volume = 20;
 				front.addChild(video);
 			}
 			_videoViewer.front = front;
 			_videoViewer.addChild(front);
 			
-			addInfoPanel(_videoViewer, "Video", "Det här är en video");
+			addInfoPanel(_videoViewer, "Video", "En video som visar");
 			addFrame(_videoViewer);
 			addTouchContainer(_videoViewer);
 			addViewerMenu(_videoViewer, true, true, true);
