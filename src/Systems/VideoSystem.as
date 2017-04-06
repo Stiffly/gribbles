@@ -23,7 +23,6 @@ package Systems
 	public class VideoSystem extends Systems.System
 	{
 		private var _videoViewer:AlbumViewer;
-		private var _button:Button;
 		
 		public function VideoSystem()
 		{
@@ -32,6 +31,7 @@ package Systems
 		
 		override public function Init():void
 		{
+			// Create the video Viewer (which actually is an AlbumViewer atm, if amount of videos == 1 -> can change to VideoViewer)
 			_videoViewer = createViewer(new AlbumViewer(), 0, 0, 500, 400) as AlbumViewer;
 			_videoViewer.autoTextLayout = false;
 			_videoViewer.linkAlbums = false;
@@ -51,8 +51,9 @@ package Systems
 			front.clusterBubbling = true;
 			front.dragGesture = "1-finger-drag";
 			
-			for each (var videoFile:String in getFilesInDirectoryRelative("videos"))
-			{
+			// For every file in 'videos' folder, load the file
+			for each (var videoFile:String in getFilesInDirectoryRelative("videos")) {
+				// Dynamically load video from disk
 				var video:Video = new Video();
 				video.src = videoFile;
 				video.width = 500;
@@ -67,22 +68,27 @@ package Systems
 			_videoViewer.front = front;
 			_videoViewer.addChild(front);
 			
+			// Add InfoPanel, Frame, TouchContainer and ViewerMenu
 			addInfoPanel(_videoViewer, "Videofilm", "Denna film visar när man fiskar upp Gribshindens galjonsfigur.");
 			addFrame(_videoViewer);
 			addTouchContainer(_videoViewer);
 			addViewerMenu(_videoViewer, true, true, true);
 			
+			// Hide it
 			hideComponent(_videoViewer);
 			
+			// Initiate all of its elements
 			DisplayUtils.initAll(_videoViewer);
 			
-			_button = CMLObjectList.instance.getId("video-button");
-			_button.addEventListener(StateEvent.CHANGE, videoButtonHandler);
-			stage.addChild(_button);
+			// Load the button from CML
+			var button:Button = CMLObjectList.instance.getId("video-button");
+			button.addEventListener(StateEvent.CHANGE, videoButtonHandler);
+			stage.addChild(button);
 		}
 		
 		private function videoButtonHandler(event:StateEvent):void
 		{
+			// Button state was changed
 			switchButtonState(event.value, _videoViewer);
 		}
 	}

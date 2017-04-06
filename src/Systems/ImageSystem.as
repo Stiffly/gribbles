@@ -87,7 +87,7 @@ package Systems
 			switchButtonState(event.value, _imageViewer);
 		}
 		
-		// Load an image from disk
+		// Dynamically load an image from disk
 		private function getImage(source:String):Image
 		{
 			var image:Image = new Image();
