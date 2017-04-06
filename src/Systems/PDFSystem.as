@@ -8,6 +8,8 @@ package Systems
 	 * @contact adambylehn@hotmail.com
 	 */
 	
+	import com.gestureworks.cml.utils.DisplayUtils;
+	
 	import com.gestureworks.cml.core.CMLObjectList;
 	import com.gestureworks.cml.events.StateEvent;
 	import com.gestureworks.cml.elements.Button;
@@ -18,8 +20,6 @@ package Systems
 	public class PDFSystem extends System
 	{
 		private var _PDFViewer:HTMLViewer;
-		private var _touchContainer:TouchContainer;
-		private var _PDF:HTML;
 		
 		public function PDFSystem()
 		{
@@ -28,53 +28,45 @@ package Systems
 		
 		override public function Init():void
 		{
-			_touchContainer = new TouchContainer();
-			
-			_touchContainer.x = 700;
-			_touchContainer.y = 300;
-			_touchContainer.alpha = 1;
-			_touchContainer.scale = 1;
-			
-			//touch interactions
-			_touchContainer.gestureList = {"n-drag": true, "n-scale": true, "n-rotate": true};
-			
+			_PDFViewer = createViewer(new HTMLViewer(), 0, 0, 600, 500) as HTMLViewer;
+			_PDFViewer.targetParent = true;
+			_PDFViewer.mouseChildren = true;
+			_PDFViewer.gestureList = { "1-finger-drag":true, "n-rotate":false, "n-scale":false};
+
+			stage.addChild(_PDFViewer);
+
 			//loading an image through image element
-			_PDF = new HTML();
-			_PDF.src = "dykrapport.pdf";
-			_PDF.x = 0;
-			_PDF.y = 0;
-			_PDF.width = 600;
-			_PDF.height = 500;
-			_PDF.id = "img1";
-			_PDF.scale = 1;
-			_PDF.init();
-			_touchContainer.addChild(_PDF);
-			//initialise touch container
-			stage.addChild(_touchContainer);
-		
-			//stage.addChild(m_PDFViewer);
-		
-			//m_PDFViewer = CMLObjectList.instance.getId("PDF-viewer");
-			//hideComponent(m_PDFViewer);
-		
-			//stage.addChild(m_PDFViewer);
-		
-		/*m_Button  = CMLObjectList.instance.getId("pdf-button");
-		   m_Button.addEventListener(StateEvent.CHANGE, buttonHandler);
-		   stage.addChild(m_Button);
-		   m_PDFObj = m_PDFViewer;*/
+			var PDF:HTML = new HTML();
+			PDF.src = "pdf/dykrapport.pdf";
+			
+			PDF.x = 0;
+			PDF.y = 0;
+			PDF.width = 600;
+			PDF.height = 500;
+			PDF.targetParent = true;
+			PDF.mouseChildren = true;
+			PDF.scale = 1;
+			_PDFViewer.addChild(PDF);
+			
+			addFrame(_PDFViewer);
+			addTouchContainer(_PDFViewer);
+			
+			//hideComponent(_PDFViewer);
+			
+			DisplayUtils.initAll(_PDFViewer);
+			
+			var button:Button = CMLObjectList.instance.getId("pdf-button");
+			button.addEventListener(StateEvent.CHANGE, buttonHandler);
+			stage.addChild(button);
 		}
 		
 		override public function Update():void
 		{
-			//m_PDF.x = m_PDFViewer.x;
-			//trace(m_PDF.scale += 0.1);
 		}
 		
 		private function buttonHandler(event:StateEvent):void
 		{
-			switchButtonState(event.id, event.value, _PDFViewer);
+			switchButtonState(event.value, _PDFViewer);
 		}
 	}
-
 }

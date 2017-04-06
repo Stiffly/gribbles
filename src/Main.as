@@ -16,6 +16,7 @@ package
 	import flash.utils.getTimer;
 	import flash.ui.Mouse;
 	import flash.text.TextField;
+	import flash.events.KeyboardEvent;
 	
 	import com.gestureworks.cml.core.CMLAir; CMLAir;
 	import com.gestureworks.core.GestureWorksAIR; GestureWorksAIR;
@@ -53,7 +54,7 @@ package
 			
 			// Add systems here			
 			_systems.append(new HTMLSystem());
-			//m_Systems.append(new PDFSystem());
+			_systems.append(new PDFSystem());
 			_systems.append(new WaterSystem());
 			_systems.append(new VideoSystem());
 			_systems.append(new ImageSystem());
@@ -80,7 +81,8 @@ package
 			stage.align = StageAlign.TOP_LEFT;
 			// Enter fullscreen mode
 			stage.fullScreenSourceRect = new Rectangle(0, 0, 1920, 1080);
-			stage.displayState = StageDisplayState.FULL_SCREEN;
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+			//stage.displayState = StageDisplayState.FULL_SCREEN;
 		}
 		
 		override protected function gestureworksInit():void
@@ -118,6 +120,13 @@ package
 			// Elapsed time counter
 			_elapsedTime += dt;
 			_elapsedTimeText.text = "Elapsed time: " + Math.floor(_elapsedTime / 60) + ":" + _elapsedTime % 60;
+		}
+		
+		private function onKeyDown(event:KeyboardEvent) : void
+		{
+			if (event.keyCode == 117) { // F6
+				stage.displayState = stage.displayState = StageDisplayState.FULL_SCREEN;
+			}
 		}
 	}
 }
