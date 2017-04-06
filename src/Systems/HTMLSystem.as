@@ -34,6 +34,7 @@ package Systems
 		
 		override public function Init():void
 		{
+			// A list of URL's that will be checked upon when the HTML's location state changes
 			_approvedURLs = new Array (
 			"http://www.blekingemuseum.se/pages/275",
 			"http://www.blekingemuseum.se/pages/377",
@@ -44,8 +45,10 @@ package Systems
 			"http://www.blekingemuseum.se/pages/423",
 			"http://www.blekingemuseum.se/pages/1223" );
 			
+			// Create the HTML Viewer
 			_HTMLViewer = createViewer(new HTMLViewer(), 0, 0, 1280, 720) as HTMLViewer;
 			
+			// Create the HTML Element, the actual html content
 			_HTMLElement = new HTML();
 			_HTMLElement.className = "html_element";
 			_HTMLElement.width = 1280;
@@ -55,17 +58,19 @@ package Systems
 			_HTMLElement.smooth = true;
 			_HTMLElement.hideFlashType = "display:none;";
 			_HTMLElement.html.addEventListener(LocationChangeEvent.LOCATION_CHANGE, onNewPage);
-			
-			addFrame(_HTMLViewer);
-			//addTouchContainer(_HTMLViewer);
-			
 			_HTMLViewer.addChild(_HTMLElement);
+
+			// Add a frame around the viewer
+			addFrame(_HTMLViewer);
 			
+			// Add the viewer to stage and hide it
 			stage.addChild(_HTMLViewer);
 			hideComponent(_HTMLViewer);
 			
+			// Initialize all of its elements
 			DisplayUtils.initAll(_HTMLViewer);
 			
+			// The button loaded from CML
 			_button = CMLObjectList.instance.getId("web-button");
 			_button.addEventListener(StateEvent.CHANGE, buttonHandler);
 			stage.addChild(_button);
@@ -78,19 +83,23 @@ package Systems
 		
 		private function buttonHandler(event:StateEvent):void
 		{
+			// Button state was changed, clicked or released
 			switchButtonState(event.value, _HTMLViewer);
 		}
 		
 		private function onNewPage(e:LocationChangeEvent):void
 		{
+			// Iterate through the list of approved URL's and compare with the new location
 			var isSafeURL:Boolean = false;
 			for each (var safeURL:String in _approvedURLs) {
 				if (_HTMLElement.html.location == safeURL) {
+					// The new location was safe, continue as normal
 					isSafeURL = true;
-					break;
+					return;
 				}
 			}
 			if (isSafeURL == false) {
+				// The new URL was not safe, reload the page. This will clear the load request.
 				_HTMLElement.html.reload();
 			}
 		}
