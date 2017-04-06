@@ -67,7 +67,7 @@ package Systems
 			_videoViewer.front = front;
 			_videoViewer.addChild(front);
 			
-			addInfoPanel(_videoViewer, "Video", "En video som visar");
+			addInfoPanel(_videoViewer, "Videofilm", "Denna film visar när man fiskar upp Gribshindens galjonsfigur.");
 			addFrame(_videoViewer);
 			addTouchContainer(_videoViewer);
 			addViewerMenu(_videoViewer, true, true, true);

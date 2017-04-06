@@ -131,7 +131,7 @@ package Systems
 			var infoPanel:InfoPanel = new InfoPanel();
 			infoPanel.bkgColor = 0x665533;
 			infoPanel.title = title;
-			infoPanel.descrHTML = "<meta charset=\"utf-8\">" + descr;
+			infoPanel.descr = descr;
 			component.addChild(infoPanel);
 			component.back = infoPanel;
 			return infoPanel;

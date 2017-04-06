@@ -6,6 +6,13 @@ package ui
 	
 	public class InfoPanel extends Container
 	{		
+		[Embed(source="../../bin/fonts/arial.ttf",
+        fontName = "MyFont",
+        mimeType = "application/x-font",
+        advancedAntiAliasing="true",
+        embedAsCFF="false")]
+		private var myEmbeddedFont:Class;
+		
 		public var bkg:Graphic;
 		public var bkgColor:uint = 0x665533;
 		public var bkgAlpha:Number = 0.8;
@@ -59,7 +66,7 @@ package ui
 				t.str = title;
 				t.fontSize = tFontSize;
 				t.color = tFontColor;
-				t.font = "OpenSansBold";
+				t.font = "MyFont";
 				t.autosize = true;
 				t.widthPercent = 100;
 				info.addChild(t);				
@@ -68,9 +75,11 @@ package ui
 			if (descr || descrHTML) {
 				var d:Text = new Text();
 				d.fontSize = dFontSize;
+
 				d.wordWrap = true;
 				d.color = dFontColor;
 				d.widthPercent = 100;
+				d.font = "MyFont";
 				d.autosize = true;
 				d.multiline = true;
 				if (descr) {
