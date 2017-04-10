@@ -16,6 +16,9 @@ package Systems
 	import com.gestureworks.cml.components.AlbumViewer;
 	import com.gestureworks.cml.elements.Image;
 	import com.gestureworks.cml.elements.Album;
+	import com.gestureworks.events.GWGestureEvent;
+	import flash.events.TouchEvent;
+	
 	
 	public class ImageSystem extends System
 	{
@@ -30,11 +33,16 @@ package Systems
 		override public function Init():void
 		{
 			_imageViewer = createViewer(new AlbumViewer(), 0, 0, 500, 400) as AlbumViewer;
-			_imageViewer.gestureList = {"2-finger-drag": true, "n-scale": true, "n-rotate": true};
 			_imageViewer.autoTextLayout = false;
 			_imageViewer.linkAlbums = false;
 			_imageViewer.clusterBubbling = true;
 			_imageViewer.mouseChildren = true;
+			_imageViewer.nativeTransform = false;
+			_imageViewer.affineTransform = false;
+			_imageViewer.gestureList = {"2-finger-drag": true, "n-scale": true, "n-rotate": true};
+			_imageViewer.addEventListener(GWGestureEvent.ROTATE, rotate_handler);
+			_imageViewer.addEventListener(GWGestureEvent.SCALE, scale_handler);
+			_imageViewer.addEventListener(GWGestureEvent.DRAG, drag_handler);
 			
 			stage.addChild(_imageViewer);
 			
@@ -57,11 +65,11 @@ package Systems
 			_imageViewer.addChild(front);
 
 			// Back
-			addInfoPanel(_imageViewer, "En bild", "Detta är en bild");
+			addInfoPanel(_imageViewer, "Bildalbum", "Du kan bläddra genom att swipa ett finger i sidled på albumet.");
 			
 			// Add Frame, TouchContainer and ViewerMenu
 			addFrame(_imageViewer);
-			addTouchContainer(_imageViewer);
+			//addTouchContainer(_imageViewer);
 			addViewerMenu(_imageViewer, true, false, false);
 			
 			// Initiate the album viewer and its children
@@ -73,12 +81,13 @@ package Systems
 			// Create the button loaded from CML
 			_button = CMLObjectList.instance.getId("image-button");
 			_button.addEventListener(StateEvent.CHANGE, imageButtonHandler);
+			_button.x = 900;
+			_button.y = 500;
 			stage.addChild(_button);
 		}
 		
 		override public function Update():void
 		{
-		
 		}
 		
 		// On button click

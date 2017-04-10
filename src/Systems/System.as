@@ -19,6 +19,7 @@ package Systems
 	import com.gestureworks.cml.elements.Frame;
 	import com.gestureworks.cml.elements.WAV;
 	import com.gestureworks.cml.elements.MP3;
+	import com.gestureworks.events.GWGestureEvent;
 	import ui.ViewerMenu;
 	import ui.InfoPanel;
 
@@ -89,7 +90,7 @@ package Systems
 			component.maxScale = 2;
 			component.minScale = 0.2;
 			// Enable debugging information
-			//component.debugDisplay = true;
+			component.debugDisplay = true;
 			return component;
 		}
 		
@@ -146,6 +147,35 @@ package Systems
 				relativePaths.push(root.getRelativePath(file, true));
 			}
 			return relativePaths;
+		}
+		
+		protected function rotationHandler(e:GWGestureEvent):void
+		{
+			var projectedRot:Number = e.target.rotation + e.value.rotation_dtheta;
+			trace(e.target.rotation);
+			trace(e.value.rotation_dtheta);
+			projectedRot = projectedRot % 90 == 0 ? projectedRot + .1 : projectedRot; 
+			e.target.rotation = projectedRot; 
+		}
+		
+		protected function drag_handler(event:GWGestureEvent):void
+		{
+			trace("drag");
+			event.target.x += event.value.drag_dx * 0.5;
+			event.target.y += event.value.drag_dy * 0.5;
+		}
+		
+		protected function scale_handler(event:GWGestureEvent):void
+		{
+			trace("scale");
+			event.target.scaleX += event.value.scale_dsx;
+			event.target.scaleY += event.value.scale_dsy;
+		}
+		
+		protected function rotate_handler(event:GWGestureEvent):void
+		{
+			trace("rotate");
+			event.target.rotation += event.value.rotate_dtheta;
 		}
 	}
 }

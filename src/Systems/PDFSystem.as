@@ -7,6 +7,7 @@ package Systems
 	 * @author Adam Byléhn
 	 * @contact adambylehn@hotmail.com
 	 */
+	 
 	
 	import com.gestureworks.cml.utils.DisplayUtils;
 	
@@ -51,7 +52,7 @@ package Systems
 			addFrame(_PDFViewer);
 			addTouchContainer(_PDFViewer);
 			
-			//hideComponent(_PDFViewer);
+			hideComponent(_PDFViewer);
 			
 			DisplayUtils.initAll(_PDFViewer);
 			
