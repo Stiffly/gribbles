@@ -175,7 +175,9 @@ package Systems
 		protected function rotate_handler(event:GWGestureEvent):void
 		{
 			trace("rotate");
-			event.target.rotation += event.value.rotate_dtheta;
+			var projectedRot:Number = event.target.rotation + event.value.rotate_dtheta;
+			projectedRot = projectedRot % 90 == 0 ? projectedRot + .1 : projectedRot; 
+			event.target.rotation = projectedRot; 
 		}
 	}
 }

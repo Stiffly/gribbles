@@ -38,7 +38,6 @@ package Systems
 			_imageViewer.clusterBubbling = true;
 			_imageViewer.mouseChildren = true;
 			_imageViewer.nativeTransform = false;
-			_imageViewer.affineTransform = false;
 			_imageViewer.gestureList = {"2-finger-drag": true, "n-scale": true, "n-rotate": true};
 			_imageViewer.addEventListener(GWGestureEvent.ROTATE, rotate_handler);
 			_imageViewer.addEventListener(GWGestureEvent.SCALE, scale_handler);
