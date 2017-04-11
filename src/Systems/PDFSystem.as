@@ -33,6 +33,7 @@ package Systems
 			_PDFViewer.targetParent = true;
 			_PDFViewer.mouseChildren = true;
 			_PDFViewer.gestureList = { "1-finger-drag":true, "n-rotate":false, "n-scale":false};
+			_PDFViewer.affineTransform = true;
 
 			stage.addChild(_PDFViewer);
 

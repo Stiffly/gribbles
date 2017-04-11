@@ -64,7 +64,7 @@ package Systems
 			_imageViewer.addChild(front);
 
 			// Back
-			addInfoPanel(_imageViewer, "Bildalbum", "Du kan bläddra genom att swipa ett finger i sidled på albumet.");
+			addInfoPanel(_imageViewer, "Bildalbum", "Du kan bläddra genom att swipa ett finger i sidled på albumet.\n\nAlbumet visar bilder på Gribshunden.");
 			
 			// Add Frame, TouchContainer and ViewerMenu
 			addFrame(_imageViewer);

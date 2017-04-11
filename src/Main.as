@@ -125,7 +125,7 @@ package
 		private function onKeyDown(event:KeyboardEvent) : void
 		{
 			if (event.keyCode == 117) { // F6
-				stage.displayState = stage.displayState = StageDisplayState.FULL_SCREEN;
+				stage.displayState = StageDisplayState.FULL_SCREEN;
 			}
 		}
 	}

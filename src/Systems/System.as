@@ -148,16 +148,7 @@ package Systems
 			}
 			return relativePaths;
 		}
-		
-		protected function rotationHandler(e:GWGestureEvent):void
-		{
-			var projectedRot:Number = e.target.rotation + e.value.rotation_dtheta;
-			trace(e.target.rotation);
-			trace(e.value.rotation_dtheta);
-			projectedRot = projectedRot % 90 == 0 ? projectedRot + .1 : projectedRot; 
-			e.target.rotation = projectedRot; 
-		}
-		
+
 		protected function drag_handler(event:GWGestureEvent):void
 		{
 			trace("drag");
@@ -175,9 +166,9 @@ package Systems
 		protected function rotate_handler(event:GWGestureEvent):void
 		{
 			trace("rotate");
-			var projectedRot:Number = event.target.rotation + event.value.rotate_dtheta;
+			var projectedRot:Number = event.target.rotationZ + event.value.rotate_dtheta;
 			projectedRot = projectedRot % 90 == 0 ? projectedRot + .1 : projectedRot; 
-			event.target.rotation = projectedRot; 
+			event.target.rotationZ = projectedRot; 
 		}
 	}
 }
