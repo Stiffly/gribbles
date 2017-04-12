@@ -42,7 +42,7 @@ package Systems
 		
 		override public function Init():void
 		{
-			temp.push(new textContent("Number Uno", "This is numbero uno"));
+			temp.push(new textContent("Galjonsfiguren", "Träskulpturen under lyft på sin trävagga. Öron och den tandförsedda käften med människoansiktet stickande ut är tydliga. Ögonen verkar sitta nedaför \"pannan\" riktade frammåt och de två \"knopparna\" ovanpå skulle då eventuellt kunna vara fästen för horn."));
 			temp.push(new textContent("Number dos", "This is numbero two"));
 			temp.push(new textContent("Number tres", "This is numbero tre"));
 			temp.push(new textContent("Number quattro staggioni", "This is numbero vier"));
