@@ -20,14 +20,20 @@ package Systems
 	import com.gestureworks.cml.components.MP3Player;
 	import com.gestureworks.cml.elements.MP3;
 	import com.gestureworks.cml.utils.DisplayUtils;
+	import util.Position;
 	import ui.ViewerMenu;
 	import ui.InfoPanel;
+	
+
 	
 	public class AudioSystem extends System
 	{
 		private var _WAVPlayer:Array = new Array();
 		private var _MP3Player:Array = new Array();
+		private var audioPos:Array = new Array();
 		private var _button:Button;
+		private var offset:Position = new Position(400, 200);
+		private var i:int = 0;
 		
 		public function AudioSystem()
 		{
@@ -36,21 +42,23 @@ package Systems
 		
 		public override function Init():void
 		{
-			var x_pos:int = 300;
-			var y_pos:int = 300;
 			var width:int = 600;
 			var height:int = 400;
-			
 			for each (var audioPath:String in getFilesInDirectoryRelative("audio"))
 			{
 				if (audioPath.toLowerCase().search(".wav") != -1)
 				{
-					var wavPlayer:WAVPlayer = createViewer(new WAVPlayer(), x_pos, y_pos, width, height) as WAVPlayer;
+					audioPos.push(new Position(offset.X + (i % 2 * (width + frameThickness)), offset.Y + (Math.floor(i / 2) * (height+ frameThickness))));
+					var wavPlayer:WAVPlayer = createViewer(new WAVPlayer(), audioPos[i].X, audioPos[i].Y, width, height) as WAVPlayer;
 					setWAVroperties(wavPlayer, audioPath, width, height);
+					i++;
+					
 				} else if (audioPath.toLowerCase().search(".mp3") != -1)
-				{
-					var mp3Player:MP3Player = createViewer(new MP3Player(), x_pos, y_pos, width, height) as MP3Player;
+				{					
+					audioPos.push(new Position(offset.X + (i % 2 * (width + frameThickness * 4)), offset.Y + (Math.floor(i / 2) * (height+ frameThickness * 4))));
+					var mp3Player:MP3Player = createViewer(new MP3Player(), audioPos[i].X, audioPos[i].Y, width, height) as MP3Player;
 					setMP3Properties(mp3Player, audioPath, width, height);
+					i++;
 				}
 			}
 			_button = CMLObjectList.instance.getId("music-button");
@@ -61,10 +69,10 @@ package Systems
 		private function buttonHandler(event:StateEvent):void
 		{
 			for each (var wavPlayer:WAVPlayer in _WAVPlayer) {
-				switchButtonState(event.value, wavPlayer);
+				switchButtonState(event.value, wavPlayer, 400, 400);
 			}
-			for each (var mp3Player:MP3Player in _MP3Player) {
-				switchButtonState(event.value, mp3Player);
+			for (var j:int = 0; j < _MP3Player.length; j++) {
+				switchButtonState(event.value, _MP3Player[j], audioPos[j].X, audioPos[j].Y);
 			}
 		}
 		

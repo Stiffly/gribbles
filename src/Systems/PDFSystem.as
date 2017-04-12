@@ -68,7 +68,7 @@ package Systems
 		
 		private function buttonHandler(event:StateEvent):void
 		{
-			switchButtonState(event.value, _PDFViewer);
+			switchButtonState(event.value, _PDFViewer, 400, 400);
 		}
 	}
 }

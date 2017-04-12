@@ -26,6 +26,7 @@ package Systems
 	
 	public class System extends GestureWorks
 	{
+		protected var frameThickness:uint = 15;
 		public function System()
 		{
 			super();
@@ -35,13 +36,13 @@ package Systems
 		// A function to be overidden by child classes
 		public function Update():void { }
 		
-		protected function showComponent(component : Component) : void
+		protected function showComponent(x:int, y:int, component : Component) : void
 		{
 			component.alpha = 1.0;
 			component.touchEnabled = true;
 			component.scale = 1.0;
-			component.x = stage.stageWidth / 2 - component.width / 2;
-			component.y = stage.stageHeight / 2 - component.height / 2;
+			component.x = x;
+			component.y = y;
 			//component.rotation = int(Math.round(Math.random() * 180)) - 90;
 			/*if (getQualifiedClassName(component.getChildAt(0)).search("WAV") != -1) {
 				WAV(component.getChildAt(0)).play();
@@ -65,7 +66,7 @@ package Systems
 			}
 		}
 		
-		protected function switchButtonState(buttonState : String, component : Component ) : void
+		protected function switchButtonState(buttonState : String, component : Component, x:int, y:int) : void
 		{
 			// On release
 			if (buttonState == "down-state")
@@ -74,7 +75,7 @@ package Systems
 				hideComponent(component);
 			}
 			else if (component.alpha == 0) {
-				showComponent(component);
+				showComponent(x, y, component);
 			}
 		}
 		
@@ -112,6 +113,7 @@ package Systems
 			frame.targetParent = true;
 			frame.mouseChildren = false;   
 			frame.className = "frame";
+			frame.frameThickness = frameThickness;
 			component.addChild(frame);
 			return frame;
 		}

@@ -84,7 +84,7 @@ package Systems
 		private function buttonHandler(event:StateEvent):void
 		{
 			// Button state was changed, clicked or released
-			switchButtonState(event.value, _HTMLViewer);
+			switchButtonState(event.value, _HTMLViewer, 400, 400);
 		}
 		
 		private function onNewPage(e:LocationChangeEvent):void

@@ -80,8 +80,6 @@ package Systems
 			// Create the button loaded from CML
 			_button = CMLObjectList.instance.getId("image-button");
 			_button.addEventListener(StateEvent.CHANGE, imageButtonHandler);
-			_button.x = 900;
-			_button.y = 500;
 			stage.addChild(_button);
 		}
 		
@@ -92,7 +90,7 @@ package Systems
 		// On button click
 		private function imageButtonHandler(event:StateEvent):void
 		{
-			switchButtonState(event.value, _imageViewer);
+			switchButtonState(event.value, _imageViewer, 400, 400);
 		}
 		
 		// Dynamically load an image from disk
