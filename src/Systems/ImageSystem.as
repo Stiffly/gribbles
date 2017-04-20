@@ -47,13 +47,13 @@ package Systems
 			_figureInfo.push(new textContent("Monsterfigur", 	"\nBalken med träfiguren som skulle bärgas var 0,353 meter lång, 0,35 x 0,35 meter i huvudändan och 0,20 x 0,20 meter i kortändan. Vikten beräknades till 340 kg. För att stabilisera balken under lyftet specialtillverkades en vadderad vagga vilken fördelade vikten samt skyddade skulpturen från stötar."));
 			_figureInfo.push(new textContent("Gribshunden", 	"\nGribshunden är det bäst bevarade exemplet i världen på den teknik och den nya typ av fartyg som senare skulle utvecklas till stora välkända nordeuropeiska örlogsskepp som Mary Rose (1545), Mars (1564), Vasa (1628), och Kronan (1676). Det är ett fartyg som är samtida med Christoffer Columbus så omtalade skepp Sankta Maria från 1492 (fast större)."));
 			
-			_drawingInfo.push(new textContent("1", "uno"));
-			_drawingInfo.push(new textContent("2", "uno"));
-			_drawingInfo.push(new textContent("3", "uno"));
-			_drawingInfo.push(new textContent("4", "uno"));
-			_drawingInfo.push(new textContent("5", "uno"));
-			_drawingInfo.push(new textContent("6", "uno"));
-			_drawingInfo.push(new textContent("7", "uno"));
+			_drawingInfo.push(new textContent("1", "\nEtt"));
+			_drawingInfo.push(new textContent("Ritningar från Saeby kyrka", "\nBilden är från en ristning i kalkputsen i Saeby kyrka, Danmark. Ristningen föreställer ett stort örlogskepp med djurfigur i stäven från cirka 1500."));
+			_drawingInfo.push(new textContent("Ritningar från Saeby kyrka", "\nBilden är från en ristning i kalkputsen i Saeby kyrka, Danmark. Ristningen föreställer ett stort örlogskepp med djurfigur i stäven från cirka 1500."));
+			_drawingInfo.push(new textContent("Ritningar från Saeby kyrka", "\nBilden är från en ristning i kalkputsen i Saeby kyrka, Danmark. Ristningen föreställer ett stort örlogskepp med djurfigur i stäven från cirka 1500."));
+			_drawingInfo.push(new textContent("5", "\nFem"));
+			_drawingInfo.push(new textContent("Kraek", "\nDen okända mästaren \"WA\" ritade denna \"Kraek\" - karrack - omkring 1470. Gribhunden har sannolikt haft en akter uppbyggd på liknande sätt."));
+			_drawingInfo.push(new textContent("7", "\nSju"));
 			
 			_albumPositions.push(new Position(400, 0));
 			var drawingsViewer:AlbumViewer = createViewer(new AlbumViewer(), _albumPositions[_i].X, _albumPositions[_i].Y, 1000, 700) as AlbumViewer;
@@ -248,7 +248,7 @@ package Systems
 		
 		private function onTouch(event:TouchEvent) : void
 		{
-			stage.setChildIndex(AlbumViewer(event.currentTarget), stage.numChildren - 1);
+			//stage.setChildIndex(AlbumViewer(event.currentTarget), stage.numChildren - 1);
 		}
 	}
 	
