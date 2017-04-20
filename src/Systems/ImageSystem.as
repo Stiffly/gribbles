@@ -30,15 +30,11 @@ package Systems
 		private var temp:Array = new Array();
 		private var temp2:int = 0;
 		private var _button:Button;
-		
 	
-		
 		public function ImageSystem()
 		{
 			super();
 		}
-		
-		
 		
 		override public function Init():void
 		{
@@ -125,7 +121,7 @@ package Systems
 			for each (var figurePath:String in getFilesInDirectoryRelative("images/content/figurehead"))
 			{
 				figureFront.addChild(loadImage(figurePath));
-				figureBack.addChild(createDescription(temp[temp2].title, temp[temp2].description));
+				figureBack.addChild(createDescription(temp[temp2]));
 				temp2++;
 			}
 			figureViewer.front = figureFront;
@@ -173,7 +169,7 @@ package Systems
 			return image;
 		}
 		
-		private function createDescription(title:String, description:String) :TouchContainer
+		private function createDescription(content : textContent) :TouchContainer
 		{
 			var tc:TouchContainer = new TouchContainer();
 			tc.width = 500;
@@ -196,19 +192,19 @@ package Systems
 			tc.addChild(c);
 			
 			var t:Text = new Text();
-			t.str = title;
+			t.str = content.title;
 			t.fontSize = 30;
 			t.color = 0xFFFFFF;
-			t.font = "OpenSansBold";
+			t.font = "MyFont";
 			t.autosize = true;
 			t.width = 500;
 			c.addChild(t);
 			
 			var d:Text = new Text();
-			d.str = description;
+			d.str = content.description;
 			d.fontSize = 20;
 			d.color = 0xFFFFFF;
-			d.font = "OpenSansBold";
+			d.font = "MyFont";
 			d.wordWrap = true;
 			d.autosize = true;
 			d.multiline = true;
