@@ -85,38 +85,34 @@ package Systems
 			
 			var figureViewer:AlbumViewer = createViewer(new AlbumViewer(), 0, 0, 500, 500) as AlbumViewer;
 			figureViewer.autoTextLayout = false;
-			figureViewer.linkAlbums = false;
+			figureViewer.linkAlbums = true;
 			figureViewer.clusterBubbling = true;
 			figureViewer.mouseChildren = true;
-			figureViewer.nativeTransform = true;
 			figureViewer.gestureList = {"2-finger-drag": true, "n-scale": true, "n-rotate": true};
 			stage.addChild(figureViewer);
 			
 			// Front
 			var figureFront:Album = new Album();
+			figureFront.id = "front";
 			figureFront.loop = true;
 			figureFront.horizontal = true;
 			figureFront.applyMask = true;
 			figureFront.margin = 8;
 			figureFront.mouseChildren = true;
-			figureFront.clusterBubbling = true;
+			figureFront.clusterBubbling = false;
 			figureFront.dragGesture = "1-finger-drag";
 			
 			// Back
 			var figureBack:Album = new Album();
 			figureBack.id = "back";
-			figureBack.alpha = 0.5;
-			figureBack.applyMask = true;
-			figureBack.horizontal = true;
-			figureBack.visible = false;
-			figureBack.margin = 8;
 			figureBack.loop = true;
+			figureBack.alpha = 0.5;
 			figureBack.horizontal = true;
-			figureBack.applyMask = true;
 			figureBack.margin = 8;
-			figureBack.mouseChildren = true;
-			figureBack.clusterBubbling = true;
-			figureBack.touchEnabled = false;
+			figureBack.clusterBubbling = false;
+			figureBack.visible = false;
+			figureBack.dragGesture = "1-finger-drag";
+			
 			// Add images to album
 			for each (var figurePath:String in getFilesInDirectoryRelative("images/content/figurehead"))
 			{
