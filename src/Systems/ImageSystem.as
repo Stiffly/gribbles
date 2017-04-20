@@ -24,11 +24,14 @@ package Systems
 	import com.gestureworks.events.GWGestureEvent;
 	import flash.events.TouchEvent;
 	
+	import util.Position;
+	
 	public class ImageSystem extends System
 	{
 		private var _imageViewers:Array = new Array();
-		private var temp:Array = new Array();
-		private var temp2:int = 0;
+		private var _figureInfo:Array = new Array();
+		private var _albumPositions:Array = new Array();
+		private var _i:int = 0;
 		private var _button:Button;
 	
 		public function ImageSystem()
@@ -38,12 +41,14 @@ package Systems
 		
 		override public function Init():void
 		{
-			temp.push(new textContent("Galjonsfiguren", "Träskulpturen under lyft på sin trävagga. Öron och den tandförsedda käften med människoansiktet stickande ut är tydliga. Ögonen verkar sitta nedaför \"pannan\" riktade frammåt och de två \"knopparna\" ovanpå skulle då eventuellt kunna vara fästen för horn."));
-			temp.push(new textContent("Number dos", "This is numbero two"));
-			temp.push(new textContent("Number tres", "This is numbero tre"));
-			temp.push(new textContent("Number quattro staggioni", "This is numbero vier"));
+			_figureInfo.push(new textContent("Galjonsfiguren", "Träskulpturen under lyft på sin trävagga. Öron och den tandförsedda käften med människoansiktet stickande ut är tydliga. Ögonen verkar sitta nedaför \"pannan\" riktade frammåt och de två \"knopparna\" ovanpå skulle då eventuellt kunna vara fästen för horn."));
+			_figureInfo.push(new textContent("Number dos", "This is numbero two"));
+			_figureInfo.push(new textContent("Number tres", "This is numbero tre"));
+			_figureInfo.push(new textContent("Number quattro staggioni", "This is numbero vier"));
 			
-			var drawingsViewer:AlbumViewer = createViewer(new AlbumViewer(), 0, 0, 500, 500) as AlbumViewer;
+			_albumPositions.push(new Position(400, 100));
+			var drawingsViewer:AlbumViewer = createViewer(new AlbumViewer(), _albumPositions[_i].X, _albumPositions[_i].Y, 500, 500) as AlbumViewer;
+			_i++;
 			drawingsViewer.autoTextLayout = false;
 			drawingsViewer.linkAlbums = false;
 			drawingsViewer.clusterBubbling = true;
@@ -64,6 +69,7 @@ package Systems
 			drawingsFront.mouseChildren = true;
 			drawingsFront.clusterBubbling = true;
 			drawingsFront.dragGesture = "1-finger-drag";
+			
 			// Add images to album
 			for each (var drawingsPath:String in getFilesInDirectoryRelative("images/content/drawings"))
 			{
@@ -83,7 +89,8 @@ package Systems
 			hideComponent(drawingsViewer);
 			_imageViewers.push(drawingsViewer);
 			
-			var figureViewer:AlbumViewer = createViewer(new AlbumViewer(), 0, 0, 500, 500) as AlbumViewer;
+			_albumPositions.push(new Position(400, 400));
+			var figureViewer:AlbumViewer = createViewer(new AlbumViewer(), _albumPositions[_i].X, _albumPositions[_i].Y, 1000, 500 + 32) as AlbumViewer;
 			figureViewer.autoTextLayout = false;
 			figureViewer.linkAlbums = true;
 			figureViewer.clusterBubbling = true;
@@ -112,13 +119,14 @@ package Systems
 			figureBack.clusterBubbling = false;
 			figureBack.visible = false;
 			figureBack.dragGesture = "1-finger-drag";
+			figureBack.dragAngle = 0;
 			
 			// Add images to album
-			for each (var figurePath:String in getFilesInDirectoryRelative("images/content/figurehead"))
+			var figurePath:Array = getFilesInDirectoryRelative("images/content/figurehead");
+			for (var i:int = 0; i < figurePath.length; i++)
 			{
-				figureFront.addChild(loadImage(figurePath));
-				figureBack.addChild(createDescription(temp[temp2]));
-				temp2++;
+				figureFront.addChild(loadImage(figurePath[i]));
+				figureBack.addChild(createDescription(_figureInfo[i]));;
 			}
 			figureViewer.front = figureFront;
 			figureViewer.back = figureBack;
@@ -149,9 +157,9 @@ package Systems
 		// On button click
 		private function imageButtonHandler(event:StateEvent):void
 		{
-			for each (var imageViewer:AlbumViewer in _imageViewers)
+			for (var i:int = 0; i < _imageViewers.length; i++ )
 			{
-				switchButtonState(event.value, imageViewer, 400, 400);
+				switchButtonState(event.value, _imageViewers[i], _albumPositions[i].X, _albumPositions[i].Y);
 			}
 		}
 		

@@ -26,7 +26,7 @@ package Systems
 	
 	public class System extends GestureWorks
 	{
-		protected var frameThickness:uint = 15;
+		protected var _frameThickness:uint = 15;
 		public function System()
 		{
 			super();
@@ -113,7 +113,7 @@ package Systems
 			frame.targetParent = true;
 			frame.mouseChildren = false;   
 			frame.className = "frame";
-			frame.frameThickness = frameThickness;
+			frame.frameThickness = _frameThickness;
 			component.addChild(frame);
 			return frame;
 		}

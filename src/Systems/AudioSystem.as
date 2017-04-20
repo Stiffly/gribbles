@@ -30,10 +30,10 @@ package Systems
 	{
 		private var _WAVPlayer:Array = new Array();
 		private var _MP3Player:Array = new Array();
-		private var audioPos:Array = new Array();
+		private var _audioPos:Array = new Array();
 		private var _button:Button;
-		private var offset:Position = new Position(400, 200);
-		private var i:int = 0;
+		private var _offset:Position = new Position(400, 200);
+		private var _i:int = 0;
 		
 		public function AudioSystem()
 		{
@@ -48,17 +48,17 @@ package Systems
 			{
 				if (audioPath.toLowerCase().search(".wav") != -1)
 				{
-					audioPos.push(new Position(offset.X + (i % 2 * (width + frameThickness)), offset.Y + (Math.floor(i / 2) * (height+ frameThickness))));
-					var wavPlayer:WAVPlayer = createViewer(new WAVPlayer(), audioPos[i].X, audioPos[i].Y, width, height) as WAVPlayer;
+					_audioPos.push(new Position(_offset.X + (_i % 2 * (width + _frameThickness)), _offset.Y + (Math.floor(_i / 2) * (height+ _frameThickness))));
+					var wavPlayer:WAVPlayer = createViewer(new WAVPlayer(), _audioPos[_i].X, _audioPos[_i].Y, width, height) as WAVPlayer;
 					setWAVroperties(wavPlayer, audioPath, width, height);
-					i++;
+					_i++;
 					
 				} else if (audioPath.toLowerCase().search(".mp3") != -1)
 				{					
-					audioPos.push(new Position(offset.X + (i % 2 * (width + frameThickness * 4)), offset.Y + (Math.floor(i / 2) * (height+ frameThickness * 4))));
-					var mp3Player:MP3Player = createViewer(new MP3Player(), audioPos[i].X, audioPos[i].Y, width, height) as MP3Player;
+					_audioPos.push(new Position(_offset.X + (_i % 2 * (width + _frameThickness * 4)), _offset.Y + (Math.floor(_i / 2) * (height+ _frameThickness * 4))));
+					var mp3Player:MP3Player = createViewer(new MP3Player(), _audioPos[_i].X, _audioPos[_i].Y, width, height) as MP3Player;
 					setMP3Properties(mp3Player, audioPath, width, height);
-					i++;
+					_i++;
 				}
 			}
 			_button = CMLObjectList.instance.getId("music-button");
@@ -72,7 +72,7 @@ package Systems
 				switchButtonState(event.value, wavPlayer, 400, 400);
 			}
 			for (var j:int = 0; j < _MP3Player.length; j++) {
-				switchButtonState(event.value, _MP3Player[j], audioPos[j].X, audioPos[j].Y);
+				switchButtonState(event.value, _MP3Player[j], _audioPos[j].X, _audioPos[j].Y);
 			}
 		}
 		
