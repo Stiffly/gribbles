@@ -89,7 +89,7 @@ package Systems
 		private function videoButtonHandler(event:StateEvent):void
 		{
 			// Button state was changed
-			switchButtonState(event.value, _videoViewer, 400, 400);
+			switchButtonState(event.value, _videoViewer, 400, 200);
 		}
 	}
 }
