@@ -69,7 +69,7 @@ package Systems
 			_videoViewer.addChild(front);
 			
 			// Add InfoPanel, Frame, TouchContainer and ViewerMenu
-			addInfoPanel(_videoViewer, "Videofilm", "Denna film visar när man fiskar upp Gribshindens galjonsfigur.");
+			addInfoPanel(_videoViewer, "Bärgning", "Denna film visar när man bärgar Gribshindens monsterfigur strax utanför Ronneby efter drygt 500 år på botten.");
 			addFrame(_videoViewer);
 			addTouchContainer(_videoViewer);
 			addViewerMenu(_videoViewer, true, true, true);

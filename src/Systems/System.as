@@ -13,6 +13,7 @@ package Systems
 	import flash.filesystem.File;
 	import flash.utils.getQualifiedClassName
 	import com.gestureworks.cml.core.CMLObjectList;	
+	import flash.events.TouchEvent;
 	import com.gestureworks.cml.components.Component;
 	import com.gestureworks.cml.elements.TouchContainer;
 	import com.gestureworks.cml.elements.Button;
@@ -81,6 +82,7 @@ package Systems
 		
 		protected function createViewer(component : Component, x : int, y : int, width : int, height : int) : Component
 		{
+			component.addEventListener(TouchEvent.TOUCH_BEGIN, onTouch);
 			component.className = "component";
 			component.x = x;
 			component.y = y;
@@ -161,16 +163,21 @@ package Systems
 		protected function scale_handler(event:GWGestureEvent):void
 		{
 			trace("scale");
-			event.target.scaleX += event.value.scale_dsx;
-			event.target.scaleY += event.value.scale_dsy;
+			event.target.scaleX += Math.min(event.value.scale_dsx, 1);
+			event.target.scaleY += Math.min(event.value.scale_dsy, 1);
 		}
 		
 		protected function rotate_handler(event:GWGestureEvent):void
 		{
 			trace("rotate");
-			var projectedRot:Number = event.target.rotation + event.value.rotate_dtheta;
+			var projectedRot:Number = event.target.rotation + Math.min(event.value.rotate_dtheta, 1);
 			projectedRot = projectedRot % 90 == 0 ? projectedRot + .1 : projectedRot; 
 			event.target.rotation = projectedRot; 
+		}
+		
+		private function onTouch(event:TouchEvent) : void
+		{
+			stage.setChildIndex(Component(event.currentTarget), stage.numChildren - 1);
 		}
 	}
 }

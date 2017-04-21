@@ -53,6 +53,11 @@ package Systems
 			_touchSprite.addEventListener(TouchEvent.TOUCH_MOVE, handleDrag);
 		}
 		
+		override public function Update():void
+		{
+			//_rippler.Update();
+		}
+		
 		private function handleDrag(event:TouchEvent):void
 		{
 			_rippler.drawRipple(event.stageX, event.stageY, 20, 1);

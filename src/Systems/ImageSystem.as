@@ -63,7 +63,10 @@ package Systems
 			drawingsViewer.clusterBubbling = true;
 			drawingsViewer.mouseChildren = true;
 			drawingsViewer.gestureList = {"2-finger-drag": true, "n-scale": true, "n-rotate": true};
-			drawingsViewer.addEventListener(TouchEvent.TOUCH_BEGIN, onTouch);
+			drawingsViewer.nativeTransform = false;
+			drawingsViewer.addEventListener(GWGestureEvent.ROTATE, rotate_handler);
+			drawingsViewer.addEventListener(GWGestureEvent.SCALE, scale_handler);
+			drawingsViewer.addEventListener(GWGestureEvent.DRAG, drag_handler);
 			stage.addChild(drawingsViewer);
 			
 			// Front
@@ -101,7 +104,6 @@ package Systems
 			drawingsViewer.addChild(drawingsBack);
 			
 			// Back
-			//addInfoPanel(drawingsViewer, "Ritningar", "Du kan bläddra genom att swipa ett finger i sidled på albumet.\n\nAlbumet visar bilder på Gribshunden.");
 			// Add Frame, TouchContainer and ViewerMenu
 			addFrame(drawingsViewer);
 			//addTouchContainer(_imageViewer);
@@ -119,7 +121,6 @@ package Systems
 			figureViewer.clusterBubbling = true;
 			figureViewer.mouseChildren = true;
 			figureViewer.gestureList = {"2-finger-drag": true, "n-scale": true, "n-rotate": true};
-			figureViewer.addEventListener(TouchEvent.TOUCH_BEGIN, onTouch);
 			stage.addChild(figureViewer);
 			
 			// Front
@@ -244,11 +245,6 @@ package Systems
 			DisplayUtils.initAll(tc);
 			
 			return tc;
-		}
-		
-		private function onTouch(event:TouchEvent) : void
-		{
-			//stage.setChildIndex(AlbumViewer(event.currentTarget), stage.numChildren - 1);
 		}
 	}
 	

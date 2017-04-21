@@ -68,6 +68,15 @@ package
 		{
 			trace("CML parsing complete");
 			CMLParser.removeEventListener(CMLParser.COMPLETE, cmlComplete);
+
+			// This makes the image fit to the screen
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.align = StageAlign.TOP_LEFT;
+			// Enter fullscreen mode
+			stage.fullScreenSourceRect = new Rectangle(0, 0, 1920, 1080);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+			stage.displayState = StageDisplayState.FULL_SCREEN;
+			
 			// Loops over each system and intializes it
 			for each (var s:System in _systems)
 			{
@@ -76,13 +85,6 @@ package
 			}
 			// Do not update systems until they're all initiated
 			_systemsAreInitiated = true;
-			// This makes the image fit to the screen
-			stage.scaleMode = StageScaleMode.NO_SCALE;
-			stage.align = StageAlign.TOP_LEFT;
-			// Enter fullscreen mode
-			stage.fullScreenSourceRect = new Rectangle(0, 0, 1920, 1080);
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-			//stage.displayState = StageDisplayState.FULL_SCREEN;
 		}
 		
 		override protected function gestureworksInit():void

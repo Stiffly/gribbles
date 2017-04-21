@@ -31,6 +31,7 @@ package Systems
 		private var _WAVPlayer:Array = new Array();
 		private var _MP3Player:Array = new Array();
 		private var _audioPos:Array = new Array();
+		private var _audioInfo:Array = new Array();
 		private var _button:Button;
 		private var _offset:Position = new Position(400, 200);
 		private var _i:int = 0;
@@ -42,8 +43,12 @@ package Systems
 		
 		public override function Init():void
 		{
+			
 			var width:int = 600;
 			var height:int = 400;
+			_audioInfo.push(new textContent("Tyge Krabbe", "\nDen danska adelsmannen Tyge Krabbe fanns ombord på Gribshunden. Så här beskriver han förlisningen i ett brev till herr Hartvig."));
+			_audioInfo.push(new textContent("Kong Hansis Krønicke", "\nUr Kung Hans krönika av Arild Huitfeldt år 1599."));
+			
 			for each (var audioPath:String in getFilesInDirectoryRelative("audio"))
 			{
 				if (audioPath.toLowerCase().search(".wav") != -1)
@@ -57,7 +62,8 @@ package Systems
 				{					
 					_audioPos.push(new Position(_offset.X + (_i % 2 * (width + _frameThickness * 4)), _offset.Y + (Math.floor(_i / 2) * (height+ _frameThickness * 4))));
 					var mp3Player:MP3Player = createViewer(new MP3Player(), _audioPos[_i].X, _audioPos[_i].Y, width, height) as MP3Player;
-					setMP3Properties(mp3Player, audioPath, width, height);
+					
+					setMP3Properties(mp3Player, audioPath, width, height, _audioInfo[_i]);
 					_i++;
 				}
 			}
@@ -76,7 +82,7 @@ package Systems
 			}
 		}
 		
-		private function setMP3Properties(component:Component, path:String, width:int, height:int):void
+		private function setMP3Properties(component:Component, path:String, width:int, height:int, description:textContent):void
 		{
 			var mp3:MP3 = new MP3();
 			mp3.className = "mp3-component";
@@ -91,7 +97,7 @@ package Systems
 			component.addChild(mp3);
 			stage.addChild(component);
 			
-			addInfoPanel(component, "Snack om Gribshunden", "En beskrivning om processen som leder till att Gribshunden sjunker.");
+			addInfoPanel(component, description.title, description.description);
 			addFrame(component);
 			addTouchContainer(component);
 			addViewerMenu(component, true, true, true);
@@ -122,3 +128,11 @@ package Systems
 		}
 	}
 }
+
+class textContent
+{
+	public function textContent(t:String, d:String) { title = t; description = d; };
+	public var title:String;
+	public var description:String;
+}
+	

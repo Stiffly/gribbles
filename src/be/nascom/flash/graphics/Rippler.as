@@ -27,7 +27,7 @@ package be.nascom.flash.graphics
     import flash.display.BitmapDataChannel;
     import flash.display.BlendMode;
     import flash.display.DisplayObject;
-    import flash.events.Event;
+    //import flash.events.Event;
     import flash.filters.ConvolutionFilter;
     import flash.filters.DisplacementMapFilter;
     import flash.geom.ColorTransform;
@@ -109,7 +109,7 @@ package be.nascom.flash.graphics
             _source.filters = [_filter];
             
             // Create a frame-based loop to update the ripples
-            _source.addEventListener(Event.ENTER_FRAME, handleEnterFrame);
+            //_source.addEventListener(Event.ENTER_FRAME, handleEnterFrame);
             
             // Create the filter that causes the ripples to grow.
             // Depending on the colour of its neighbours, the pixel will be turned white
@@ -156,14 +156,14 @@ package be.nascom.flash.graphics
          */
         public function destroy() : void
         {
-            _source.removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
+            //_source.removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
             _buffer1.dispose();
             _buffer2.dispose();
             _defData.dispose();
         }
         
         // the actual loop where the ripples are animated
-        private function handleEnterFrame(event : Event) : void
+        public function Update() : void
         {
         	// a temporary clone of buffer 2
             var temp : BitmapData = _buffer2.clone();
