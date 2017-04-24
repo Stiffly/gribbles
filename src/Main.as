@@ -8,6 +8,7 @@ package
 	 * @contact adambylehn@hotmail.com
 	 */
 	
+	import com.gestureworks.cml.elements.Button;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
 	import flash.display.StageAlign;
@@ -18,10 +19,12 @@ package
 	import flash.text.TextField;
 	import flash.events.KeyboardEvent;
 	
+	import com.gestureworks.cml.elements.Graphic;
 	import com.gestureworks.cml.core.CMLAir; CMLAir;
 	import com.gestureworks.core.GestureWorksAIR; GestureWorksAIR;
 	import com.gestureworks.cml.utils.List;
 	import com.gestureworks.cml.core.CMLParser;
+	import com.gestureworks.cml.events.StateEvent;
 	
 	import Systems.System;
 	import Systems.VideoSystem;
@@ -41,8 +44,9 @@ package
 		private var _FPSCounter:TextField = new TextField();
 		private var _elapsedTime:int = 0;
 		private var _elapsedTimeText:TextField = new TextField();
+		private var _mainButton:Button;
 		
-		private var _currentState:String = State.MAINAPP;
+		private var _currentState:String = State.SCREENSAVER;
 		
 		private var _systemsAreInitiated:Boolean = false;
 		
@@ -79,6 +83,25 @@ package
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			stage.displayState = StageDisplayState.FULL_SCREEN;
 			
+			// Create a button for switching to mainapp
+			_mainButton = new Button();
+			var radius:Number = 50;
+			_mainButton.width = radius * 2;
+			_mainButton.height = radius * 2;
+			_mainButton.x = stage.stageWidth / 2 - _mainButton.width / 2;
+			_mainButton.y = stage.stageHeight / 2 -  _mainButton.height / 2;
+			_mainButton.dispatch = "initial:initial:down:down:up:up:over:over:out:out";
+			_mainButton.hit = getCircle(0x000000, 0);
+			_mainButton.initial = getCircle(0xFFFFFF); //white
+			_mainButton.down = getCircle(0x0000FF); //blue
+			_mainButton.up = getCircle(0xFF0000); //red
+			_mainButton.over = getCircle(0x00FF00); //green
+			_mainButton.out = getCircle(0xFF00FF); //purple
+			_mainButton.init();
+			_mainButton.addEventListener(StateEvent.CHANGE, onButtonPress);
+			stage.addChild(_mainButton);
+			
+			
 			// Loops over each system and intializes it
 			for each (var s:System in _systems)
 			{
@@ -87,6 +110,7 @@ package
 			}
 			addChild(_screenSaver);
 			_screenSaver.Init();
+			switchToScreenSaver();
 			// Do not update systems until they're all initiated
 			_systemsAreInitiated = true;
 		}
@@ -139,24 +163,46 @@ package
 				stage.displayState = StageDisplayState.FULL_SCREEN;
 			}
 			if (event.keyCode == 65) { // F5
-				var s:System;
-				if (_currentState == State.MAINAPP) {
-					for each (s in _systems)
-					{
-						s.Deactivate();
-					}
-					_screenSaver.Activate();
-					_currentState = State.SCREENSAVER;
-				}
-				else {
-					_screenSaver.Deactivate();
-					for each (s in _systems)
-					{
-						s.Activate();
-					}
-					_currentState = State.MAINAPP;
-				}
+				
 			}
+		}
+		
+		private function getCircle(color:uint, alpha:Number = 1):Graphic
+		{
+			var circle:Graphic = new Graphic();
+			circle.shape = "circle";
+			circle.radius = 100;
+			circle.color = color;
+			circle.alpha = alpha;
+			circle.lineStroke = 0;
+			return circle;
+		}
+		
+		private function onButtonPress(event:StateEvent) :void
+		{
+			switchToMainApp();
+		}
+		
+		private function switchToMainApp():void
+		{
+			_screenSaver.Deactivate();
+			for each (var s:System in _systems)
+			{
+				s.Activate();
+			}
+			_currentState = State.MAINAPP;
+			_mainButton.visible = false;
+		}
+		
+		private function switchToScreenSaver():void
+		{
+			_screenSaver.Activate();
+			for each (var s:System in _systems)
+			{
+				s.Deactivate();
+			}
+			_currentState = State.SCREENSAVER;
+			_mainButton.visible = true;
 		}
 	}
 }
