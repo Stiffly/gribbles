@@ -2,16 +2,8 @@
 
 <cml css="style.css" tuio="false" simulator="true">
 	
-<Stage>
-		
 
-<!-- <Include src="cml/VideoViewer.cml"/> -->
-<!-- <Include src="cml/HTMLViewer.cml"/> -->
-<!-- <Include src="cml/PDFViewer.cml"/> -->
-<!-- <Include src="cml/ImageViewer.cml"/> -->
-<!--<Include src="cml/HTML-url.cml"/>-->
 <Include src="cml/MenuButtons.cml"/>
 
-</Stage>
 	
 </cml>

@@ -9,6 +9,7 @@ package
 	 */
 	
 	import com.gestureworks.cml.elements.Button;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
 	import flash.display.StageAlign;
@@ -34,9 +35,14 @@ package
 	import Systems.PDFSystem;
 	import Systems.AudioSystem;
 		
-	[SWF(frameRate = "0", backgroundColor="0x313131", width = "1920", height = "1080")]
+	//[SWF(frameRate = "30", backgroundColor="0x313131", width = "1920", height = "1080")]
+	[SWF(width="1280",height="720",backgroundColor="0x000000",frameRate="30")]
 	public class Main extends GestureWorksAIR
 	{
+		[Embed(source = "../bin/images/loader.png")]
+		private var _sourceImage:Class;
+		private var _loaderImage:Sprite;
+		
 		private var _systems:List = new List();
 		private var _screenSaver:WaterSystem;
 		private var _passedFrames:int = 0;
@@ -53,6 +59,13 @@ package
 		public function Main()
 		{
 			trace("gribbles starting");
+			_loaderImage = new Sprite();
+			_loaderImage.graphics.beginBitmapFill(new _sourceImage().bitmapData, null, true, true);
+			_loaderImage.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
+			_loaderImage.graphics.endFill();
+			stage.addChild(_loaderImage);
+			stage.addChildAt(_loaderImage, stage.numChildren -1);
+			
 			// Calls super constructor GestureWorks()
 			super();
 			cml = "main.cml";
@@ -76,12 +89,12 @@ package
 			CMLParser.removeEventListener(CMLParser.COMPLETE, cmlComplete);
 
 			// This makes the image fit to the screen
-			stage.scaleMode = StageScaleMode.NO_SCALE;
+			/*stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			// Enter fullscreen mode
 			stage.fullScreenSourceRect = new Rectangle(0, 0, 1920, 1080);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-			stage.displayState = StageDisplayState.FULL_SCREEN;
+			stage.displayState = StageDisplayState.FULL_SCREEN;*/
 			
 			// Create a button for switching to mainapp
 			_mainButton = new Button();
@@ -100,7 +113,7 @@ package
 			_mainButton.init();
 			_mainButton.addEventListener(StateEvent.CHANGE, onButtonPress);
 			stage.addChild(_mainButton);
-			
+			stage.addChildAt(_loaderImage, stage.numChildren -1);
 			
 			// Loops over each system and intializes it
 			for each (var s:System in _systems)
@@ -120,13 +133,13 @@ package
 			trace("Gestureworks initiated");
 			
 			// Hide mouse
-			Mouse.hide();
+			//Mouse.hide();
 			
 			// Show FPS-counter
 			stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			stage.addChild(_FPSCounter);
 			_elapsedTimeText.y = 10;
-			stage.addChild(_elapsedTimeText);
+			_loaderImage.visible = false;
 		}
 		
 		private function onEnterFrame(event:Event):void
@@ -161,9 +174,6 @@ package
 		{
 			if (event.keyCode == 117) { // F6
 				stage.displayState = StageDisplayState.FULL_SCREEN;
-			}
-			if (event.keyCode == 65) { // F5
-				
 			}
 		}
 		

@@ -96,7 +96,7 @@ package Systems
 			component.maxScale = 2;
 			component.minScale = 0.2;
 			// Enable debugging information
-			component.debugDisplay = true;
+			//component.debugDisplay = true;
 			return component;
 		}
 		

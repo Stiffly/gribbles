@@ -94,7 +94,7 @@ class DustEmitter extends Sprite
 	private var _particles:Array = new Array();
 	private var _groupVelX:Number = 0;
 	private var _groupVelY:Number = 0;
-	private var _maxVel:uint = 10;
+	private var _maxVel:uint = 5;
 	
 	public function DustEmitter(amount:uint, stage:Stage)
 	{
@@ -148,7 +148,7 @@ class Particle extends Sprite
 		_dot = new Sprite();		
 		_dot.x = x; _dot.y= y;
 		_dot.graphics.beginFill(0xFFFFFF);
-		_dot.graphics.drawRect(_dot.x, _dot.y, 1, 1);
+		_dot.graphics.drawRect(0, 0, 1, 1);
 		_dot.graphics.endFill();
 		stage.addChild(_dot);
 		_stageWidth = stage.stageWidth;
@@ -159,11 +159,11 @@ class Particle extends Sprite
 	{
 		if (_dot.x > _stageWidth)
 			_dot.x = 0;
-		if (_dot.x < 0)
+		else if (_dot.x < 0)
 			_dot.x = _stageWidth;
 		if (_dot.y > _stageHeight)
 			_dot.y = 0;
-		if (_dot.y < 0)
+		else if (_dot.y < 0)
 			_dot.y = _stageHeight;
 			
 		_dot.x += x + Math.random() * 2 - 1;

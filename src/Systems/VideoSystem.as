@@ -35,21 +35,11 @@ package Systems
 			_videoViewer = createViewer(new VideoViewer(), 0, 0, 500, 400) as VideoViewer;
 			_videoViewer.autoTextLayout = false;
 			_videoViewer.clusterBubbling = true;
-			_videoViewer.mouseChildren = true;
+			//_videoViewer.mouseChildren = true;
 			_videoViewer.gestureList = {"n-drag": true, "n-scale": true, "n-rotate": true};
 
 			stage.addChild(_videoViewer);
 
-			// Front
-			/*var front:VideoViewer = new VideoViewer();
-			front.loop = true;
-			front.horizontal = true;
-			front.applyMask = true;
-			front.margin = 8;
-			front.mouseChildren = true;
-			front.clusterBubbling = true;
-			front.dragGesture = "1-finger-drag";*/
-			
 			// For every file in 'videos' folder, load the file
 			for each (var videoFile:String in getFilesInDirectoryRelative("videos")) {
 				// Dynamically load video from disk
@@ -57,11 +47,10 @@ package Systems
 				video.src = videoFile;
 				video.width = 500;
 				video.height = 400;
-				video.centerPlayButton = true;
 				video.autoplay = true;
 				video.loop = true;
 				video.progressBar = true;
-				video.volume = 20;
+				video.clusterBubbling = true;
 				_videoViewer.addChild(video);
 			}
 			
