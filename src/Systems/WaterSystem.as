@@ -9,6 +9,7 @@ package Systems
 	 */
 	
 	import flash.display.Bitmap;
+	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	
 	import com.gestureworks.core.GestureWorks;
@@ -17,10 +18,10 @@ package Systems
 	
 	import be.nascom.flash.graphics.Rippler;
 	
-	public class WaterSystem extends Systems.System
+	public class WaterSystem extends Sprite
 	{
 		// Embed an image which will be used as a background
-		[Embed(source = "../../bin/images/content/bottenbild2.jpg")]
+		[Embed(source = "../../bin/images/stones.jpg")]
 		private var _sourceImage:Class;
 		// The "rippler" that instantiates water ripples at the surface 
 		private var _rippler:Rippler;
@@ -33,7 +34,7 @@ package Systems
 			super();
 		}
 		
-		override public function Init():void
+		public function Init():void
 		{
 			// Create the touch object wich will be used as the background for the application
 			_touchSprite = new TouchSprite();
@@ -53,14 +54,32 @@ package Systems
 			_touchSprite.addEventListener(TouchEvent.TOUCH_MOVE, handleDrag);
 		}
 		
-		override public function Update():void
+		public function Update():void
 		{
-			//_rippler.Update();
+			_rippler.Update();
 		}
 		
 		private function handleDrag(event:TouchEvent):void
 		{
 			_rippler.drawRipple(event.stageX, event.stageY, 20, 1);
 		}
+		
+		public function Deactivate():void
+		{
+			_rippler.destroy();
+			_touchSprite.visible = false;
+		}
+		
+		public function Activate():void
+		{
+			_rippler = new Rippler(_touchSprite, 20, 10);
+			_touchSprite.visible = true;
+		}
 	}
+}
+import flash.display.Sprite;
+
+class Dust extends Sprite
+{
+	
 }

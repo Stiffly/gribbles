@@ -2,7 +2,7 @@
 
 <cml css="style.css" tuio="false" simulator="true">
 	
-<Stage color="0xFFFFFF">
+<Stage>
 		
 
 <!-- <Include src="cml/VideoViewer.cml"/> -->

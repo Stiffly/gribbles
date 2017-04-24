@@ -33,7 +33,6 @@ package Systems
 		private var _drawingInfo:Array = new Array();
 		private var _albumPositions:Array = new Array();
 		private var _i:int = 0;
-		private var _button:Button;
 	
 		public function ImageSystem()
 		{
@@ -63,10 +62,10 @@ package Systems
 			drawingsViewer.clusterBubbling = true;
 			drawingsViewer.mouseChildren = true;
 			drawingsViewer.gestureList = {"2-finger-drag": true, "n-scale": true, "n-rotate": true};
-			drawingsViewer.nativeTransform = false;
-			drawingsViewer.addEventListener(GWGestureEvent.ROTATE, rotate_handler);
-			drawingsViewer.addEventListener(GWGestureEvent.SCALE, scale_handler);
-			drawingsViewer.addEventListener(GWGestureEvent.DRAG, drag_handler);
+			//drawingsViewer.nativeTransform = false;
+			//drawingsViewer.addEventListener(GWGestureEvent.ROTATE, rotate_handler);
+			//drawingsViewer.addEventListener(GWGestureEvent.SCALE, scale_handler);
+			//drawingsViewer.addEventListener(GWGestureEvent.DRAG, drag_handler);
 			stage.addChild(drawingsViewer);
 			
 			// Front

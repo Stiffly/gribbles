@@ -16,7 +16,7 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'2017-04-21'</value>
+      <value>'2017-04-24'</value>
     </define>
     <define append="true">
       <name>CONFIG::air</name>
@@ -47,7 +47,7 @@
   <file-specs>
     <path-element>C:\Users\multi\Documents\Adam\gribbles\src\Main.as</path-element>
   </file-specs>
-  <default-background-color>#FFFFFF</default-background-color>
+  <default-background-color>#575757</default-background-color>
   <default-frame-rate>100</default-frame-rate>
   <default-size>
     <width>1920</width>

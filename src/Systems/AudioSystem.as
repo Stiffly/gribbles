@@ -32,7 +32,6 @@ package Systems
 		private var _MP3Player:Array = new Array();
 		private var _audioPos:Array = new Array();
 		private var _audioInfo:Array = new Array();
-		private var _button:Button;
 		private var _offset:Position = new Position(400, 200);
 		private var _i:int = 0;
 		

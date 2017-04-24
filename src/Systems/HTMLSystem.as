@@ -24,7 +24,6 @@ package Systems
 	{
 		private var _HTMLViewer:HTMLViewer;
 		private var _HTMLElement:HTML;
-		private var _button:Button;
 		private var _approvedURLs:Array;
 		
 		public function HTMLSystem()

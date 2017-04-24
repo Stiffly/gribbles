@@ -31,15 +31,18 @@ package
 	import Systems.PDFSystem;
 	import Systems.AudioSystem;
 		
-	[SWF(frameRate = "0", width = "1920", height = "1080")]
+	[SWF(frameRate = "0", backgroundColor="0x313131", width = "1920", height = "1080")]
 	public class Main extends GestureWorksAIR
 	{
 		private var _systems:List = new List();
+		private var _screenSaver:WaterSystem;
 		private var _passedFrames:int = 0;
 		private var _startTime:Number = 0;
 		private var _FPSCounter:TextField = new TextField();
 		private var _elapsedTime:int = 0;
 		private var _elapsedTimeText:TextField = new TextField();
+		
+		private var _currentState:String = State.MAINAPP;
 		
 		private var _systemsAreInitiated:Boolean = false;
 		
@@ -50,15 +53,14 @@ package
 			super();
 			cml = "main.cml";
 			gml = "gml/gestures.gml"; // gml now required
-			tuio = true;
 			
 			// Add systems here			
 			_systems.append(new HTMLSystem());
 			_systems.append(new PDFSystem());
-			_systems.append(new WaterSystem());
 			_systems.append(new VideoSystem());
 			_systems.append(new ImageSystem());
 			_systems.append(new AudioSystem());
+			_screenSaver = new WaterSystem();
 			
 			CMLParser.addEventListener(CMLParser.COMPLETE, cmlComplete);
 		}
@@ -83,6 +85,8 @@ package
 				addChild(s);
 				s.Init();
 			}
+			addChild(_screenSaver);
+			_screenSaver.Init();
 			// Do not update systems until they're all initiated
 			_systemsAreInitiated = true;
 		}
@@ -114,9 +118,14 @@ package
 			}
 			if (_systemsAreInitiated)
 			{
-				for each (var s:System in _systems)
-				{
-					s.Update();
+				switch (_currentState) {
+					case State.MAINAPP:
+						for each (var s:System in _systems)
+							s.Update();
+						break;
+					case State.SCREENSAVER:
+						_screenSaver.Update();
+						break;
 				}
 			}
 			// Elapsed time counter
@@ -129,6 +138,31 @@ package
 			if (event.keyCode == 117) { // F6
 				stage.displayState = StageDisplayState.FULL_SCREEN;
 			}
+			if (event.keyCode == 65) { // F5
+				var s:System;
+				if (_currentState == State.MAINAPP) {
+					for each (s in _systems)
+					{
+						s.Deactivate();
+					}
+					_screenSaver.Activate();
+					_currentState = State.SCREENSAVER;
+				}
+				else {
+					_screenSaver.Deactivate();
+					for each (s in _systems)
+					{
+						s.Activate();
+					}
+					_currentState = State.MAINAPP;
+				}
+			}
 		}
 	}
+}
+
+final class State 
+{
+    public static const SCREENSAVER:String = "SCREENSAVER";
+    public static const MAINAPP:String = "MAINAPP";
 }

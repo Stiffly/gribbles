@@ -57,9 +57,9 @@ package Systems
 			
 			DisplayUtils.initAll(_PDFViewer);
 			
-			var button:Button = CMLObjectList.instance.getId("pdf-button");
-			button.addEventListener(StateEvent.CHANGE, buttonHandler);
-			stage.addChild(button);
+			_button = CMLObjectList.instance.getId("pdf-button");
+			_button.addEventListener(StateEvent.CHANGE, buttonHandler);
+			stage.addChild(_button);
 		}
 		
 		override public function Update():void

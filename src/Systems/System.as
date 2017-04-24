@@ -23,11 +23,14 @@ package Systems
 	import com.gestureworks.events.GWGestureEvent;
 	import ui.ViewerMenu;
 	import ui.InfoPanel;
+	
 
 	
 	public class System extends GestureWorks
 	{
 		protected var _frameThickness:uint = 15;
+		protected var _button:Button;
+		
 		public function System()
 		{
 			super();
@@ -178,6 +181,18 @@ package Systems
 		private function onTouch(event:TouchEvent) : void
 		{
 			stage.setChildIndex(Component(event.currentTarget), stage.numChildren - 1);
+		}
+		
+		public function Deactivate():void
+		{
+			_button.active = false;
+			_button.visible = false;
+		}
+		
+		public function Activate():void
+		{
+			_button.active = true;
+			_button.visible = true;
 		}
 	}
 }

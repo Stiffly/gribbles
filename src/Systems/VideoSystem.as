@@ -81,9 +81,9 @@ package Systems
 			DisplayUtils.initAll(_videoViewer);
 			
 			// Load the button from CML
-			var button:Button = CMLObjectList.instance.getId("video-button");
-			button.addEventListener(StateEvent.CHANGE, videoButtonHandler);
-			stage.addChild(button);
+			_button = CMLObjectList.instance.getId("video-button");
+			_button.addEventListener(StateEvent.CHANGE, videoButtonHandler);
+			stage.addChild(_button);
 		}
 		
 		private function videoButtonHandler(event:StateEvent):void
