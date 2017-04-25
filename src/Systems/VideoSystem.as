@@ -32,7 +32,7 @@ package Systems
 		override public function Init():void
 		{
 			// Create the video Viewer (which actually is an AlbumViewer atm, if amount of videos == 1 -> can change to VideoViewer)
-			_videoViewer = createViewer(new VideoViewer(), 0, 0, 500, 400) as VideoViewer;
+			_videoViewer = createViewer(new VideoViewer(), 0, 0, 720, 576) as VideoViewer;
 			_videoViewer.autoTextLayout = false;
 			_videoViewer.clusterBubbling = true;
 			//_videoViewer.mouseChildren = true;
@@ -45,8 +45,8 @@ package Systems
 				// Dynamically load video from disk
 				var video:Video = new Video();
 				video.src = videoFile;
-				video.width = 500;
-				video.height = 400;
+				video.width = 720;
+				video.height = 576;
 				video.autoplay = true;
 				video.loop = true;
 				video.progressBar = true;
@@ -55,7 +55,7 @@ package Systems
 			}
 			
 			// Add InfoPanel, Frame, TouchContainer and ViewerMenu
-			addInfoPanel(_videoViewer, "Bärgning", "Denna film visar när man bärgar Gribshindens monsterfigur strax utanför Ronneby efter drygt 500 år på botten.");
+			addInfoPanel(_videoViewer, "Bärgning", "\nDenna film visar när man bärgar Gribshindens monsterfigur strax utanför Ronneby efter drygt 500 år på botten.");
 			addFrame(_videoViewer);
 			addTouchContainer(_videoViewer);
 			addViewerMenu(_videoViewer, true, true, true);

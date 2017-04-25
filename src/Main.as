@@ -11,10 +11,6 @@ package
 	import com.gestureworks.cml.elements.Button;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.geom.Rectangle;
-	import flash.display.StageAlign;
-	import flash.display.StageScaleMode;
-	import flash.display.StageDisplayState;
 	import flash.utils.getTimer;
 	import flash.ui.Mouse;
 	import flash.text.TextField;
@@ -23,7 +19,6 @@ package
 	import com.gestureworks.cml.elements.Graphic;
 	import com.gestureworks.cml.core.CMLAir; CMLAir;
 	import com.gestureworks.core.GestureWorksAIR; GestureWorksAIR;
-	import com.gestureworks.cml.utils.List;
 	import com.gestureworks.cml.core.CMLParser;
 	import com.gestureworks.cml.events.StateEvent;
 	
@@ -42,7 +37,7 @@ package
 		private var _sourceImage:Class;
 		private var _loaderImage:Sprite;
 		
-		private var _systems:List = new List();
+		private var _systems:Array = new Array();
 		private var _screenSaver:WaterSystem;
 		private var _passedFrames:int = 0;
 		private var _startTime:Number = 0;
@@ -73,12 +68,12 @@ package
 			gml = "gml/gestures.gml"; // gml now required
 			
 			
-			// Add systems here			
-			_systems.append(new HTMLSystem());
-			_systems.append(new PDFSystem());
-			_systems.append(new VideoSystem());
-			_systems.append(new ImageSystem());
-			_systems.append(new AudioSystem());
+			// Add systems here
+			_systems.push(new HTMLSystem());
+			_systems.push(new PDFSystem());
+			_systems.push(new VideoSystem());
+			_systems.push(new ImageSystem());
+			_systems.push(new AudioSystem());
 			_screenSaver = new WaterSystem();
 			
 			CMLParser.addEventListener(CMLParser.COMPLETE, cmlComplete);
