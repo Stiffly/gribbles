@@ -35,8 +35,7 @@ package
 	import Systems.PDFSystem;
 	import Systems.AudioSystem;
 		
-	//[SWF(frameRate = "30", backgroundColor="0x313131", width = "1920", height = "1080")]
-	[SWF(width="1280",height="720",backgroundColor="0x000000",frameRate="30")]
+	[SWF(frameRate = "30", backgroundColor="0x313131", width = "1920", height = "1080")]
 	public class Main extends GestureWorksAIR
 	{
 		[Embed(source = "../bin/images/loader.png")]
@@ -64,12 +63,15 @@ package
 			_loaderImage.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
 			_loaderImage.graphics.endFill();
 			stage.addChild(_loaderImage);
-			stage.addChildAt(_loaderImage, stage.numChildren -1);
+			//stage.addChildAt(_loaderImage, stage.numChildren -1);
+			
+			fullscreen = true;
 			
 			// Calls super constructor GestureWorks()
 			super();
 			cml = "main.cml";
 			gml = "gml/gestures.gml"; // gml now required
+			
 			
 			// Add systems here			
 			_systems.append(new HTMLSystem());
@@ -86,15 +88,7 @@ package
 		private function cmlComplete(event:Event):void
 		{
 			trace("CML parsing complete");
-			CMLParser.removeEventListener(CMLParser.COMPLETE, cmlComplete);
-
-			// This makes the image fit to the screen
-			/*stage.scaleMode = StageScaleMode.NO_SCALE;
-			stage.align = StageAlign.TOP_LEFT;
-			// Enter fullscreen mode
-			stage.fullScreenSourceRect = new Rectangle(0, 0, 1920, 1080);
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-			stage.displayState = StageDisplayState.FULL_SCREEN;*/
+			CMLParser.removeEventListener(CMLParser.COMPLETE, cmlComplete);			
 			
 			// Create a button for switching to mainapp
 			_mainButton = new Button();
@@ -173,7 +167,7 @@ package
 		private function onKeyDown(event:KeyboardEvent) : void
 		{
 			if (event.keyCode == 117) { // F6
-				stage.displayState = StageDisplayState.FULL_SCREEN;
+				fullscreen = true;
 			}
 		}
 		

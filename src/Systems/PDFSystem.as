@@ -9,6 +9,7 @@ package Systems
 	 */
 	 
 	
+	import com.gestureworks.cml.components.Component;
 	import com.gestureworks.cml.utils.DisplayUtils;
 	
 	import com.gestureworks.cml.core.CMLObjectList;
@@ -53,7 +54,7 @@ package Systems
 			addFrame(_PDFViewer);
 			addTouchContainer(_PDFViewer);
 			
-			hideComponent(_PDFViewer);
+			//hideComponent(_PDFViewer);
 			
 			DisplayUtils.initAll(_PDFViewer);
 			
@@ -69,6 +70,31 @@ package Systems
 		private function buttonHandler(event:StateEvent):void
 		{
 			switchButtonState(event.value, _PDFViewer, 400, 400);
+		}
+		
+		protected override function switchButtonState(buttonState:String, component:Component, x:int, y:int):void
+		{
+			// On release
+			if (buttonState == "down-state")
+				return;
+			if (component.x < 10000) {
+				hideComponent(component);
+			}
+			else if (component.x > 10000) {
+				showComponent(component);
+			}
+		}
+		
+		protected override function hideComponent(component:Component):void
+		{
+			component.x = 13337; // "Hide" the component
+			component.y = 13337;
+		}
+		
+		private function showComponent(component:Component):void
+		{
+			component.x = stage.stageWidth / 2 - component.width / 2;
+			component.y = stage.stageHeight  / 2 - component.height / 2;
 		}
 	}
 }

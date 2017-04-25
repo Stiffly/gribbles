@@ -40,20 +40,13 @@ package Systems
 		// A function to be overidden by child classes
 		public function Update():void { }
 		
-		protected function showComponent(x:int, y:int, component : Component) : void
+		private function showComponent(x:int, y:int, component : Component) : void
 		{
 			component.alpha = 1.0;
 			component.touchEnabled = true;
 			component.scale = 1.0;
 			component.x = x;
 			component.y = y;
-			//component.rotation = int(Math.round(Math.random() * 180)) - 90;
-			/*if (getQualifiedClassName(component.getChildAt(0)).search("WAV") != -1) {
-				WAV(component.getChildAt(0)).play();
-			}
-			if (getQualifiedClassName(component.getChildAt(0)).search("MP3") != -1) {
-				MP3(component.getChildAt(0)).play();
-			}*/
 		}
 		
 		protected function hideComponent(component : Component) : void
