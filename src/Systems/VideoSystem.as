@@ -59,10 +59,7 @@ package Systems
 			addFrame(_videoViewer);
 			addTouchContainer(_videoViewer);
 			addViewerMenu(_videoViewer, true, true, true);
-			
-			// Hide it
-			hideComponent(_videoViewer);
-			
+						
 			// Initiate all of its elements
 			DisplayUtils.initAll(_videoViewer);
 			
@@ -76,6 +73,11 @@ package Systems
 		{
 			// Button state was changed
 			switchButtonState(event.value, _videoViewer, 400, 200);
+		}
+		
+		public override function Hide():void
+		{
+			hideComponent(_videoViewer);
 		}
 	}
 }

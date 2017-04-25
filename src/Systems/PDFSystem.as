@@ -33,28 +33,28 @@ package Systems
 			_PDFViewer = createViewer(new HTMLViewer(), 0, 0, 600, 500) as HTMLViewer;
 			_PDFViewer.targetParent = true;
 			_PDFViewer.mouseChildren = true;
+			_PDFViewer.clusterBubbling = true;
 			_PDFViewer.gestureList = { "1-finger-drag":true, "n-rotate":false, "n-scale":false};
 			_PDFViewer.affineTransform = true;
 
 			stage.addChild(_PDFViewer);
+			stage.setChildIndex(_PDFViewer, 0);
 
 			//loading an image through image element
 			var PDF:HTML = new HTML();
 			PDF.src = "pdf/dykrapport.pdf";
 			
+			// This has to be at 0,0 or the PDF will not be loaded properly (?)
 			PDF.x = 0;
 			PDF.y = 0;
 			PDF.width = 600;
-			PDF.height = 500;
+			PDF.height = 800;
 			PDF.targetParent = true;
 			PDF.mouseChildren = true;
-			PDF.scale = 1;
 			_PDFViewer.addChild(PDF);
 			
 			addFrame(_PDFViewer);
 			addTouchContainer(_PDFViewer);
-			
-			//hideComponent(_PDFViewer);
 			
 			DisplayUtils.initAll(_PDFViewer);
 			
@@ -63,9 +63,7 @@ package Systems
 			stage.addChild(_button);
 		}
 		
-		override public function Update():void
-		{
-		}
+		override public function Update():void { }
 		
 		private function buttonHandler(event:StateEvent):void
 		{
@@ -95,6 +93,11 @@ package Systems
 		{
 			component.x = stage.stageWidth / 2 - component.width / 2;
 			component.y = stage.stageHeight  / 2 - component.height / 2;
+		}
+		
+		public override function Hide():void
+		{
+			hideComponent(_PDFViewer);
 		}
 	}
 }

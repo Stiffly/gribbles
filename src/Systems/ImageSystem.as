@@ -109,8 +109,7 @@ package Systems
 			addViewerMenu(drawingsViewer, true, false, false);
 			// Initiate the album viewer and its children
 			DisplayUtils.initAll(drawingsViewer);
-			// Hide the album viewer
-			hideComponent(drawingsViewer);
+			
 			_imageViewers.push(drawingsViewer);
 			
 			_albumPositions.push(new Position(400, 500));
@@ -164,8 +163,7 @@ package Systems
 			addViewerMenu(figureViewer, true, false, false);
 			// Initiate the album viewer and its children
 			DisplayUtils.initAll(figureViewer);
-			// Hide the album viewer
-			hideComponent(figureViewer);
+			
 			_imageViewers.push(figureViewer);
 			
 			// Create the button loaded from CML
@@ -245,10 +243,14 @@ package Systems
 			
 			return tc;
 		}
+				
+		public override function Hide():void
+		{
+			for each (var iv:AlbumViewer in _imageViewers) {
+				hideComponent(iv);
+			}
+		}
 	}
-	
-	
-
 }
 
 class textContent

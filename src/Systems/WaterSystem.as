@@ -166,8 +166,8 @@ class Particle extends Sprite
 		else if (_dot.y < 0)
 			_dot.y = _stageHeight;
 			
-		_dot.x += x + Math.random() * 2 - 1;
-		_dot.y += y + Math.random() * 2 - 1;
+		_dot.x += x * Math.random() + Math.random() * 2 - 1;
+		_dot.y += y * Math.random() + Math.random() * 2 - 1;
 	}
 	
 	public function Deactivate():void

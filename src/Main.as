@@ -15,6 +15,7 @@ package
 	import flash.ui.Mouse;
 	import flash.text.TextField;
 	import flash.events.KeyboardEvent;
+	import flash.events.MouseEvent;
 	
 	import com.gestureworks.cml.elements.Graphic;
 	import com.gestureworks.cml.core.CMLAir; CMLAir;
@@ -30,7 +31,7 @@ package
 	import Systems.PDFSystem;
 	import Systems.AudioSystem;
 		
-	[SWF(frameRate = "30", backgroundColor="0x313131", width = "1920", height = "1080")]
+	[SWF(frameRate = "60", backgroundColor="0x313131", width = "1920", height = "1080")]
 	public class Main extends GestureWorksAIR
 	{
 		[Embed(source = "../bin/images/loader.png")]
@@ -45,6 +46,7 @@ package
 		private var _elapsedTime:int = 0;
 		private var _elapsedTimeText:TextField = new TextField();
 		private var _mainButton:Button;
+		private var _idleStart:Number;
 		
 		private var _currentState:String = State.SCREENSAVER;
 		
@@ -53,12 +55,7 @@ package
 		public function Main()
 		{
 			trace("gribbles starting");
-			_loaderImage = new Sprite();
-			_loaderImage.graphics.beginBitmapFill(new _sourceImage().bitmapData, null, true, true);
-			_loaderImage.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
-			_loaderImage.graphics.endFill();
-			stage.addChild(_loaderImage);
-			//stage.addChildAt(_loaderImage, stage.numChildren -1);
+			stage.scaleMode = "exactFit";
 			
 			fullscreen = true;
 			
@@ -84,21 +81,22 @@ package
 		{
 			trace("CML parsing complete");
 			CMLParser.removeEventListener(CMLParser.COMPLETE, cmlComplete);			
-			
+			trace("gribbles starting");
+
 			// Create a button for switching to mainapp
 			_mainButton = new Button();
 			var radius:Number = 50;
 			_mainButton.width = radius * 2;
 			_mainButton.height = radius * 2;
-			_mainButton.x = stage.stageWidth / 2 - _mainButton.width / 2;
-			_mainButton.y = stage.stageHeight / 2 -  _mainButton.height / 2;
+			_mainButton.x = stage.stageWidth / 2 - radius * 2;
+			_mainButton.y = stage.stageHeight / 2 - radius * 2;
 			_mainButton.dispatch = "initial:initial:down:down:up:up:over:over:out:out";
 			_mainButton.hit = getCircle(0x000000, 0);
 			_mainButton.initial = getCircle(0xFFFFFF); //white
 			_mainButton.down = getCircle(0x0000FF); //blue
-			_mainButton.up = getCircle(0xFF0000); //red
-			_mainButton.over = getCircle(0x00FF00); //green
-			_mainButton.out = getCircle(0xFF00FF); //purple
+			_mainButton.up = getCircle(0xFFFFFF); //blue
+			_mainButton.over = getCircle(0xFFFFFF); //blue
+			_mainButton.out = getCircle(0xFFFFFF); //blue
 			_mainButton.init();
 			_mainButton.addEventListener(StateEvent.CHANGE, onButtonPress);
 			stage.addChild(_mainButton);
@@ -115,20 +113,26 @@ package
 			switchToScreenSaver();
 			// Do not update systems until they're all initiated
 			_systemsAreInitiated = true;
+			_loaderImage.visible = false;
 		}
 		
 		override protected function gestureworksInit():void
 		{
 			trace("Gestureworks initiated");
-			
+			_loaderImage = new Sprite();
+			_loaderImage.graphics.beginBitmapFill(new _sourceImage().bitmapData, null, true, true);
+			_loaderImage.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
+			_loaderImage.graphics.endFill();
+			stage.addChild(_loaderImage);
+			stage.addChildAt(_loaderImage, stage.numChildren -1);
 			// Hide mouse
 			//Mouse.hide();
 			
 			// Show FPS-counter
 			stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			stage.addEventListener(MouseEvent.MOUSE_MOVE, onInteraction);
 			stage.addChild(_FPSCounter);
 			_elapsedTimeText.y = 10;
-			_loaderImage.visible = false;
 		}
 		
 		private function onEnterFrame(event:Event):void
@@ -157,6 +161,13 @@ package
 			// Elapsed time counter
 			_elapsedTime += dt;
 			_elapsedTimeText.text = "Elapsed time: " + Math.floor(_elapsedTime / 60) + ":" + _elapsedTime % 60;
+			// Idle logic
+			if (_currentState == State.MAINAPP) {
+				if (((getTimer() - _idleStart) / 1000) > 2) 
+				{
+					switchToScreenSaver();
+				}
+			}
 		}
 		
 		private function onKeyDown(event:KeyboardEvent) : void
@@ -199,9 +210,18 @@ package
 			for each (var s:System in _systems)
 			{
 				s.Deactivate();
+				s.Hide();
 			}
 			_currentState = State.SCREENSAVER;
 			_mainButton.visible = true;
+			stage.setChildIndex(_mainButton, stage.numChildren - 1);
+		}
+		
+		private function onInteraction(event:MouseEvent):void
+		{
+			if (_currentState == State.MAINAPP) {
+				_idleStart = getTimer();
+			}
 		}
 	}
 }

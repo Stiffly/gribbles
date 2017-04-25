@@ -104,7 +104,6 @@ package Systems
 			DisplayUtils.initAll(component);
 			
 			_MP3Player.push(component);
-			hideComponent(component);
 		}
 		
 		private function setWAVroperties(component:Component, path:String, width:int, height:int):void
@@ -124,6 +123,13 @@ package Systems
 			
 			_WAVPlayer.push(component);
 			hideComponent(component);
+		}
+		
+		public override function Hide():void
+		{
+			for each (var mp3:MP3Player in _MP3Player) {
+				hideComponent(mp3);
+			}
 		}
 	}
 }

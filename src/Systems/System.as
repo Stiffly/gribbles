@@ -35,6 +35,9 @@ package Systems
 		{
 			super();
 		}
+		
+		public function Hide():void {}
+		
 		// A function to be overidden by child classes
 		public function Init():void { }
 		// A function to be overidden by child classes

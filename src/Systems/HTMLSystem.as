@@ -64,7 +64,6 @@ package Systems
 			
 			// Add the viewer to stage and hide it
 			stage.addChild(_HTMLViewer);
-			hideComponent(_HTMLViewer);
 			
 			// Initialize all of its elements
 			DisplayUtils.initAll(_HTMLViewer);
@@ -101,6 +100,11 @@ package Systems
 				// The new URL was not safe, reload the page. This will clear the load request.
 				_HTMLElement.html.reload();
 			}
+		}
+				
+		public override function Hide():void
+		{
+			hideComponent(_HTMLViewer);
 		}
 	}
 }
