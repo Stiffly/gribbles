@@ -34,9 +34,15 @@ package
 	[SWF(frameRate = "60", backgroundColor="0x313131", width = "1920", height = "1080")]
 	public class Main extends GestureWorksAIR
 	{
+		// Loader image
 		[Embed(source = "../bin/images/loader.png")]
-		private var _sourceImage:Class;
+		private var _loaderSource:Class;
 		private var _loaderImage:Sprite;
+		
+		// Background image
+		[Embed(source = "../bin/images/content/bottenbild2.jpg")]
+		private var _backgroundSource:Class;
+		private var _backgroundImage:Sprite;
 		
 		private var _systems:Array = new Array();
 		private var _screenSaver:WaterSystem;
@@ -120,11 +126,20 @@ package
 		{
 			trace("Gestureworks initiated");
 			_loaderImage = new Sprite();
-			_loaderImage.graphics.beginBitmapFill(new _sourceImage().bitmapData, null, true, true);
+			_loaderImage.graphics.beginBitmapFill(new _loaderSource().bitmapData, null, true, true);
 			_loaderImage.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
 			_loaderImage.graphics.endFill();
 			stage.addChild(_loaderImage);
 			stage.addChildAt(_loaderImage, stage.numChildren -1);
+			
+			_backgroundImage = new Sprite();
+			_backgroundImage.graphics.beginBitmapFill(new _backgroundSource().bitmapData, null, true, true);
+			_backgroundImage.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
+			_backgroundImage.graphics.endFill();
+			_backgroundImage.visible = false;
+			stage.addChild(_backgroundImage);
+			stage.addChildAt(_backgroundImage, 0);
+			
 			// Hide mouse
 			//Mouse.hide();
 			
@@ -163,7 +178,7 @@ package
 			_elapsedTimeText.text = "Elapsed time: " + Math.floor(_elapsedTime / 60) + ":" + _elapsedTime % 60;
 			// Idle logic
 			if (_currentState == State.MAINAPP) {
-				if (((getTimer() - _idleStart) / 1000) > 2) 
+				if (((getTimer() - _idleStart) / 1000) > 10)
 				{
 					switchToScreenSaver();
 				}
@@ -191,6 +206,7 @@ package
 		private function onButtonPress(event:StateEvent) :void
 		{
 			switchToMainApp();
+			_idleStart = getTimer();
 		}
 		
 		private function switchToMainApp():void
@@ -200,6 +216,7 @@ package
 			{
 				s.Activate();
 			}
+			_backgroundImage.visible = true;
 			_currentState = State.MAINAPP;
 			_mainButton.visible = false;
 		}
@@ -210,8 +227,11 @@ package
 			for each (var s:System in _systems)
 			{
 				s.Deactivate();
+				//if (s is PDFSystem)
+				//	continue;
 				s.Hide();
 			}
+			_backgroundImage.visible = false;
 			_currentState = State.SCREENSAVER;
 			_mainButton.visible = true;
 			stage.setChildIndex(_mainButton, stage.numChildren - 1);

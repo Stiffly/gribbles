@@ -34,7 +34,7 @@ package Systems
 			_PDFViewer.targetParent = true;
 			_PDFViewer.mouseChildren = true;
 			_PDFViewer.clusterBubbling = true;
-			_PDFViewer.gestureList = { "1-finger-drag":true, "n-rotate":false, "n-scale":false};
+			_PDFViewer.gestureList = { "n-drag":true, "n-rotate":false, "n-scale":false};
 			_PDFViewer.affineTransform = true;
 
 			stage.addChild(_PDFViewer);
@@ -93,6 +93,7 @@ package Systems
 		{
 			component.x = stage.stageWidth / 2 - component.width / 2;
 			component.y = stage.stageHeight  / 2 - component.height / 2;
+			stage.setChildIndex(component, stage.numChildren -  1);
 		}
 		
 		public override function Hide():void

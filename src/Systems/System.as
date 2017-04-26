@@ -50,6 +50,7 @@ package Systems
 			component.scale = 1.0;
 			component.x = x;
 			component.y = y;
+			stage.setChildIndex(component, stage.numChildren - 1);
 		}
 		
 		protected function hideComponent(component : Component) : void

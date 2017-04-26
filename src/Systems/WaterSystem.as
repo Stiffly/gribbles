@@ -147,7 +147,7 @@ class Particle extends Sprite
 	{
 		_dot = new Sprite();		
 		_dot.x = x; _dot.y= y;
-		_dot.graphics.beginFill(0xFFFFFF);
+		_dot.graphics.beginFill(0xFFFFFF, Math.random());
 		_dot.graphics.drawRect(0, 0, 1, 1);
 		_dot.graphics.endFill();
 		stage.addChild(_dot);
