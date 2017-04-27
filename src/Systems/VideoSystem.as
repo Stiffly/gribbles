@@ -9,6 +9,10 @@ package Systems
 	 */
 	
 	import com.gestureworks.cml.utils.DisplayUtils;
+	import flash.events.Event;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
+	import flash.errors.IOError;
 	 
 	import com.gestureworks.cml.components.VideoViewer;
 	import com.gestureworks.cml.core.CMLObjectList;
@@ -22,7 +26,9 @@ package Systems
 	
 	public class VideoSystem extends Systems.System
 	{
-		private var _videoViewer:VideoViewer;
+		private var _videoViewer:Array = new Array();
+		private var _knownFormats:Array = [".mov", ".avi", ".dvi", ".mpg", ".mpeg", ".flv", ".3GP" ];
+		private var _i:uint = 0;
 		
 		public function VideoSystem()
 		{
@@ -31,32 +37,36 @@ package Systems
 		
 		override public function Init():void
 		{
-			// Create the video Viewer (which actually is an AlbumViewer atm, if amount of videos == 1 -> can change to VideoViewer)
-			_videoViewer = createViewer(new VideoViewer(), 0, 0, 720, 576) as VideoViewer;
-			_videoViewer.autoTextLayout = false;
-			_videoViewer.clusterBubbling = true;
-			//_videoViewer.mouseChildren = true;
-			_videoViewer.gestureList = {"n-drag": true, "n-scale": true, "n-rotate": true};
-			addChild(_videoViewer);
-
 			// For every file in 'videos' folder, load the file
 			for each (var videoFile:String in getFilesInDirectoryRelative("videos")) {
-				// Dynamically load video from disk
-				var video:Video = new Video();
-				video.src = videoFile;
-				video.width = 720;
-				video.height = 576;
-				video.autoplay = true;
-				video.loop = true;
-				video.progressBar = true;
-				_videoViewer.addChild(video);
-			}
-			
-			// Add InfoPanel, Frame, TouchContainer and ViewerMenu
-			addInfoPanel(_videoViewer, "Bärgning", "\nDenna film visar när man bärgar Gribshindens monsterfigur strax utanför Ronneby efter drygt 500 år på botten.");
-			addFrame(_videoViewer);
-			addViewerMenu(_videoViewer, true, true, true);
+				for each (var extention:String in _knownFormats) {
+					if (videoFile.toUpperCase().search(extention.toUpperCase()) != -1) {
+						var videoViewer:VideoViewer = createViewer(new VideoViewer(), 0, 0, 720, 576) as VideoViewer;
+						// Create the video Viewer (which actually is an AlbumViewer atm, if amount of videos == 1 -> can change to VideoViewer)
+						_videoViewer.push(videoViewer);
+						videoViewer.autoTextLayout = false;
+						videoViewer.clusterBubbling = true;
+						//_videoViewer.mouseChildren = true;
+						videoViewer.gestureList = {"n-drag": true, "n-scale": true, "n-rotate": true};
+						addChild(videoViewer);
+					
+						// Dynamically load video from disk
+						var video:Video = new Video();
+						video.src = videoFile;
+						video.width = 720;
+						video.height = 576;
+						video.autoplay = true;
+						video.loop = true;
+						video.progressBar = true;
+						videoViewer.addChild(video);
 						
+						// Load its associated description
+						var textFile:String = videoFile.replace(extention, ".txt");
+						var loader:URLLoader = new URLLoader(new URLRequest(textFile));
+						loader.addEventListener(Event.COMPLETE, onFileLoaded(videoViewer));
+					}
+				}
+			}
 			// Initiate all of its elements
 			DisplayUtils.initAll(_videoViewer);
 			
@@ -69,12 +79,27 @@ package Systems
 		private function videoButtonHandler(event:StateEvent):void
 		{
 			// Button state was changed
-			switchButtonState(event.value, _videoViewer, 400, 200);
+			for each (var vv:VideoViewer in _videoViewer)
+				switchButtonState(event.value, vv, 400, 200);
 		}
 		
 		public override function Hide():void
 		{
-			hideComponent(_videoViewer);
+			for each (var vv:VideoViewer in _videoViewer)
+				hideComponent(vv);
+		}
+		
+		private function onFileLoaded(videoViewer:VideoViewer):Function {
+			return function (event:Event):void
+			{
+				var content:String = URLLoader(event.currentTarget).data;
+				var index:int = content.search("\n");
+				addInfoPanel(videoViewer, content.slice(0, index), content.slice(index +1 , content.length));
+				// Add InfoPanel, Frame, TouchContainer and ViewerMenu
+				addFrame(videoViewer);
+				addViewerMenu(videoViewer, true, true, true);
+				DisplayUtils.initAll(videoViewer);
+			};
 		}
 	}
 }

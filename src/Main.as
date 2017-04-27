@@ -139,7 +139,7 @@ package
 			addChildAt(_backgroundImage, 0);
 			
 			// Hide mouse
-			Mouse.hide();
+			//Mouse.hide();
 			
 			// Show FPS-counter
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
