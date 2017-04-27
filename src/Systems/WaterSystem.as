@@ -47,8 +47,8 @@ package Systems
 			_touchSprite.graphics.endFill();
 			
 			// Add the touch sprite to the stage
-			stage.addChild(_touchSprite);
-			stage.setChildIndex(_touchSprite, 0);
+			addChild(_touchSprite);
+			setChildIndex(_touchSprite, 0);
 			
 			// Create the Rippler instance to affect the Bitmap object
 			_rippler = new Rippler(_touchSprite, 20, 10);

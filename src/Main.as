@@ -31,7 +31,7 @@ package
 	import Systems.PDFSystem;
 	import Systems.AudioSystem;
 		
-	[SWF(frameRate = "60", backgroundColor="0x313131", width = "1920", height = "1080")]
+	[SWF(backgroundColor="0x313131", width="1920", height="1080", frameRate="30")]
 	public class Main extends GestureWorksAIR
 	{
 		// Loader image
@@ -61,7 +61,6 @@ package
 		public function Main()
 		{
 			trace("gribbles starting");
-			stage.scaleMode = "exactFit";
 			
 			fullscreen = true;
 			
@@ -69,7 +68,6 @@ package
 			super();
 			cml = "main.cml";
 			gml = "gml/gestures.gml"; // gml now required
-			
 			
 			// Add systems here
 			_systems.push(new HTMLSystem());
@@ -94,7 +92,7 @@ package
 			var radius:Number = 50;
 			_mainButton.width = radius * 2;
 			_mainButton.height = radius * 2;
-			_mainButton.x = stage.stageWidth / 2 - radius * 2;
+			_mainButton.x =  stage.stageWidth / 2 - radius * 2;
 			_mainButton.y = stage.stageHeight / 2 - radius * 2;
 			_mainButton.dispatch = "initial:initial:down:down:up:up:over:over:out:out";
 			_mainButton.hit = getCircle(0x000000, 0);
@@ -105,8 +103,8 @@ package
 			_mainButton.out = getCircle(0xFFFFFF); //blue
 			_mainButton.init();
 			_mainButton.addEventListener(StateEvent.CHANGE, onButtonPress);
-			stage.addChild(_mainButton);
-			stage.addChildAt(_loaderImage, stage.numChildren -1);
+			addChild(_mainButton);
+			addChildAt(_loaderImage, numChildren -1);
 			
 			// Loops over each system and intializes it
 			for each (var s:System in _systems)
@@ -129,24 +127,24 @@ package
 			_loaderImage.graphics.beginBitmapFill(new _loaderSource().bitmapData, null, true, true);
 			_loaderImage.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
 			_loaderImage.graphics.endFill();
-			stage.addChild(_loaderImage);
-			stage.addChildAt(_loaderImage, stage.numChildren -1);
+			addChild(_loaderImage);
+			addChildAt(_loaderImage, numChildren -1);
 			
 			_backgroundImage = new Sprite();
 			_backgroundImage.graphics.beginBitmapFill(new _backgroundSource().bitmapData, null, true, true);
 			_backgroundImage.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
 			_backgroundImage.graphics.endFill();
 			_backgroundImage.visible = false;
-			stage.addChild(_backgroundImage);
-			stage.addChildAt(_backgroundImage, 0);
+			addChild(_backgroundImage);
+			addChildAt(_backgroundImage, 0);
 			
 			// Hide mouse
 			//Mouse.hide();
 			
 			// Show FPS-counter
-			stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
-			stage.addEventListener(MouseEvent.MOUSE_MOVE, onInteraction);
-			stage.addChild(_FPSCounter);
+			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			addEventListener(MouseEvent.MOUSE_MOVE, onInteraction);
+			addChild(_FPSCounter);
 			_elapsedTimeText.y = 10;
 		}
 		
@@ -234,7 +232,7 @@ package
 			_backgroundImage.visible = false;
 			_currentState = State.SCREENSAVER;
 			_mainButton.visible = true;
-			stage.setChildIndex(_mainButton, stage.numChildren - 1);
+			setChildIndex(_mainButton, numChildren - 1);
 		}
 		
 		private function onInteraction(event:MouseEvent):void

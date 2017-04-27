@@ -50,7 +50,7 @@ package Systems
 			component.scale = 1.0;
 			component.x = x;
 			component.y = y;
-			stage.setChildIndex(component, stage.numChildren - 1);
+			setChildIndex(component, numChildren - 1);
 		}
 		
 		protected function hideComponent(component : Component) : void
@@ -177,7 +177,7 @@ package Systems
 		
 		private function onTouch(event:TouchEvent) : void
 		{
-			stage.setChildIndex(Component(event.currentTarget), stage.numChildren - 1);
+			setChildIndex(Component(event.currentTarget), numChildren - 1);
 		}
 		
 		public function Deactivate():void

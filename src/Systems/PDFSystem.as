@@ -37,8 +37,8 @@ package Systems
 			_PDFViewer.gestureList = { "n-drag":true, "n-rotate":false, "n-scale":false};
 			_PDFViewer.affineTransform = true;
 
-			stage.addChild(_PDFViewer);
-			stage.setChildIndex(_PDFViewer, 0);
+			addChild(_PDFViewer);
+			setChildIndex(_PDFViewer, 0);
 
 			//loading an image through image element
 			var PDF:HTML = new HTML();
@@ -60,7 +60,7 @@ package Systems
 			
 			_button = CMLObjectList.instance.getId("pdf-button");
 			_button.addEventListener(StateEvent.CHANGE, buttonHandler);
-			stage.addChild(_button);
+			addChild(_button);
 		}
 		
 		override public function Update():void { }
@@ -93,7 +93,7 @@ package Systems
 		{
 			component.x = stage.stageWidth / 2 - component.width / 2;
 			component.y = stage.stageHeight  / 2 - component.height / 2;
-			stage.setChildIndex(component, stage.numChildren -  1);
+			setChildIndex(component, numChildren -  1);
 		}
 		
 		public override function Hide():void

@@ -66,7 +66,7 @@ package Systems
 			//drawingsViewer.addEventListener(GWGestureEvent.ROTATE, rotate_handler);
 			//drawingsViewer.addEventListener(GWGestureEvent.SCALE, scale_handler);
 			//drawingsViewer.addEventListener(GWGestureEvent.DRAG, drag_handler);
-			stage.addChild(drawingsViewer);
+			addChild(drawingsViewer);
 			
 			// Front
 			var drawingsFront:Album = new Album();
@@ -119,7 +119,7 @@ package Systems
 			figureViewer.clusterBubbling = true;
 			figureViewer.mouseChildren = true;
 			figureViewer.gestureList = {"2-finger-drag": true, "n-scale": true, "n-rotate": true};
-			stage.addChild(figureViewer);
+			addChild(figureViewer);
 			
 			// Front
 			var figureFront:Album = new Album();
@@ -169,7 +169,7 @@ package Systems
 			// Create the button loaded from CML
 			_button = CMLObjectList.instance.getId("image-button");
 			_button.addEventListener(StateEvent.CHANGE, imageButtonHandler);
-			stage.addChild(_button);
+			addChild(_button);
 		}
 		
 		override public function Update():void

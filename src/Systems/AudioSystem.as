@@ -68,7 +68,7 @@ package Systems
 			}
 			_button = CMLObjectList.instance.getId("music-button");
 			_button.addEventListener(StateEvent.CHANGE, buttonHandler);
-			stage.addChild(_button);
+			addChild(_button);
 		}
 		
 		private function buttonHandler(event:StateEvent):void
@@ -94,7 +94,7 @@ package Systems
 			mp3.mouseChildren = false;
 			component.front = mp3;
 			component.addChild(mp3);
-			stage.addChild(component);
+			addChild(component);
 			
 			addInfoPanel(component, description.title, description.description);
 			addFrame(component);
@@ -117,7 +117,7 @@ package Systems
 			wav.height = height;
 			wav.loop = true;
 			component.addChild(wav);
-			stage.addChild(component);
+			addChild(component);
 			
 			DisplayUtils.initAll(component);
 			

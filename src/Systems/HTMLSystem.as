@@ -63,7 +63,7 @@ package Systems
 			addFrame(_HTMLViewer);
 			
 			// Add the viewer to stage and hide it
-			stage.addChild(_HTMLViewer);
+			addChild(_HTMLViewer);
 			
 			// Initialize all of its elements
 			DisplayUtils.initAll(_HTMLViewer);
@@ -71,7 +71,7 @@ package Systems
 			// The button loaded from CML
 			_button = CMLObjectList.instance.getId("web-button");
 			_button.addEventListener(StateEvent.CHANGE, buttonHandler);
-			stage.addChild(_button);
+			addChild(_button);
 		}
 		
 		override public function Update():void

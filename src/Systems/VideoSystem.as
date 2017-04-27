@@ -37,8 +37,7 @@ package Systems
 			_videoViewer.clusterBubbling = true;
 			//_videoViewer.mouseChildren = true;
 			_videoViewer.gestureList = {"n-drag": true, "n-scale": true, "n-rotate": true};
-
-			stage.addChild(_videoViewer);
+			addChild(_videoViewer);
 
 			// For every file in 'videos' folder, load the file
 			for each (var videoFile:String in getFilesInDirectoryRelative("videos")) {
@@ -50,14 +49,12 @@ package Systems
 				video.autoplay = true;
 				video.loop = true;
 				video.progressBar = true;
-				video.clusterBubbling = true;
 				_videoViewer.addChild(video);
 			}
 			
 			// Add InfoPanel, Frame, TouchContainer and ViewerMenu
 			addInfoPanel(_videoViewer, "Bärgning", "\nDenna film visar när man bärgar Gribshindens monsterfigur strax utanför Ronneby efter drygt 500 år på botten.");
 			addFrame(_videoViewer);
-			addTouchContainer(_videoViewer);
 			addViewerMenu(_videoViewer, true, true, true);
 						
 			// Initiate all of its elements
@@ -66,7 +63,7 @@ package Systems
 			// Load the button from CML
 			_button = CMLObjectList.instance.getId("video-button");
 			_button.addEventListener(StateEvent.CHANGE, videoButtonHandler);
-			stage.addChild(_button);
+			addChild(_button);
 		}
 		
 		private function videoButtonHandler(event:StateEvent):void
