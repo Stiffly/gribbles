@@ -42,7 +42,7 @@ package Systems
 				for each (var extention:String in _knownFormats) {
 					if (videoFile.toUpperCase().search(extention.toUpperCase()) != -1) {
 						var videoViewer:VideoViewer = createViewer(new VideoViewer(), 0, 0, 720, 576) as VideoViewer;
-						// Create the video Viewer (which actually is an AlbumViewer atm, if amount of videos == 1 -> can change to VideoViewer)
+						// Create the video Viewer
 						_videoViewer.push(videoViewer);
 						videoViewer.autoTextLayout = false;
 						videoViewer.clusterBubbling = true;
@@ -67,8 +67,6 @@ package Systems
 					}
 				}
 			}
-			// Initiate all of its elements
-			DisplayUtils.initAll(_videoViewer);
 			
 			// Load the button from CML
 			_button = CMLObjectList.instance.getId("video-button");
