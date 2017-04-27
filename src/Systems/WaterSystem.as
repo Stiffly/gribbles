@@ -55,6 +55,7 @@ package Systems
 			
 			// Make the TouchSprite listen to the TOUCH_MOVE event
 			_touchSprite.addEventListener(TouchEvent.TOUCH_MOVE, handleDrag);
+			_touchSprite.addEventListener(MouseEvent.MOUSE_MOVE, handleMouseMove);
 			
 			_dustEmitter = new DustEmitter(100, stage);
 		}
@@ -66,6 +67,11 @@ package Systems
 		}
 		
 		private function handleDrag(event:TouchEvent):void
+		{
+			_rippler.drawRipple(event.stageX, event.stageY, 20, 1);
+		}
+		
+		private function handleMouseMove(event:MouseEvent):void
 		{
 			_rippler.drawRipple(event.stageX, event.stageY, 20, 1);
 		}
