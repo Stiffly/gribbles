@@ -33,6 +33,8 @@ package Systems
 		private var _drawingInfo:Array = new Array();
 		private var _albumPositions:Array = new Array();
 		private var _i:int = 0;
+		private var _figureFront:Album;
+		private var _indexCircles:Array = new Array();
 	
 		public function ImageSystem()
 		{
@@ -122,15 +124,15 @@ package Systems
 			addChild(figureViewer);
 			
 			// Front
-			var figureFront:Album = new Album();
-			figureFront.id = "front";
-			figureFront.loop = true;
-			figureFront.horizontal = true;
-			figureFront.applyMask = true;
-			figureFront.margin = 8;
-			figureFront.mouseChildren = true;
-			figureFront.clusterBubbling = false;
-			figureFront.dragGesture = "1-finger-drag";
+			_figureFront =  new Album();
+			_figureFront.id = "front";
+			_figureFront.loop = true;
+			_figureFront.horizontal = true;
+			_figureFront.applyMask = true;
+			_figureFront.margin = 8;
+			_figureFront.mouseChildren = true;
+			_figureFront.clusterBubbling = false;
+			_figureFront.dragGesture = "1-finger-drag";
 			
 			// Back
 			var figureBack:Album = new Album();
@@ -145,15 +147,18 @@ package Systems
 			figureBack.dragAngle = 0;
 			
 			// Add images to album
-			var figurePath:Array = getFilesInDirectoryRelative("images/content/figurehead");
-			for (var j:int = 0; j < figurePath.length; j++)
+			var figurePaths:Array = getFilesInDirectoryRelative("images/content/figurehead");
+			for (var j:int = 0; j < figurePaths.length; j++)
 			{
-				figureFront.addChild(loadImage(figurePath[j]));
+				_figureFront.addChild(loadImage(figurePaths[j]));
 				figureBack.addChild(createDescription(_figureInfo[j]));
+				
+				var g:Graphic = getCircle(0x000000, j, 0.5);
+				_indexCircles.push(g);
 			}
-			figureViewer.front = figureFront;
+			figureViewer.front = _figureFront;
 			figureViewer.back = figureBack;
-			figureViewer.addChild(figureFront);
+			figureViewer.addChild(_figureFront);
 			figureViewer.addChild(figureBack);
 			// Back
 			//addInfoPanel(figureViewer, "Galjonsfigur", "Detta är ett annat album.");
@@ -163,6 +168,9 @@ package Systems
 			addViewerMenu(figureViewer, true, false, false);
 			// Initiate the album viewer and its children
 			DisplayUtils.initAll(figureViewer);
+			
+			for each (var g:Graphic in _indexCircles)
+				figureViewer.addChild(g);
 			
 			_imageViewers.push(figureViewer);
 			
@@ -174,6 +182,9 @@ package Systems
 		
 		override public function Update():void
 		{
+			for each (var g:Graphic in _indexCircles)
+				g.color = 0x000000;
+			_indexCircles[_figureFront.currentIndex].color = 0xFFFFFF;
 		}
 		
 		// On button click
@@ -193,6 +204,19 @@ package Systems
 			image.width = 1000;
 			image.height = 700;
 			return image;
+		}
+		
+		private function getCircle(color:uint, it:Number, alpha:Number = 1):Graphic
+		{
+			var circle:Graphic = new Graphic();
+			var rad:Number = 10;
+			circle.x = it * 2 * rad;
+			circle.shape = "circle";
+			circle.radius = rad;
+			circle.color = color;
+			circle.alpha = alpha;
+			circle.lineStroke = 0;
+			return circle;
 		}
 		
 		private function createDescription(content : textContent) :TouchContainer
