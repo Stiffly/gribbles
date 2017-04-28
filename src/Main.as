@@ -40,7 +40,7 @@ package
 		private var _loaderImage:Sprite;
 		
 		// Background image
-		[Embed(source = "../bin/images/content/bottenbild2.jpg")]
+		[Embed(source = "../bin/images/bottenbild2.jpg")]
 		private var _backgroundSource:Class;
 		private var _backgroundImage:Sprite;
 		

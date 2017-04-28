@@ -8,6 +8,11 @@ package Systems
 	 * @contact adambylehn@hotmail.com
 	 */
 	
+	import com.gestureworks.cml.away3d.lights.DirectionalLight;
+	import flash.net.URLLoader; 
+	import flash.net.URLRequest;
+	import flash.events.Event;
+	 
 	import com.gestureworks.cml.components.Component;
 	import com.gestureworks.cml.elements.Container;
 	import com.gestureworks.cml.elements.Text;
@@ -28,13 +33,12 @@ package Systems
 	
 	public class ImageSystem extends System
 	{
-		private var _imageViewers:Array = new Array();
-		private var _figureInfo:Array = new Array();
-		private var _drawingInfo:Array = new Array();
-		private var _albumPositions:Array = new Array();
-		private var _i:int = 0;
-		private var _figureFront:Album;
-		private var _indexCircles:Array = new Array();
+		private var _i:uint = 0;
+		private var _parentPaths:Array = new Array();
+		private var _numChildren:Object = new Object();
+		private var _indexCircles:Object = new Object();
+		private var _pathToAlbumViewerMap:Object = new Object();
+		private var _knownFormats:Array = [".png", ".jpg", ".bmp", ".gif", ".jpeg", ".tiff"];
 	
 		public function ImageSystem()
 		{
@@ -43,136 +47,56 @@ package Systems
 		
 		override public function Init():void
 		{
-			_figureInfo.push(new textContent("Monsterfigur", 	"\nTräskulpturen under lyft på sin trävagga. Öron och den tandförsedda käften med människoansiktet stickande ut är tydliga. Ögonen verkar sitta nedaför \"pannan\" riktade frammåt och de två \"knopparna\" ovanpå skulle då eventuellt kunna vara fästen för horn."));
-			_figureInfo.push(new textContent("Bärgning", 		"\nGribshundens \"monsterfigur\" bärgades sommaren 2015 och ligger nu i konservering i Köpenhamn. Bilden visar hur \"monsterfiguren\" bärgas efter drygt 500 år på botten. Vraket ligger kvar vid Ekön utanför Ronneby i Blekinge, knappt 10 meter under vattenytan."));
-			_figureInfo.push(new textContent("Monsterfigur", 	"\nBalken med träfiguren som skulle bärgas var 0,353 meter lång, 0,35 x 0,35 meter i huvudändan och 0,20 x 0,20 meter i kortändan. Vikten beräknades till 340 kg. För att stabilisera balken under lyftet specialtillverkades en vadderad vagga vilken fördelade vikten samt skyddade skulpturen från stötar."));
-			_figureInfo.push(new textContent("Gribshunden", 	"\nGribshunden är det bäst bevarade exemplet i världen på den teknik och den nya typ av fartyg som senare skulle utvecklas till stora välkända nordeuropeiska örlogsskepp som Mary Rose (1545), Mars (1564), Vasa (1628), och Kronan (1676). Det är ett fartyg som är samtida med Christoffer Columbus så omtalade skepp Sankta Maria från 1492 (fast större)."));
-			
-			_drawingInfo.push(new textContent("1", "\nEtt"));
-			_drawingInfo.push(new textContent("Ritningar från Saeby kyrka", "\nBilden är från en ristning i kalkputsen i Saeby kyrka, Danmark. Ristningen föreställer ett stort örlogskepp med djurfigur i stäven från cirka 1500."));
-			_drawingInfo.push(new textContent("Ritningar från Saeby kyrka", "\nBilden är från en ristning i kalkputsen i Saeby kyrka, Danmark. Ristningen föreställer ett stort örlogskepp med djurfigur i stäven från cirka 1500."));
-			_drawingInfo.push(new textContent("Ritningar från Saeby kyrka", "\nBilden är från en ristning i kalkputsen i Saeby kyrka, Danmark. Ristningen föreställer ett stort örlogskepp med djurfigur i stäven från cirka 1500."));
-			_drawingInfo.push(new textContent("5", "\nFem"));
-			_drawingInfo.push(new textContent("Kraek", "\nDen okända mästaren \"WA\" ritade denna \"Kraek\" - karrack - omkring 1470. Gribhunden har sannolikt haft en akter uppbyggd på liknande sätt."));
-			_drawingInfo.push(new textContent("7", "\nSju"));
-			
-			_albumPositions.push(new Position(400, 0));
-			var drawingsViewer:AlbumViewer = createViewer(new AlbumViewer(), _albumPositions[_i].X, _albumPositions[_i].Y, 1000, 700) as AlbumViewer;
-			_i++;
-			drawingsViewer.autoTextLayout = false;
-			drawingsViewer.linkAlbums = true;
-			drawingsViewer.clusterBubbling = true;
-			drawingsViewer.mouseChildren = true;
-			drawingsViewer.gestureList = {"2-finger-drag": true, "n-scale": true, "n-rotate": true};
-			//drawingsViewer.nativeTransform = false;
-			//drawingsViewer.addEventListener(GWGestureEvent.ROTATE, rotate_handler);
-			//drawingsViewer.addEventListener(GWGestureEvent.SCALE, scale_handler);
-			//drawingsViewer.addEventListener(GWGestureEvent.DRAG, drag_handler);
-			addChild(drawingsViewer);
-			
-			// Front
-			var drawingsFront:Album = new Album();
-			drawingsFront.id = "front";
-			drawingsFront.loop = true;
-			drawingsFront.horizontal = true;
-			drawingsFront.applyMask = true;
-			drawingsFront.margin = 8;
-			drawingsFront.mouseChildren = true;
-			drawingsFront.clusterBubbling = false;
-			drawingsFront.dragGesture = "1-finger-drag";
-			
-			// Back
-			var drawingsBack:Album = new Album();
-			drawingsBack.id = "back";
-			drawingsBack.loop = true;
-			drawingsBack.alpha = 0.6;
-			drawingsBack.horizontal = true;
-			drawingsBack.margin = 8;
-			drawingsBack.clusterBubbling = false;
-			drawingsBack.visible = false;
-			drawingsBack.dragGesture = "1-finger-drag";
-			drawingsBack.dragAngle = 0;
-			
-			// Add images to album
-			var drawingPath:Array = getFilesInDirectoryRelative("images/content/drawings");
-			for (var i:int = 0; i < drawingPath.length; i++) {
-				drawingsFront.addChild(loadImage(drawingPath[i]));
-				drawingsBack.addChild(createDescription(_drawingInfo[i]));
-			}
-			drawingsViewer.front = drawingsFront;
-			drawingsViewer.back = drawingsBack;
-			drawingsViewer.addChild(drawingsFront);
-			drawingsViewer.addChild(drawingsBack);
-			
-			// Back
-			// Add Frame, TouchContainer and ViewerMenu
-			addFrame(drawingsViewer);
-			//addTouchContainer(_imageViewer);
-			addViewerMenu(drawingsViewer, true, false, false);
-			// Initiate the album viewer and its children
-			DisplayUtils.initAll(drawingsViewer);
-			
-			_imageViewers.push(drawingsViewer);
-			
-			_albumPositions.push(new Position(400, 500));
-			var figureViewer:AlbumViewer = createViewer(new AlbumViewer(), _albumPositions[_i].X, _albumPositions[_i].Y, 1000, 700) as AlbumViewer;
-			figureViewer.autoTextLayout = false;
-			figureViewer.linkAlbums = true;
-			figureViewer.clusterBubbling = true;
-			figureViewer.mouseChildren = true;
-			figureViewer.gestureList = {"2-finger-drag": true, "n-scale": true, "n-rotate": true};
-			addChild(figureViewer);
-			
-			// Front
-			_figureFront =  new Album();
-			_figureFront.id = "front";
-			_figureFront.loop = true;
-			_figureFront.horizontal = true;
-			_figureFront.applyMask = true;
-			_figureFront.margin = 8;
-			_figureFront.mouseChildren = true;
-			_figureFront.clusterBubbling = false;
-			_figureFront.dragGesture = "1-finger-drag";
-			
-			// Back
-			var figureBack:Album = new Album();
-			figureBack.id = "back";
-			figureBack.loop = true;
-			figureBack.alpha = 0.6;
-			figureBack.horizontal = true;
-			figureBack.margin = 8;
-			figureBack.clusterBubbling = false;
-			figureBack.visible = false;
-			figureBack.dragGesture = "1-finger-drag";
-			figureBack.dragAngle = 0;
-			
-			// Add images to album
-			var figurePaths:Array = getFilesInDirectoryRelative("images/content/figurehead");
-			for (var j:int = 0; j < figurePaths.length; j++)
+			for each (var parentPath:String in getFilesInDirectoryRelative("images/content"))
 			{
-				_figureFront.addChild(loadImage(figurePaths[j]));
-				figureBack.addChild(createDescription(_figureInfo[j]));
+				_parentPaths.push(parentPath);
+				_numChildren[parentPath] = 0;
+				var av:AlbumViewer = createViewer(new AlbumViewer(), 400, 400, 1000, 700) as AlbumViewer;
+				av.autoTextLayout = false;
+				av.linkAlbums = true;
+				av.clusterBubbling = true;
+				av.mouseChildren = true;
+				av.gestureList = {"2-finger-drag": true, "n-scale": true, "n-rotate": true};
+				addChild(av);
 				
-				var g:Graphic = getCircle(0x000000, j, 0.5);
-				_indexCircles.push(g);
+				// Front
+				var front:Album = new Album();
+				front.id = "front";
+				front.loop = true;
+				front.horizontal = true;
+				front.applyMask = true;
+				front.margin = 8;
+				front.mouseChildren = true;
+				front.clusterBubbling = false;
+				front.dragGesture = "1-finger-drag";
+				
+				// Back
+				var back:Album = new Album();
+				back.id = "back";
+				back.loop = true;
+				back.alpha = 0.6;
+				back.horizontal = true;
+				back.margin = 8;
+				back.clusterBubbling = false;
+				back.visible = false;
+				back.dragGesture = "1-finger-drag";
+				back.dragAngle = 0;
+				
+				for each (var childPaths:String in getFilesInDirectoryRelative(parentPath))
+				{
+					for each (var extention:String in _knownFormats) {	
+						if (childPaths.toUpperCase().search(extention.toUpperCase()) != -1)
+						{
+							front.addChild(loadImage(childPaths));
+							// Load its associated description
+							var textFile:String = childPaths.replace(extention, ".txt");
+							var loader:URLLoader = new URLLoader(new URLRequest(textFile));
+							loader.addEventListener(Event.COMPLETE, onFileLoaded(av, front, back, parentPath));
+							_numChildren[parentPath]++;
+						}
+					}
+				}
 			}
-			figureViewer.front = _figureFront;
-			figureViewer.back = figureBack;
-			figureViewer.addChild(_figureFront);
-			figureViewer.addChild(figureBack);
-			// Back
-			//addInfoPanel(figureViewer, "Galjonsfigur", "Detta är ett annat album.");
-			// Add Frame, TouchContainer and ViewerMenu
-			addFrame(figureViewer);
-			//addTouchContainer(_imageViewer);
-			addViewerMenu(figureViewer, true, false, false);
-			// Initiate the album viewer and its children
-			DisplayUtils.initAll(figureViewer);
-			
-			for each (var g:Graphic in _indexCircles)
-				figureViewer.addChild(g);
-			
-			_imageViewers.push(figureViewer);
 			
 			// Create the button loaded from CML
 			_button = CMLObjectList.instance.getId("image-button");
@@ -182,17 +106,53 @@ package Systems
 		
 		override public function Update():void
 		{
-			for each (var g:Graphic in _indexCircles)
-				g.color = 0x000000;
-			_indexCircles[_figureFront.currentIndex].color = 0xFFFFFF;
+			for each (var s:String in _parentPaths)
+			{
+				for each (var g:Graphic in _indexCircles[s])
+				{
+					g.color = 0x000000;
+				}
+				_indexCircles[s][_pathToAlbumViewerMap[s].front.currentIndex].color = 0xFFFFFF;
+			}
 		}
 		
 		// On button click
 		private function imageButtonHandler(event:StateEvent):void
 		{
-			for (var i:int = 0; i < _imageViewers.length; i++ )
+			for each (var s:String in _parentPaths) 
 			{
-				switchButtonState(event.value, _imageViewers[i], _albumPositions[i].X, _albumPositions[i].Y);
+				switchButtonState(event.value, _pathToAlbumViewerMap[s], 400, 400);
+			}
+		}
+		
+		private function onFileLoaded(av:AlbumViewer, front:Album, back:Album, s:String):Function {
+			return function (event:Event):void
+			{
+				_i++;
+				var content:String = URLLoader(event.currentTarget).data;
+				var index:int = content.search("\n");
+				back.addChild(createDescription(new textContent(content.slice(0, index), content.slice(index +1 , content.length))));
+				if (_numChildren[s] ==  _i)
+				{
+					av.front = front;
+					av.back = back;
+					av.addChild(front);
+					av.addChild(back);
+					addFrame(av);
+					addViewerMenu(av, true, false, false);
+					_indexCircles[s] = new Array();
+					for (var i:int = 0; i < _numChildren[s]; i++)
+					{
+						var g:Graphic = getCircle(0x000000, i, 0.5);
+						_indexCircles[s].push(g);
+						av.addChild(g);
+					}
+					_pathToAlbumViewerMap[s] = av;
+					DisplayUtils.initAll(av);
+					hideComponent(av);
+					_i = 0;
+					return;
+				}
 			}
 		}
 		
@@ -270,8 +230,11 @@ package Systems
 				
 		public override function Hide():void
 		{
-			for each (var iv:AlbumViewer in _imageViewers) {
-				hideComponent(iv);
+			for each (var s:String in _parentPaths) 
+			{
+				if (_pathToAlbumViewerMap[s] == null)
+					return;
+				hideComponent(_pathToAlbumViewerMap[s]);
 			}
 		}
 	}
