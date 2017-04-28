@@ -74,12 +74,12 @@ package Systems
 				var back:Album = new Album();
 				back.id = "back";
 				back.loop = true;
-				back.alpha = 0.6;
+				back.alpha = 0.4;
 				back.horizontal = true;
 				back.margin = 8;
 				back.clusterBubbling = false;
 				back.visible = false;
-				back.dragGesture = "1-finger-drag";
+				//back.dragGesture = "1-finger-drag";
 				back.dragAngle = 0;
 				
 				for each (var childPaths:String in getFilesInDirectoryRelative(parentPath))
@@ -110,9 +110,16 @@ package Systems
 			{
 				for each (var g:Graphic in _indexCircles[s])
 				{
-					g.color = 0x000000;
+					g.color = 0x999999;
 				}
-				_indexCircles[s][_pathToAlbumViewerMap[s].front.currentIndex].color = 0xFFFFFF;
+				if (_pathToAlbumViewerMap[s].back.active) 
+				{
+					_indexCircles[s][_pathToAlbumViewerMap[s].back.currentIndex].color = 0x000000;
+				}
+				else
+				{
+					_indexCircles[s][_pathToAlbumViewerMap[s].front.currentIndex].color = 0x000000;
+				}
 			}
 		}
 		
@@ -143,7 +150,7 @@ package Systems
 					_indexCircles[s] = new Array();
 					for (var i:int = 0; i < _numChildren[s]; i++)
 					{
-						var g:Graphic = getCircle(0x000000, i, 0.5);
+						var g:Graphic = getCircle(0x999999, i, 0.5);
 						_indexCircles[s].push(g);
 						av.addChild(g);
 					}
@@ -184,6 +191,7 @@ package Systems
 			var tc:TouchContainer = new TouchContainer();
 			tc.width = 1000;
 			tc.height = 400;
+			tc.alpha = 0.7;
 			
 			var g:Graphic = new Graphic();
 			g.shape = "rectangle";

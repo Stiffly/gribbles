@@ -78,7 +78,9 @@ package Systems
 		{
 			// Button state was changed
 			for each (var vv:VideoViewer in _videoViewer)
-				switchButtonState(event.value, vv, 400, 200);
+				switchButtonState(event.value, vv, 
+				stage.stageWidth / 2 - vv.width / 2,
+				stage.stageHeight / 2 - vv.height / 2);
 		}
 		
 		public override function Hide():void

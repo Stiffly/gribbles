@@ -42,7 +42,10 @@ package Systems
 
 			//loading an image through image element
 			var PDF:HTML = new HTML();
-			PDF.src = "pdf/dykrapport.pdf";
+			//PDF.src = "pdf/dykrapport.pdf";
+			PDF.srcString = "<body>" +
+								"<iframe src=\"pdf/dykrapport.pdf\" style=\"width: 100%;height: 100%;border: none;\"></iframe>" +
+							"</body>";
 			
 			// This has to be at 0,0 or the PDF will not be loaded properly (?)
 			PDF.x = 0;

@@ -56,6 +56,7 @@ package Systems
 		protected function hideComponent(component : Component) : void
 		{
 			component.alpha = 0.0;
+			component.rotation = Math.random() * 90 - 45;
 			component.touchEnabled = false;
 			component.x = 13337; // "Hide" the component
 			component.y = 13337;

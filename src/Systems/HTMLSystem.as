@@ -45,13 +45,13 @@ package Systems
 			"http://www.blekingemuseum.se/pages/1223" );
 			
 			// Create the HTML Viewer
-			_HTMLViewer = createViewer(new HTMLViewer(), 0, 0, 1280, 720) as HTMLViewer;
+			_HTMLViewer = createViewer(new HTMLViewer(), 0, 0, 800, 900) as HTMLViewer;
 			
 			// Create the HTML Element, the actual html content
 			_HTMLElement = new HTML();
 			_HTMLElement.className = "html_element";
-			_HTMLElement.width = 1280;
-			_HTMLElement.height = 720;
+			_HTMLElement.width = 800;
+			_HTMLElement.height = 900;
 			_HTMLElement.src = "http://www.blekingemuseum.se/pages/275";
 			_HTMLElement.hideFlash = true;
 			_HTMLElement.smooth = true;
@@ -82,7 +82,9 @@ package Systems
 		private function buttonHandler(event:StateEvent):void
 		{
 			// Button state was changed, clicked or released
-			switchButtonState(event.value, _HTMLViewer, 400, 400);
+			switchButtonState(event.value, _HTMLViewer,
+			stage.stageWidth / 2 - _HTMLViewer.width / 2,
+			stage.stageHeight / 2 - _HTMLViewer.height / 2);
 		}
 		
 		private function onNewPage(e:LocationChangeEvent):void
