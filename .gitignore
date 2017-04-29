@@ -1,9 +1,11 @@
 *.as3proj
 swfobject.js
 *.old
+*.swf
+
 
 # Build folders and assets
 bin/images/
 bin/videos/
 bin/audio/
-gribbles.swf
+obj/
