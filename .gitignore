@@ -2,6 +2,7 @@
 swfobject.js
 *.old
 *.swf
+*.swc
 
 
 # Build folders and assets
