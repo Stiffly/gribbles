@@ -126,9 +126,9 @@ package Systems
 			return frame;
 		}
 		
-		protected function addViewerMenu(component:Component, info:Boolean, play:Boolean, pause:Boolean):ViewerMenu
+		protected function addViewerMenu(component:Component, close:Boolean, info:Boolean, play:Boolean, pause:Boolean):ViewerMenu
 		{
-			var menu:ViewerMenu = new ViewerMenu(info, false, play, pause);
+			var menu:ViewerMenu = new ViewerMenu(info, close, play, pause);
 			menu.y = -65;
 			menu.paddingLeft = 15;
 			menu.autohide = false;

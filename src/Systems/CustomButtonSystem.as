@@ -25,13 +25,17 @@ package Systems
 	 */
 	public class CustomButtonSystem extends System 
 	{
-	
+		// The button map keeps track of all button, with the unique parent folder as key
 		private var _buttonMap:Object = new Object();
+		// The album map keeps track of all album viewers, with unique parent folder as key
 		private var _albumMap:Object = new Object();
+		// The supported file formats that can be loaded
 		private var _knownFormats:Array = [".png", ".jpg", ".bmp", ".gif", ".jpeg", ".tiff"];
-		
+		// Stores the number of children that each album has, used to init albums only once, when all children are loaded
 		private var _numChildren:Object = new Object();
+		// Member iterator to keep track of how many children has been loaded
 		private var _i:uint = 0;
+		
 		public function CustomButtonSystem() 
 		{
 			super();
@@ -48,13 +52,13 @@ package Systems
 				var loader:URLLoader = new URLLoader(urlRequest);
 				loader.addEventListener(Event.COMPLETE, onXMLLoaded(parentPath));
 				
+				// Create album viewer
 				var av:AlbumViewer = createViewer(new AlbumViewer(), 400, 400, 1000, 700) as AlbumViewer;
 				av.autoTextLayout = false;
 				av.linkAlbums = true;
 				av.clusterBubbling = true;
 				av.mouseChildren = true;
 				av.gestureList = {"2-finger-drag": true, "n-scale": true, "n-rotate": true};
-				_albumMap[parentPath] = av;
 				addChild(av);
 				
 				// Front
@@ -80,18 +84,21 @@ package Systems
 				//back.dragGesture = "1-finger-drag";
 				back.dragAngle = 0;
 				
+				// Add all the children, images etc.
 				for each (var childPath:String in getFilesInDirectoryRelative(parentPath))
 				{
 					for each (var extention:String in _knownFormats) 
 					{	
 						if (childPath.toUpperCase().search(extention.toUpperCase()) != -1)
 						{
+							// Load image
 							front.addChild(getImage(childPath, 1000, 700));
+							// Update number of children, this is compared against in onFileLoaded function
+							_numChildren[parentPath]++;
 							// Load its associated description
 							var textFile:String = childPath.replace(extention, ".txt");
 							var loader2:URLLoader = new URLLoader(new URLRequest(textFile));
 							loader2.addEventListener(Event.COMPLETE, onFileLoaded(av, front, back, parentPath));
-							_numChildren[parentPath]++;
 						}
 					}
 				}
@@ -105,16 +112,28 @@ package Systems
 		
 		override public function Activate():void 
 		{
+			for each(var b:Button in _buttonMap) 
+			{
+				b.visible = true;
+				b.active= true;
+			}
 		}
 		
 		override public function Deactivate():void
 		{
+			for each(var b:Button in _buttonMap) 
+			{
+				b.visible = false;
+				b.active= false;
+			}
 		}
 		
+		// This is the event handler that triggers when the XML file describing the button is loaded
 		private function onXMLLoaded(parentPath:String):Function 
 		{
 			return function (e:Event):void
 			{
+				// Create button from the XML data
 				var buttonProperties:XML = new XML();
 				buttonProperties = XML(e.target.data);
 				var width:uint = buttonProperties.child("width");
@@ -136,28 +155,35 @@ package Systems
 				button.out = img;
 				button.addEventListener(StateEvent.CHANGE, onClick(parentPath));
 				button.init();
+				// Add tracking of the button by adding it to the button map
 				_buttonMap[parentPath] = button;
 				addChild(button);
 			}
 		}
 		
-		private function onFileLoaded(av:AlbumViewer, front:Album, back:Album, s:String):Function 
+		// This handler triggers when a description file is loaded (.txt)
+		private function onFileLoaded(av:AlbumViewer, front:Album, back:Album, parentPath:String):Function 
 		{
 			return function (event:Event):void
 			{
+				// increment iterator i
 				_i++;
 				var content:String = URLLoader(event.currentTarget).data;
+				// Finds the first newline and creates a text content that is used for the description
 				var index:int = content.search("\n");
 				back.addChild(createDescription(new TextContent(content.slice(0, index), content.slice(index +1 , content.length))));
-				if (_numChildren[s] ==  _i)
+				// This is true when all of the description files are loaded
+				if (_numChildren[parentPath] ==  _i)
 				{
+					// When all the description files are loaded we can initiate the albums
 					av.front = front;
 					av.back = back;
 					av.addChild(front);
 					av.addChild(back);
 					addFrame(av);
-					addViewerMenu(av, true, false, false);
+					addViewerMenu(av, true, true, false, false);
 					DisplayUtils.initAll(av);
+					_albumMap[parentPath] = av;
 					hideComponent(av);
 					_i = 0;
 					return;
@@ -165,6 +191,7 @@ package Systems
 			}
 		}
 		
+		// Loads an image form the disc
 		private function getImage(source:String, width:uint, height:uint):Image
 		{
 			var img:Image = new Image();
@@ -174,6 +201,7 @@ package Systems
 			return img;
 		}
 		
+		// Creates an invisible rectangle
 		private function getRectangle(x:uint, y:uint, width:uint, height:uint):Graphic
 		{
 			var rect:Graphic = new Graphic;
@@ -184,6 +212,7 @@ package Systems
 			return rect;
 		}
 		
+		// Button handler
 		private function onClick(parentPath:String):Function 
 		{
 			return function (e:StateEvent):void
@@ -201,6 +230,7 @@ package Systems
 			}
 		}
 		
+		// This is called when a button is clicked and the component is hidden
 		private function showComponent(x:uint, y:uint, component:Component):void
 		{
 			component.alpha = 1.0;
@@ -209,6 +239,14 @@ package Systems
 			component.x = x;
 			component.y = y;
 			setChildIndex(component, numChildren - 1);
+		}
+		
+		override public function Hide():void 
+		{
+			for each (var av:AlbumViewer in _albumMap)
+			{
+				hideComponent(av);
+			}
 		}
 	}
 }

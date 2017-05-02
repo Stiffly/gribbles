@@ -97,7 +97,7 @@ package Systems
 				addInfoPanel(videoViewer, content.slice(0, index), content.slice(index +1 , content.length));
 				// Add InfoPanel, Frame, TouchContainer and ViewerMenu
 				addFrame(videoViewer);
-				addViewerMenu(videoViewer, true, true, true);
+				addViewerMenu(videoViewer, false, true, true, true);
 				DisplayUtils.initAll(videoViewer);
 			};
 		}
