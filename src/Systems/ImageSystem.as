@@ -29,6 +29,7 @@ package Systems
 	import flash.events.TouchEvent;
 	
 	import util.Position;
+	import util.TextContent;
 	
 	public class ImageSystem extends System
 	{
@@ -137,7 +138,7 @@ package Systems
 				_i++;
 				var content:String = URLLoader(event.currentTarget).data;
 				var index:int = content.search("\n");
-				back.addChild(createDescription(new textContent(content.slice(0, index), content.slice(index +1 , content.length))));
+				back.addChild(createDescription(new TextContent(content.slice(0, index), content.slice(index +1 , content.length))));
 				if (_numChildren[s] ==  _i)
 				{
 					av.front = front;
@@ -184,56 +185,6 @@ package Systems
 			circle.lineStroke = 0;
 			return circle;
 		}
-		
-		private function createDescription(content : textContent) :TouchContainer
-		{
-			var tc:TouchContainer = new TouchContainer();
-			tc.width = 1000;
-			tc.height = 400;
-			tc.alpha = 0.7;
-			
-			var g:Graphic = new Graphic();
-			g.shape = "rectangle";
-			//g.color = 0x15B011;
-			g.color = 0x555555;
-			g.width = tc.width;
-			g.height = tc.height;
-			g.alpha = 0.1;
-			tc.addChild(g);
-			
-			var c:Container = new Container();
-			c.paddingTop = 30;
-			c.paddingLeft = 30;
-			c.paddingRight = 30;
-			c.width = 1000;
-			c.height = 400;
-			c.relativeY = true;
-			tc.addChild(c);
-			
-			var t:Text = new Text();
-			t.str = content.title;
-			t.fontSize = 30;
-			t.color = 0xFFFFFF;
-			t.font = "MyFont";
-			t.autosize = true;
-			t.width = 500;
-			c.addChild(t);
-			
-			var d:Text = new Text();
-			d.str = content.description;
-			d.fontSize = 20;
-			d.color = 0xFFFFFF;
-			d.font = "MyFont";
-			d.wordWrap = true;
-			d.autosize = true;
-			d.multiline = true;
-			d.width = 500;
-			c.addChild(d);
-			
-			DisplayUtils.initAll(tc);
-			
-			return tc;
-		}
 				
 		public override function Hide():void
 		{
@@ -245,12 +196,5 @@ package Systems
 			}
 		}
 	}
-}
-
-class textContent
-{
-	public function textContent(t:String, d:String) { title = t; description = d; };
-	public var title:String;
-	public var description:String;
 }
 	
