@@ -8,6 +8,7 @@ package
 	 * @contact adambylehn@hotmail.com
 	 */
 	
+	import Systems.CustomButtonSystem;
 	import com.gestureworks.cml.elements.Button;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -40,7 +41,7 @@ package
 		private var _loaderImage:Sprite;
 		
 		// Background image
-		[Embed(source = "../bin/images/bottenbild2.jpg")]
+		[Embed(source = "../bin/images/bottenbild2.png")]
 		private var _backgroundSource:Class;
 		private var _backgroundImage:Sprite;
 		
@@ -75,6 +76,7 @@ package
 			_systems.push(new VideoSystem());
 			_systems.push(new ImageSystem());
 			_systems.push(new AudioSystem());
+			_systems.push(new CustomButtonSystem());
 			_screenSaver = new WaterSystem();
 			
 			CMLParser.addEventListener(CMLParser.COMPLETE, cmlComplete);
