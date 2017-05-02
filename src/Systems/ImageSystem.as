@@ -8,7 +8,6 @@ package Systems
 	 * @contact adambylehn@hotmail.com
 	 */
 	
-	import com.gestureworks.cml.away3d.lights.DirectionalLight;
 	import flash.net.URLLoader; 
 	import flash.net.URLRequest;
 	import flash.events.Event;
