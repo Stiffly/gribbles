@@ -15,12 +15,14 @@ package Components
 		private var _lifeTime:Number = 0;
 		private var _timeOfBirth:Number = 0;
 		private var _dead:Boolean = true;
+		private var _frameWidth:uint = 0;
 		
-		public function TextBox(lifeTime:Number = 10) 
+		public function TextBox(frameWidth:uint, lifeTime:Number = 10) 
 		{
 			_lifeTime = lifeTime;
 			_timeOfBirth = getTimer();
-			_dead = false;
+			_frameWidth = frameWidth * 2;
+			_dead = true;
 			
 			super();
 		}
@@ -40,7 +42,23 @@ package Components
 			var age:Number = (getTimer() - _timeOfBirth) / 1000;
 			// Fade out the last two seconds
 			var timeLeft:Number = _lifeTime - age;
-			this.scale += 0.0005;
+			//this.scale += 0.0005;
+			if (this.x + this.width + _frameWidth > stage.stageWidth)
+			{
+				this.x = stage.stageWidth - this.width - _frameWidth;
+			}
+			if (this.x - _frameWidth < 0)
+			{
+				this.x = _frameWidth;
+			}
+			if (this.y + this.height + _frameWidth > stage.stageHeight)
+			{
+				this.y = stage.stageHeight - this.height - _frameWidth;
+			}
+			if (this.y - _frameWidth < 0)
+			{
+				this.y = _frameWidth;
+			}
 			if (timeLeft < 2)
 			{
 				this.alpha = timeLeft / 2;

@@ -102,9 +102,20 @@ package Systems
 				button.height = height;
 				button.x = x;
 				button.y = y;
-				button.dispatch = "initial:initial:down:down:up:up:over:over:out:out";	
+				button.dispatch = "initial:initial:down:down:up:up:over:over:out:out:hit:hit";	
 				var img:Image = getImage(parentPath + "/button/button.png", width, height);
-				button.hit = getRectangle(x, y, width, height);
+				if (parentPath == "custom/A")
+				{
+					// Special logic for too big image A
+					var hitBox:Graphic = getRectangle(x, y, 51, 47);
+					hitBox.x = 1665 - button.x;
+					hitBox.y = 372 - button.y;
+					button.hit = hitBox;
+				}
+				else
+				{
+					button.hit = getRectangle(x, y, width, height);
+				}
 				button.initial = img;
 				button.down = getRectangle(x, y, width, height);
 				button.up = img;
@@ -257,7 +268,7 @@ package Systems
 				var index:int = content.search("\n");
 				var textContent:TextContent =  new TextContent(content.slice(0, index), content.slice(index +1 , content.length));
 				
-				var textBox:TextBox = new TextBox();
+				var textBox:TextBox = new TextBox(_frameThickness);
 				textBox.x = _buttonMap[parentPath].x;
 				textBox.y = _buttonMap[parentPath].y;
 				textBox.width = 400;
