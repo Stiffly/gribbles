@@ -61,7 +61,7 @@ package Systems
 		protected function hideComponent(component : Component) : void
 		{
 			component.alpha = 0.0;
-			component.rotation = Math.random() * 90 - 45;
+			//component.rotation = Math.random() * 90 - 45;
 			component.touchEnabled = false;
 			component.x = 13337; // "Hide" the component
 			component.y = 13337;
@@ -158,6 +158,12 @@ package Systems
 			}
 			return relativePaths;
 		}
+		
+		protected function isDirectory(path:String):Boolean
+		{
+			var root:File = File.applicationDirectory;
+			return root.resolvePath(path).isDirectory;
+		}
 
 		protected function drag_handler(event:GWGestureEvent):void
 		{
@@ -198,11 +204,11 @@ package Systems
 			_button.visible = true;
 		}
 		
-		protected function createDescription(content : TextContent) :TouchContainer
+		protected function createDescription(content : TextContent, width:uint, height:uint, alpha:Number, padding:Number=30) :TouchContainer
 		{
 			var tc:TouchContainer = new TouchContainer();
-			tc.width = 1000;
-			tc.height = 700;
+			tc.width = width;
+			tc.height = height;
 			tc.alpha = 0.7;
 			
 			var g:Graphic = new Graphic();
@@ -211,15 +217,15 @@ package Systems
 			g.color = 0x555555;
 			g.width = tc.width;
 			g.height = tc.height;
-			g.alpha = 0.1;
+			g.alpha = alpha;
 			tc.addChild(g);
 			
 			var c:Container = new Container();
-			c.paddingTop = 30;
-			c.paddingLeft = 30;
-			c.paddingRight = 30;
-			c.width = 1000;
-			c.height = 400;
+			c.paddingTop = padding;
+			c.paddingLeft = padding;
+			c.paddingRight = padding;
+			c.width = width;
+			c.height = height;
 			c.relativeY = true;
 			tc.addChild(c);
 			
@@ -229,7 +235,7 @@ package Systems
 			t.color = 0xFFFFFF;
 			t.font = "MyFont";
 			t.autosize = true;
-			t.width = 1000;
+			t.width = width;
 			c.addChild(t);
 			
 			var d:Text = new Text();
@@ -240,7 +246,7 @@ package Systems
 			d.wordWrap = true;
 			d.autosize = true;
 			d.multiline = true;
-			d.width = 1000;
+			d.width = width;
 			c.addChild(d);
 			
 			DisplayUtils.initAll(tc);

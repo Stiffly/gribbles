@@ -154,7 +154,17 @@ package Systems
 				_i++;
 				var content:String = URLLoader(event.currentTarget).data;
 				var index:int = content.search("\n");
-				back.addChild(createDescription(new TextContent(content.slice(0, index), content.slice(index +1 , content.length))));
+				back.addChild(
+					createDescription(
+						new TextContent(
+							content.slice(0, index), 
+							content.slice(index +1 , content.length)
+							),
+						1000,
+						700,
+						0.1
+					)
+				);
 				if (_numChildren[s] ==  _i)
 				{
 					av.front = front;

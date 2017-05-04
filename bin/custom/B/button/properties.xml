@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <button>
+	<type>Album</type>
 	<width>82</width>
 	<height>84</height>
 	<x>1644</x>

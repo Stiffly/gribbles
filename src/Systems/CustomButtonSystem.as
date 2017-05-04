@@ -1,8 +1,10 @@
 package Systems 
 {
+	import Components.TextBox;
 	import Systems.System;
 	import com.gestureworks.cml.components.Component;
 	import com.gestureworks.cml.elements.Graphic;
+	import com.gestureworks.cml.elements.TouchContainer;
 	import flash.display.Shape;
 	import flash.geom.Rectangle;
 	import flash.net.URLRequest;
@@ -29,6 +31,8 @@ package Systems
 		private var _buttonMap:Object = new Object();
 		// The album map keeps track of all album viewers, with unique parent folder as key
 		private var _albumMap:Object = new Object();
+		// The textbox map keeps track of all textboxes, with unique parent folder as key
+		private var _textBoxMap:Object = new Object();
 		// The supported file formats that can be loaded
 		private var _knownFormats:Array = [".png", ".jpg", ".bmp", ".gif", ".jpeg", ".tiff"];
 		// Stores the number of children that each album has, used to init albums only once, when all children are loaded
@@ -51,63 +55,15 @@ package Systems
 				var urlRequest:URLRequest = new URLRequest(parentPath + "/button/properties.xml");
 				var loader:URLLoader = new URLLoader(urlRequest);
 				loader.addEventListener(Event.COMPLETE, onXMLLoaded(parentPath));
-				
-				// Create album viewer
-				var av:AlbumViewer = createViewer(new AlbumViewer(), 400, 400, 1000, 700) as AlbumViewer;
-				av.autoTextLayout = false;
-				av.linkAlbums = true;
-				av.clusterBubbling = true;
-				av.mouseChildren = true;
-				av.gestureList = {"2-finger-drag": true, "n-scale": true, "n-rotate": true};
-				addChild(av);
-				
-				// Front
-				var front:Album = new Album();
-				front.id = "front";
-				front.loop = true;
-				front.horizontal = true;
-				front.applyMask = true;
-				front.margin = 8;
-				front.mouseChildren = true;
-				front.clusterBubbling = false;
-				front.dragGesture = "1-finger-drag";
-				
-				// Back
-				var back:Album = new Album();
-				back.id = "back";
-				back.loop = true;
-				back.alpha = 0.4;
-				back.horizontal = true;
-				back.margin = 8;
-				back.clusterBubbling = false;
-				back.visible = false;
-				//back.dragGesture = "1-finger-drag";
-				back.dragAngle = 0;
-				
-				// Add all the children, images etc.
-				for each (var childPath:String in getFilesInDirectoryRelative(parentPath))
-				{
-					for each (var extention:String in _knownFormats) 
-					{	
-						if (childPath.toUpperCase().search(extention.toUpperCase()) != -1)
-						{
-							// Load image
-							front.addChild(getImage(childPath, 1000, 700));
-							// Update number of children, this is compared against in onFileLoaded function
-							_numChildren[parentPath]++;
-							// Load its associated description
-							var textFile:String = childPath.replace(extention, ".txt");
-							var loader2:URLLoader = new URLLoader(new URLRequest(textFile));
-							loader2.addEventListener(Event.COMPLETE, onFileLoaded(av, front, back, parentPath));
-						}
-					}
-				}
 			}
 		}
 		
 		override public function Update():void
 		{
-			
+			for each (var tb:TextBox in _textBoxMap)
+			{
+				tb.Update();
+			}
 		}
 		
 		override public function Activate():void 
@@ -136,6 +92,7 @@ package Systems
 				// Create button from the XML data
 				var buttonProperties:XML = new XML();
 				buttonProperties = XML(e.target.data);
+				var type:String = buttonProperties.child("type");
 				var width:uint = buttonProperties.child("width");
 				var height:uint = buttonProperties.child("height");
 				var x:uint =  buttonProperties.child("x");
@@ -158,11 +115,101 @@ package Systems
 				// Add tracking of the button by adding it to the button map
 				_buttonMap[parentPath] = button;
 				addChild(button);
+				
+				if (type.toUpperCase() == "ALBUM")
+				{
+					loadAlbum(parentPath);
+				}
+				else if (type.toUpperCase() == "TEXT")
+				{
+					loadTextBox(parentPath);
+				}
+				else
+				{
+					throw("ERROR: Unhandled type: " + type + " in " + parentPath + "/button/properties.xml. Type should either be \"Text\" or \"Album\".");
+				}
+			}
+		}
+		
+		// This loads an album form disk
+		private function loadAlbum(parentPath:String):void
+		{
+			// Create album viewer
+			var av:AlbumViewer = createViewer(new AlbumViewer(), 400, 400, 1000, 700) as AlbumViewer;
+			av.autoTextLayout = false;
+			av.linkAlbums = true;
+			av.clusterBubbling = true;
+			av.mouseChildren = true;
+			av.gestureList = {"2-finger-drag": true, "n-scale": true, "n-rotate": true};
+			addChild(av);
+			
+			// Front
+			var front:Album = new Album();
+			front.id = "front";
+			front.loop = true;
+			front.horizontal = true;
+			front.applyMask = true;
+			front.margin = 8;
+			front.mouseChildren = true;
+			front.clusterBubbling = false;
+			front.dragGesture = "1-finger-drag";
+			
+			// Back
+			var back:Album = new Album();
+			back.id = "back";
+			back.loop = true;
+			back.alpha = 0.4;
+			back.horizontal = true;
+			back.margin = 8;
+			back.clusterBubbling = false;
+			back.visible = false;
+			//back.dragGesture = "1-finger-drag";
+			back.dragAngle = 0;
+			
+			// Add all the children, images etc.
+			for each (var childPath:String in getFilesInDirectoryRelative(parentPath))
+			{
+				for each (var extention:String in _knownFormats) 
+				{	
+					if (childPath.toUpperCase().search(extention.toUpperCase()) != -1)
+					{
+						// Load image
+						front.addChild(getImage(childPath, 1000, 700));
+						// Update number of children, this is compared against in onFileLoaded function
+						_numChildren[parentPath]++;
+						// Load its associated description
+						var textFile:String = childPath.replace(extention, ".txt");
+						var loader2:URLLoader = new URLLoader(new URLRequest(textFile));
+						loader2.addEventListener(Event.COMPLETE, onDescriptionLoaded(av, front, back, parentPath));
+					}
+				}
+			}
+		}
+		
+		// This loads a specified from a .txt file on disk
+		private function loadTextBox(parentPath:String):void
+		{	
+			for each (var childPath:String in getFilesInDirectoryRelative(parentPath))
+			{
+				if (isDirectory(childPath))
+				{
+					continue;
+				}
+				// Assures that it is a .txt file
+				if (childPath.toUpperCase().search(".txt".toUpperCase()) != -1)
+				{
+					var loader:URLLoader = new URLLoader(new URLRequest(childPath));
+					loader.addEventListener(Event.COMPLETE, onTextBoxContentLoaded(parentPath));
+				}
+				else 
+				{
+					throw("ERROR: Found file " + childPath + "which does not end with .txt extention. Please make sure that you have specified the correct type in button/properties.xml");
+				}
 			}
 		}
 		
 		// This handler triggers when a description file is loaded (.txt)
-		private function onFileLoaded(av:AlbumViewer, front:Album, back:Album, parentPath:String):Function 
+		private function onDescriptionLoaded(av:AlbumViewer, front:Album, back:Album, parentPath:String):Function 
 		{
 			return function (event:Event):void
 			{
@@ -171,7 +218,17 @@ package Systems
 				var content:String = URLLoader(event.currentTarget).data;
 				// Finds the first newline and creates a text content that is used for the description
 				var index:int = content.search("\n");
-				back.addChild(createDescription(new TextContent(content.slice(0, index), content.slice(index +1 , content.length))));
+				back.addChild(
+					createDescription(
+						new TextContent(
+							content.slice(0, index), 
+							content.slice(index +1 , content.length)
+						), 
+					1000,
+					700,
+					0.1
+					)
+				);
 				// This is true when all of the description files are loaded
 				if (_numChildren[parentPath] ==  _i)
 				{
@@ -188,6 +245,34 @@ package Systems
 					_i = 0;
 					return;
 				}
+			}
+		}
+		
+		
+		private function onTextBoxContentLoaded(parentPath:String):Function
+		{
+			return function (e:Event):void
+			{
+				var content:String = URLLoader(e.currentTarget).data;
+				var index:int = content.search("\n");
+				var textContent:TextContent =  new TextContent(content.slice(0, index), content.slice(index +1 , content.length));
+				
+				var textBox:TextBox = new TextBox();
+				textBox.x = _buttonMap[parentPath].x;
+				textBox.y = _buttonMap[parentPath].y;
+				textBox.width = 400;
+				textBox.height = 400;
+				textBox.nativeTransform = true;
+				textBox.clusterBubbling = true;
+				textBox.mouseChildren = true;
+				var tcr:TouchContainer = createDescription(textContent, textBox.width, textBox.height, 1, 0);
+				textBox.addChild(tcr);
+				addFrame(textBox);
+				addTouchContainer(textBox);
+				addChild(textBox);
+				_textBoxMap[parentPath] = textBox;
+				hideComponent(textBox);
+				DisplayUtils.initAll(textBox);
 			}
 		}
 		
@@ -221,11 +306,31 @@ package Systems
 				if (e.value != "up")
 					return;
 				
-				if (_albumMap[parentPath].alpha > 0) {
-					hideComponent(_albumMap[parentPath]);
+				if (_albumMap[parentPath] != null)
+				{
+					if (_albumMap[parentPath].alpha > 0) 
+					{
+						hideComponent(_albumMap[parentPath]);
+					}
+					else if (_albumMap[parentPath].alpha == 0) 
+					{
+						showComponent(400, 400, _albumMap[parentPath]);
+					}
 				}
-				else if (_albumMap[parentPath].alpha == 0) {
-					showComponent(400, 400, _albumMap[parentPath]);
+				if (_textBoxMap[parentPath] != null)
+				{
+					if (_textBoxMap[parentPath].alpha > 0)
+					{
+						hideComponent(_textBoxMap[parentPath]);
+					}
+					else if (_textBoxMap[parentPath].alpha == 0)
+					{
+						showComponent(
+							_buttonMap[parentPath].x + _buttonMap[parentPath].width / 2 - _textBoxMap[parentPath].width / 2, 
+							_buttonMap[parentPath].y + _buttonMap[parentPath].height / 2 - _textBoxMap[parentPath].height / 2, 
+							_textBoxMap[parentPath]);
+						_textBoxMap[parentPath].Rebirth();
+					}
 				}
 			}
 		}
@@ -241,11 +346,16 @@ package Systems
 			setChildIndex(component, numChildren - 1);
 		}
 		
+		// Hides all the albums
 		override public function Hide():void 
 		{
 			for each (var av:AlbumViewer in _albumMap)
 			{
 				hideComponent(av);
+			}
+			for each (var tb:TextBox in _textBoxMap)
+			{
+				hideComponent(tb);
 			}
 		}
 	}
