@@ -18,23 +18,24 @@ package Components
 	public class TextBox extends Component
 	{
 		private var _title:Text;
+		private var _updateFrequenzy:Number = 0;
+		private var _timeStamp:int = 0;
 		private var _currentDescription:Text;
 		private var _description:String = "";
-		private var _startIndex:int = 0;
 		private var _lifeTime:Number = 0;
 		private var _timeOfBirth:Number = 0;
 		private var _dead:Boolean = true;
 		private var _gettingText:Boolean = true;
 		private var _frameWidth:uint = 0;
 		
-		public function TextBox(content:TextContent, frameWidth:uint, lifeTime:Number = 10) 
+		public function TextBox(content:TextContent, frameWidth:uint, updateFrequenzy:Number = 0.1, lifeTime:Number = 10) 
 		{
 			_title = new Text();
 			_title.text = content.title;
 			_currentDescription = new Text();
 			_description = content.description;
+			_updateFrequenzy = updateFrequenzy;
 			_lifeTime = lifeTime;
-			_timeOfBirth = getTimer();
 			_frameWidth = frameWidth * 2;
 			_dead = true;
 			
@@ -77,18 +78,22 @@ package Components
 			
 			if (_gettingText)
 			{
-				var endIndex:int = _description.indexOf(" ", _currentDescription.text.length + " ".length);
-				_currentDescription.text = _description.substring(0, endIndex);
-				if (endIndex == -1) 
+				if ((getTimer() - _timeStamp) / 1000 > _updateFrequenzy)
 				{
-					// All the content is displayed
-					_currentDescription.text = _description;
-					_timeOfBirth = getTimer();
-					_gettingText = false;
-				}
-				else
-				{
+					var endIndex:int = _description.indexOf(" ", _currentDescription.text.length + " ".length);
 					_currentDescription.text = _description.substring(0, endIndex);
+					if (endIndex == -1) 
+					{
+						// All the content is displayed
+						_currentDescription.text = _description;
+						_timeOfBirth = getTimer();
+						_gettingText = false;
+					}
+					else
+					{
+						_currentDescription.text = _description.substring(0, endIndex);
+					}
+					_timeStamp = getTimer();
 				}
 			}
 			else 

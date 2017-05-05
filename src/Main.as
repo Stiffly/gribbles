@@ -178,7 +178,7 @@ package
 			_elapsedTimeText.text = "Elapsed time: " + Math.floor(_elapsedTime / 60) + ":" + _elapsedTime % 60;
 			// Idle logic
 			if (_currentState == State.MAINAPP) {
-				if (((getTimer() - _idleStart) / 1000) > 10)
+				if (((getTimer() - _idleStart) / 1000) > 60)
 				{
 					switchToScreenSaver();
 				}
