@@ -100,7 +100,7 @@ package Systems
 				_HTMLElement.html.reload();
 			}
 		}
-				
+
 		public override function Hide():void
 		{
 			hideComponent(_HTMLViewer);
