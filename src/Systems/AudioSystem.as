@@ -105,7 +105,7 @@ package Systems
 			addInfoPanel(component, description.title, description.description);
 			addFrame(component);
 			addTouchContainer(component);
-			addViewerMenu(component, false, true, true, true);
+			addViewerMenu(component, true, true, true, true);
 			
 			DisplayUtils.initAll(component);
 			

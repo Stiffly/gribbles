@@ -8,6 +8,7 @@ package Components
 	import com.gestureworks.cml.elements.Text;
 	import com.gestureworks.cml.elements.TouchContainer;
 	import com.gestureworks.cml.utils.DisplayUtils;
+	import flash.events.Event;
 	
 	import util.TextContent;
 	
@@ -39,7 +40,7 @@ package Components
 		// Used to keep the textboxes inside the stage screen
 		private var _frameWidth:uint = 0;
 		
-		public function TextBox(content:TextContent, frameWidth:uint, updateFrequenzy:Number = 0.1, lifeTime:Number = 10)
+		public function TextBox(content:TextContent, frameWidth:uint, updateFrequenzy:Number = 0.2, lifeTime:Number = 10)
 		{
 			_title = new Text();
 			_title.text = content.title;
@@ -172,13 +173,14 @@ package Components
 			c.relativeY = true;
 			tc.addChild(c);
 			
-			_title.str = content.title;
-			_title.fontSize = 30;
-			_title.color = 0xFFFFFF;
-			_title.font = "MyFont";
-			_title.autosize = true;
-			_title.width = width;
-			c.addChild(_title);
+			var t:Text  = new Text();
+			t.text = content.title;
+			t.fontSize = 30;
+			t.color = 0xFFFFFF;
+			t.font = "MyFont";
+			t.autosize = true;
+			t.width = width;
+			c.addChild(t);
 			
 			_currentDescription.str = content.description;
 			_currentDescription.fontSize = 20;
@@ -195,5 +197,4 @@ package Components
 			return tc;
 		}
 	}
-
 }

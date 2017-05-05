@@ -14,6 +14,7 @@ package Systems
 	import com.gestureworks.cml.elements.Button;
 	import com.gestureworks.cml.elements.Image;
 	import com.gestureworks.cml.events.StateEvent;
+	import com.gestureworks.events.GWClusterEvent;
 	import flash.events.Event;
 	import flash.net.URLLoader;
 	
@@ -48,6 +49,7 @@ package Systems
 		
 		override public function Init():void
 		{
+			super.Init();
 			for each (var parentPath:String in getFilesInDirectoryRelative("custom"))
 			{
 				_numChildren[parentPath] = 0;
@@ -104,7 +106,7 @@ package Systems
 				button.y = y;
 				button.dispatch = "initial:initial:down:down:up:up:over:over:out:out:hit:hit";	
 				var img:Image = getImage(parentPath + "/button/button.png", width, height);
-				if (parentPath == "custom/A")
+				if (parentPath == "custom/1A")
 				{
 					// Special logic for too big image A
 					var hitBox:Graphic = getRectangle(x, y, 51, 47);
@@ -281,6 +283,7 @@ package Systems
 				//textBox.addChild(tcr);
 				addFrame(textBox);
 				addTouchContainer(textBox);
+				textBox.addEventListener(GWClusterEvent.C_REMOVE, onClose);
 				addChild(textBox);
 				_textBoxMap[parentPath] = textBox;
 				hideComponent(textBox);

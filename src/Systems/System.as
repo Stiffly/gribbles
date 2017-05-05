@@ -13,6 +13,7 @@ package Systems
 	import com.gestureworks.cml.elements.Text;
 	import com.gestureworks.core.GestureWorks;
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.filesystem.File;
 	import flash.utils.getQualifiedClassName
 	import com.gestureworks.cml.core.CMLObjectList;	
@@ -28,6 +29,9 @@ package Systems
 	import ui.InfoPanel;
 	import util.TextContent;
 	import com.gestureworks.cml.utils.DisplayUtils;
+	import Events.MenuEvent;
+	
+	import com.gestureworks.events.GWClusterEvent;
 	
 
 	
@@ -44,7 +48,10 @@ package Systems
 		public function Hide():void {}
 		
 		// A function to be overidden by child classes
-		public function Init():void { }
+		public function Init():void 
+		{
+			stage.addEventListener(MenuEvent.CLOSE, onClose);
+		}
 		// A function to be overidden by child classes
 		public function Update():void { }
 		
@@ -204,6 +211,11 @@ package Systems
 			_button.visible = true;
 		}
 		
+		protected function OnMenuClose(e:MenuEvent):void
+		{
+			trace("Received event CLOSE");
+		}
+		
 		protected function createDescription(content : TextContent, width:uint, height:uint, alpha:Number, padding:Number=30) :TouchContainer
 		{
 			var tc:TouchContainer = new TouchContainer();
@@ -252,6 +264,11 @@ package Systems
 			DisplayUtils.initAll(tc);
 			
 			return tc;
+		}
+		
+		protected function onClose(e:MenuEvent):void
+		{
+			hideComponent(Component(e.result));
 		}
 	}
 }

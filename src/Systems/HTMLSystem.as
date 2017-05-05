@@ -8,8 +8,9 @@ package Systems
 	 * @contact adambylehn@hotmail.com
 	 */
 	
-	import com.gestureworks.cml.utils.DisplayUtils;
+	import flash.events.LocationChangeEvent;
 	
+	import com.gestureworks.cml.utils.DisplayUtils;
 	import com.gestureworks.cml.core.CMLObjectList;
 	import com.gestureworks.cml.events.StateEvent;
 	import com.gestureworks.cml.elements.Button;
@@ -17,14 +18,22 @@ package Systems
 	import com.gestureworks.cml.elements.HTML;
 	import com.gestureworks.cml.elements.Frame;
 	import com.gestureworks.cml.elements.TouchContainer;
-	import flash.events.LocationChangeEvent;
 	
 	
 	public class HTMLSystem extends System
 	{
 		private var _HTMLViewer:HTMLViewer;
 		private var _HTMLElement:HTML;
-		private var _approvedURLs:Array;
+		// A list of URL's that will be checked upon when the HTML's location state changes
+		private var _approvedURLs:Array = [
+			"http://www.blekingemuseum.se/pages/275",
+			"http://www.blekingemuseum.se/pages/377",
+			"http://www.blekingemuseum.se/pages/378",
+			"http://www.blekingemuseum.se/pages/379",
+			"http://www.blekingemuseum.se/pages/380",
+			"http://www.blekingemuseum.se/pages/403",
+			"http://www.blekingemuseum.se/pages/423",
+			"http://www.blekingemuseum.se/pages/1223" ];
 		
 		public function HTMLSystem()
 		{
@@ -33,17 +42,6 @@ package Systems
 		
 		override public function Init():void
 		{
-			// A list of URL's that will be checked upon when the HTML's location state changes
-			_approvedURLs = new Array (
-			"http://www.blekingemuseum.se/pages/275",
-			"http://www.blekingemuseum.se/pages/377",
-			"http://www.blekingemuseum.se/pages/378",
-			"http://www.blekingemuseum.se/pages/379",
-			"http://www.blekingemuseum.se/pages/380",
-			"http://www.blekingemuseum.se/pages/403",
-			"http://www.blekingemuseum.se/pages/423",
-			"http://www.blekingemuseum.se/pages/1223" );
-			
 			// Create the HTML Viewer
 			_HTMLViewer = createViewer(new HTMLViewer(), 0, 0, 800, 900) as HTMLViewer;
 			
@@ -59,12 +57,11 @@ package Systems
 			_HTMLElement.html.addEventListener(LocationChangeEvent.LOCATION_CHANGE, onNewPage);
 			_HTMLViewer.addChild(_HTMLElement);
 
-			// Add a frame around the viewer
+			// Add a frame , menu 
 			addFrame(_HTMLViewer);
+			addViewerMenu(_HTMLViewer, true, true, false, false);
 			
-			// Add the viewer to stage and hide it
 			addChild(_HTMLViewer);
-			
 			// Initialize all of its elements
 			DisplayUtils.initAll(_HTMLViewer);
 			

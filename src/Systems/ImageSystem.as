@@ -172,7 +172,7 @@ package Systems
 					av.addChild(front);
 					av.addChild(back);
 					addFrame(av);
-					addViewerMenu(av, false, true, false, false);
+					addViewerMenu(av, true, true, false, false);
 					_indexCircles[s] = new Array();
 					for (var i:int = 0; i < _numChildren[s]; i++)
 					{

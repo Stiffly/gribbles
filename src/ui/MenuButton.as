@@ -76,7 +76,7 @@ package ui
 			down = type + "-down";
 			hit = type + "-hit";
 			
-			dispatch = "down:" + type;					
+			dispatch = "down:" + type;
 		}	
 		
 		override public function init():void {
