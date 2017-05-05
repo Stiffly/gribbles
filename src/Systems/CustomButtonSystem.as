@@ -171,10 +171,11 @@ package Systems
 			back.loop = true;
 			back.alpha = 0.4;
 			back.horizontal = true;
+			back.touchEnabled = false;
 			back.margin = 8;
 			back.clusterBubbling = false;
 			back.visible = false;
-			//back.dragGesture = "1-finger-drag";
+			back.dragGesture = "1-finger-drag";
 			back.dragAngle = 0;
 			
 			// Add all the children, images etc.
@@ -219,7 +220,7 @@ package Systems
 			}
 		}
 		
-		// This handler triggers when a description file is loaded (.txt)
+		// This handler triggers when a description file for an album is loaded (.txt)
 		private function onDescriptionLoaded(av:AlbumViewer, front:Album, back:Album, parentPath:String):Function 
 		{
 			return function (event:Event):void
@@ -259,7 +260,7 @@ package Systems
 			}
 		}
 		
-		
+		// This handler is triggered when the content for a textbox is loaded
 		private function onTextBoxContentLoaded(parentPath:String):Function
 		{
 			return function (e:Event):void
@@ -268,7 +269,7 @@ package Systems
 				var index:int = content.search("\n");
 				var textContent:TextContent =  new TextContent(content.slice(0, index), content.slice(index +1 , content.length));
 				
-				var textBox:TextBox = new TextBox(_frameThickness);
+				var textBox:TextBox = new TextBox(textContent, _frameThickness);
 				textBox.x = _buttonMap[parentPath].x;
 				textBox.y = _buttonMap[parentPath].y;
 				textBox.width = 400;
@@ -276,8 +277,8 @@ package Systems
 				textBox.nativeTransform = true;
 				textBox.clusterBubbling = true;
 				textBox.mouseChildren = true;
-				var tcr:TouchContainer = createDescription(textContent, textBox.width, textBox.height, 1, 0);
-				textBox.addChild(tcr);
+				//var tcr:TouchContainer = createDescription(textContent, textBox.width, textBox.height, 1, 5);
+				//textBox.addChild(tcr);
 				addFrame(textBox);
 				addTouchContainer(textBox);
 				addChild(textBox);

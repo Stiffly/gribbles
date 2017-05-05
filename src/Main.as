@@ -101,7 +101,7 @@ package
 			_mainButton.initial = getCircle(0xFFFFFF); //white
 			_mainButton.down = getCircle(0x0000FF); //blue
 			_mainButton.up = getCircle(0xFFFFFF); //blue
-			_mainButton.over = getCircle(0xFFFFFF); //blue
+			_mainButton.over = getCircle(0xFF0000); //blue
 			_mainButton.out = getCircle(0xFFFFFF); //blue
 			_mainButton.init();
 			_mainButton.addEventListener(StateEvent.CHANGE, onButtonPress);
@@ -205,6 +205,10 @@ package
 		
 		private function onButtonPress(event:StateEvent) :void
 		{
+			if (event.value != "up")
+			{
+				return;
+			}
 			switchToMainApp();
 			_idleStart = getTimer();
 		}
