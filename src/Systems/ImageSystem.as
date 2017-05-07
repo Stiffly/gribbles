@@ -8,7 +8,6 @@ package Systems
 	 * @contact adambylehn@hotmail.com
 	 */
 	
-	import com.gestureworks.cml.away3d.lights.DirectionalLight;
 	import flash.net.URLLoader; 
 	import flash.net.URLRequest;
 	import flash.events.Event;
@@ -30,14 +29,21 @@ package Systems
 	import flash.events.TouchEvent;
 	
 	import util.Position;
+	import util.TextContent;
 	
 	public class ImageSystem extends System
 	{
+		// Member iterator to keep track of how many children has been loaded
 		private var _i:uint = 0;
+		// We store all parent folder paths in an array
 		private var _parentPaths:Array = new Array();
+		// Stores the number of children that each album has, used to init albums only once, when all children are loaded
 		private var _numChildren:Object = new Object();
+		// A map containing arrays of the index circles that shows what image in the album that is active
 		private var _indexCircles:Object = new Object();
+		// The album map keeps track of all album viewers, with unique parent folder as key
 		private var _pathToAlbumViewerMap:Object = new Object();
+		// The supported file formats that can be loaded
 		private var _knownFormats:Array = [".png", ".jpg", ".bmp", ".gif", ".jpeg", ".tiff"];
 	
 		public function ImageSystem()
@@ -51,6 +57,8 @@ package Systems
 			{
 				_parentPaths.push(parentPath);
 				_numChildren[parentPath] = 0;
+				
+				// Create album viewer
 				var av:AlbumViewer = createViewer(new AlbumViewer(), 400, 400, 1000, 700) as AlbumViewer;
 				av.autoTextLayout = false;
 				av.linkAlbums = true;
@@ -82,17 +90,20 @@ package Systems
 				//back.dragGesture = "1-finger-drag";
 				back.dragAngle = 0;
 				
+				// Add all the children, images 
 				for each (var childPaths:String in getFilesInDirectoryRelative(parentPath))
 				{
 					for each (var extention:String in _knownFormats) {	
 						if (childPaths.toUpperCase().search(extention.toUpperCase()) != -1)
 						{
+							// Load image
 							front.addChild(loadImage(childPaths));
+							// Update number of children, this is compared against in onFileLoaded function
+							_numChildren[parentPath]++;
 							// Load its associated description
 							var textFile:String = childPaths.replace(extention, ".txt");
 							var loader:URLLoader = new URLLoader(new URLRequest(textFile));
 							loader.addEventListener(Event.COMPLETE, onFileLoaded(av, front, back, parentPath));
-							_numChildren[parentPath]++;
 						}
 					}
 				}
@@ -106,16 +117,20 @@ package Systems
 		
 		override public function Update():void
 		{
+			// For all parent folders...
 			for each (var s:String in _parentPaths)
 			{
+				// For all index circle per album
 				for each (var g:Graphic in _indexCircles[s])
 				{
 					g.color = 0x999999;
 				}
+				// If the back is active, we use this as our index
 				if (_pathToAlbumViewerMap[s].back.active) 
 				{
 					_indexCircles[s][_pathToAlbumViewerMap[s].back.currentIndex].color = 0x000000;
 				}
+				// Else the front is active, use it instead
 				else
 				{
 					_indexCircles[s][_pathToAlbumViewerMap[s].front.currentIndex].color = 0x000000;
@@ -132,13 +147,24 @@ package Systems
 			}
 		}
 		
+		// This handler triggers when a description file is loaded (.txt)
 		private function onFileLoaded(av:AlbumViewer, front:Album, back:Album, s:String):Function {
 			return function (event:Event):void
 			{
 				_i++;
 				var content:String = URLLoader(event.currentTarget).data;
 				var index:int = content.search("\n");
-				back.addChild(createDescription(new textContent(content.slice(0, index), content.slice(index +1 , content.length))));
+				back.addChild(
+					createDescription(
+						new TextContent(
+							content.slice(0, index), 
+							content.slice(index +1 , content.length)
+							),
+						1000,
+						700,
+						0.1
+					)
+				);
 				if (_numChildren[s] ==  _i)
 				{
 					av.front = front;
@@ -146,7 +172,7 @@ package Systems
 					av.addChild(front);
 					av.addChild(back);
 					addFrame(av);
-					addViewerMenu(av, true, false, false);
+					addViewerMenu(av, true, true, false, false);
 					_indexCircles[s] = new Array();
 					for (var i:int = 0; i < _numChildren[s]; i++)
 					{
@@ -173,6 +199,7 @@ package Systems
 			return image;
 		}
 		
+		// Create a circle
 		private function getCircle(color:uint, it:Number, alpha:Number = 1):Graphic
 		{
 			var circle:Graphic = new Graphic();
@@ -186,56 +213,7 @@ package Systems
 			return circle;
 		}
 		
-		private function createDescription(content : textContent) :TouchContainer
-		{
-			var tc:TouchContainer = new TouchContainer();
-			tc.width = 1000;
-			tc.height = 400;
-			tc.alpha = 0.7;
-			
-			var g:Graphic = new Graphic();
-			g.shape = "rectangle";
-			//g.color = 0x15B011;
-			g.color = 0x555555;
-			g.width = tc.width;
-			g.height = tc.height;
-			g.alpha = 0.1;
-			tc.addChild(g);
-			
-			var c:Container = new Container();
-			c.paddingTop = 30;
-			c.paddingLeft = 30;
-			c.paddingRight = 30;
-			c.width = 1000;
-			c.height = 400;
-			c.relativeY = true;
-			tc.addChild(c);
-			
-			var t:Text = new Text();
-			t.str = content.title;
-			t.fontSize = 30;
-			t.color = 0xFFFFFF;
-			t.font = "MyFont";
-			t.autosize = true;
-			t.width = 500;
-			c.addChild(t);
-			
-			var d:Text = new Text();
-			d.str = content.description;
-			d.fontSize = 20;
-			d.color = 0xFFFFFF;
-			d.font = "MyFont";
-			d.wordWrap = true;
-			d.autosize = true;
-			d.multiline = true;
-			d.width = 500;
-			c.addChild(d);
-			
-			DisplayUtils.initAll(tc);
-			
-			return tc;
-		}
-				
+		// Hides everything
 		public override function Hide():void
 		{
 			for each (var s:String in _parentPaths) 
@@ -246,12 +224,5 @@ package Systems
 			}
 		}
 	}
-}
-
-class textContent
-{
-	public function textContent(t:String, d:String) { title = t; description = d; };
-	public var title:String;
-	public var description:String;
 }
 	

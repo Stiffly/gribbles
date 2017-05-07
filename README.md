@@ -5,8 +5,7 @@ A multi-touch application for exploring information about gribshunden.
 
 | Project | Version | License |
 | ------- | ------- | ------- |
-**[Away3D](http://away3d.com/)** | 4.1 | [Apache License v2.0](https://www.apache.org/licenses/LICENSE-2.0)  
-**[Adobe Air](https://get.adobe.com/air/)** | 25.0 | [Adobe Software Licensing Agreement](https://wwwimages2.adobe.com/www.adobe.com/content/dam/Adobe/en/legal/licenses-terms/pdf/AdobeAIR_4_en.pdf)
-**[GestureWorks CML](http://www.gestureml.org/doku.php)** | 4.1 | 
-**[GestureWorks GML](http://www.gestureml.org/doku.php)** | 4.1 | 
-**[GestureWorks Away3D](http://www.gestureml.org/doku.php)** | 4.1 | 
+**[Adobe Air](https://get.adobe.com/air/)** | 3.8 | [Adobe Software Licensing Agreement](https://wwwimages2.adobe.com/www.adobe.com/content/dam/Adobe/en/legal/licenses-terms/pdf/AdobeAIR_4_en.pdf)
+**[Apache Flex](http://flex.apache.org/index.html)** | 4.6 | [Apache License](http://www.apache.org/licenses/LICENSE-2.0)
+**[GestureWorks CML](http://openexhibits.org)** | 4.1 | [Software License](http://openexhibits.org/legal/)
+**[GestureWorks GML](http://openexhibits.org)** | 4.1 | [Software License](http://openexhibits.org/legal/)

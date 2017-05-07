@@ -2,6 +2,8 @@ package ui
 {
 	import com.gestureworks.cml.elements.Menu;
 	import com.gestureworks.cml.utils.DisplayUtils;
+	import com.gestureworks.cml.events.StateEvent;
+	import Events.MenuEvent;
 	
 	public class ViewerMenu extends Menu
 	{			
@@ -36,8 +38,12 @@ package ui
 				addChild(new MenuButton( "play", 15, 8, playBtn));			
 			if(pause)
 				addChild(new MenuButton("pause", 14.5, 8.5, pauseBtn));
-			if(close)
-				addChild(new MenuButton("close", 11, 11, closeBtn));			
+			if (close)
+			{
+				var mbc:MenuButton = new MenuButton("close", 11, 11, closeBtn); 
+				mbc.addEventListener(StateEvent.CHANGE, Onclose);
+				addChild(mbc);
+			}
 		}
 		
 		override public function init():void {								
@@ -50,6 +56,16 @@ package ui
 			
 			super.init();
 		}		
+		
+		private function Onclose(e:StateEvent):void
+		{
+			if (e.value == "close")
+			{
+				// Do not close the component, merely hide it
+				e.stopPropagation();
+				stage.dispatchEvent(new MenuEvent(MenuEvent.CLOSE, e.target.parent.parent));
+			}
+		}
 	}
 
 }

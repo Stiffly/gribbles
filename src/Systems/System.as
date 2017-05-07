@@ -8,8 +8,12 @@ package Systems
 	* @contact adambylehn@hotmail.com
 	*/
 	
+	import com.gestureworks.cml.elements.Container;
+	import com.gestureworks.cml.elements.Graphic;
+	import com.gestureworks.cml.elements.Text;
 	import com.gestureworks.core.GestureWorks;
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.filesystem.File;
 	import flash.utils.getQualifiedClassName
 	import com.gestureworks.cml.core.CMLObjectList;	
@@ -23,6 +27,11 @@ package Systems
 	import com.gestureworks.events.GWGestureEvent;
 	import ui.ViewerMenu;
 	import ui.InfoPanel;
+	import util.TextContent;
+	import com.gestureworks.cml.utils.DisplayUtils;
+	import Events.MenuEvent;
+	
+	import com.gestureworks.events.GWClusterEvent;
 	
 
 	
@@ -39,7 +48,10 @@ package Systems
 		public function Hide():void {}
 		
 		// A function to be overidden by child classes
-		public function Init():void { }
+		public function Init():void 
+		{
+			stage.addEventListener(MenuEvent.CLOSE, onClose);
+		}
 		// A function to be overidden by child classes
 		public function Update():void { }
 		
@@ -56,7 +68,7 @@ package Systems
 		protected function hideComponent(component : Component) : void
 		{
 			component.alpha = 0.0;
-			component.rotation = Math.random() * 90 - 45;
+			//component.rotation = Math.random() * 90 - 45;
 			component.touchEnabled = false;
 			component.x = 13337; // "Hide" the component
 			component.y = 13337;
@@ -121,9 +133,9 @@ package Systems
 			return frame;
 		}
 		
-		protected function addViewerMenu(component:Component, info:Boolean, play:Boolean, pause:Boolean):ViewerMenu
+		protected function addViewerMenu(component:Component, close:Boolean, info:Boolean, play:Boolean, pause:Boolean):ViewerMenu
 		{
-			var menu:ViewerMenu = new ViewerMenu(info, false, play, pause);
+			var menu:ViewerMenu = new ViewerMenu(info, close, play, pause);
 			menu.y = -65;
 			menu.paddingLeft = 15;
 			menu.autohide = false;
@@ -152,6 +164,12 @@ package Systems
 				relativePaths.push(root.getRelativePath(file, true));
 			}
 			return relativePaths;
+		}
+		
+		protected function isDirectory(path:String):Boolean
+		{
+			var root:File = File.applicationDirectory;
+			return root.resolvePath(path).isDirectory;
 		}
 
 		protected function drag_handler(event:GWGestureEvent):void
@@ -191,6 +209,66 @@ package Systems
 		{
 			_button.active = true;
 			_button.visible = true;
+		}
+		
+		protected function OnMenuClose(e:MenuEvent):void
+		{
+			trace("Received event CLOSE");
+		}
+		
+		protected function createDescription(content : TextContent, width:uint, height:uint, alpha:Number, padding:Number=30) :TouchContainer
+		{
+			var tc:TouchContainer = new TouchContainer();
+			tc.width = width;
+			tc.height = height;
+			tc.alpha = 0.7;
+			
+			var g:Graphic = new Graphic();
+			g.shape = "rectangle";
+			//g.color = 0x15B011;
+			g.color = 0x555555;
+			g.width = tc.width;
+			g.height = tc.height;
+			g.alpha = alpha;
+			tc.addChild(g);
+			
+			var c:Container = new Container();
+			c.paddingTop = padding;
+			c.paddingLeft = padding;
+			c.paddingRight = padding;
+			c.width = width;
+			c.height = height;
+			c.relativeY = true;
+			tc.addChild(c);
+			
+			var t:Text = new Text();
+			t.str = content.title;
+			t.fontSize = 30;
+			t.color = 0xFFFFFF;
+			t.font = "MyFont";
+			t.autosize = true;
+			t.width = width;
+			c.addChild(t);
+			
+			var d:Text = new Text();
+			d.str = content.description;
+			d.fontSize = 20;
+			d.color = 0xFFFFFF;
+			d.font = "MyFont";
+			d.wordWrap = true;
+			d.autosize = true;
+			d.multiline = true;
+			d.width = width;
+			c.addChild(d);
+			
+			DisplayUtils.initAll(tc);
+			
+			return tc;
+		}
+		
+		protected function onClose(e:MenuEvent):void
+		{
+			hideComponent(Component(e.result));
 		}
 	}
 }

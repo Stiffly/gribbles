@@ -8,7 +8,9 @@ package
 	 * @contact adambylehn@hotmail.com
 	 */
 	
+	import Systems.CustomButtonSystem;
 	import com.gestureworks.cml.elements.Button;
+	import com.gestureworks.cml.elements.Menu;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.utils.getTimer;
@@ -30,6 +32,7 @@ package
 	import Systems.HTMLSystem;
 	import Systems.PDFSystem;
 	import Systems.AudioSystem;
+	import Events.MenuEvent;
 		
 	[SWF(backgroundColor="0x313131", width="1920", height="1080", frameRate="30")]
 	public class Main extends GestureWorksAIR
@@ -40,7 +43,7 @@ package
 		private var _loaderImage:Sprite;
 		
 		// Background image
-		[Embed(source = "../bin/images/bottenbild2.jpg")]
+		[Embed(source = "../bin/images/bottenbild2.png")]
 		private var _backgroundSource:Class;
 		private var _backgroundImage:Sprite;
 		
@@ -75,6 +78,7 @@ package
 			_systems.push(new VideoSystem());
 			_systems.push(new ImageSystem());
 			_systems.push(new AudioSystem());
+			_systems.push(new CustomButtonSystem());
 			_screenSaver = new WaterSystem();
 			
 			CMLParser.addEventListener(CMLParser.COMPLETE, cmlComplete);
@@ -99,7 +103,7 @@ package
 			_mainButton.initial = getCircle(0xFFFFFF); //white
 			_mainButton.down = getCircle(0x0000FF); //blue
 			_mainButton.up = getCircle(0xFFFFFF); //blue
-			_mainButton.over = getCircle(0xFFFFFF); //blue
+			_mainButton.over = getCircle(0xFF0000); //blue
 			_mainButton.out = getCircle(0xFFFFFF); //blue
 			_mainButton.init();
 			_mainButton.addEventListener(StateEvent.CHANGE, onButtonPress);
@@ -176,7 +180,7 @@ package
 			_elapsedTimeText.text = "Elapsed time: " + Math.floor(_elapsedTime / 60) + ":" + _elapsedTime % 60;
 			// Idle logic
 			if (_currentState == State.MAINAPP) {
-				if (((getTimer() - _idleStart) / 1000) > 10)
+				if (((getTimer() - _idleStart) / 1000) > 60)
 				{
 					switchToScreenSaver();
 				}
@@ -203,6 +207,10 @@ package
 		
 		private function onButtonPress(event:StateEvent) :void
 		{
+			if (event.value != "up")
+			{
+				return;
+			}
 			switchToMainApp();
 			_idleStart = getTimer();
 		}

@@ -21,6 +21,7 @@ package Systems
 	import com.gestureworks.cml.elements.MP3;
 	import com.gestureworks.cml.utils.DisplayUtils;
 	import util.Position;
+	import util.TextContent;
 	import ui.ViewerMenu;
 	import ui.InfoPanel;
 	
@@ -28,11 +29,16 @@ package Systems
 	
 	public class AudioSystem extends System
 	{
-		private var _WAVPlayer:Array = new Array();
-		private var _MP3Player:Array = new Array();
+		// Array of wav players
+		private var _WAVPlayers:Array = new Array();
+		// Array of mp3 players
+		private var _MP3Players:Array = new Array();
+		// Array of positions for the audio players
 		private var _audioPos:Array = new Array();
 		private var _audioInfo:Array = new Array();
+		// The offset used for placing the audio players
 		private var _offset:Position = new Position(400, 200);
+		// Member iterator variable
 		private var _i:int = 0;
 		
 		public function AudioSystem()
@@ -45,8 +51,8 @@ package Systems
 			
 			var width:int = 600;
 			var height:int = 400;
-			_audioInfo.push(new textContent("Tyge Krabbe", "\nDen danska adelsmannen Tyge Krabbe fanns ombord på Gribshunden. Så här beskriver han förlisningen i ett brev till herr Hartvig."));
-			_audioInfo.push(new textContent("Kong Hansis Krønicke", "\nUr Kung Hans krönika av Arild Huitfeldt år 1599."));
+			_audioInfo.push(new TextContent("Tyge Krabbe", "\nDen danska adelsmannen Tyge Krabbe fanns ombord på Gribshunden. Så här beskriver han förlisningen i ett brev till herr Hartvig."));
+			_audioInfo.push(new TextContent("Kong Hansis Krønicke", "\nUr Kung Hans krönika av Arild Huitfeldt år 1599."));
 			
 			for each (var audioPath:String in getFilesInDirectoryRelative("audio"))
 			{
@@ -73,15 +79,15 @@ package Systems
 		
 		private function buttonHandler(event:StateEvent):void
 		{
-			for each (var wavPlayer:WAVPlayer in _WAVPlayer) {
+			for each (var wavPlayer:WAVPlayer in _WAVPlayers) {
 				switchButtonState(event.value, wavPlayer, 400, 400);
 			}
-			for (var j:int = 0; j < _MP3Player.length; j++) {
-				switchButtonState(event.value, _MP3Player[j], _audioPos[j].X, _audioPos[j].Y);
+			for (var j:int = 0; j < _MP3Players.length; j++) {
+				switchButtonState(event.value, _MP3Players[j], _audioPos[j].X, _audioPos[j].Y);
 			}
 		}
 		
-		private function setMP3Properties(component:Component, path:String, width:int, height:int, description:textContent):void
+		private function setMP3Properties(component:Component, path:String, width:int, height:int, description:TextContent):void
 		{
 			var mp3:MP3 = new MP3();
 			mp3.className = "mp3-component";
@@ -99,11 +105,11 @@ package Systems
 			addInfoPanel(component, description.title, description.description);
 			addFrame(component);
 			addTouchContainer(component);
-			addViewerMenu(component, true, true, true);
+			addViewerMenu(component, true, true, true, true);
 			
 			DisplayUtils.initAll(component);
 			
-			_MP3Player.push(component);
+			_MP3Players.push(component);
 		}
 		
 		private function setWAVroperties(component:Component, path:String, width:int, height:int):void
@@ -121,23 +127,15 @@ package Systems
 			
 			DisplayUtils.initAll(component);
 			
-			_WAVPlayer.push(component);
+			_WAVPlayers.push(component);
 			hideComponent(component);
 		}
 		
 		public override function Hide():void
 		{
-			for each (var mp3:MP3Player in _MP3Player) {
+			for each (var mp3:MP3Player in _MP3Players) {
 				hideComponent(mp3);
 			}
 		}
 	}
 }
-
-class textContent
-{
-	public function textContent(t:String, d:String) { title = t; description = d; };
-	public var title:String;
-	public var description:String;
-}
-	
