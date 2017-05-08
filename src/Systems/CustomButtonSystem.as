@@ -414,6 +414,15 @@ package Systems
 					}
 					else if (_textBoxMap[parentPath].alpha == 0)
 					{
+						for each (var tb:TextBox in _textBoxMap)
+						{
+							if (tb.visible == true) 
+							{
+								tb.Kill();
+								hideComponent(tb);
+							}
+						}
+						
 						var bOriginX:Number = _buttonMap[parentPath].x + _buttonMap[parentPath].width / 2;
 						var bOriginY:Number = _buttonMap[parentPath].y + _buttonMap[parentPath].height / 2;
 						var tbWidth:Number = _textBoxMap[parentPath].width;
@@ -437,7 +446,7 @@ package Systems
 						else
 						{
 							var lx:Number = bOriginX + verticalOffset;
-							var ly:Number = bOriginY ;
+							var ly:Number = bOriginY;
 							showComponent(lx, ly, _textBoxMap[parentPath]);
 							removeChild(_textBoxMap[parentPath]._Line);
 							var lline:Graphic = getLine(bOriginX, bOriginY, lx - _frameThickness * 2, ly + halfBoxHeight);
@@ -465,7 +474,7 @@ package Systems
 		{
 			var line:Graphic = new Graphic();
 			line.graphics.beginFill(0x000000);
-			line.graphics.lineStyle(3, 0x777777, .4);
+			line.graphics.lineStyle(3, 0x999999, 0.8);
 			line.graphics.moveTo(startX,startY);
 			line.graphics.lineTo(goalX, goalY);
 			line.graphics.endFill();
