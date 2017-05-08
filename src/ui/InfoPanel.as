@@ -3,16 +3,10 @@ package ui
 	import com.gestureworks.cml.elements.Container;
 	import com.gestureworks.cml.elements.Graphic;
 	import com.gestureworks.cml.elements.Text;
+	import util.TextContent;
 	
 	public class InfoPanel extends Container
-	{		
-		[Embed(source="../../bin/fonts/arial.ttf",
-        fontName = "MyFont",
-        mimeType = "application/x-font",
-        advancedAntiAliasing="true",
-        embedAsCFF="false")]
-		private var myEmbeddedFont:Class;
-		
+	{
 		public var bkg:Graphic;
 		public var bkgColor:uint = 0x665533;
 		public var bkgAlpha:Number = 0.8;
@@ -66,7 +60,7 @@ package ui
 				t.str = title;
 				t.fontSize = tFontSize;
 				t.color = tFontColor;
-				t.font = "MyFont";
+				t.font = "EmbeddedArial";
 				t.autosize = true;
 				t.widthPercent = 100;
 				info.addChild(t);				
@@ -79,7 +73,7 @@ package ui
 				d.wordWrap = true;
 				d.color = dFontColor;
 				d.widthPercent = 100;
-				d.font = "MyFont";
+				d.font = "EmbeddedArial";
 				d.autosize = true;
 				d.multiline = true;
 				if (descr) {
