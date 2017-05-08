@@ -1,5 +1,6 @@
 package Components
 {
+	import flash.text.TextFormat;
 	import flash.utils.getTimer;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
@@ -16,7 +17,7 @@ package Components
 	
 	/**
 	 * Components.TextBox
-	 * 
+	 *
 	 * A textbox that appears when you hover over a specified object
 	 * and then fades out. The TextBox extends Component.
 	 * @author Adam
@@ -44,7 +45,7 @@ package Components
 		// Used to keep the textboxes inside the stage screen
 		private var _frameWidth:uint = 0;
 		
-		public function TextBox(content:TextContent, frameWidth:uint, updateFrequenzy:Number = 0.2, lifeTime:Number = 10)
+		public function TextBox(content:TextContent, frameWidth:uint, updateFrequenzy:Number = 0, lifeTime:Number = 10)
 		{
 			_title = new Text();
 			_title.text = content.title;
@@ -59,19 +60,14 @@ package Components
 		
 		override public function init():void
 		{
-			super.init();
-			this.alpha = 1;
-			
-			// Initiated the textbox, with font, size etc.
-			// 50 char per line
-			
-			var tf:TextField = new TextField();
-			tf.height = 400;
-			tf.width = 400;
-			tf.text = _description;
-			
-			var tc:TouchContainer = createDescription(new TextContent(_title.text, _currentDescription.text), this.width , tf.textHeight * 20 , 1, 5);
+			// Initiates the textbox, with font, size etc.
+			var padding:Number = 5;
+			var textHeight:Number = 4 * padding + getTextHeightInPixels(_title.text, padding, 30) + getTextHeightInPixels(_description, padding, 20);
+			this.height = textHeight;
+			var tc:TouchContainer = createDescription(new TextContent(_title.text, _currentDescription.text), this.width, this.height, 0.8, padding);
 			this.addChild(tc);
+			
+			super.init();
 		}
 		
 		public function Update():void
@@ -159,8 +155,23 @@ package Components
 			_currentDescription.text = "";
 		}
 		
+		private function getTextHeightInPixels(text:String, padding:Number, fontSize:int):Number
+		{
+			var tf:TextField = new TextField();
+			tf.x += padding * 2;
+			tf.width = 400 - 2 * padding;
+			tf.text = text;
+			var myFormat:TextFormat = new TextFormat("Arial", fontSize);
+			myFormat.align = "center";
+			tf.setTextFormat(myFormat);
+			tf.autoSize = TextFieldAutoSize.CENTER;
+			tf.wordWrap = true;
+			tf.multiline = true;
+			return tf.textHeight;
+		}
+		
 		// This is used to create the actual text content
-		protected function createDescription(content:TextContent, width:uint, height:uint, alpha:Number, padding:Number = 30):TouchContainer
+		private function createDescription(content:TextContent, width:uint, height:uint, alpha:Number, padding:Number = 30):TouchContainer
 		{
 			var tc:TouchContainer = new TouchContainer();
 			tc.width = width;
@@ -184,24 +195,28 @@ package Components
 			c.relativeY = true;
 			tc.addChild(c);
 			
-			var t:Text  = new Text();
+			var t:Text = new Text();
 			t.text = content.title;
 			t.fontSize = 30;
 			t.color = 0xFFFFFF;
-			t.font = "MyFont";
+			t.font = "Arial";
 			t.autosize = true;
-			t.width = width;
+			t.autosize = true;
+			t.multiline = true;
+			t.width = c.width;
+			t.wordWrap = true;
+			t.textAlign = "center";
 			c.addChild(t);
 			
 			_currentDescription.str = content.description;
 			_currentDescription.fontSize = 20;
 			_currentDescription.color = 0xFFFFFF;
-			_currentDescription.font = "MyFont";
+			_currentDescription.font = "Arial";
 			_currentDescription.wordWrap = true;
 			_currentDescription.autosize = true;
 			_currentDescription.multiline = true;
-			_currentDescription.width = width;
-			_currentDescription.autoSize = TextFieldAutoSize.LEFT;
+			_currentDescription.width = c.width;
+			_currentDescription.textAlign = "center";
 			c.addChild(_currentDescription);
 			
 			DisplayUtils.initAll(tc);

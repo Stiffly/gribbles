@@ -336,12 +336,9 @@ package Systems
 				textBox.x = _buttonMap[parentPath].x;
 				textBox.y = _buttonMap[parentPath].y;
 				textBox.width = 400;
-				textBox.height = 400;
 				textBox.nativeTransform = true;
 				textBox.clusterBubbling = true;
 				textBox.mouseChildren = true;
-				//var tcr:TouchContainer = createDescription(textContent, textBox.width, textBox.height, 1, 5);
-				//textBox.addChild(tcr);
 				addFrame(textBox);
 				addTouchContainer(textBox);
 				addChild(textBox);
