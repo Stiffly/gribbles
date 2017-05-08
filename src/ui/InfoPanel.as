@@ -60,7 +60,7 @@ package ui
 				t.str = title;
 				t.fontSize = tFontSize;
 				t.color = tFontColor;
-				t.font = "EmbeddedArial";
+				t.font = "Arial";
 				t.autosize = true;
 				t.widthPercent = 100;
 				info.addChild(t);				
@@ -73,7 +73,7 @@ package ui
 				d.wordWrap = true;
 				d.color = dFontColor;
 				d.widthPercent = 100;
-				d.font = "EmbeddedArial";
+				d.font = "Arial";
 				d.autosize = true;
 				d.multiline = true;
 				if (descr) {
