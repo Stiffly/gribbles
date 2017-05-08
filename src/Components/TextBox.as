@@ -1,6 +1,8 @@
 package Components
 {
 	import flash.utils.getTimer;
+	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
 	
 	import com.gestureworks.cml.components.Component;
 	import com.gestureworks.cml.elements.Container;
@@ -13,6 +15,8 @@ package Components
 	import util.TextContent;
 	
 	/**
+	 * Components.TextBox
+	 * 
 	 * A textbox that appears when you hover over a specified object
 	 * and then fades out. The TextBox extends Component.
 	 * @author Adam
@@ -59,7 +63,14 @@ package Components
 			this.alpha = 1;
 			
 			// Initiated the textbox, with font, size etc.
-			var tc:TouchContainer = createDescription(new TextContent(_title.text, _currentDescription.text), this.width, this.height, 1, 5);
+			// 50 char per line
+			
+			var tf:TextField = new TextField();
+			tf.height = 400;
+			tf.width = 400;
+			tf.text = _description;
+			
+			var tc:TouchContainer = createDescription(new TextContent(_title.text, _currentDescription.text), this.width , tf.textHeight * 20 , 1, 5);
 			this.addChild(tc);
 		}
 		
@@ -190,6 +201,7 @@ package Components
 			_currentDescription.autosize = true;
 			_currentDescription.multiline = true;
 			_currentDescription.width = width;
+			_currentDescription.autoSize = TextFieldAutoSize.LEFT;
 			c.addChild(_currentDescription);
 			
 			DisplayUtils.initAll(tc);
