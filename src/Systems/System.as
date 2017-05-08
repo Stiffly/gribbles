@@ -245,7 +245,7 @@ package Systems
 			t.str = content.title;
 			t.fontSize = 30;
 			t.color = 0xFFFFFF;
-			t.font = "MyFont";
+			t.font = "Arial";
 			t.autosize = true;
 			t.width = width;
 			c.addChild(t);
@@ -254,7 +254,7 @@ package Systems
 			d.str = content.description;
 			d.fontSize = 20;
 			d.color = 0xFFFFFF;
-			d.font = "MyFont";
+			d.font = "Arial";
 			d.wordWrap = true;
 			d.autosize = true;
 			d.multiline = true;
