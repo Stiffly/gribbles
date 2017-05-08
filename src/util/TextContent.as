@@ -10,5 +10,4 @@ package util
 		public var title:String;
 		public var description:String;
 	}
-
 }

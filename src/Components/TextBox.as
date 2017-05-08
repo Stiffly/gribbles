@@ -45,6 +45,8 @@ package Components
 		// Used to keep the textboxes inside the stage screen
 		private var _frameWidth:uint = 0;
 		
+		public var _Line:Graphic = new Graphic();
+		
 		public function TextBox(content:TextContent, frameWidth:uint, updateFrequenzy:Number = 0, lifeTime:Number = 10)
 		{
 			_title = new Text();
@@ -77,6 +79,9 @@ package Components
 			{
 				return;
 			}
+			
+
+			
 			// Logic to keep the box within the screen
 			if (this.x + this.width + _frameWidth > stage.stageWidth)
 			{
@@ -130,6 +135,7 @@ package Components
 				if (timeLeft < 2)
 				{
 					this.alpha = timeLeft / 2;
+					this._Line.alpha = timeLeft / 2;
 				}
 				// Hide it
 				if (age > _lifeTime)
@@ -155,6 +161,8 @@ package Components
 			_currentDescription.text = "";
 		}
 		
+		// This function gets the height of the text in pixels by creating a temporary TextField variable
+		// that can calculate this.
 		private function getTextHeightInPixels(text:String, padding:Number, fontSize:int):Number
 		{
 			var tf:TextField = new TextField();
@@ -168,6 +176,12 @@ package Components
 			tf.wordWrap = true;
 			tf.multiline = true;
 			return tf.textHeight;
+		}
+		
+		public function Kill():void
+		{
+			_dead = true;
+			_Line.alpha = 0;
 		}
 		
 		// This is used to create the actual text content

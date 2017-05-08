@@ -38,6 +38,7 @@ package Systems
 		private var _buttonMap:Object = new Object();
 		// The album map keeps track of all album viewers, with unique parent folder as key
 		private var _albumMap:Object = new Object();
+		// The image map keeps track of all image viewers, with unique parent folder as key
 		private var _imageMap:Object = new Object();
 		// The textbox map keeps track of all textboxes, with unique parent folder as key
 		private var _textBoxMap:Object = new Object();
@@ -344,6 +345,9 @@ package Systems
 				addChild(textBox);
 				_textBoxMap[parentPath] = textBox;
 				hideComponent(textBox);
+				
+				addChild(textBox._Line);
+				
 				DisplayUtils.initAll(textBox);
 			}
 		}
@@ -404,12 +408,43 @@ package Systems
 				{
 					if (_textBoxMap[parentPath].alpha > 0)
 					{
+						_textBoxMap[parentPath].Kill();
 						hideComponent(_textBoxMap[parentPath]);
+						
 					}
 					else if (_textBoxMap[parentPath].alpha == 0)
 					{
-						showComponent(_buttonMap[parentPath].x + _buttonMap[parentPath].width / 2 - _textBoxMap[parentPath].width / 2, _buttonMap[parentPath].y + _buttonMap[parentPath].height / 2 - _textBoxMap[parentPath].height / 2, _textBoxMap[parentPath]);
-						_textBoxMap[parentPath].Rebirth();
+						var bOriginX:Number = _buttonMap[parentPath].x + _buttonMap[parentPath].width / 2;
+						var bOriginY:Number = _buttonMap[parentPath].y + _buttonMap[parentPath].height / 2;
+						var tbWidth:Number = _textBoxMap[parentPath].width;
+						var tby:Number = _textBoxMap[parentPath].y;
+						var halfBoxHeight:Number = _textBoxMap[parentPath].height / 2;
+						var verticalOffset:Number = 300;
+						
+						// Right side of the screen
+						if (bOriginX > stage.stageWidth / 2)
+						{
+							var rx:Number = bOriginX - verticalOffset - tbWidth;
+							var ry:Number = bOriginY;
+							showComponent(rx, ry, _textBoxMap[parentPath]);
+							removeChild(_textBoxMap[parentPath]._Line);
+							var rline:Graphic = getLine(bOriginX, bOriginY, rx + tbWidth + _frameThickness * 2, ry + halfBoxHeight);
+							_textBoxMap[parentPath]._Line = rline;
+							addChild(rline); 
+							_textBoxMap[parentPath].Rebirth();
+						}
+						// Left side of the screen
+						else
+						{
+							var lx:Number = bOriginX + verticalOffset;
+							var ly:Number = bOriginY ;
+							showComponent(lx, ly, _textBoxMap[parentPath]);
+							removeChild(_textBoxMap[parentPath]._Line);
+							var lline:Graphic = getLine(bOriginX, bOriginY, lx - _frameThickness * 2, ly + halfBoxHeight);
+							_textBoxMap[parentPath]._Line =  lline;
+							addChild(lline);
+							_textBoxMap[parentPath].Rebirth();
+						}
 					}
 				}
 			}
@@ -424,6 +459,17 @@ package Systems
 			component.x = x;
 			component.y = y;
 			setChildIndex(component, numChildren - 1);
+		}
+		
+		private function getLine(startX:int, startY:int, goalX:int, goalY:int):Graphic
+		{
+			var line:Graphic = new Graphic();
+			line.graphics.beginFill(0x000000);
+			line.graphics.lineStyle(3, 0x777777, .4);
+			line.graphics.moveTo(startX,startY);
+			line.graphics.lineTo(goalX, goalY);
+			line.graphics.endFill();
+			return line;
 		}
 		
 		// Hides all the albums
