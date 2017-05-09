@@ -308,7 +308,7 @@ package Systems
 				var content:String = URLLoader(event.currentTarget).data;
 				// Finds the first newline and creates a text content that is used for the description
 				var index:int = content.search("\n");
-				back.addChild(createDescription(new TextContent(content.slice(0, index), content.slice(index + 1, content.length)), av.width, av.height, 0.6, 30, 12));
+				back.addChild(TextContent.CREATE_DESCRIPTION(new TextContent(content.slice(0, index), content.slice(index + 1, content.length)), av.width, av.height, 0.6, 30, 12));
 				// This is true when all of the description files are loaded
 				if (_numChildren[parentPath] == _i)
 				{

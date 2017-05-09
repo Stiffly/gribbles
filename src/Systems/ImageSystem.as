@@ -156,13 +156,13 @@ package Systems
 				var content:String = URLLoader(event.currentTarget).data;
 				var index:int = content.search("\n");
 				back.addChild(
-					createDescription(
+					TextContent.CREATE_DESCRIPTION(
 						new TextContent(
 							content.slice(0, index), 
 							content.slice(index +1 , content.length)
 							),
-						1000,
-						700,
+						av.width,
+						av.height,
 						0.1
 					)
 				);
