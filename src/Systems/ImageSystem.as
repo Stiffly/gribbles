@@ -1,25 +1,16 @@
 package Systems
 {
-	/**
-	 * Systems.ImageSystem
-	 * 
-	 * Keeps track of the ImageViewer and its associated button
-	 *
-	 * @author Adam Byléhn
-	 * @contact adambylehn@hotmail.com
-	 */
-	
-	import flash.net.URLLoader; 
+	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.events.Event;
-	 
+	import flash.events.TouchEvent;
+	
 	import com.gestureworks.cml.components.Component;
 	import com.gestureworks.cml.elements.Container;
 	import com.gestureworks.cml.elements.Text;
 	import com.gestureworks.cml.elements.TouchContainer;
 	import com.gestureworks.cml.utils.DisplayUtils;
 	import com.gestureworks.cml.elements.Graphic;
-	
 	import com.gestureworks.cml.core.CMLObjectList;
 	import com.gestureworks.cml.events.StateEvent;
 	import com.gestureworks.cml.elements.Button;
@@ -27,10 +18,18 @@ package Systems
 	import com.gestureworks.cml.elements.Image;
 	import com.gestureworks.cml.elements.Album;
 	import com.gestureworks.events.GWGestureEvent;
-	import flash.events.TouchEvent;
 	
 	import util.Position;
 	import util.TextContent;
+	
+	/**
+	 * Systems.ImageSystem
+	 *
+	 * Keeps track of the ImageViewer and its associated button
+	 *
+	 * @author Adam Byléhn
+	 * @contact adambylehn@hotmail.com
+	 */
 	
 	public class ImageSystem extends System
 	{
@@ -46,7 +45,7 @@ package Systems
 		private var _pathToAlbumViewerMap:Object = new Object();
 		// The supported file formats that can be loaded
 		private var _knownFormats:Array = [".png", ".jpg", ".bmp", ".gif", ".jpeg", ".tiff"];
-	
+		
 		public function ImageSystem()
 		{
 			super();
@@ -94,7 +93,8 @@ package Systems
 				// Add all the children, images 
 				for each (var childPaths:String in getFilesInDirectoryRelative(parentPath))
 				{
-					for each (var extention:String in _knownFormats) {	
+					for each (var extention:String in _knownFormats)
+					{
 						if (childPaths.toUpperCase().search(extention.toUpperCase()) != -1)
 						{
 							// Load image
@@ -127,7 +127,7 @@ package Systems
 					g.color = 0x999999;
 				}
 				// If the back is active, we use this as our index
-				if (_pathToAlbumViewerMap[s].back.active) 
+				if (_pathToAlbumViewerMap[s].back.active)
 				{
 					_indexCircles[s][_pathToAlbumViewerMap[s].back.currentIndex].color = 0x000000;
 				}
@@ -142,31 +142,22 @@ package Systems
 		// On button click
 		private function imageButtonHandler(event:StateEvent):void
 		{
-			for each (var s:String in _parentPaths) 
+			for each (var s:String in _parentPaths)
 			{
 				switchButtonState(event.value, _pathToAlbumViewerMap[s], 400, 400);
 			}
 		}
 		
 		// This handler triggers when a description file is loaded (.txt)
-		private function onFileLoaded(av:AlbumViewer, front:Album, back:Album, s:String):Function {
-			return function (event:Event):void
+		private function onFileLoaded(av:AlbumViewer, front:Album, back:Album, s:String):Function
+		{
+			return function(event:Event):void
 			{
 				_i++;
 				var content:String = URLLoader(event.currentTarget).data;
 				var index:int = content.search("\n");
-				back.addChild(
-					TextContent.CREATE_DESCRIPTION(
-						new TextContent(
-							content.slice(0, index), 
-							content.slice(index +1 , content.length)
-							),
-						av.width,
-						av.height,
-						0.1
-					)
-				);
-				if (_numChildren[s] ==  _i)
+				back.addChild(TextContent.CREATE_DESCRIPTION(new TextContent(content.slice(0, index), content.slice(index + 1, content.length)), av.width, av.height, 0.1));
+				if (_numChildren[s] == _i)
 				{
 					av.front = front;
 					av.back = back;
@@ -178,7 +169,7 @@ package Systems
 					for (var i:int = 0; i < _numChildren[s]; i++)
 					{
 						var radius:Number = 10;
-						var g:Graphic = getCircle(0x999999, i * radius * 2, 0, radius, 0.5);
+						var g:Graphic = getCircle(0x999999, i * (radius << 1), 0, radius, 0.5);
 						_indexCircles[s].push(g);
 						av.addChild(g);
 					}
@@ -201,12 +192,10 @@ package Systems
 			return image;
 		}
 		
-		
-		
 		// Hides everything
 		public override function Hide():void
 		{
-			for each (var s:String in _parentPaths) 
+			for each (var s:String in _parentPaths)
 			{
 				if (_pathToAlbumViewerMap[s] == null)
 					return;
@@ -215,4 +204,3 @@ package Systems
 		}
 	}
 }
-	

@@ -1,14 +1,5 @@
 package Systems
 {
-	
-	/**
-	 * Systems.AudioSystem
-	 * Keeps track of audiofiles (WAV/MP3)
-	 *
-	 * @author Adam Byléhn
-	 * @contact adambylehn@hotmail.com
-	 */
-	
 	import com.gestureworks.cml.components.Component;
 	import com.gestureworks.cml.core.CMLObjectList;
 	import com.gestureworks.cml.elements.Frame;
@@ -20,12 +11,21 @@ package Systems
 	import com.gestureworks.cml.components.MP3Player;
 	import com.gestureworks.cml.elements.MP3;
 	import com.gestureworks.cml.utils.DisplayUtils;
+	
 	import util.Position;
 	import util.TextContent;
 	import ui.ViewerMenu;
 	import ui.InfoPanel;
 	
-
+	/**
+	 * Systems.AudioSystem
+	 *
+	 * A class that contains two strings - title and description - along with a method
+	 * for creating a description container.
+	 *
+	 * @author Adam Byléhn
+	 * @contact adambylehn@hotmail.com
+	 */
 	
 	public class AudioSystem extends System
 	{
@@ -58,14 +58,15 @@ package Systems
 			{
 				if (audioPath.toLowerCase().search(".wav") != -1)
 				{
-					_audioPos.push(new Position(_offset.X + (_i % 2 * (width + _frameThickness)), _offset.Y + (Math.floor(_i / 2) * (height+ _frameThickness))));
+					_audioPos.push(new Position(_offset.X + (_i % 2 * (width + _frameThickness)), _offset.Y + (Math.floor(_i >> 1) * (height + _frameThickness))));
 					var wavPlayer:WAVPlayer = createViewer(new WAVPlayer(), _audioPos[_i].X, _audioPos[_i].Y, width, height) as WAVPlayer;
 					setWAVroperties(wavPlayer, audioPath, width, height);
 					_i++;
 					
-				} else if (audioPath.toLowerCase().search(".mp3") != -1)
-				{					
-					_audioPos.push(new Position(_offset.X + (_i % 2 * (width + _frameThickness * 4)), _offset.Y + (Math.floor(_i / 2) * (height+ _frameThickness * 4))));
+				}
+				else if (audioPath.toLowerCase().search(".mp3") != -1)
+				{
+					_audioPos.push(new Position(_offset.X + (_i % 2 * (width + (_frameThickness << 2))), _offset.Y + (Math.floor(_i >> 1) * (height + (_frameThickness << 2)))));
 					var mp3Player:MP3Player = createViewer(new MP3Player(), _audioPos[_i].X, _audioPos[_i].Y, width, height) as MP3Player;
 					
 					setMP3Properties(mp3Player, audioPath, width, height, _audioInfo[_i]);
@@ -79,10 +80,12 @@ package Systems
 		
 		private function buttonHandler(event:StateEvent):void
 		{
-			for each (var wavPlayer:WAVPlayer in _WAVPlayers) {
+			for each (var wavPlayer:WAVPlayer in _WAVPlayers)
+			{
 				switchButtonState(event.value, wavPlayer, 400, 400);
 			}
-			for (var j:int = 0; j < _MP3Players.length; j++) {
+			for (var j:int = 0; j < _MP3Players.length; j++)
+			{
 				switchButtonState(event.value, _MP3Players[j], _audioPos[j].X, _audioPos[j].Y);
 			}
 		}
@@ -133,7 +136,8 @@ package Systems
 		
 		public override function Hide():void
 		{
-			for each (var mp3:MP3Player in _MP3Players) {
+			for each (var mp3:MP3Player in _MP3Players)
+			{
 				hideComponent(mp3);
 			}
 		}

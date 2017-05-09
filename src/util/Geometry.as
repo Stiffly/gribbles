@@ -1,15 +1,20 @@
-package util 
+package util
 {
 	import com.gestureworks.cml.elements.Graphic;
 	
 	/**
+	 * util.Geometry
+	 *
 	 * A util class that contains static functions generating simple geometry
-	 * @author Adam
+	 *
+	 * @author Adam Byléhn
+	 * @contact adambylehn@hotmail.com
 	 */
-	public class Geometry extends Graphic 
+	
+	public class Geometry extends Graphic
 	{
 		
-		public function Geometry() 
+		public function Geometry()
 		{
 			super();
 		}

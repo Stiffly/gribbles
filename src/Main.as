@@ -1,14 +1,5 @@
 package
 {
-	/**
-	 * Main
-	 * 
-	 * This is the entry point of the application gribbles
-	 *
-	 * @author Adam Byléhn
-	 * @contact adambylehn@hotmail.com
-	 */
-	
 	import Systems.CustomButtonSystem;
 	import com.gestureworks.cml.elements.Button;
 	import com.gestureworks.cml.elements.Menu;
@@ -21,8 +12,10 @@ package
 	import flash.events.MouseEvent;
 	
 	import com.gestureworks.cml.elements.Graphic;
-	import com.gestureworks.cml.core.CMLAir; CMLAir;
-	import com.gestureworks.core.GestureWorksAIR; GestureWorksAIR;
+	import com.gestureworks.cml.core.CMLAir;
+	CMLAir;
+	import com.gestureworks.core.GestureWorksAIR;
+	GestureWorksAIR;
 	import com.gestureworks.cml.core.CMLParser;
 	import com.gestureworks.cml.events.StateEvent;
 	
@@ -34,8 +27,17 @@ package
 	import Systems.PDFSystem;
 	import Systems.AudioSystem;
 	import Events.MenuEvent;
-		
-	[SWF(backgroundColor="0x313131", width="1920", height="1080", frameRate="30")]
+	
+	/**
+	 * Main
+	 *
+	 * This is the entry point of the application gribbles
+	 *
+	 * @author Adam Byléhn
+	 * @contact adambylehn@hotmail.com
+	 */
+	
+	[SWF(backgroundColor = "0x313131", width = "1920", height = "1080", frameRate = "30")]
 	public class Main extends GestureWorksAIR
 	{
 		// Loader image
@@ -51,12 +53,12 @@ package
 		private var _systems:Array = new Array();
 		private var _screenSaver:WaterSystem;
 		private var _passedFrames:int = 0;
-		private var _startTime:Number = 0;
+		private var _startTime:Number = .0;
 		private var _FPSCounter:TextField = new TextField();
 		private var _elapsedTime:int = 0;
 		private var _elapsedTimeText:TextField = new TextField();
 		private var _mainButton:Button;
-		private var _idleStart:Number;
+		private var _idleStart:Number = .0;
 		
 		private var _currentState:String = State.SCREENSAVER;
 		
@@ -89,16 +91,16 @@ package
 		private function cmlComplete(event:Event):void
 		{
 			trace("CML parsing complete");
-			CMLParser.removeEventListener(CMLParser.COMPLETE, cmlComplete);			
+			CMLParser.removeEventListener(CMLParser.COMPLETE, cmlComplete);
 			trace("gribbles starting");
-
+			
 			// Create a button for switching to mainapp
 			_mainButton = new Button();
 			var radius:Number = 50;
-			_mainButton.width = radius * 2;
-			_mainButton.height = radius * 2;
-			_mainButton.x =  stage.stageWidth / 2 - radius * 2;
-			_mainButton.y = stage.stageHeight / 2 - radius * 2;
+			_mainButton.width = radius * 2.0;
+			_mainButton.height = radius * 2.0;
+			_mainButton.x = (stage.stageWidth >> 1) - (radius << 1);
+			_mainButton.y = (stage.stageHeight >> 1) - (radius << 1);
 			_mainButton.dispatch = "initial:initial:down:down:up:up:over:over:out:out";
 			_mainButton.hit = getCircle(0x000000, 0);
 			_mainButton.initial = getCircle(0xFFFFFF); //white
@@ -109,7 +111,7 @@ package
 			_mainButton.init();
 			_mainButton.addEventListener(StateEvent.CHANGE, onButtonPress);
 			addChild(_mainButton);
-			addChildAt(_loaderImage, numChildren -1);
+			addChildAt(_loaderImage, numChildren - 1);
 			
 			// Loops over each system and intializes it
 			for each (var s:System in _systems)
@@ -130,14 +132,14 @@ package
 			trace("Gestureworks initiated");
 			_loaderImage = new Sprite();
 			_loaderImage.graphics.beginBitmapFill(new _loaderSource().bitmapData, null, true, true);
-			_loaderImage.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
+			_loaderImage.graphics.drawRect(.0, .0, stage.stageWidth, stage.stageHeight);
 			_loaderImage.graphics.endFill();
 			addChild(_loaderImage);
-			addChildAt(_loaderImage, numChildren -1);
+			addChildAt(_loaderImage, numChildren - 1);
 			
 			_backgroundImage = new Sprite();
 			_backgroundImage.graphics.beginBitmapFill(new _backgroundSource().bitmapData, null, true, true);
-			_backgroundImage.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
+			_backgroundImage.graphics.drawRect(.0, .0, stage.stageWidth, stage.stageHeight);
 			_backgroundImage.graphics.endFill();
 			_backgroundImage.visible = false;
 			addChild(_backgroundImage);
@@ -166,21 +168,23 @@ package
 			}
 			if (_systemsAreInitiated)
 			{
-				switch (_currentState) {
-					case State.MAINAPP:
-						for each (var s:System in _systems)
-							s.Update();
-						break;
-					case State.SCREENSAVER:
-						_screenSaver.Update();
-						break;
+				switch (_currentState)
+				{
+				case State.MAINAPP: 
+					for each (var s:System in _systems)
+						s.Update();
+					break;
+				case State.SCREENSAVER: 
+					_screenSaver.Update();
+					break;
 				}
 			}
 			// Elapsed time counter
 			_elapsedTime += dt;
 			_elapsedTimeText.text = "Elapsed time: " + Math.floor(_elapsedTime / 60) + ":" + _elapsedTime % 60;
 			// Idle logic
-			if (_currentState == State.MAINAPP) {
+			if (_currentState == State.MAINAPP)
+			{
 				if (((getTimer() - _idleStart) / 1000) > 60)
 				{
 					switchToScreenSaver();
@@ -188,9 +192,10 @@ package
 			}
 		}
 		
-		private function onKeyDown(event:KeyboardEvent) : void
+		private function onKeyDown(event:KeyboardEvent):void
 		{
-			if (event.keyCode == 117) { // F6
+			if (event.keyCode == 117)
+			{ // F6
 				fullscreen = true;
 			}
 		}
@@ -206,7 +211,7 @@ package
 			return circle;
 		}
 		
-		private function onButtonPress(event:StateEvent) :void
+		private function onButtonPress(event:StateEvent):void
 		{
 			if (event.value != "up")
 			{
@@ -246,15 +251,16 @@ package
 		
 		private function onInteraction(event:MouseEvent):void
 		{
-			if (_currentState == State.MAINAPP) {
+			if (_currentState == State.MAINAPP)
+			{
 				_idleStart = getTimer();
 			}
 		}
 	}
 }
 
-final class State 
+final class State
 {
-    public static const SCREENSAVER:String = "SCREENSAVER";
-    public static const MAINAPP:String = "MAINAPP";
+	public static const SCREENSAVER:String = "SCREENSAVER";
+	public static const MAINAPP:String = "MAINAPP";
 }

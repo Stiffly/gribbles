@@ -1,22 +1,23 @@
 package Systems
 {
+	import flash.display.Bitmap;
+	import flash.display.Sprite;
+	import flash.events.MouseEvent;
+	import flash.events.TouchEvent;
+	
+	import com.gestureworks.core.GestureWorks;
+	import com.gestureworks.core.TouchSprite
+	
+	import be.nascom.flash.graphics.Rippler;
+	
 	/**
 	 * Systems.WaterSystem
+	 *
 	 * Keeps track of the background image and it's corresponding water ripples
 	 *
 	 * @author Adam Byléhn
 	 * @contact adambylehn@hotmail.com
 	 */
-	
-	import flash.display.Bitmap;
-	import flash.display.Sprite;
-	import flash.events.MouseEvent;
-	
-	import com.gestureworks.core.GestureWorks;
-	import com.gestureworks.core.TouchSprite
-	import flash.events.TouchEvent;
-	
-	import be.nascom.flash.graphics.Rippler;
 	
 	public class WaterSystem extends Sprite
 	{
@@ -98,8 +99,8 @@ import flash.display.Stage;
 class DustEmitter extends Sprite
 {
 	private var _particles:Array = new Array();
-	private var _groupVelX:Number = 0;
-	private var _groupVelY:Number = 0;
+	private var _groupVelX:Number = .0;
+	private var _groupVelY:Number = .0;
 	private var _maxVel:uint = 5;
 	
 	public function DustEmitter(amount:uint, stage:Stage)
@@ -117,7 +118,7 @@ class DustEmitter extends Sprite
 		
 		if (Math.abs(_groupVelX) > _maxVel)
 			_groupVelX = _maxVel;
-		if (Math.abs(_groupVelY) > _maxVel) 
+		if (Math.abs(_groupVelY) > _maxVel)
 			_groupVelY = _maxVel;
 		
 		for (var i:int = 0; i < _particles.length; i++)
@@ -128,7 +129,7 @@ class DustEmitter extends Sprite
 	
 	public function Deactivate():void
 	{
-		for (var i:int = 0; i < _particles.length; i++) 
+		for (var i:int = 0; i < _particles.length; i++)
 		{
 			_particles[i].Deactivate();
 		}
@@ -136,7 +137,7 @@ class DustEmitter extends Sprite
 	
 	public function Activate():void
 	{
-		for (var i:int = 0; i < _particles.length; i++) 
+		for (var i:int = 0; i < _particles.length; i++)
 		{
 			_particles[i].Activate();
 		}
@@ -151,8 +152,9 @@ class Particle extends Sprite
 	
 	public function Particle(x:Number, y:Number, stage:Stage):void
 	{
-		_dot = new Sprite();		
-		_dot.x = x; _dot.y= y;
+		_dot = new Sprite();
+		_dot.x = x;
+		_dot.y = y;
 		_dot.graphics.beginFill(0xFFFFFF, Math.random());
 		_dot.graphics.drawRect(0, 0, 1, 1);
 		_dot.graphics.endFill();
@@ -171,7 +173,7 @@ class Particle extends Sprite
 			_dot.y = 0;
 		else if (_dot.y < 0)
 			_dot.y = _stageHeight;
-			
+		
 		_dot.x += x * Math.random() + Math.random() * 2 - 1;
 		_dot.y += y * Math.random() + Math.random() * 2 - 1;
 	}

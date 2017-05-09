@@ -1,13 +1,5 @@
 package Systems
 {
-	/**
-	 * Systems.HTMLSystem
-	 * Handles the HTMLViewer and its associated button
-	 *
-	 * @author Adam
-	 * @contact adambylehn@hotmail.com
-	 */
-	
 	import flash.events.LocationChangeEvent;
 	
 	import com.gestureworks.cml.utils.DisplayUtils;
@@ -19,21 +11,21 @@ package Systems
 	import com.gestureworks.cml.elements.Frame;
 	import com.gestureworks.cml.elements.TouchContainer;
 	
+	/**
+	 * Systems.HTMLSystem
+	 *
+	 * Handles the HTMLViewer and its associated button
+	 *
+	 * @author Adam
+	 * @contact adambylehn@hotmail.com
+	 */
 	
 	public class HTMLSystem extends System
 	{
 		private var _HTMLViewer:HTMLViewer;
 		private var _HTMLElement:HTML;
 		// A list of URL's that will be checked upon when the HTML's location state changes
-		private var _approvedURLs:Array = [
-			"http://www.blekingemuseum.se/pages/275",
-			"http://www.blekingemuseum.se/pages/377",
-			"http://www.blekingemuseum.se/pages/378",
-			"http://www.blekingemuseum.se/pages/379",
-			"http://www.blekingemuseum.se/pages/380",
-			"http://www.blekingemuseum.se/pages/403",
-			"http://www.blekingemuseum.se/pages/423",
-			"http://www.blekingemuseum.se/pages/1223" ];
+		private var _approvedURLs:Array = ["http://www.blekingemuseum.se/pages/275", "http://www.blekingemuseum.se/pages/377", "http://www.blekingemuseum.se/pages/378", "http://www.blekingemuseum.se/pages/379", "http://www.blekingemuseum.se/pages/380", "http://www.blekingemuseum.se/pages/403", "http://www.blekingemuseum.se/pages/423", "http://www.blekingemuseum.se/pages/1223"];
 		
 		public function HTMLSystem()
 		{
@@ -56,7 +48,7 @@ package Systems
 			_HTMLElement.hideFlashType = "display:none;";
 			_HTMLElement.html.addEventListener(LocationChangeEvent.LOCATION_CHANGE, onNewPage);
 			_HTMLViewer.addChild(_HTMLElement);
-
+			
 			// Add a frame , menu 
 			addFrame(_HTMLViewer);
 			addViewerMenu(_HTMLViewer, true, true, false, false);
@@ -73,34 +65,35 @@ package Systems
 		
 		override public function Update():void
 		{
-
+		
 		}
 		
 		private function buttonHandler(event:StateEvent):void
 		{
 			// Button state was changed, clicked or released
-			switchButtonState(event.value, _HTMLViewer,
-			stage.stageWidth / 2 - _HTMLViewer.width / 2,
-			stage.stageHeight / 2 - _HTMLViewer.height / 2);
+			switchButtonState(event.value, _HTMLViewer, (stage.stageWidth >> 1) - (_HTMLViewer.width >> 1), (stage.stageHeight >> 1) - (_HTMLViewer.height >> 1));
 		}
 		
 		private function onNewPage(e:LocationChangeEvent):void
 		{
 			// Iterate through the list of approved URL's and compare with the new location
 			var isSafeURL:Boolean = false;
-			for each (var safeURL:String in _approvedURLs) {
-				if (_HTMLElement.html.location == safeURL) {
+			for each (var safeURL:String in _approvedURLs)
+			{
+				if (_HTMLElement.html.location == safeURL)
+				{
 					// The new location was safe, continue as normal
 					isSafeURL = true;
 					return;
 				}
 			}
-			if (isSafeURL == false) {
+			if (isSafeURL == false)
+			{
 				// The new URL was not safe, reload the page. This will clear the load request.
 				_HTMLElement.html.reload();
 			}
 		}
-
+		
 		public override function Hide():void
 		{
 			hideComponent(_HTMLViewer);

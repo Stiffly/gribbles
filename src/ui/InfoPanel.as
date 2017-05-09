@@ -20,34 +20,39 @@ package ui
 		public var dFontColor:uint = 0xFFFFFF;
 		public var dFontSize:Number = 20;
 		
-		public function InfoPanel(fontSize:Number) {
+		public function InfoPanel(fontSize:Number)
+		{
 			dFontSize = fontSize;
 			tFontSize = fontSize + 10;
 			visible = false;
-			targetParent = true;			
+			targetParent = true;
 		}
 		
-		override public function init():void {
+		override public function init():void
+		{
 			setupUI();
 			super.init();
 		}
 		
-		private function setupUI():void {
+		private function setupUI():void
+		{
 			addBkg();
 			addInfo();
 		}
 		
-		private function addBkg():void {
+		private function addBkg():void
+		{
 			bkg = new Graphic();
 			bkg.color = bkgColor;
 			bkg.alpha = bkgAlpha;
 			bkg.shape = "rectangle";
 			bkg.widthPercent = 100;
 			bkg.heightPercent = 100;
-			addChild(bkg);			
+			addChild(bkg);
 		}
 		
-		private function addInfo():void {
+		private function addInfo():void
+		{
 			var info:Container = new Container();
 			info.paddingTop = 30;
 			info.paddingLeft = 30;
@@ -55,9 +60,10 @@ package ui
 			info.widthPercent = 100;
 			info.heightPercent = 100;
 			info.relativeY = true;
-			addChild(info);			
+			addChild(info);
 			
-			if (title) {
+			if (title)
+			{
 				var t:Text = new Text();
 				t.str = title;
 				t.fontSize = tFontSize;
@@ -65,29 +71,32 @@ package ui
 				t.font = "Arial";
 				t.autosize = true;
 				t.widthPercent = 100;
-				info.addChild(t);				
+				info.addChild(t);
 			}
 			
-			if (descr || descrHTML) {
+			if (descr || descrHTML)
+			{
 				var d:Text = new Text();
 				d.fontSize = dFontSize;
-
+				
 				d.wordWrap = true;
 				d.color = dFontColor;
 				d.widthPercent = 100;
 				d.font = "Arial";
 				d.autosize = true;
 				d.multiline = true;
-				if (descr) {
+				if (descr)
+				{
 					d.str = descr;
 				}
-				else {
+				else
+				{
 					d.htmlText = descrHTML;
 				}
-				info.addChild(d);				
+				info.addChild(d);
 			}
 		}
-		
+	
 	}
 
 }

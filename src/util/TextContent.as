@@ -1,27 +1,34 @@
-package util 
+package util
 {
 	import com.gestureworks.cml.elements.Container;
 	import com.gestureworks.cml.elements.Graphic;
 	import com.gestureworks.cml.elements.Text;
 	import com.gestureworks.cml.elements.TouchContainer;
 	import com.gestureworks.cml.utils.DisplayUtils;
+	
 	/**
-	 * ...
-	 * @author Adam
+	 * util.TexContent
+	 *
+	 * A class that contains two strings - title and description - along with a method
+	 * for creating a description container.
+	 *
+	 * @author Adam Byléhn
+	 * @contact adambylehn@hotmail.com
 	 */
+	
 	final public class TextContent
-	{		
-		public function TextContent(t:String, d:String) { title = t; description = d; };
+	{
+		public function TextContent(t:String, d:String)  { title = t; description = d; }
+		;
 		public var title:String;
 		public var description:String;
 		
-		
-		static public function CREATE_DESCRIPTION(content : TextContent, width:uint, height:uint, alpha:Number, padding:Number=30, fontSize:Number = 20) :TouchContainer
+		static public function CREATE_DESCRIPTION(content:TextContent, width:uint, height:uint, alpha:Number, padding:Number = 30, fontSize:Number = 20):TouchContainer
 		{
 			var tc:TouchContainer = new TouchContainer();
 			tc.width = width;
 			tc.height = height;
-			tc.alpha = 0.7;
+			tc.alpha = alpha;
 			
 			var g:Graphic = new Graphic();
 			g.shape = "rectangle";

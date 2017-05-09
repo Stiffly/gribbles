@@ -30,6 +30,7 @@ package Systems
 	 * Each folder represents a new button in the scene.
 	 *
 	 * @author Adam Byléhn
+	 * @contact adambylehn@hotmail.com
 	 */
 	
 	public class CustomButtonSystem extends System
@@ -58,13 +59,13 @@ package Systems
 		override public function Init():void
 		{
 			super.Init();
-			for each (var parentPath:String in getFilesInDirectoryRelative("custom"))
+			for each (var key:String in getFilesInDirectoryRelative("custom"))
 			{
-				_numChildren[parentPath] = 0;
+				_numChildren[key] = 0;
 				// Button properties loaded from XML
-				var urlRequest:URLRequest = new URLRequest(parentPath + "/button/properties.xml");
+				var urlRequest:URLRequest = new URLRequest(key + "/button/properties.xml");
 				var loader:URLLoader = new URLLoader(urlRequest);
-				loader.addEventListener(Event.COMPLETE, onXMLLoaded(parentPath));
+				loader.addEventListener(Event.COMPLETE, onXMLLoaded(key));
 			}
 		}
 		
@@ -87,7 +88,7 @@ package Systems
 				}
 				
 				// If the back is active, we use this as our index
-				if (_albumMap[key].back.active) 
+				if (_albumMap[key].back.active)
 				{
 					_indexCircles[key][_albumMap[key].back.currentIndex].color = 0x000000;
 				}
@@ -118,7 +119,7 @@ package Systems
 		}
 		
 		// This is the event handler that triggers when the XML file describing the button is loaded
-		private function onXMLLoaded(parentPath:String):Function
+		private function onXMLLoaded(key:String):Function
 		{
 			return function(e:Event):void
 			{
@@ -136,8 +137,8 @@ package Systems
 				button.x = x;
 				button.y = y;
 				button.dispatch = "initial:initial:down:down:up:up:over:over:out:out:hit:hit";
-				var img:Image = getImage(parentPath + "/button/button.png", width, height);
-				if (parentPath == "custom/1A")
+				var img:Image = getImage(key + "/button/button.png", width, height);
+				if (key == "custom/1A")
 				{
 					// Special logic for too big image A
 					var hitBox:Graphic = getRectangle(0x000000, x, y, 51, 47, 0);
@@ -154,16 +155,16 @@ package Systems
 				button.up = img;
 				button.over = getRectangle(0x000000, 0, 0, width, height, 0);
 				button.out = img;
-				button.addEventListener(StateEvent.CHANGE, onClick(parentPath));
+				button.addEventListener(StateEvent.CHANGE, onClick(key));
 				button.init();
 				// Add tracking of the button by adding it to the button map
-				_buttonMap[parentPath] = button;
+				_buttonMap[key] = button;
 				addChild(button);
 				
 				if (type.toUpperCase() == "ALBUM")
 				{
 					// Get the number of children, exluding directories
-					var children:Array = getFilesInDirectoryRelative(parentPath);
+					var children:Array = getFilesInDirectoryRelative(key);
 					var numChildren:int = children.length;
 					for each (var child:String in children)
 					{
@@ -175,30 +176,30 @@ package Systems
 					// An image with associated description file
 					if (numChildren == 2)
 					{
-						loadImage(parentPath);
+						loadImage(key);
 					}
 					else if (numChildren > 2)
 					{
-						loadAlbum(parentPath);
+						loadAlbum(key);
 					}
 					else
 					{
-						throw("Error: No content in album " + parentPath + ". Please double check the type in properties.xml");
+						throw("Error: No content in album " + key + ". Please double check the type in properties.xml");
 					}
 				}
 				else if (type.toUpperCase() == "TEXT")
 				{
-					loadTextBox(parentPath);
+					loadTextBox(key);
 				}
 				else
 				{
-					throw("ERROR: Unhandled type: " + type + " in " + parentPath + "/button/properties.xml. Type should either be \"Text\" or \"Album\".");
+					throw("ERROR: Unhandled type: " + type + " in " + key + "/button/properties.xml. Type should either be \"Text\" or \"Album\".");
 				}
 			}
 		}
 		
 		// This loads an imageviewer with an image from disk
-		private function loadImage(parentPath:String):void
+		private function loadImage(key:String):void
 		{
 			var iv:ImageViewer = createViewer(new ImageViewer(), 400, 400, 500, 350) as ImageViewer;
 			iv.autoTextLayout = false;
@@ -207,7 +208,7 @@ package Systems
 			iv.gestureList = {"n-drag": true, "n-scale": true, "n-rotate": true};
 			addChild(iv);
 			
-			for each (var child:String in getFilesInDirectoryRelative(parentPath))
+			for each (var child:String in getFilesInDirectoryRelative(key))
 			{
 				if (isDirectory(child))
 				{
@@ -222,13 +223,13 @@ package Systems
 				// Load its associated description
 				var textFile:String = child.toUpperCase().replace(extention, "TXT");
 				var loader:URLLoader = new URLLoader(new URLRequest(textFile));
-				loader.addEventListener(Event.COMPLETE, FinalizeImage(iv, parentPath));
+				loader.addEventListener(Event.COMPLETE, FinalizeImage(iv, key));
 			}
 		
 		}
 		
 		// This loads an album form disk
-		private function loadAlbum(parentPath:String):void
+		private function loadAlbum(key:String):void
 		{
 			// Create album viewer
 			var av:AlbumViewer = createViewer(new AlbumViewer(), 400, 400, 500, 350) as AlbumViewer;
@@ -254,7 +255,7 @@ package Systems
 			var back:Album = new Album();
 			back.id = "back";
 			back.loop = true;
-			back.alpha = 0.4;
+			back.alpha = .4;
 			back.horizontal = true;
 			back.touchEnabled = false;
 			back.margin = 8;
@@ -264,7 +265,7 @@ package Systems
 			back.dragAngle = 0;
 			
 			// Add all the children, images etc.
-			for each (var child:String in getFilesInDirectoryRelative(parentPath))
+			for each (var child:String in getFilesInDirectoryRelative(key))
 			{
 				if (isDirectory(child))
 				{
@@ -278,18 +279,18 @@ package Systems
 				// Load image
 				front.addChild(getImage(child, av.width, av.height));
 				// Update number of children, this is compared against in onFileLoaded function
-				_numChildren[parentPath]++;
+				_numChildren[key]++;
 				// Load its associated description
 				var textFile:String = child.toUpperCase().replace(extention, "TXT");
 				var loader2:URLLoader = new URLLoader(new URLRequest(textFile));
-				loader2.addEventListener(Event.COMPLETE, FinalizeAlbum(av, front, back, parentPath));
+				loader2.addEventListener(Event.COMPLETE, FinalizeAlbum(av, front, back, key));
 			}
 		}
 		
 		// This loads a specified from a .txt file on disk
-		private function loadTextBox(parentPath:String):void
+		private function loadTextBox(key:String):void
 		{
-			for each (var childPath:String in getFilesInDirectoryRelative(parentPath))
+			for each (var childPath:String in getFilesInDirectoryRelative(key))
 			{
 				if (isDirectory(childPath))
 				{
@@ -299,16 +300,16 @@ package Systems
 				if (childPath.toUpperCase().search(".txt".toUpperCase()) != -1)
 				{
 					var loader:URLLoader = new URLLoader(new URLRequest(childPath));
-					loader.addEventListener(Event.COMPLETE, FinalizeTextBox(parentPath));
+					loader.addEventListener(Event.COMPLETE, FinalizeTextBox(key));
 				}
 				else
 				{
-					throw("ERROR: Found file " + childPath + "which does not end with .txt extention. Please make sure that you have specified the correct type in button/properties.xml");
+					throw("ERROR: Found file " + childPath + " which does not end with .txt extention. Please make sure that you have specified the correct type in button/properties.xml");
 				}
 			}
 		}
 		
-		private function FinalizeImage(iv:ImageViewer, parentPath:String):Function
+		private function FinalizeImage(iv:ImageViewer, key:String):Function
 		{
 			return function(event:Event):void
 			{
@@ -317,14 +318,14 @@ package Systems
 				addInfoPanel(iv, content.slice(0, index), content.slice(index + 1, content.length), 12);
 				addFrame(iv);
 				addViewerMenu(iv, true, true, false, false);
-				_imageMap[parentPath] = iv;
+				_imageMap[key] = iv;
 				DisplayUtils.initAll(iv);
 				hideComponent(iv);
 			}
 		}
 		
 		// This handler triggers when a description file for an album is loaded (.txt)
-		private function FinalizeAlbum(av:AlbumViewer, front:Album, back:Album, parentPath:String):Function
+		private function FinalizeAlbum(av:AlbumViewer, front:Album, back:Album, key:String):Function
 		{
 			return function(event:Event):void
 			{
@@ -333,9 +334,9 @@ package Systems
 				var content:String = URLLoader(event.currentTarget).data;
 				// Finds the first newline and creates a text content that is used for the description
 				var index:int = content.search("\n");
-				back.addChild(TextContent.CREATE_DESCRIPTION(new TextContent(content.slice(0, index), content.slice(index + 1, content.length)), av.width, av.height, 0.6, 30, 12));
+				back.addChild(TextContent.CREATE_DESCRIPTION(new TextContent(content.slice(0, index), content.slice(index + 1, content.length)), av.width, av.height, 1, 30, 12));
 				// This is true when all of the description files are loaded
-				if (_numChildren[parentPath] == _i)
+				if (_numChildren[key] == _i)
 				{
 					// When all the description files are loaded we can initiate the albums
 					av.front = front;
@@ -345,17 +346,17 @@ package Systems
 					addFrame(av);
 					addViewerMenu(av, true, true, false, false);
 					
-					_indexCircles[parentPath] = new Array();
-					for (var i:int = 0; i < _numChildren[parentPath]; i++)
+					_indexCircles[key] = new Array();
+					for (var i:int = 0; i < _numChildren[key]; i++)
 					{
 						var radius:Number = 10;
-						var g:Graphic = getCircle(0x999999, i * radius * 2, 0, radius, 0.5);
-						_indexCircles[parentPath].push(g);
+						var g:Graphic = getCircle(0x999999, i * (radius << 1), .0, radius, .5);
+						_indexCircles[key].push(g);
 						av.addChild(g);
 					}
 					
 					DisplayUtils.initAll(av);
-					_albumMap[parentPath] = av;
+					_albumMap[key] = av;
 					hideComponent(av);
 					_i = 0;
 					return;
@@ -364,7 +365,7 @@ package Systems
 		}
 		
 		// This handler is triggered when the content for a textbox is loaded
-		private function FinalizeTextBox(parentPath:String):Function
+		private function FinalizeTextBox(key:String):Function
 		{
 			return function(e:Event):void
 			{
@@ -373,8 +374,8 @@ package Systems
 				var textContent:TextContent = new TextContent(content.slice(0, index), content.slice(index + 1, content.length));
 				
 				var textBox:TextBox = new TextBox(textContent, _frameThickness);
-				textBox.x = _buttonMap[parentPath].x;
-				textBox.y = _buttonMap[parentPath].y;
+				textBox.x = _buttonMap[key].x;
+				textBox.y = _buttonMap[key].y;
 				textBox.width = 400;
 				textBox.nativeTransform = true;
 				textBox.clusterBubbling = true;
@@ -382,7 +383,7 @@ package Systems
 				addFrame(textBox);
 				addTouchContainer(textBox);
 				addChild(textBox);
-				_textBoxMap[parentPath] = textBox;
+				_textBoxMap[key] = textBox;
 				hideComponent(textBox);
 				
 				addChild(textBox._Line);
@@ -402,7 +403,7 @@ package Systems
 		}
 		
 		// Button handler
-		private function onClick(parentPath:String):Function
+		private function onClick(key:String):Function
 		{
 			return function(e:StateEvent):void
 			{
@@ -410,37 +411,37 @@ package Systems
 				if (e.value != "up")
 					return;
 				
-				if (_albumMap[parentPath] != null)
+				if (_albumMap[key] != null)
 				{
-					if (_albumMap[parentPath].alpha > 0)
+					if (_albumMap[key].alpha > 0)
 					{
-						hideComponent(_albumMap[parentPath]);
+						hideComponent(_albumMap[key]);
 					}
-					else if (_albumMap[parentPath].alpha == 0)
+					else if (_albumMap[key].alpha == 0)
 					{
-						showComponent(400, 400, _albumMap[parentPath]);
+						showComponent(_buttonMap[key].x + (_buttonMap[key].width >> 1) - (_albumMap[key].width >> 1), _buttonMap[key].y + (_buttonMap[key].height >> 1) - (_albumMap[key].height >> 1), _albumMap[key]);
 					}
 				}
-				if (_imageMap[parentPath] != null)
+				if (_imageMap[key] != null)
 				{
-					if (_imageMap[parentPath].alpha > 0)
+					if (_imageMap[key].alpha > 0)
 					{
-						hideComponent(_imageMap[parentPath]);
+						hideComponent(_imageMap[key]);
 					}
-					else if (_imageMap[parentPath].alpha == 0)
+					else if (_imageMap[key].alpha == 0)
 					{
-						showComponent(400, 400, _imageMap[parentPath]);
+						showComponent(_buttonMap[key].x + (_buttonMap[key].width >> 1) - (_imageMap[key].width >> 1), _buttonMap[key].y + (_buttonMap[key].height >> 1) - (_imageMap[key].height >> 1), _imageMap[key]);
 					}
 				}
-				if (_textBoxMap[parentPath] != null)
+				if (_textBoxMap[key] != null)
 				{
-					if (_textBoxMap[parentPath].alpha > 0)
+					if (_textBoxMap[key].alpha > 0)
 					{
-						_textBoxMap[parentPath].Kill();
-						hideComponent(_textBoxMap[parentPath]);
+						_textBoxMap[key].Kill();
+						hideComponent(_textBoxMap[key]);
 						
 					}
-					else if (_textBoxMap[parentPath].alpha == 0)
+					else if (_textBoxMap[key].alpha == 0)
 					{
 						for each (var tb:TextBox in _textBoxMap)
 						{
@@ -451,36 +452,36 @@ package Systems
 							}
 						}
 						
-						var bOriginX:Number = _buttonMap[parentPath].x + _buttonMap[parentPath].width / 2;
-						var bOriginY:Number = _buttonMap[parentPath].y + _buttonMap[parentPath].height / 2;
-						var tbWidth:Number = _textBoxMap[parentPath].width;
-						var tby:Number = _textBoxMap[parentPath].y;
-						var halfBoxHeight:Number = _textBoxMap[parentPath].height / 2;
+						var bOriginX:Number = _buttonMap[key].x + (_buttonMap[key].width >> 1);
+						var bOriginY:Number = _buttonMap[key].y + (_buttonMap[key].height >> 1);
+						var tbWidth:Number = _textBoxMap[key].width;
+						var tby:Number = _textBoxMap[key].y;
+						var halfBoxHeight:Number = (_textBoxMap[key].height >> 1);
 						var verticalOffset:Number = 300;
 						
 						// Right side of the screen
-						if (bOriginX > stage.stageWidth / 2)
+						if (bOriginX > stage.stageWidth * .5)
 						{
 							var rx:Number = bOriginX - verticalOffset - tbWidth;
 							var ry:Number = bOriginY - halfBoxHeight;
-							showComponent(rx, ry, _textBoxMap[parentPath]);
-							removeChild(_textBoxMap[parentPath]._Line);
-							var rline:Graphic = getLine(0x999999, bOriginX, bOriginY, rx + tbWidth + _frameThickness * 2, ry + halfBoxHeight, 3, 0.8);
-							_textBoxMap[parentPath]._Line = rline;
+							showComponent(rx, ry, _textBoxMap[key]);
+							removeChild(_textBoxMap[key]._Line);
+							var rline:Graphic = getLine(0x999999, bOriginX, bOriginY, rx + tbWidth + (_frameThickness << 1), ry + halfBoxHeight, 3, .8);
+							_textBoxMap[key]._Line = rline;
 							addChild(rline);
-							_textBoxMap[parentPath].Rebirth();
+							_textBoxMap[key].Rebirth();
 						}
 						// Left side of the screen
 						else
 						{
 							var lx:Number = bOriginX + verticalOffset;
 							var ly:Number = bOriginY - halfBoxHeight;
-							showComponent(lx, ly, _textBoxMap[parentPath]);
-							removeChild(_textBoxMap[parentPath]._Line);
-							var lline:Graphic = getLine(0x999999, bOriginX, bOriginY, lx - _frameThickness * 2, ly + halfBoxHeight, 3, 0.8);
-							_textBoxMap[parentPath]._Line = lline;
+							showComponent(lx, ly, _textBoxMap[key]);
+							removeChild(_textBoxMap[key]._Line);
+							var lline:Graphic = getLine(0x999999, bOriginX, bOriginY, lx - (_frameThickness << 1), ly + halfBoxHeight, 3, .8);
+							_textBoxMap[key]._Line = lline;
 							addChild(lline);
-							_textBoxMap[parentPath].Rebirth();
+							_textBoxMap[key].Rebirth();
 						}
 					}
 				}

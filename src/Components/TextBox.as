@@ -20,8 +20,11 @@ package Components
 	 *
 	 * A textbox that appears when you hover over a specified object
 	 * and then fades out. The TextBox extends Component.
-	 * @author Adam
+	 *
+	 * @author Adam Byléhn
+	 * @contact adambylehn@hotmail.com
 	 */
+	
 	public class TextBox extends Component
 	{
 		// The title of the content, the title is present from the start
@@ -35,7 +38,7 @@ package Components
 		// This is the goal descriptions that will be shown when all the text has loaded
 		private var _description:String = "";
 		// How long the textbox will be visible. (the total time = _lifeTime + time it takes to show all text)
-		private var _lifeTime:Number = 0;
+		private var _lifeTime:Number = .0;
 		// Checks time when the textbox is considered born (which is when all text is loaded)
 		private var _timeOfBirth:int = 0;
 		// Keeps track of wether to update the textbox or not
@@ -47,7 +50,7 @@ package Components
 		
 		public var _Line:Graphic = new Graphic();
 		
-		public function TextBox(content:TextContent, frameWidth:uint, updateFrequenzy:Number = 0, lifeTime:Number = 10)
+		public function TextBox(content:TextContent, frameWidth:uint, updateFrequenzy:Number = .0, lifeTime:Number = 10)
 		{
 			_title = new Text();
 			_title.text = content.title;
@@ -66,7 +69,7 @@ package Components
 			var padding:Number = 5;
 			var textHeight:Number = 4 * padding + getTextHeightInPixels(_title.text, padding, 30) + getTextHeightInPixels(_description, padding, 20);
 			this.height = textHeight;
-			var tc:TouchContainer = createDescription(new TextContent(_title.text, _currentDescription.text), this.width, this.height, 0.8, padding);
+			var tc:TouchContainer = createDescription(new TextContent(_title.text, _currentDescription.text), this.width, this.height, .8, padding);
 			this.addChild(tc);
 			
 			super.init();
@@ -130,7 +133,7 @@ package Components
 				var age:Number = (getTimer() - _timeOfBirth) / 1000;
 				// Fade out the last two seconds
 				var timeLeft:Number = _lifeTime - age;
-				if (timeLeft < 2)
+				if (timeLeft < 2.0)
 				{
 					this.alpha = timeLeft / 2;
 					this._Line.alpha = timeLeft / 2;
@@ -152,9 +155,9 @@ package Components
 		{
 			_dead = false;
 			_gettingText = true;
-			this.scale = 1;
-			this.alpha = 1;
-			this.rotation = 0;
+			this.scale = 1.0;
+			this.alpha = 1.0;
+			this.rotation = .0;
 			this.active = true;
 			_currentDescription.text = "";
 		}
@@ -164,7 +167,7 @@ package Components
 		private function getTextHeightInPixels(text:String, padding:Number, fontSize:int):Number
 		{
 			var tf:TextField = new TextField();
-			tf.x += padding * 2;
+			tf.x += (padding << 1);
 			tf.width = 400 - 2 * padding;
 			tf.text = text;
 			var myFormat:TextFormat = new TextFormat("Arial", fontSize);
