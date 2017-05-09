@@ -80,8 +80,6 @@ package Components
 				return;
 			}
 			
-
-			
 			// Logic to keep the box within the screen
 			if (this.x + this.width + _frameWidth > stage.stageWidth)
 			{

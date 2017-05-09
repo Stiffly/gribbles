@@ -74,6 +74,29 @@ package Systems
 			{
 				tb.Update();
 			}
+			
+			// For all parent folders...
+			for (var key:String in _indexCircles)
+			{
+				if (_albumMap[key] == null)
+					return;
+				// For all index circle per album
+				for each (var circle:Graphic in _indexCircles[key])
+				{
+					circle.color = 0x999999;
+				}
+				
+				// If the back is active, we use this as our index
+				if (_albumMap[key].back.active) 
+				{
+					_indexCircles[key][_albumMap[key].back.currentIndex].color = 0x000000;
+				}
+				// Else the front is active, use it instead
+				else
+				{
+					_indexCircles[key][_albumMap[key].front.currentIndex].color = 0x000000;
+				}
+			}
 		}
 		
 		override public function Activate():void
