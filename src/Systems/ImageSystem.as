@@ -177,7 +177,8 @@ package Systems
 					_indexCircles[s] = new Array();
 					for (var i:int = 0; i < _numChildren[s]; i++)
 					{
-						var g:Graphic = getCircle(0x999999, i, 0.5);
+						var radius:Number = 10;
+						var g:Graphic = getCircle(0x999999, i * radius * 2, 0, radius, 0.5);
 						_indexCircles[s].push(g);
 						av.addChild(g);
 					}
@@ -200,19 +201,7 @@ package Systems
 			return image;
 		}
 		
-		// Create a circle
-		private function getCircle(color:uint, it:Number, alpha:Number = 1):Graphic
-		{
-			var circle:Graphic = new Graphic();
-			var rad:Number = 10;
-			circle.x = it * 2 * rad;
-			circle.shape = "circle";
-			circle.radius = rad;
-			circle.color = color;
-			circle.alpha = alpha;
-			circle.lineStroke = 0;
-			return circle;
-		}
+		
 		
 		// Hides everything
 		public override function Hide():void

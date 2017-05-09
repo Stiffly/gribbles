@@ -20,7 +20,8 @@ package util
 			var root:File = File.applicationDirectory;
 			var subDirectory:File = root.resolvePath(directory);
 			var relativePaths:Array = new Array();
-			for each (var file : File in subDirectory.getDirectoryListing()) {
+			for each (var file : File in subDirectory.getDirectoryListing()) 
+			{
 				relativePaths.push(root.getRelativePath(file, true));
 			}
 			return relativePaths;
@@ -32,10 +33,10 @@ package util
 			return root.resolvePath(path).isDirectory;
 		}
 		
-		static public function GET_EXTENTION(path:String):String
+		static public function GET_EXTENTION(file:String):String
 		{
 			var root:File = File.applicationDirectory;
-			return root.resolvePath(path).extension;
+			return root.resolvePath(file).extension;
 		}
 	}
 }

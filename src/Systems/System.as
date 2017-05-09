@@ -28,6 +28,7 @@ package Systems
 	import ui.InfoPanel;
 	import util.TextContent;
 	import util.FileSystem;
+	import util.Geometry;
 	import com.gestureworks.cml.utils.DisplayUtils;
 	import Events.MenuEvent;
 	
@@ -72,10 +73,12 @@ package Systems
 			component.touchEnabled = false;
 			component.x = 13337; // "Hide" the component
 			component.y = 13337;
-			if (getQualifiedClassName(component.getChildAt(0)).search("WAV") != -1) {
+			if (getQualifiedClassName(component.getChildAt(0)).search("WAV") != -1) 
+			{
 				WAV(component.getChildAt(0)).stop();
 			}
-			if (getQualifiedClassName(component.getChildAt(0)).search("MP3") != -1) {
+			if (getQualifiedClassName(component.getChildAt(0)).search("MP3") != -1) 
+			{
 				MP3(component.getChildAt(0)).stop();
 			}
 		}
@@ -84,11 +87,15 @@ package Systems
 		{
 			// On release
 			if (buttonState == "down-state")
+			{
 				return;
-			if (component.alpha > 0) {
+			}
+			if (component.alpha > 0) 
+			{
 				hideComponent(component);
 			}
-			else if (component.alpha == 0) {
+			else if (component.alpha == 0) 
+			{
 				showComponent(x, y, component);
 			}
 		}
@@ -170,6 +177,21 @@ package Systems
 			return FileSystem.GET_EXTENTION(path);
 		}
 		
+		protected function getCircle(color:uint, xPos:uint, yPos:uint, radius:Number, alpha:Number = 1):Graphic
+		{
+			return Geometry.GET_CIRCLE(color, xPos, yPos, radius, alpha);
+		}
+		
+		protected function getRectangle(color:uint, x:uint, y:uint, width:uint, height:uint, alpha:Number=1):Graphic
+		{
+			return Geometry.GET_RECTANGLE(color, x, y, width, height, alpha);
+		}
+		
+		protected function getLine(color:uint, startX:int, startY:int, goalX:int, goalY:int, lineWidth:Number, alpha:Number=1):Graphic
+		{
+			return Geometry.GET_LINE(color, startX, startY, goalX, goalY, lineWidth, alpha);
+		}
+		
 		private function onTouch(event:TouchEvent) : void
 		{
 			setChildIndex(Component(event.currentTarget), numChildren - 1);
@@ -186,7 +208,7 @@ package Systems
 			_button.active = true;
 			_button.visible = true;
 		}
-				
+		
 		protected function onClose(e:MenuEvent):void
 		{
 			hideComponent(Component(e.result));

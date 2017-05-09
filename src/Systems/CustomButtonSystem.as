@@ -44,6 +44,8 @@ package Systems
 		private var _textBoxMap:Object = new Object();
 		// Stores the number of children that each album has, used to init albums only once, when all children are loaded
 		private var _numChildren:Object = new Object();
+		// A map containing arrays of the index circles that shows what image in the album that is active
+		private var _indexCircles:Object = new Object();
 		// Member iterator to keep track of how many children has been loaded
 		private var _i:uint = 0;
 		
@@ -115,19 +117,19 @@ package Systems
 				if (parentPath == "custom/1A")
 				{
 					// Special logic for too big image A
-					var hitBox:Graphic = getRectangle(x, y, 51, 47);
+					var hitBox:Graphic = getRectangle(0x000000, x, y, 51, 47, 0);
 					hitBox.x = 1665 - button.x;
 					hitBox.y = 372 - button.y;
 					button.hit = hitBox;
 				}
 				else
 				{
-					button.hit = getRectangle(x, y, width, height);
+					button.hit = getRectangle(0x000000, 0, 0, width, height, 0);
 				}
 				button.initial = img;
-				button.down = getRectangle(x, y, width, height);
+				button.down = getRectangle(0x000000, 0, 0, width, height, 0);
 				button.up = img;
-				button.over = getRectangle(x, y, width, height);
+				button.over = getRectangle(0x000000, 0, 0, width, height, 0);
 				button.out = img;
 				button.addEventListener(StateEvent.CHANGE, onClick(parentPath));
 				button.init();
@@ -319,6 +321,16 @@ package Systems
 					av.addChild(back);
 					addFrame(av);
 					addViewerMenu(av, true, true, false, false);
+					
+					_indexCircles[parentPath] = new Array();
+					for (var i:int = 0; i < _numChildren[parentPath]; i++)
+					{
+						var radius:Number = 10;
+						var g:Graphic = getCircle(0x999999, i * radius * 2, 0, radius, 0.5);
+						_indexCircles[parentPath].push(g);
+						av.addChild(g);
+					}
+					
 					DisplayUtils.initAll(av);
 					_albumMap[parentPath] = av;
 					hideComponent(av);
@@ -366,17 +378,6 @@ package Systems
 			return img;
 		}
 		
-		// Creates an invisible rectangle
-		private function getRectangle(x:uint, y:uint, width:uint, height:uint):Graphic
-		{
-			var rect:Graphic = new Graphic;
-			rect.shape = "rectangle";
-			rect.width = width;
-			rect.height = height;
-			rect.alpha = 0;
-			return rect;
-		}
-		
 		// Button handler
 		private function onClick(parentPath:String):Function
 		{
@@ -420,7 +421,7 @@ package Systems
 					{
 						for each (var tb:TextBox in _textBoxMap)
 						{
-							if (tb.visible == true) 
+							if (tb.visible == true)
 							{
 								tb.Kill();
 								hideComponent(tb);
@@ -441,9 +442,9 @@ package Systems
 							var ry:Number = bOriginY - halfBoxHeight;
 							showComponent(rx, ry, _textBoxMap[parentPath]);
 							removeChild(_textBoxMap[parentPath]._Line);
-							var rline:Graphic = getLine(bOriginX, bOriginY, rx + tbWidth + _frameThickness * 2, ry + halfBoxHeight);
+							var rline:Graphic = getLine(0x999999, bOriginX, bOriginY, rx + tbWidth + _frameThickness * 2, ry + halfBoxHeight, 3, 0.8);
 							_textBoxMap[parentPath]._Line = rline;
-							addChild(rline); 
+							addChild(rline);
 							_textBoxMap[parentPath].Rebirth();
 						}
 						// Left side of the screen
@@ -453,8 +454,8 @@ package Systems
 							var ly:Number = bOriginY - halfBoxHeight;
 							showComponent(lx, ly, _textBoxMap[parentPath]);
 							removeChild(_textBoxMap[parentPath]._Line);
-							var lline:Graphic = getLine(bOriginX, bOriginY, lx - _frameThickness * 2, ly + halfBoxHeight);
-							_textBoxMap[parentPath]._Line =  lline;
+							var lline:Graphic = getLine(0x999999, bOriginX, bOriginY, lx - _frameThickness * 2, ly + halfBoxHeight, 3, 0.8);
+							_textBoxMap[parentPath]._Line = lline;
 							addChild(lline);
 							_textBoxMap[parentPath].Rebirth();
 						}
@@ -472,17 +473,6 @@ package Systems
 			component.x = x;
 			component.y = y;
 			setChildIndex(component, numChildren - 1);
-		}
-		
-		private function getLine(startX:int, startY:int, goalX:int, goalY:int):Graphic
-		{
-			var line:Graphic = new Graphic();
-			line.graphics.beginFill(0x000000);
-			line.graphics.lineStyle(3, 0x999999, 0.8);
-			line.graphics.moveTo(startX,startY);
-			line.graphics.lineTo(goalX, goalY);
-			line.graphics.endFill();
-			return line;
 		}
 		
 		// Hides all the albums
