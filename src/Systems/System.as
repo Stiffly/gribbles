@@ -14,8 +14,7 @@ package Systems
 	import com.gestureworks.core.GestureWorks;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.filesystem.File;
-	import flash.utils.getQualifiedClassName
+	import flash.utils.getQualifiedClassName;
 	import com.gestureworks.cml.core.CMLObjectList;	
 	import flash.events.TouchEvent;
 	import com.gestureworks.cml.components.Component;
@@ -28,6 +27,7 @@ package Systems
 	import ui.ViewerMenu;
 	import ui.InfoPanel;
 	import util.TextContent;
+	import util.FileSystem;
 	import com.gestureworks.cml.utils.DisplayUtils;
 	import Events.MenuEvent;
 	
@@ -157,47 +157,17 @@ package Systems
 		
 		protected function getFilesInDirectoryRelative(directory:String) : Array
 		{
-			var root:File = File.applicationDirectory;
-			var subDirectory:File = root.resolvePath(directory);
-			var relativePaths:Array = new Array();
-			for each (var file : File in subDirectory.getDirectoryListing()) {
-				relativePaths.push(root.getRelativePath(file, true));
-			}
-			return relativePaths;
+			return FileSystem.GET_FILES_IN_DIRECTORY_RELATIVE(directory);
 		}
 		
 		protected function isDirectory(path:String):Boolean
 		{
-			var root:File = File.applicationDirectory;
-			return root.resolvePath(path).isDirectory;
+			return FileSystem.IS_DIRECTORY(path);
 		}
 		
 		protected function getExtention(path:String):String
 		{
-			var root:File = File.applicationDirectory;
-			return root.resolvePath(path).extension;
-		}
-
-		protected function drag_handler(event:GWGestureEvent):void
-		{
-			trace("drag");
-			event.target.x += event.value.drag_dx * 0.5;
-			event.target.y += event.value.drag_dy * 0.5;
-		}
-		
-		protected function scale_handler(event:GWGestureEvent):void
-		{
-			trace("scale");
-			event.target.scaleX += Math.min(event.value.scale_dsx, 1);
-			event.target.scaleY += Math.min(event.value.scale_dsy, 1);
-		}
-		
-		protected function rotate_handler(event:GWGestureEvent):void
-		{
-			trace("rotate");
-			var projectedRot:Number = event.target.rotation + Math.min(event.value.rotate_dtheta, 1);
-			projectedRot = projectedRot % 90 == 0 ? projectedRot + .1 : projectedRot; 
-			event.target.rotation = projectedRot; 
+			return FileSystem.GET_EXTENTION(path);
 		}
 		
 		private function onTouch(event:TouchEvent) : void
@@ -216,62 +186,7 @@ package Systems
 			_button.active = true;
 			_button.visible = true;
 		}
-		
-		protected function OnMenuClose(e:MenuEvent):void
-		{
-			trace("Received event CLOSE");
-		}
-		
-		protected function createDescription(content : TextContent, width:uint, height:uint, alpha:Number, padding:Number=30, fontSize:Number = 20) :TouchContainer
-		{
-			var tc:TouchContainer = new TouchContainer();
-			tc.width = width;
-			tc.height = height;
-			tc.alpha = 0.7;
-			
-			var g:Graphic = new Graphic();
-			g.shape = "rectangle";
-			//g.color = 0x15B011;
-			g.color = 0x555555;
-			g.width = tc.width;
-			g.height = tc.height;
-			g.alpha = alpha;
-			tc.addChild(g);
-			
-			var c:Container = new Container();
-			c.paddingTop = padding;
-			c.paddingLeft = padding;
-			c.paddingRight = padding;
-			c.width = width;
-			c.height = height;
-			c.relativeY = true;
-			tc.addChild(c);
-			
-			var t:Text = new Text();
-			t.str = content.title;
-			t.fontSize = fontSize + 10;
-			t.color = 0xFFFFFF;
-			t.font = "Arial";
-			t.autosize = true;
-			t.width = width;
-			c.addChild(t);
-			
-			var d:Text = new Text();
-			d.str = content.description;
-			d.fontSize = fontSize;
-			d.color = 0xFFFFFF;
-			d.font = "Arial";
-			d.wordWrap = true;
-			d.autosize = true;
-			d.multiline = true;
-			d.width = width;
-			c.addChild(d);
-			
-			DisplayUtils.initAll(tc);
-			
-			return tc;
-		}
-		
+				
 		protected function onClose(e:MenuEvent):void
 		{
 			hideComponent(Component(e.result));
