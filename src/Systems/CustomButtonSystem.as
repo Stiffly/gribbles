@@ -438,7 +438,7 @@ package Systems
 						if (bOriginX > stage.stageWidth / 2)
 						{
 							var rx:Number = bOriginX - verticalOffset - tbWidth;
-							var ry:Number = bOriginY;
+							var ry:Number = bOriginY - halfBoxHeight;
 							showComponent(rx, ry, _textBoxMap[parentPath]);
 							removeChild(_textBoxMap[parentPath]._Line);
 							var rline:Graphic = getLine(bOriginX, bOriginY, rx + tbWidth + _frameThickness * 2, ry + halfBoxHeight);
@@ -450,7 +450,7 @@ package Systems
 						else
 						{
 							var lx:Number = bOriginX + verticalOffset;
-							var ly:Number = bOriginY;
+							var ly:Number = bOriginY - halfBoxHeight;
 							showComponent(lx, ly, _textBoxMap[parentPath]);
 							removeChild(_textBoxMap[parentPath]._Line);
 							var lline:Graphic = getLine(bOriginX, bOriginY, lx - _frameThickness * 2, ly + halfBoxHeight);
