@@ -20,7 +20,9 @@ package ui
 		public var dFontColor:uint = 0xFFFFFF;
 		public var dFontSize:Number = 20;
 		
-		public function InfoPanel() {
+		public function InfoPanel(fontSize:Number) {
+			dFontSize = fontSize;
+			tFontSize = fontSize + 10;
 			visible = false;
 			targetParent = true;			
 		}

@@ -177,7 +177,7 @@ package Systems
 		// This loads an imageviewer with an image from disk
 		private function loadImage(parentPath:String):void
 		{
-			var iv:ImageViewer = createViewer(new ImageViewer(), 400, 400, 1000, 700) as ImageViewer;
+			var iv:ImageViewer = createViewer(new ImageViewer(), 400, 400, 500, 350) as ImageViewer;
 			iv.autoTextLayout = false;
 			iv.clusterBubbling = true;
 			iv.mouseChildren = true;
@@ -190,7 +190,7 @@ package Systems
 				{
 					if (child.toUpperCase().search(extention.toUpperCase()) != -1)
 					{
-						iv.addChild(getImage(child, 1000, 700));
+						iv.addChild(getImage(child, iv.width, iv.height));
 						// Load its associated description
 						var textFile:String = child.replace(extention, ".txt");
 						var loader:URLLoader = new URLLoader(new URLRequest(textFile));
@@ -205,7 +205,7 @@ package Systems
 		private function loadAlbum(parentPath:String):void
 		{
 			// Create album viewer
-			var av:AlbumViewer = createViewer(new AlbumViewer(), 400, 400, 1000, 700) as AlbumViewer;
+			var av:AlbumViewer = createViewer(new AlbumViewer(), 400, 400, 500, 350) as AlbumViewer;
 			av.autoTextLayout = false;
 			av.linkAlbums = true;
 			av.clusterBubbling = true;
@@ -245,7 +245,7 @@ package Systems
 					if (childPath.toUpperCase().search(extention.toUpperCase()) != -1)
 					{
 						// Load image
-						front.addChild(getImage(childPath, 1000, 700));
+						front.addChild(getImage(childPath, av.width, av.height));
 						// Update number of children, this is compared against in onFileLoaded function
 						_numChildren[parentPath]++;
 						// Load its associated description
@@ -285,7 +285,7 @@ package Systems
 			{
 				var content:String = URLLoader(event.currentTarget).data;
 				var index:int = content.search("\n");
-				addInfoPanel(iv, content.slice(0, index), content.slice(index + 1, content.length));
+				addInfoPanel(iv, content.slice(0, index), content.slice(index + 1, content.length), 12);
 				addFrame(iv);
 				addViewerMenu(iv, true, true, false, false);
 				_imageMap[parentPath] = iv;

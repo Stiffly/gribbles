@@ -144,9 +144,9 @@ package Systems
 			return menu;
 		}
 		
-		protected function addInfoPanel(component:Component, title:String, descr:String):InfoPanel
+		protected function addInfoPanel(component:Component, title:String, descr:String, descriptionfontSize:Number = 20):InfoPanel
 		{
-			var infoPanel:InfoPanel = new InfoPanel();
+			var infoPanel:InfoPanel = new InfoPanel(descriptionfontSize);
 			infoPanel.bkgColor = 0x665533;
 			infoPanel.title = title;
 			infoPanel.descr = descr;
