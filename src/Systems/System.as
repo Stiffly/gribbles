@@ -171,6 +171,12 @@ package Systems
 			var root:File = File.applicationDirectory;
 			return root.resolvePath(path).isDirectory;
 		}
+		
+		protected function getExtention(path:String):String
+		{
+			var root:File = File.applicationDirectory;
+			return root.resolvePath(path).extension;
+		}
 
 		protected function drag_handler(event:GWGestureEvent):void
 		{
@@ -216,7 +222,7 @@ package Systems
 			trace("Received event CLOSE");
 		}
 		
-		protected function createDescription(content : TextContent, width:uint, height:uint, alpha:Number, padding:Number=30) :TouchContainer
+		protected function createDescription(content : TextContent, width:uint, height:uint, alpha:Number, padding:Number=30, fontSize:Number = 20) :TouchContainer
 		{
 			var tc:TouchContainer = new TouchContainer();
 			tc.width = width;
@@ -243,7 +249,7 @@ package Systems
 			
 			var t:Text = new Text();
 			t.str = content.title;
-			t.fontSize = 30;
+			t.fontSize = fontSize + 10;
 			t.color = 0xFFFFFF;
 			t.font = "Arial";
 			t.autosize = true;
@@ -252,7 +258,7 @@ package Systems
 			
 			var d:Text = new Text();
 			d.str = content.description;
-			d.fontSize = 20;
+			d.fontSize = fontSize;
 			d.color = 0xFFFFFF;
 			d.font = "Arial";
 			d.wordWrap = true;

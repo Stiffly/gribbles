@@ -42,8 +42,6 @@ package Systems
 		private var _imageMap:Object = new Object();
 		// The textbox map keeps track of all textboxes, with unique parent folder as key
 		private var _textBoxMap:Object = new Object();
-		// The supported file formats that can be loaded
-		private var _knownFormats:Array = [".png", ".jpg", ".bmp", ".gif", ".jpeg", ".tiff"];
 		// Stores the number of children that each album has, used to init albums only once, when all children are loaded
 		private var _numChildren:Object = new Object();
 		// Member iterator to keep track of how many children has been loaded
@@ -186,17 +184,20 @@ package Systems
 			
 			for each (var child:String in getFilesInDirectoryRelative(parentPath))
 			{
-				for each (var extention:String in _knownFormats)
+				if (isDirectory(child))
 				{
-					if (child.toUpperCase().search(extention.toUpperCase()) != -1)
-					{
-						iv.addChild(getImage(child, iv.width, iv.height));
-						// Load its associated description
-						var textFile:String = child.replace(extention, ".txt");
-						var loader:URLLoader = new URLLoader(new URLRequest(textFile));
-						loader.addEventListener(Event.COMPLETE, FinalizeImage(iv, parentPath));
-					}
+					continue;
 				}
+				var extention:String = getExtention(child).toUpperCase();
+				if (extention == "TXT")
+				{
+					continue;
+				}
+				iv.addChild(getImage(child, iv.width, iv.height));
+				// Load its associated description
+				var textFile:String = child.toUpperCase().replace(extention, "TXT");
+				var loader:URLLoader = new URLLoader(new URLRequest(textFile));
+				loader.addEventListener(Event.COMPLETE, FinalizeImage(iv, parentPath));
 			}
 		
 		}
@@ -238,22 +239,25 @@ package Systems
 			back.dragAngle = 0;
 			
 			// Add all the children, images etc.
-			for each (var childPath:String in getFilesInDirectoryRelative(parentPath))
+			for each (var child:String in getFilesInDirectoryRelative(parentPath))
 			{
-				for each (var extention:String in _knownFormats)
+				if (isDirectory(child))
 				{
-					if (childPath.toUpperCase().search(extention.toUpperCase()) != -1)
-					{
-						// Load image
-						front.addChild(getImage(childPath, av.width, av.height));
-						// Update number of children, this is compared against in onFileLoaded function
-						_numChildren[parentPath]++;
-						// Load its associated description
-						var textFile:String = childPath.replace(extention, ".txt");
-						var loader2:URLLoader = new URLLoader(new URLRequest(textFile));
-						loader2.addEventListener(Event.COMPLETE, FinalizeAlbum(av, front, back, parentPath));
-					}
+					continue;
 				}
+				var extention:String = getExtention(child).toUpperCase();
+				if (extention == "TXT")
+				{
+					continue;
+				}
+				// Load image
+				front.addChild(getImage(child, av.width, av.height));
+				// Update number of children, this is compared against in onFileLoaded function
+				_numChildren[parentPath]++;
+				// Load its associated description
+				var textFile:String = child.toUpperCase().replace(extention, "TXT");
+				var loader2:URLLoader = new URLLoader(new URLRequest(textFile));
+				loader2.addEventListener(Event.COMPLETE, FinalizeAlbum(av, front, back, parentPath));
 			}
 		}
 		
@@ -304,7 +308,7 @@ package Systems
 				var content:String = URLLoader(event.currentTarget).data;
 				// Finds the first newline and creates a text content that is used for the description
 				var index:int = content.search("\n");
-				back.addChild(createDescription(new TextContent(content.slice(0, index), content.slice(index + 1, content.length)), 1000, 700, 0.1));
+				back.addChild(createDescription(new TextContent(content.slice(0, index), content.slice(index + 1, content.length)), av.width, av.height, 0.6, 30, 12));
 				// This is true when all of the description files are loaded
 				if (_numChildren[parentPath] == _i)
 				{
