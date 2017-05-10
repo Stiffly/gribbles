@@ -40,15 +40,20 @@ package Systems
 			setChildIndex(_PDFViewer, 0);
 			
 			// Loading an image through image element
+			
 			var PDF:HTML = new HTML();
-			//PDF.src = "pdf/dykrapport.pdf";
-			PDF.srcString = "<body>" + "<iframe src=\"pdf/dykrapport.pdf\" style=\"width: 100%;height: 100%;border: none;\"></iframe>" + "</body>";
+			
+			PDF.width = 700;
+			PDF.height = 800
+			var pdfWidth:String = PDF.width.toString();
+			var pdfHeight:String = PDF.height.toString();
+			
+			// Load the PDF without toolbar 
+			PDF.srcString = "<body" + "<embed src=\"pdf/dykrapport.pdf#toolbar=0&navpanes=0&scrollbar=0\" width=" + pdfWidth + " height=" + pdfHeight + "/>" + "</body>";
 			
 			// This has to be at 0,0 or the PDF will not be loaded properly (?)
 			PDF.x = 0;
-			PDF.y = 0;
-			PDF.width = 700;
-			PDF.height = 800;
+			PDF.y = 0;;
 			PDF.targetParent = true;
 			PDF.mouseChildren = true;
 			_PDFViewer.addChild(PDF);
