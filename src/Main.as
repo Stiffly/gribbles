@@ -1,8 +1,5 @@
 package
 {
-	import Systems.CustomButtonSystem;
-	import com.gestureworks.cml.elements.Button;
-	import com.gestureworks.cml.elements.Menu;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.utils.getTimer;
@@ -18,6 +15,9 @@ package
 	GestureWorksAIR;
 	import com.gestureworks.cml.core.CMLParser;
 	import com.gestureworks.cml.events.StateEvent;
+	import com.gestureworks.cml.elements.Button;
+	import com.gestureworks.cml.elements.Image;
+	import com.gestureworks.cml.elements.Menu;
 	
 	import Systems.System;
 	import Systems.VideoSystem;
@@ -26,6 +26,7 @@ package
 	import Systems.HTMLSystem;
 	import Systems.PDFSystem;
 	import Systems.AudioSystem;
+	import Systems.CustomButtonSystem;
 	import Events.MenuEvent;
 	
 	/**
@@ -58,6 +59,7 @@ package
 		private var _elapsedTime:int = 0;
 		private var _elapsedTimeText:TextField = new TextField();
 		private var _mainButton:Button;
+		private var _backButton:Button;
 		private var _idleStart:Number = .0;
 		
 		private var _currentState:String = State.SCREENSAVER;
@@ -95,22 +97,10 @@ package
 			trace("gribbles starting");
 			
 			// Create a button for switching to mainapp
-			_mainButton = new Button();
-			var radius:Number = 50;
-			_mainButton.width = radius * 2.0;
-			_mainButton.height = radius * 2.0;
-			_mainButton.x = (stage.stageWidth >> 1) - (radius << 1);
-			_mainButton.y = (stage.stageHeight >> 1) - (radius << 1);
-			_mainButton.dispatch = "initial:initial:down:down:up:up:over:over:out:out";
-			_mainButton.hit = getCircle(0x000000, 0);
-			_mainButton.initial = getCircle(0xFFFFFF); //white
-			_mainButton.down = getCircle(0x0000FF); //blue
-			_mainButton.up = getCircle(0xFFFFFF); //blue
-			_mainButton.over = getCircle(0xFF0000); //blue
-			_mainButton.out = getCircle(0xFFFFFF); //blue
-			_mainButton.init();
-			_mainButton.addEventListener(StateEvent.CHANGE, onButtonPress);
-			addChild(_mainButton);
+			createMiddleButton();
+			// Create a button for switching to screensaver
+			createBackButton();
+			
 			addChildAt(_loaderImage, numChildren - 1);
 			
 			// Loops over each system and intializes it
@@ -126,6 +116,7 @@ package
 			_systemsAreInitiated = true;
 			_loaderImage.visible = false;
 		}
+		
 		
 		override protected function gestureworksInit():void
 		{
@@ -200,15 +191,24 @@ package
 			}
 		}
 		
-		private function getCircle(color:uint, alpha:Number = 1):Graphic
+		private function getCircle(color:uint, width:int, height:int, alpha:Number = 1):Graphic
 		{
 			var circle:Graphic = new Graphic();
 			circle.shape = "circle";
+			circle.width = width;
+			circle.height = height;
 			circle.radius = 100;
 			circle.color = color;
 			circle.alpha = alpha;
 			circle.lineStroke = 0;
 			return circle;
+		}
+		
+		private function getImage(path:String):Image
+		{
+			var image:Image = new Image();
+			image.open(path);
+			return image;
 		}
 		
 		private function onButtonPress(event:StateEvent):void
@@ -217,8 +217,16 @@ package
 			{
 				return;
 			}
-			switchToMainApp();
-			_idleStart = getTimer();
+			
+			if (_currentState == State.MAINAPP)
+			{
+				switchToScreenSaver();
+			}
+			else if (_currentState == State.SCREENSAVER)
+			{
+				switchToMainApp();
+				_idleStart = getTimer();
+			}
 		}
 		
 		private function switchToMainApp():void
@@ -231,6 +239,7 @@ package
 			_backgroundImage.visible = true;
 			_currentState = State.MAINAPP;
 			_mainButton.visible = false;
+			_backButton.visible = true;
 		}
 		
 		private function switchToScreenSaver():void
@@ -239,14 +248,64 @@ package
 			for each (var s:System in _systems)
 			{
 				s.Deactivate();
-				//if (s is PDFSystem)
-				//	continue;
+				if (s is PDFSystem)
+					continue;
 				s.Hide();
 			}
 			_backgroundImage.visible = false;
 			_currentState = State.SCREENSAVER;
 			_mainButton.visible = true;
+			_backButton.visible = false;
 			setChildIndex(_mainButton, numChildren - 1);
+		}
+		
+		private function createMiddleButton():void
+		{
+			_mainButton = new Button();
+			_mainButton.width = 159;
+			_mainButton.height = 159;
+			_mainButton.x = (stage.stageWidth >> 1) - (_mainButton.width / 2);
+			_mainButton.y = (stage.stageHeight >> 1) - (_mainButton.height / 2);
+			_mainButton.dispatch = "initial:initial:down:down:up:up:over:over:out:out";
+			_mainButton.hit = getCircle(0x000000, 159, 159, 0);
+			
+			var initial:Image = getImage("images/buttons/button-middle-up.png");
+			initial.alpha = 0.5;
+			_mainButton.initial = initial;
+			_mainButton.down = getImage("images/buttons/button-middle-up.png");
+			var up:Image = initial;
+			_mainButton.up = up; 
+			_mainButton.over = getImage("images/buttons/button-middle-up.png");
+			var out:Image = up;
+			_mainButton.out = out;
+			_mainButton.init();
+			_mainButton.addEventListener(StateEvent.CHANGE, onButtonPress);
+			addChild(_mainButton);
+		}
+		
+		private function createBackButton():void 
+		{
+			_backButton = new Button();
+			_backButton.width = 100;
+			_backButton.height = 100;
+			_backButton.x = 0 + 5;
+			_backButton.y = (stage.stageHeight) - (_backButton.height) - 5;
+			_backButton.dispatch = "initial:initial:down:down:up:up:over:over:out:out";
+			var hit:Image = getImage("images/buttons/button-back-up.png");
+			hit.alpha = 0;
+			_backButton.hit = hit;
+			var down:Image = getImage("images/buttons/button-back-up.png");
+			down.alpha = 0.5;
+			_backButton.initial = getImage("images/buttons/button-back-up.png");
+			_backButton.down = down;
+			var over:Image = down;
+			_backButton.up = getImage("images/buttons/button-back-up.png");
+			_backButton.over = over;
+			var out:Image = getImage("images/buttons/button-back-up.png");
+			_backButton.out = out;
+			_backButton.init();
+			_backButton.addEventListener(StateEvent.CHANGE, onButtonPress);
+			addChild(_backButton);
 		}
 		
 		private function onInteraction(event:MouseEvent):void
