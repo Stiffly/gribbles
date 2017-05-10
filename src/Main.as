@@ -65,6 +65,7 @@ package
 		private var _currentState:String = State.SCREENSAVER;
 		
 		private var _systemsAreInitiated:Boolean = false;
+		private var _PDFLoaded:Boolean = false;
 		
 		public function Main()
 		{
@@ -173,6 +174,18 @@ package
 			// Elapsed time counter
 			_elapsedTime += dt;
 			_elapsedTimeText.text = "Elapsed time: " + Math.floor(_elapsedTime / 60) + ":" + _elapsedTime % 60;
+			
+			if (!_PDFLoaded && _elapsedTime > 5)
+			{
+				// 10 seconds have passed, should be safe to hide PDF
+				for each (var sy:System in _systems)
+				{
+					if (sy is PDFSystem)
+						sy.Hide();
+						_PDFLoaded = true;
+				}
+				
+			}
 			// Idle logic
 			if (_currentState == State.MAINAPP)
 			{
@@ -248,7 +261,7 @@ package
 			for each (var s:System in _systems)
 			{
 				s.Deactivate();
-				if (s is PDFSystem)
+				if (s is PDFSystem && !_PDFLoaded)
 					continue;
 				s.Hide();
 			}
@@ -274,7 +287,7 @@ package
 			_mainButton.initial = initial;
 			_mainButton.down = getImage("images/buttons/button-middle-up.png");
 			var up:Image = initial;
-			_mainButton.up = up; 
+			_mainButton.up = up;
 			_mainButton.over = getImage("images/buttons/button-middle-up.png");
 			var out:Image = up;
 			_mainButton.out = out;
