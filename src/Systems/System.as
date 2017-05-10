@@ -46,7 +46,6 @@ package Systems
 		
 		public function Hide():void
 		{
-		
 		}
 		
 		// A function to be overidden by child classes
@@ -146,8 +145,9 @@ package Systems
 		protected function addViewerMenu(component:Component, close:Boolean, info:Boolean, play:Boolean, pause:Boolean):ViewerMenu
 		{
 			var menu:ViewerMenu = new ViewerMenu(info, close, play, pause);
-			menu.y = -65;
-			menu.paddingLeft = 15;
+			menu.y = 5;
+			menu.paddingLeft = component.width - menu.numChildren * 2 * (20 + 3); // 20 + 3 i radius + linestroke in "menubutton.as"
+			menu.paddingRight = 10;
 			menu.autohide = false;
 			menu.visible = true;
 			component.addChild(menu);

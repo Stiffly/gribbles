@@ -25,24 +25,26 @@ package ui
 				
 		public function ViewerMenu(info:Boolean=true, close:Boolean=true, play:Boolean=false, pause:Boolean=false) {
 			alpha = 0.6;
-			position = "bottom";
+			position = "top";
 			paddingLeft = 30;
-			paddingBottom = -50;
+			paddingBottom = 50;
 			paddingRight = 20;
 			autohide = true;
 			visible = false;
 			
-			if(info)
-				addChild(new MenuButton("info", 15, 8, infoBtn));
-			if (play)			
-				addChild(new MenuButton( "play", 15, 8, playBtn));			
-			if(pause)
-				addChild(new MenuButton("pause", 14.5, 8.5, pauseBtn));
 			if (close)
 			{
 				var mbc:MenuButton = new MenuButton("close", 11, 11, closeBtn); 
 				mbc.addEventListener(StateEvent.CHANGE, Onclose);
 				addChild(mbc);
+			}
+			if (play)			
+				addChild(new MenuButton( "play", 15, 8, playBtn));		
+			if(pause)
+				addChild(new MenuButton("pause", 14.5, 8.5, pauseBtn));
+			if (info)
+			{
+				addChild(new MenuButton("info", 15, 8, infoBtn));
 			}
 		}
 		

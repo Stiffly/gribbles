@@ -180,9 +180,10 @@ package
 				// 10 seconds have passed, should be safe to hide PDF
 				for each (var sy:System in _systems)
 				{
-					if (sy is PDFSystem)
+					if (sy is PDFSystem) {
 						sy.Hide();
 						_PDFLoaded = true;
+					}
 				}
 				
 			}

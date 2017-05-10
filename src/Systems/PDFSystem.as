@@ -47,7 +47,7 @@ package Systems
 			// This has to be at 0,0 or the PDF will not be loaded properly (?)
 			PDF.x = 0;
 			PDF.y = 0;
-			PDF.width = 600;
+			PDF.width = 700;
 			PDF.height = 800;
 			PDF.targetParent = true;
 			PDF.mouseChildren = true;
@@ -94,12 +94,14 @@ package Systems
 			// "Hide" the component
 			component.x = 13337;
 			component.y = 13337;
+			component.visible = false;
 		}
 		
 		private function showComponent(component:Component):void
 		{
 			component.x = ((stage.stageWidth - component.width) >> 1);
 			component.y = ((stage.stageHeight - component.height) >> 1);
+			component.visible = true;
 			setChildIndex(component, numChildren - 1);
 		}
 		
