@@ -81,9 +81,9 @@ package
 			// Add systems here
 			_systems.push(new HTMLSystem());
 			_systems.push(new PDFSystem());
-			_systems.push(new VideoSystem());
-			_systems.push(new ImageSystem());
-			_systems.push(new AudioSystem());
+			//_systems.push(new VideoSystem());
+			//_systems.push(new ImageSystem());
+			//_systems.push(new AudioSystem());
 			_systems.push(new CustomButtonSystem());
 			_screenSaver = new WaterSystem();
 			

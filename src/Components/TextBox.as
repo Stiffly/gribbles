@@ -182,7 +182,7 @@ package Components
 		public function Kill():void
 		{
 			_dead = true;
-			_Line.alpha = 0;
+			_Line.visible = false;
 		}
 		
 		// This is used to create the actual text content

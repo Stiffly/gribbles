@@ -20,7 +20,7 @@ package util
 		}
 		
 		// Create a circle
-		static public function GET_CIRCLE(color:uint, x:uint, y:uint, radius:Number, alpha:Number):Graphic
+		static public function GET_CIRCLE(color:uint, x:int, y:int, radius:Number, alpha:Number):Graphic
 		{
 			var circle:Graphic = new Graphic();
 			circle.x = x;

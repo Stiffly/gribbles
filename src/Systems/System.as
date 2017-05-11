@@ -1,9 +1,11 @@
 package Systems
 {
+	import Components.Audio;
 	import flash.events.TouchEvent;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.utils.getQualifiedClassName;
+	import flash.display.DisplayObject;
 	
 	import com.gestureworks.cml.elements.Container;
 	import com.gestureworks.cml.elements.Graphic;
@@ -67,7 +69,14 @@ package Systems
 			component.scale = 1.0;
 			component.x = x;
 			component.y = y;
-			setChildIndex(component, numChildren - 1);
+			if (component.parent is Audio)
+			{
+				setChildIndex(Audio(component.parent), numChildren - 1);
+			}
+			else 
+			{
+				setChildIndex(component, numChildren - 1);
+			}
 		}
 		
 		protected function hideComponent(component:Component):void
@@ -77,13 +86,9 @@ package Systems
 			// "Hide" the component
 			component.x = 13337; 
 			component.y = 13337;
-			if (getQualifiedClassName(component.getChildAt(0)).search("WAV") != -1)
+			if (component is Audio)
 			{
-				WAV(component.getChildAt(0)).stop();
-			}
-			if (getQualifiedClassName(component.getChildAt(0)).search("MP3") != -1)
-			{
-				MP3(component.getChildAt(0)).stop();
+				Audio(component).Stop();
 			}
 		}
 		
@@ -165,9 +170,17 @@ package Systems
 			return infoPanel;
 		}
 		
-		private function onTouch(event:TouchEvent):void
+		protected function onTouch(event:TouchEvent):void
 		{
-			setChildIndex(Component(event.currentTarget), numChildren - 1);
+			var component:Component = Component(event.currentTarget);
+			if (component.parent is Audio)
+			{
+				setChildIndex(Audio(component.parent), numChildren - 1);
+			}
+			else
+			{
+				setChildIndex(component, numChildren - 1);
+			}
 		}
 		
 		public function Deactivate():void
@@ -184,7 +197,15 @@ package Systems
 		
 		protected function onClose(e:MenuEvent):void
 		{
-			hideComponent(Component(e.result));
+			var component:Component = Component(e.result);
+			if (component.parent is Audio)
+			{
+				hideComponent(Audio(component.parent));
+			}
+			else
+			{
+				hideComponent(component);
+			}
 		}
 		
 		protected function getFilesInDirectoryRelative(directory:String):Array
@@ -202,7 +223,7 @@ package Systems
 			return FileSystem.GET_EXTENTION(path);
 		}
 		
-		protected function getCircle(color:uint, xPos:uint, yPos:uint, radius:Number, alpha:Number = 1):Graphic
+		protected function getCircle(color:uint, xPos:int, yPos:int, radius:Number, alpha:Number = 1):Graphic
 		{
 			return Geometry.GET_CIRCLE(color, xPos, yPos, radius, alpha);
 		}

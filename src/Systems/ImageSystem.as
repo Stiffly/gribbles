@@ -169,7 +169,7 @@ package Systems
 					for (var i:int = 0; i < _numChildren[s]; i++)
 					{
 						var radius:Number = 10;
-						var g:Graphic = getCircle(0x999999, i * (radius << 1), 0, radius, 0.5);
+						var g:Graphic = getCircle(0x999999, i * (radius << 1), 0, radius, 1);
 						_indexCircles[s].push(g);
 						av.addChild(g);
 					}

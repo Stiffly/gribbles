@@ -22,7 +22,7 @@ package Systems
 	public class WaterSystem extends Sprite
 	{
 		// Embed an image which will be used as a background
-		[Embed(source = "../../bin/images/stones.jpg")]
+		[Embed(source = "../../bin/images/we.jpg")]
 		private var _sourceImage:Class;
 		
 		private var _dustEmitter:DustEmitter;

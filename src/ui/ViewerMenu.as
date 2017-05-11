@@ -34,9 +34,7 @@ package ui
 			
 			if (close)
 			{
-				var mbc:MenuButton = new MenuButton("close", 11, 11, closeBtn); 
-				mbc.addEventListener(StateEvent.CHANGE, Onclose);
-				addChild(mbc);
+				addChild(new MenuButton("info", 15, 8, infoBtn));
 			}
 			if (play)			
 				addChild(new MenuButton( "play", 15, 8, playBtn));		
@@ -44,7 +42,9 @@ package ui
 				addChild(new MenuButton("pause", 14.5, 8.5, pauseBtn));
 			if (info)
 			{
-				addChild(new MenuButton("info", 15, 8, infoBtn));
+				var mbc:MenuButton = new MenuButton("close", 11, 11, closeBtn); 
+				mbc.addEventListener(StateEvent.CHANGE, Onclose);
+				addChild(mbc);
 			}
 		}
 		
