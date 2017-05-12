@@ -1,6 +1,7 @@
 package Systems
 {
 	import Components.Audio;
+	import com.gestureworks.cml.elements.Image;
 	import flash.events.TouchEvent;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -62,7 +63,7 @@ package Systems
 		
 		}
 		
-		private function showComponent(x:int, y:int, component:Component):void
+		protected function showComponent(x:int, y:int, component:Component):void
 		{
 			component.alpha = 1.0;
 			component.touchEnabled = true;
@@ -77,6 +78,16 @@ package Systems
 			{
 				setChildIndex(component, numChildren - 1);
 			}
+		}
+		
+		// Loads an image from the disc
+		protected function getImage(source:String, width:uint, height:uint):Image
+		{
+			var img:Image = new Image();
+			img.width = width;
+			img.height = height;
+			img.open(source);
+			return img;
 		}
 		
 		protected function hideComponent(component:Component):void

@@ -95,7 +95,7 @@ package Systems
 			}
 			else if (component.x > 10000)
 			{
-				showComponent(component);
+				showComponent(0,0, component);
 			}
 		}
 		
@@ -107,7 +107,7 @@ package Systems
 			component.visible = false;
 		}
 		
-		private function showComponent(component:Component):void
+		protected override function showComponent(x:int, y:int, component:Component):void
 		{
 			component.x = ((stage.stageWidth - component.width) >> 1);
 			component.y = ((stage.stageHeight - component.height) >> 1);

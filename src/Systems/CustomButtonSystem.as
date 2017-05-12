@@ -57,7 +57,7 @@ package Systems
 		// The webpage map ...
 		private var _webMap:Object = new Object();
 		// The textbox map keeps track of all textboxes, with unique parent folder as key
-		private var _textBoxMap:Object = new Object();
+		//private var _textBoxMap:Object = new Object();
 		// Stores the number of children that each album has, used to init albums only once, when all children are loaded
 		private var _numChildren:Object = new Object();
 		// A map containing arrays of the index circles that shows what image in the album that is active
@@ -66,9 +66,12 @@ package Systems
 		private var _i:uint = 0;
 		// A list of approved url's
 		private var _approvedURLs:Array = ["http://www.blekingemuseum.se/pages/275", "http://www.blekingemuseum.se/pages/377", "http://www.blekingemuseum.se/pages/378", "http://www.blekingemuseum.se/pages/379", "http://www.blekingemuseum.se/pages/380", "http://www.blekingemuseum.se/pages/403", "http://www.blekingemuseum.se/pages/423", "http://www.blekingemuseum.se/pages/1223"];
-		
+		private var _textBoxSystem:CustomTextBoxSystem = null;
+				
 		public function CustomButtonSystem()
 		{
+			_textBoxSystem = new CustomTextBoxSystem();
+			addChild(_textBoxSystem);
 			super();
 		
 		}
@@ -88,10 +91,7 @@ package Systems
 		
 		override public function Update():void
 		{
-			for each (var tb:TextBox in _textBoxMap)
-			{
-				tb.Update();
-			}
+			_textBoxSystem.Update();
 			
 			// For all parent folders...
 			for (var key:String in _indexCircles)
@@ -132,10 +132,7 @@ package Systems
 				b.visible = false;
 				b.active = false;
 			}
-			for each (var tb:TextBox in _textBoxMap)
-			{
-				tb.Kill();
-			}
+
 		}
 		
 		// This is the event handler that triggers when the XML file describing the button is loaded
@@ -144,46 +141,48 @@ package Systems
 			return function(e:Event):void
 			{
 				// Create button from the XML data
-				var buttonProperties:XML = new XML();
-				buttonProperties = XML(e.target.data);
-				var type:String = buttonProperties.child("type");
-				var width:uint = buttonProperties.child("width");
-				var height:uint = buttonProperties.child("height");
-				var x:uint = buttonProperties.child("x");
-				var y:uint = buttonProperties.child("y");
-				var button:Button = new Button();
-				button.width = width;
-				button.height = height;
-				button.x = x;
-				button.y = y;
-				button.dispatch = "initial:initial:down:down:up:up:over:over:out:out:hit:hit";
-				var img:Image = getImage(key + "/button/button.png", width, height);
-				var downImg:Image = getImage(key + "/button/button.png", width, height);
-				downImg.alpha = 0.5;
-				if (key == "custom/1A")
-				{
-					// Special logic for too big image A
-					var hitBox:Graphic = getRectangle(0x000000, x, y, 51, 47, 0);
-					hitBox.x = 1665 - button.x;
-					hitBox.y = 372 - button.y;
-					button.hit = hitBox;
-				}
-				else
-				{
-					button.hit = getRectangle(0x000000, 0, 0, width, height, 0);
-				}
-				button.initial = img;
-				button.down = downImg;
-				button.up = img;
-				button.over = downImg;
-				button.out = img;
-				button.addEventListener(StateEvent.CHANGE, onClick(key));
-				button.init();
-				// Add tracking of the button by adding it to the button map
-				_buttonMap[key] = button;
-				addChild(button);
+				var buttonProperties:XML = XML(e.target.data);
+				var xmlType:String = buttonProperties.child("type");
+				var xmlWidth:uint = buttonProperties.child("width");
+				var xmlHeight:uint = buttonProperties.child("height");
+				var xmlX:uint = buttonProperties.child("x");
+				var xmlY:uint = buttonProperties.child("y");
 				
-				if (type.toUpperCase() == "ALBUM")
+				var button:Button = new Button();
+				if (xmlType.toUpperCase() != "TEXT")
+				{
+					button.width = xmlWidth;
+					button.height = xmlHeight;
+					button.x = xmlX;
+					button.y = xmlY;
+					button.dispatch = "initial:initial:down:down:up:up:over:over:out:out:hit:hit";
+					var img:Image = getImage(key + "/button/button.png", xmlWidth, xmlHeight);
+					var downImg:Image = getImage(key + "/button/button.png", xmlWidth, xmlHeight);
+					downImg.alpha = 0.5;
+					if (key == "custom/1A")
+					{
+						// Special logic for too big image A
+						var hitBox:Graphic = getRectangle(0x000000, xmlX, xmlY, 51, 47, 0);
+						hitBox.x = 1665 - button.x;
+						hitBox.y = 372 - button.y;
+						button.hit = hitBox;
+					}
+					else
+					{
+						button.hit = getRectangle(0x000000, 0, 0, xmlWidth, xmlHeight, 0);
+					}
+					button.initial = img;
+					button.down = downImg;
+					button.up = img;
+					button.over = downImg;
+					button.out = img;
+					button.init();
+					// Add tracking of the button by adding it to the button map
+					_buttonMap[key] = button;
+					addChild(button);
+				}
+				
+				if (xmlType.toUpperCase() == "ALBUM")
 				{
 					// Get the number of children, exluding directories
 					var children:Array = getFilesInDirectoryRelative(key);
@@ -209,26 +208,28 @@ package Systems
 						throw("Error: No content in album " + key + ". Please double check the type in properties.xml");
 					}
 				}
-				else if (type.toUpperCase() == "TEXT")
+				else if (xmlType.toUpperCase() == "TEXT")
 				{
-					loadTextBox(key);
+					_textBoxSystem.Load(key, xmlX, xmlY, xmlWidth, xmlHeight);
+					button.addEventListener(StateEvent.CHANGE, _textBoxSystem.onClick(key));
 				}
-				else if (type.toUpperCase() == "VIDEO")
+				else if (xmlType.toUpperCase() == "VIDEO")
 				{
 					loadVideo(key);
 				}
-				else if (type.toUpperCase() == "AUDIO")
+				else if (xmlType.toUpperCase() == "AUDIO")
 				{
 					loadAudio(key);
 				}
-				else if (type.toUpperCase() == "WEB")
+				else if (xmlType.toUpperCase() == "WEB")
 				{
 					loadWebPage(key);
 				}
 				else
 				{
-					throw("ERROR: Unhandled type: " + type + " in " + key + "/button/properties.xml. Type should either be \"Text\" or \"Album\".");
+					throw("ERROR: Unhandled type: " + xmlType + " in " + key + "/button/properties.xml. Type should either be \"Text\" or \"Album\".");
 				}
+				button.addEventListener(StateEvent.CHANGE, onClick(key));
 			}
 		}
 		
@@ -474,28 +475,6 @@ package Systems
 			}
 		}
 		
-		// This loads a specified from a .txt file on disk
-		private function loadTextBox(key:String):void
-		{
-			for each (var childPath:String in getFilesInDirectoryRelative(key))
-			{
-				if (isDirectory(childPath))
-				{
-					continue;
-				}
-				// Assures that it is a .txt file
-				if (childPath.toUpperCase().search(".txt".toUpperCase()) != -1)
-				{
-					var loader:URLLoader = new URLLoader(new URLRequest(childPath));
-					loader.addEventListener(Event.COMPLETE, FinalizeTextBox(key));
-				}
-				else
-				{
-					throw("ERROR: Found file " + childPath + " which does not end with .txt extention. Please make sure that you have specified the correct type in button/properties.xml");
-				}
-			}
-		}
-		
 		private function FinalizeImage(iv:ImageViewer, key:String):Function
 		{
 			return function(event:Event):void
@@ -648,44 +627,6 @@ package Systems
 			}
 		}
 		
-		// This handler is triggered when the content for a textbox is loaded
-		private function FinalizeTextBox(key:String):Function
-		{
-			return function(e:Event):void
-			{
-				var content:String = URLLoader(e.currentTarget).data;
-				var index:int = content.search("\n");
-				var textContent:TextContent = new TextContent(content.slice(0, index), content.slice(index + 1, content.length));
-				
-				var textBox:TextBox = new TextBox(textContent, _frameThickness);
-				textBox.x = _buttonMap[key].x;
-				textBox.y = _buttonMap[key].y;
-				textBox.width = 400;
-				textBox.nativeTransform = true;
-				textBox.clusterBubbling = true;
-				textBox.mouseChildren = true;
-				addFrame(textBox);
-				addTouchContainer(textBox);
-				addChild(textBox);
-				_textBoxMap[key] = textBox;
-				hideComponent(textBox);
-				
-				addChild(textBox._Line);
-				
-				DisplayUtils.initAll(textBox);
-			}
-		}
-		
-		// Loads an image from the disc
-		private function getImage(source:String, width:uint, height:uint):Image
-		{
-			var img:Image = new Image();
-			img.width = width;
-			img.height = height;
-			img.open(source);
-			return img;
-		}
-		
 		private function getVideo(source:String, width:uint, height:uint):Video
 		{
 			var vid:Video = new Video();
@@ -760,72 +701,7 @@ package Systems
 						showComponent(_buttonMap[key].x + (_buttonMap[key].width >> 1) - (_audioMap[key].width >> 1), _buttonMap[key].y + (_buttonMap[key].height >> 1) - (_audioMap[key].height >> 1), _audioMap[key]);
 					}
 				}
-				if (_textBoxMap[key] != null)
-				{
-					if (_textBoxMap[key].alpha > 0)
-					{
-						_textBoxMap[key].Kill();
-						hideComponent(_textBoxMap[key]);
-						
-					}
-					else if (_textBoxMap[key].alpha == 0)
-					{
-						for each (var tb:TextBox in _textBoxMap)
-						{
-							if (tb.visible == true)
-							{
-								tb.Kill();
-								hideComponent(tb);
-							}
-						}
-						
-						var bOriginX:Number = _buttonMap[key].x + (_buttonMap[key].width >> 1);
-						var bOriginY:Number = _buttonMap[key].y + (_buttonMap[key].height >> 1);
-						var tbWidth:Number = _textBoxMap[key].width;
-						var tby:Number = _textBoxMap[key].y;
-						var halfBoxHeight:Number = (_textBoxMap[key].height >> 1);
-						var verticalOffset:Number = 300;
-						
-						// Right side of the screen
-						if (bOriginX > stage.stageWidth * .5)
-						{
-							var rx:Number = bOriginX - verticalOffset - tbWidth;
-							var ry:Number = bOriginY - halfBoxHeight;
-							showComponent(rx, ry, _textBoxMap[key]);
-							removeChild(_textBoxMap[key]._Line);
-							var rline:Graphic = getLine(0x999999, bOriginX, bOriginY, rx + tbWidth + (_frameThickness << 1), ry + halfBoxHeight, 3, .8);
-							_textBoxMap[key]._Line = rline;
-							addChild(rline);
-							_textBoxMap[key].Rebirth();
-						}
-						// Left side of the screen
-						else
-						{
-							var lx:Number = bOriginX + verticalOffset;
-							var ly:Number = bOriginY - halfBoxHeight;
-							showComponent(lx, ly, _textBoxMap[key]);
-							removeChild(_textBoxMap[key]._Line);
-							var lline:Graphic = getLine(0x999999, bOriginX, bOriginY, lx - (_frameThickness << 1), ly + halfBoxHeight, 3, .8);
-							_textBoxMap[key]._Line = lline;
-							addChild(lline);
-							_textBoxMap[key].Rebirth();
-						}
-					}
-				}
 			}
-		}
-		
-		// This is called when a button is clicked and the component is hidden
-		private function showComponent(x:uint, y:uint, component:Component):void
-		{
-			component.alpha = 1.0;
-			component.touchEnabled = true;
-			component.scale = 1.0;
-			component.x = x;
-			component.y = y;
-			if (component is Audio)
-				return;
-			setChildIndex(component, numChildren - 1);
 		}
 		
 		// Hides all the albums
@@ -834,10 +710,6 @@ package Systems
 			for each (var av:AlbumViewer in _albumMap)
 			{
 				hideComponent(av);
-			}
-			for each (var tb:TextBox in _textBoxMap)
-			{
-				hideComponent(tb);
 			}
 		}
 	}
