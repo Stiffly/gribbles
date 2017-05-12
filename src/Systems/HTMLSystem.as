@@ -59,6 +59,8 @@ package Systems
 			
 			// The button loaded from CML
 			_button = CMLObjectList.instance.getId("web-button");
+			_button.x = 0;
+			_button.y = 0;
 			_button.addEventListener(StateEvent.CHANGE, buttonHandler);
 			addChild(_button);
 		}

@@ -66,6 +66,9 @@ package Systems
 			DisplayUtils.initAll(_PDFViewer);
 			
 			_button = CMLObjectList.instance.getId("pdf-button");
+			_button.alpha = 1.0;
+			_button.y = 100;
+			_button.x = 800;
 			_button.addEventListener(StateEvent.CHANGE, buttonHandler);
 			addChild(_button);
 		}

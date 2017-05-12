@@ -79,7 +79,7 @@ package
 			gml = "gml/gestures.gml"; // gml now required
 			
 			// Add systems here
-			_systems.push(new HTMLSystem());
+			//_systems.push(new HTMLSystem());
 			_systems.push(new PDFSystem());
 			//_systems.push(new VideoSystem());
 			//_systems.push(new ImageSystem());

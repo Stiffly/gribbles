@@ -1,16 +1,12 @@
 package Systems
 {
-	import Components.Audio;
-	import com.gestureworks.cml.components.MP3Player;
-	import com.gestureworks.cml.components.VideoViewer;
-	import com.gestureworks.cml.components.WAVPlayer;
-	import com.gestureworks.cml.elements.Video;
 	import flash.display.Shape;
 	import flash.geom.Rectangle;
 	import flash.net.URLRequest;
 	import flash.events.Event;
 	import flash.net.URLLoader;
 	import flash.events.TouchEvent;
+	import flash.events.LocationChangeEvent;
 	
 	import com.gestureworks.cml.components.AlbumViewer;
 	import com.gestureworks.cml.components.ImageViewer;
@@ -22,8 +18,15 @@ package Systems
 	import com.gestureworks.cml.elements.Graphic;
 	import com.gestureworks.cml.elements.TouchContainer;
 	import com.gestureworks.cml.utils.DisplayUtils;
+	import com.gestureworks.cml.components.HTMLViewer;
+	import com.gestureworks.cml.components.MP3Player;
+	import com.gestureworks.cml.components.VideoViewer;
+	import com.gestureworks.cml.components.WAVPlayer;
+	import com.gestureworks.cml.elements.HTML;
+	import com.gestureworks.cml.elements.Video;
 	
 	import Components.TextBox;
+	import Components.Audio;
 	import Systems.System;
 	import util.TextContent;
 	
@@ -51,6 +54,8 @@ package Systems
 		private var _videoMap:Object = new Object();
 		// The audio map ...
 		private var _audioMap:Object = new Object();
+		// The webpage map ...
+		private var _webMap:Object = new Object();
 		// The textbox map keeps track of all textboxes, with unique parent folder as key
 		private var _textBoxMap:Object = new Object();
 		// Stores the number of children that each album has, used to init albums only once, when all children are loaded
@@ -59,6 +64,8 @@ package Systems
 		private var _indexCircles:Object = new Object();
 		// Member iterator to keep track of how many children has been loaded
 		private var _i:uint = 0;
+		// A list of approved url's
+		private var _approvedURLs:Array = ["http://www.blekingemuseum.se/pages/275", "http://www.blekingemuseum.se/pages/377", "http://www.blekingemuseum.se/pages/378", "http://www.blekingemuseum.se/pages/379", "http://www.blekingemuseum.se/pages/380", "http://www.blekingemuseum.se/pages/403", "http://www.blekingemuseum.se/pages/423", "http://www.blekingemuseum.se/pages/1223"];
 		
 		public function CustomButtonSystem()
 		{
@@ -151,6 +158,8 @@ package Systems
 				button.y = y;
 				button.dispatch = "initial:initial:down:down:up:up:over:over:out:out:hit:hit";
 				var img:Image = getImage(key + "/button/button.png", width, height);
+				var downImg:Image = getImage(key + "/button/button.png", width, height);
+				downImg.alpha = 0.5;
 				if (key == "custom/1A")
 				{
 					// Special logic for too big image A
@@ -164,9 +173,9 @@ package Systems
 					button.hit = getRectangle(0x000000, 0, 0, width, height, 0);
 				}
 				button.initial = img;
-				button.down = getRectangle(0x000000, 0, 0, width, height, 0);
+				button.down = downImg;
 				button.up = img;
-				button.over = getRectangle(0x000000, 0, 0, width, height, 0);
+				button.over = downImg;
 				button.out = img;
 				button.addEventListener(StateEvent.CHANGE, onClick(key));
 				button.init();
@@ -212,10 +221,64 @@ package Systems
 				{
 					loadAudio(key);
 				}
+				else if (type.toUpperCase() == "WEB")
+				{
+					loadWebPage(key);
+				}
 				else
 				{
 					throw("ERROR: Unhandled type: " + type + " in " + key + "/button/properties.xml. Type should either be \"Text\" or \"Album\".");
 				}
+			}
+		}
+		
+		private function loadWebPage(key:String):void 
+		{
+			for each (var child:String in getFilesInDirectoryRelative(key))
+			{
+				if (isDirectory(child))
+				{
+					continue;
+				}
+				var extention:String = getExtention(child).toUpperCase();
+				if (extention != "TXT")
+				{
+					continue;
+				}
+				var textFile:String = child.toUpperCase().replace(extention, "TXT");
+				var loader:URLLoader = new URLLoader(new URLRequest(textFile));
+				loader.addEventListener(Event.COMPLETE, FinalizeWebPage(key));
+			}
+		}
+		
+		private function FinalizeWebPage(key:String):Function
+		{
+			return function(event:Event):void
+			{
+				var webURL:String = URLLoader(event.currentTarget).data;
+				var htmlViewer:HTMLViewer = createViewer(new HTMLViewer(), 0, 0, 800, 900) as HTMLViewer;
+			
+				// Create the HTML Element, the actual html content
+				var html:HTML = new HTML();
+				html.className = "html_element";
+				html.width = 800;
+				html.height = 900;
+				html.src = webURL;
+				html.hideFlash = true;
+				html.smooth = true;
+				html.hideFlashType = "display:none;";
+				html.html.addEventListener(LocationChangeEvent.LOCATION_CHANGE, onNewPage(html));
+				htmlViewer.addChild(html);
+				
+				// Add a frame , menu 
+				addFrame(htmlViewer);
+				addViewerMenu(htmlViewer, true, false, false, false);
+				_webMap[key] = htmlViewer;
+				hideComponent(htmlViewer);
+				
+				addChild(htmlViewer);
+				// Initialize all of its elements
+				DisplayUtils.initAll(htmlViewer);
 			}
 		}
 		
@@ -538,6 +601,29 @@ package Systems
 			
 		}
 		
+		private function onNewPage(h:HTML):Function
+		{
+			return function (e:LocationChangeEvent):void
+			{
+				// Iterate through the list of approved URL's and compare with the new location
+				var isSafeURL:Boolean = false;
+				for each (var safeURL:String in _approvedURLs)
+				{
+					if (h.html.location == safeURL)
+					{
+						// The new location was safe, continue as normal
+						isSafeURL = true;
+						return;
+					}
+				}
+				if (isSafeURL == false)
+				{
+					// The new URL was not safe, reload the page. This will clear the load request.
+					h.html.reload();
+				}
+			}
+		}
+		
 		private function onPreviousImage(av:AlbumViewer):Function
 		{
 			return function (e:StateEvent):void
@@ -603,6 +689,7 @@ package Systems
 		private function getVideo(source:String, width:uint, height:uint):Video
 		{
 			var vid:Video = new Video();
+			vid.autoplay = true;
 			vid.width = width;
 			vid.height = height;
 			vid.open(source);
@@ -649,6 +736,17 @@ package Systems
 					else if (_videoMap[key].alpha == 0)
 					{
 						showComponent(_buttonMap[key].x + (_buttonMap[key].width >> 1) - (_videoMap[key].width >> 1), _buttonMap[key].y + (_buttonMap[key].height >> 1) - (_videoMap[key].height >> 1), _videoMap[key]);
+					}
+				}
+				if (_webMap[key] != null)
+				{
+					if (_webMap[key].alpha > 0)
+					{
+						hideComponent(_webMap[key]);
+					}
+					else if (_webMap[key].alpha == 0)
+					{
+						showComponent((stage.stageWidth >> 1) - (_webMap[key].width >> 1), (stage.stageHeight >> 1) - (_webMap[key].height >> 1), _webMap[key]);
 					}
 				}
 				if (_audioMap[key] != null)

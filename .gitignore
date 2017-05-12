@@ -9,8 +9,9 @@ swfobject.js
 bin/images/
 bin/videos/
 bin/audio/
-bin/custom/dykvideo
-bin/custom/dykalbum
-bin/custom/ritningar
-bin/custom/ljud*
+bin/custom/U*
+bin/custom/V*
+bin/custom/W*
+bin/custom/X*
+bin/custom/Y*
 obj/

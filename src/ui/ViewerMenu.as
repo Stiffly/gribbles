@@ -1,5 +1,6 @@
 package ui
 {
+	import com.gestureworks.cml.elements.Button;
 	import com.gestureworks.cml.elements.Menu;
 	import com.gestureworks.cml.utils.DisplayUtils;
 	import com.gestureworks.cml.events.StateEvent;
@@ -32,7 +33,7 @@ package ui
 			autohide = true;
 			visible = false;
 			
-			if (close)
+			if (info)
 			{
 				addChild(new MenuButton("info", 15, 8, infoBtn));
 			}
@@ -40,7 +41,7 @@ package ui
 				addChild(new MenuButton( "play", 15, 8, playBtn));		
 			if(pause)
 				addChild(new MenuButton("pause", 14.5, 8.5, pauseBtn));
-			if (info)
+			if (close)
 			{
 				var mbc:MenuButton = new MenuButton("close", 11, 11, closeBtn); 
 				mbc.addEventListener(StateEvent.CHANGE, Onclose);

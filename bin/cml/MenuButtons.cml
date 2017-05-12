@@ -2,39 +2,11 @@
 
 <cml>
 
-<Button id="image-button" x="50" y="200" hit="button-hit-box" initial="image-up" down="image-down" up="image-up"
-	dispatch="initial:initial-state:down:down-state:up:up-state:over:over state:out:out-state" >
-	<Graphic id="button-hit-box" />
-	<Image id="image-up" src="images/buttons/button-image-up.png" />
-	<Image id="image-down" src="images/buttons/button-image-down.png" />
-</Button>
-
-<Button id="video-button" x="50" y="50" hit="button-hit-box" initial="video-up" down="video-down" up="video-up"
-	dispatch="initial:initial-state:down:down-state:up:up-state:over:over state:out:out-state" >		
-	<Graphic id="button-hit-box"/>		
-	<Image id="video-up" src="images/buttons/button-video-up.png" />
-	<Image id="video-down" src="images/buttons/button-video-down.png" />
-</Button>
-
-<Button id="web-button" x="50" y="350" hit="button-hit-box" initial="web-up" down="web-down" up="web-up"
-	dispatch="initial:initial-state:down:down-state:up:up-state:over:over state:out:out-state" >		
-	<Graphic id="button-hit-box"/>		
-	<Image id="web-up" src="images/buttons/button-web-up.png" />
-	<Image id="web-down" src="images/buttons/button-web-down.png" />
-</Button>
-
 <Button id="pdf-button" x="50" y="500" hit="button-hit-box" initial="pdf-up" down="pdf-down" up="pdf-up"
 	dispatch="initial:initial-state:down:down-state:up:up-state:over:over state:out:out-state" >		
 	<Graphic id="button-hit-box"/>		
 	<Image id="pdf-up" src="images/buttons/button-pdf-up.png" />
 	<Image id="pdf-down" src="images/buttons/button-pdf-down.png" />
-</Button>
-
-<Button id="music-button" x="50" y="650" hit="button-hit-box" initial="music-up" down="music-down" up="music-up"
-	dispatch="initial:initial-state:down:down-state:up:up-state:over:over state:out:out-state" >		
-	<Graphic id="button-hit-box"/>		
-	<Image id="music-up" src="images/buttons/button-music-up.png" />
-	<Image id="music-down" src="images/buttons/button-music-down.png" />
 </Button>
 
 </cml>
