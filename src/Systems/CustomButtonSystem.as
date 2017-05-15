@@ -44,29 +44,24 @@ package Systems
 	
 	public class CustomButtonSystem extends System
 	{
-		// The button map keeps track of all button, with the unique parent folder as key
-		private var _buttonMap:Object = new Object();
-		// The audio map ...
-		private var _audioMap:Object = new Object();
+		
 		// The textbox map keeps track of all textboxes, with unique parent folder as key
 		//private var _textBoxMap:Object = new Object();
 		// A list of approved url's
 		
-		private var _textBoxSystem:CustomTextBoxSystem = null;
-		private var _wepPageSystem:CustomWebPageSystem = null;
-		private var _albumSystem:CustomAlbumSystem = null;
-		private var _videoSystem:CustomVideoSystem = null;
+		private var _textBoxSystem:TextBoxSystem = null;
+		private var _wepPageSystem:WebPageSystem = null;
+		private var _albumSystem:AlbumSystem = null;
+		private var _videoSystem:VideoSystem = null;
+		private var _audioSystem:AudioSystem = null;
 				
 		public function CustomButtonSystem()
 		{
-			_textBoxSystem = new CustomTextBoxSystem();
-			_wepPageSystem = new CustomWebPageSystem();
-			_albumSystem = new CustomAlbumSystem();
-			_videoSystem = new CustomVideoSystem();
-			addChild(_videoSystem);
-			addChild(_albumSystem);
-			addChild(_wepPageSystem);
-			addChild(_textBoxSystem);
+			_textBoxSystem = TextBoxSystem(addChild(new TextBoxSystem()));
+			_wepPageSystem = WebPageSystem(addChild(new WebPageSystem()));
+			_albumSystem = AlbumSystem(addChild(new AlbumSystem()));
+			_videoSystem = VideoSystem(addChild(new VideoSystem()));
+			_audioSystem = AudioSystem(addChild(new AudioSystem()));
 			super();
 		}
 		
@@ -77,6 +72,7 @@ package Systems
 			_wepPageSystem.Init();
 			_albumSystem.Init();
 			_videoSystem.Init();
+			_audioSystem.Init();
 			for each (var key:String in getFilesInDirectoryRelative("custom"))
 			{
 				// Button properties loaded from XML
@@ -88,6 +84,7 @@ package Systems
 		
 		override public function Update():void
 		{
+			_audioSystem.Update();
 			_textBoxSystem.Update();
 			_wepPageSystem.Update();
 			_albumSystem.Update();
@@ -96,20 +93,20 @@ package Systems
 		
 		override public function Activate():void
 		{
-			for each (var b:Button in _buttonMap)
+			/*for each (var b:Button in _buttonMap)
 			{
 				b.visible = true;
 				b.active = true;
-			}
+			}*/
 		}
 		
 		override public function Deactivate():void
 		{
-			for each (var b:Button in _buttonMap)
+			/*for each (var b:Button in _buttonMap)
 			{
 				b.visible = false;
 				b.active = false;
-			}
+			}*/
 
 		}
 		
@@ -125,43 +122,6 @@ package Systems
 				var xmlHeight:uint = buttonProperties.child("height");
 				var xmlX:uint = buttonProperties.child("x");
 				var xmlY:uint = buttonProperties.child("y");
-				
-				var button:Button = new Button();
-				if (xmlType.toUpperCase() != "TEXT" &&
-					xmlType.toUpperCase() != "WEB" &&
-					xmlType.toUpperCase() != "ALBUM" &&
-					xmlType.toUpperCase() != "VIDEO")
-				{
-					button.width = xmlWidth;
-					button.height = xmlHeight;
-					button.x = xmlX;
-					button.y = xmlY;
-					button.dispatch = "initial:initial:down:down:up:up:over:over:out:out:hit:hit";
-					var img:Image = getImage(key + "/button/button.png", xmlWidth, xmlHeight);
-					var downImg:Image = getImage(key + "/button/button.png", xmlWidth, xmlHeight);
-					downImg.alpha = 0.5;
-					if (key == "custom/1A")
-					{
-						// Special logic for too big image A
-						var hitBox:Graphic = getRectangle(0x000000, xmlX, xmlY, 51, 47, 0);
-						hitBox.x = 1665 - button.x;
-						hitBox.y = 372 - button.y;
-						button.hit = hitBox;
-					}
-					else
-					{
-						button.hit = getRectangle(0x000000, 0, 0, xmlWidth, xmlHeight, 0);
-					}
-					button.initial = img;
-					button.down = downImg;
-					button.up = img;
-					button.over = downImg;
-					button.out = img;
-					button.init();
-					// Add tracking of the button by adding it to the button map
-					_buttonMap[key] = button;
-					addChild(button);
-				}
 				
 				if (xmlType.toUpperCase() == "ALBUM")
 				{
@@ -200,7 +160,8 @@ package Systems
 				}
 				else if (xmlType.toUpperCase() == "AUDIO")
 				{
-					loadAudio(key);
+					//loadAudio(key);
+					_audioSystem.Load(key, xmlX, xmlY, xmlWidth, xmlHeight);
 				}
 				else if (xmlType.toUpperCase() == "WEB")
 				{
@@ -210,98 +171,8 @@ package Systems
 				{
 					throw("ERROR: Unhandled type: " + xmlType + " in " + key + "/button/properties.xml. Type should either be \"Text\" or \"Album\".");
 				}
-				button.addEventListener(StateEvent.CHANGE, onClick(key));
 			}
 		}
-		
-		private function loadAudio(key:String):void 
-		{
-			for each (var child:String in getFilesInDirectoryRelative(key))
-			{
-				if (isDirectory(child))
-				{
-					continue;
-				}
-				var extention:String = getExtention(child).toUpperCase();
-				if (extention == "TXT")
-				{
-					continue;
-				}
-				
-				var av:Audio = new Audio(extention, 500, 350);
-				av.addEventListener(TouchEvent.TOUCH_BEGIN, onTouch);
-				av.mouseChildren = true;
-				av.clusterBubbling = true;
-				av.width = 500;
-				av.height = 350;
-				av.Open(child);
-				addChild(av);
-				
-				// Load its associated description
-				var textFile:String = child.toUpperCase().replace(extention, "TXT");
-				var loader:URLLoader = new URLLoader(new URLRequest(textFile));
-				loader.addEventListener(Event.COMPLETE, FinalizeAudio(av, key));
-			}
-		}
-		
-		private function FinalizeAudio(av:Audio, key:String):Function
-		{
-			return function(event:Event):void
-			{
-				var content:String = URLLoader(event.currentTarget).data;
-				var index:int = content.search("\n");
-				if (av.Type == "MP3")
-				{
-					var mp3:MP3Player = av.GetAudioViewer();
-					addInfoPanel(mp3, content.slice(0, index), content.slice(index + 1, content.length), 12);
-					addFrame(mp3);
-					addViewerMenu(mp3, true, true, true, true);
-					addTouchContainer(mp3);
-					_audioMap[key] = av;
-					DisplayUtils.initAll(av);
-					hideComponent(av);
-				}
-				else if (av.Type == "WAV")
-				{
-					var wav:WAVPlayer = av.GetAudioViewer();
-					addInfoPanel(wav, content.slice(0, index), content.slice(index + 1, content.length), 12);
-					addFrame(wav);
-					addViewerMenu(wav, true, true, true, true);
-					addTouchContainer(wav);
-					_audioMap[key] = av;
-					DisplayUtils.initAll(av);
-					hideComponent(av);
-				}
-			}
-		}
-		
-		
-		
-		// Button handler
-		private function onClick(key:String):Function
-		{
-			return function(e:StateEvent):void
-			{
-				// On release
-				if (e.value != "up")
-					return;
-				
-				
-				
-				if (_audioMap[key] != null)
-				{
-					if (_audioMap[key].alpha > 0)
-					{
-						hideComponent(_audioMap[key]);
-					}
-					else if (_audioMap[key].alpha == 0)
-					{
-						showComponent(_buttonMap[key].x + (_buttonMap[key].width >> 1) - (_audioMap[key].width >> 1), _buttonMap[key].y + (_buttonMap[key].height >> 1) - (_audioMap[key].height >> 1), _audioMap[key]);
-					}
-				}
-			}
-		}
-		
 		// Hides all the albums
 		override public function Hide():void
 		{
