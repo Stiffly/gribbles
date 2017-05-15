@@ -54,8 +54,6 @@ package Systems
 		private var _videoMap:Object = new Object();
 		// The audio map ...
 		private var _audioMap:Object = new Object();
-		// The webpage map ...
-		private var _webMap:Object = new Object();
 		// The textbox map keeps track of all textboxes, with unique parent folder as key
 		//private var _textBoxMap:Object = new Object();
 		// Stores the number of children that each album has, used to init albums only once, when all children are loaded
@@ -65,12 +63,15 @@ package Systems
 		// Member iterator to keep track of how many children has been loaded
 		private var _i:uint = 0;
 		// A list of approved url's
-		private var _approvedURLs:Array = ["http://www.blekingemuseum.se/pages/275", "http://www.blekingemuseum.se/pages/377", "http://www.blekingemuseum.se/pages/378", "http://www.blekingemuseum.se/pages/379", "http://www.blekingemuseum.se/pages/380", "http://www.blekingemuseum.se/pages/403", "http://www.blekingemuseum.se/pages/423", "http://www.blekingemuseum.se/pages/1223"];
+		
 		private var _textBoxSystem:CustomTextBoxSystem = null;
+		private var _wepPageSystem:CustomWebPageSystem = null;
 				
 		public function CustomButtonSystem()
 		{
 			_textBoxSystem = new CustomTextBoxSystem();
+			_wepPageSystem = new CustomWebPageSystem();
+			addChild(_wepPageSystem);
 			addChild(_textBoxSystem);
 			super();
 		}
@@ -79,6 +80,7 @@ package Systems
 		{
 			super.Init();
 			_textBoxSystem.Init();
+			_wepPageSystem.Init();
 			for each (var key:String in getFilesInDirectoryRelative("custom"))
 			{
 				_numChildren[key] = 0;
@@ -92,6 +94,7 @@ package Systems
 		override public function Update():void
 		{
 			_textBoxSystem.Update();
+			_wepPageSystem.Update();
 			
 			// For all parent folders...
 			for (var key:String in _indexCircles)
@@ -149,7 +152,7 @@ package Systems
 				var xmlY:uint = buttonProperties.child("y");
 				
 				var button:Button = new Button();
-				if (xmlType.toUpperCase() != "TEXT")
+				if (xmlType.toUpperCase() != "TEXT" && xmlType.toUpperCase() != "WEB")
 				{
 					button.width = xmlWidth;
 					button.height = xmlHeight;
@@ -211,7 +214,6 @@ package Systems
 				else if (xmlType.toUpperCase() == "TEXT")
 				{
 					_textBoxSystem.Load(key, xmlX, xmlY, xmlWidth, xmlHeight);
-					button.addEventListener(StateEvent.CHANGE, _textBoxSystem.onClick(key));
 				}
 				else if (xmlType.toUpperCase() == "VIDEO")
 				{
@@ -223,63 +225,13 @@ package Systems
 				}
 				else if (xmlType.toUpperCase() == "WEB")
 				{
-					loadWebPage(key);
+					_wepPageSystem.Load(key, xmlX, xmlY, xmlWidth, xmlHeight);
 				}
 				else
 				{
 					throw("ERROR: Unhandled type: " + xmlType + " in " + key + "/button/properties.xml. Type should either be \"Text\" or \"Album\".");
 				}
 				button.addEventListener(StateEvent.CHANGE, onClick(key));
-			}
-		}
-		
-		private function loadWebPage(key:String):void 
-		{
-			for each (var child:String in getFilesInDirectoryRelative(key))
-			{
-				if (isDirectory(child))
-				{
-					continue;
-				}
-				var extention:String = getExtention(child).toUpperCase();
-				if (extention != "TXT")
-				{
-					continue;
-				}
-				var textFile:String = child.toUpperCase().replace(extention, "TXT");
-				var loader:URLLoader = new URLLoader(new URLRequest(textFile));
-				loader.addEventListener(Event.COMPLETE, FinalizeWebPage(key));
-			}
-		}
-		
-		private function FinalizeWebPage(key:String):Function
-		{
-			return function(event:Event):void
-			{
-				var webURL:String = URLLoader(event.currentTarget).data;
-				var htmlViewer:HTMLViewer = createViewer(new HTMLViewer(), 0, 0, 800, 900) as HTMLViewer;
-			
-				// Create the HTML Element, the actual html content
-				var html:HTML = new HTML();
-				html.className = "html_element";
-				html.width = 800;
-				html.height = 900;
-				html.src = webURL;
-				html.hideFlash = true;
-				html.smooth = true;
-				html.hideFlashType = "display:none;";
-				html.html.addEventListener(LocationChangeEvent.LOCATION_CHANGE, onNewPage(html));
-				htmlViewer.addChild(html);
-				
-				// Add a frame , menu 
-				addFrame(htmlViewer);
-				addViewerMenu(htmlViewer, true, false, false, false);
-				_webMap[key] = htmlViewer;
-				hideComponent(htmlViewer);
-				
-				addChild(htmlViewer);
-				// Initialize all of its elements
-				DisplayUtils.initAll(htmlViewer);
 			}
 		}
 		
@@ -580,28 +532,7 @@ package Systems
 			
 		}
 		
-		private function onNewPage(h:HTML):Function
-		{
-			return function (e:LocationChangeEvent):void
-			{
-				// Iterate through the list of approved URL's and compare with the new location
-				var isSafeURL:Boolean = false;
-				for each (var safeURL:String in _approvedURLs)
-				{
-					if (h.html.location == safeURL)
-					{
-						// The new location was safe, continue as normal
-						isSafeURL = true;
-						return;
-					}
-				}
-				if (isSafeURL == false)
-				{
-					// The new URL was not safe, reload the page. This will clear the load request.
-					h.html.reload();
-				}
-			}
-		}
+		
 		
 		private function onPreviousImage(av:AlbumViewer):Function
 		{
@@ -677,17 +608,6 @@ package Systems
 					else if (_videoMap[key].alpha == 0)
 					{
 						showComponent(_buttonMap[key].x + (_buttonMap[key].width >> 1) - (_videoMap[key].width >> 1), _buttonMap[key].y + (_buttonMap[key].height >> 1) - (_videoMap[key].height >> 1), _videoMap[key]);
-					}
-				}
-				if (_webMap[key] != null)
-				{
-					if (_webMap[key].alpha > 0)
-					{
-						hideComponent(_webMap[key]);
-					}
-					else if (_webMap[key].alpha == 0)
-					{
-						showComponent((stage.stageWidth >> 1) - (_webMap[key].width >> 1), (stage.stageHeight >> 1) - (_webMap[key].height >> 1), _webMap[key]);
 					}
 				}
 				if (_audioMap[key] != null)
