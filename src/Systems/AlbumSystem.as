@@ -17,7 +17,7 @@ package Systems
 	 * ...
 	 * @author Adam
 	 */
-	public class CustomAlbumSystem extends System
+	public class AlbumSystem extends System
 	{
 		// The button map keeps track of all button, with the unique parent folder as key
 		private var _buttonMap:Object = new Object();
@@ -32,7 +32,7 @@ package Systems
 		// Member iterator to keep track of how many children has been loaded
 		private var _i:uint = 0;
 		
-		public function CustomAlbumSystem()
+		public function AlbumSystem()
 		{
 			super();
 		
@@ -51,28 +51,10 @@ package Systems
 		public function LoadAlbum(key:String, bx:int, by:int, bw:int, bh:int):void
 		{
 			_numChildren[key] = 0;
-			var button:Button = new Button();
+			var button:Button = createCustomButton(key, bx, by, bw, bh);			
 			button.addEventListener(StateEvent.CHANGE, onClick(key));
-			button.width = bw;
-			button.height = bh;
-			button.x = bx;
-			button.y = by;
-			button.dispatch = "initial:initial:down:down:up:up:over:over:out:out:hit:hit";
-			var img:Image = getImage(key + "/button/button.png", button.width, button.height);
-			var downImg:Image = getImage(key + "/button/button.png", button.width, button.height);
-			downImg.alpha = 0.5;
-			
-			button.hit = getRectangle(0x000000, 0, 0, button.width, button.height, 0);
-			
-			button.initial = img;
-			button.down = downImg;
-			button.up = img;
-			button.over = downImg;
-			button.out = img;
-			button.init();
 			// Add tracking of the button by adding it to the button map
 			_buttonMap[key] = button;
-
 			addChild(button);
 			
 			// Create album viewer

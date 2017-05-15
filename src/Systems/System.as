@@ -225,6 +225,40 @@ package Systems
 			}
 		}
 		
+		protected function createCustomButton(key:String, bx:int, by:int, bw:int, bh:int):Button
+		{
+			var button:Button = new Button();
+			button.width = bw;
+			button.height = bh;
+			button.x = bx;
+			button.y = by;
+			button.dispatch = "initial:initial:down:down:up:up:over:over:out:out:hit:hit";
+			var img:Image = getImage(key + "/button/button.png", button.width, button.height);
+			var downImg:Image = getImage(key + "/button/button.png", button.width, button.height);
+			downImg.alpha = 0.5;
+			
+			if (key == "custom/1A")
+			{
+				// Special logic for too big image A
+				var hitBox:Graphic = getRectangle(0x000000, button.x, button.y, 51, 47, 0);
+				hitBox.x = 1665 - button.x;
+				hitBox.y = 372 - button.y;
+				button.hit = hitBox;
+			}
+			else
+			{
+				button.hit = getRectangle(0x000000, 0, 0, button.width, button.height, 0);
+			}
+			
+			button.initial = img;
+			button.down = downImg;
+			button.up = img;
+			button.over = downImg;
+			button.out = img;
+			button.init();
+			return button;
+		}
+		
 		protected function getFilesInDirectoryRelative(directory:String):Array
 		{
 			return FileSystem.GET_FILES_IN_DIRECTORY_RELATIVE(directory);

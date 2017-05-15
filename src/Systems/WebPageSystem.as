@@ -16,14 +16,14 @@ package Systems
 	 * ...
 	 * @author Adam
 	 */
-	public class CustomWebPageSystem extends System
+	public class WebPageSystem extends System
 	{
 		// The webpage map ...
 		private var _webMap:Object = new Object();
 		private var _buttonMap:Object = new Object();
 		private var _approvedURLs:Array = ["http://www.blekingemuseum.se/pages/275", "http://www.blekingemuseum.se/pages/377", "http://www.blekingemuseum.se/pages/378", "http://www.blekingemuseum.se/pages/379", "http://www.blekingemuseum.se/pages/380", "http://www.blekingemuseum.se/pages/403", "http://www.blekingemuseum.se/pages/423", "http://www.blekingemuseum.se/pages/1223"];
 		
-		public function CustomWebPageSystem()
+		public function WebPageSystem()
 		{
 			super();
 		}
@@ -35,28 +35,10 @@ package Systems
 		
 		public function Load(key:String, bx:int, by:int, bw:int, bh:int):void
 		{
-			var button:Button = new Button();
+			var button:Button = createCustomButton(key, bx, by, bw, bh);
 			button.addEventListener(StateEvent.CHANGE, onClick(key));
-			button.width = bw;
-			button.height = bh;
-			button.x = bx;
-			button.y = by;
-			button.dispatch = "initial:initial:down:down:up:up:over:over:out:out:hit:hit";
-			var img:Image = getImage(key + "/button/button.png", button.width, button.height);
-			var downImg:Image = getImage(key + "/button/button.png", button.width, button.height);
-			downImg.alpha = 0.5;
-			
-			button.hit = getRectangle(0x000000, 0, 0, button.width, button.height, 0);
-			
-			button.initial = img;
-			button.down = downImg;
-			button.up = img;
-			button.over = downImg;
-			button.out = img;
-			button.init();
 			// Add tracking of the button by adding it to the button map
 			_buttonMap[key] = button;
-
 			addChild(button);
 			
 			for each (var child:String in getFilesInDirectoryRelative(key))
