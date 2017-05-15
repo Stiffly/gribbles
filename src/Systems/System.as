@@ -2,6 +2,7 @@ package Systems
 {
 	import Components.Audio;
 	import com.gestureworks.cml.elements.Image;
+	import flash.display.DisplayObjectContainer;
 	import flash.events.TouchEvent;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -76,7 +77,12 @@ package Systems
 			}
 			else 
 			{
-				setChildIndex(component, numChildren - 1);
+				var object:DisplayObjectContainer = component;
+				while (object.parent != null)
+				{
+					object.parent.setChildIndex(object, object.parent.numChildren - 1)
+					object = object.parent;
+				}
 			}
 		}
 		
