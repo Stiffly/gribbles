@@ -44,27 +44,7 @@ package Systems
 		
 		override public function Update():void 
 		{
-			// For all parent folders...
-			for (var key:String in _indexCircles)
-			{
-				if (_albumMap[key] == null)
-					return;
-				// For all index circle per album
-				for each (var circle:Graphic in _indexCircles[key])
-				{
-					circle.color = 0x999999;
-				}
-				// If the back is active, we use this as our index
-				if (_albumMap[key].back.visible)
-				{
-					_indexCircles[key][_albumMap[key].back.currentIndex].color = 0x000000;
-				}
-				// Else the front is active, use it instead
-				else
-				{
-					_indexCircles[key][_albumMap[key].front.currentIndex].color = 0x000000;
-				}
-			}
+			
 		}
 		
 		// This loads an album form disk
@@ -250,7 +230,7 @@ package Systems
 						_indexCircles[key].push(g);
 						av.addChild(g);
 					}
-					
+					UpdateIndexCircles();
 					DisplayUtils.initAll(av);
 					_albumMap[key] = av;
 					hideComponent(av);
@@ -306,7 +286,6 @@ package Systems
 			left.init();
 			left.addEventListener(StateEvent.CHANGE, onPreviousImage(av));
 			av.addChild(left);
-		
 		}
 		
 		private function onPreviousImage(av:AlbumViewer):Function
@@ -318,6 +297,7 @@ package Systems
 					return;
 				}
 				av.front.previous();
+				UpdateIndexCircles();
 			}
 		}
 		
@@ -330,8 +310,27 @@ package Systems
 					return;
 				}
 				av.front.next();
+				UpdateIndexCircles();
 			}
 		}
+		
+		private function UpdateIndexCircles():void 
+		{
+			// For all parent folders...
+			for (var key:String in _indexCircles)
+			{
+				if (_albumMap[key] == null)
+					return;
+				// For all index circle per album
+				for each (var circle:Graphic in _indexCircles[key])
+				{
+					circle.color = 0x999999;
+				}
+				_indexCircles[key][_albumMap[key].front.currentIndex].color = 0x000000;
+				
+			}
+		}
+		
 		// Button handler
 		private function onClick(key:String):Function
 		{
