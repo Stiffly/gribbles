@@ -46,8 +46,6 @@ package Systems
 	{
 		// The button map keeps track of all button, with the unique parent folder as key
 		private var _buttonMap:Object = new Object();
-		// The video map ...
-		private var _videoMap:Object = new Object();
 		// The audio map ...
 		private var _audioMap:Object = new Object();
 		// The textbox map keeps track of all textboxes, with unique parent folder as key
@@ -57,12 +55,15 @@ package Systems
 		private var _textBoxSystem:CustomTextBoxSystem = null;
 		private var _wepPageSystem:CustomWebPageSystem = null;
 		private var _albumSystem:CustomAlbumSystem = null;
+		private var _videoSystem:CustomVideoSystem = null;
 				
 		public function CustomButtonSystem()
 		{
 			_textBoxSystem = new CustomTextBoxSystem();
 			_wepPageSystem = new CustomWebPageSystem();
 			_albumSystem = new CustomAlbumSystem();
+			_videoSystem = new CustomVideoSystem();
+			addChild(_videoSystem);
 			addChild(_albumSystem);
 			addChild(_wepPageSystem);
 			addChild(_textBoxSystem);
@@ -75,6 +76,7 @@ package Systems
 			_textBoxSystem.Init();
 			_wepPageSystem.Init();
 			_albumSystem.Init();
+			_videoSystem.Init();
 			for each (var key:String in getFilesInDirectoryRelative("custom"))
 			{
 				// Button properties loaded from XML
@@ -89,6 +91,7 @@ package Systems
 			_textBoxSystem.Update();
 			_wepPageSystem.Update();
 			_albumSystem.Update();
+			_videoSystem.Update();
 		}
 		
 		override public function Activate():void
@@ -126,7 +129,8 @@ package Systems
 				var button:Button = new Button();
 				if (xmlType.toUpperCase() != "TEXT" &&
 					xmlType.toUpperCase() != "WEB" &&
-					xmlType.toUpperCase() != "ALBUM")
+					xmlType.toUpperCase() != "ALBUM" &&
+					xmlType.toUpperCase() != "VIDEO")
 				{
 					button.width = xmlWidth;
 					button.height = xmlHeight;
@@ -191,7 +195,8 @@ package Systems
 				}
 				else if (xmlType.toUpperCase() == "VIDEO")
 				{
-					loadVideo(key);
+					//loadVideo(key);					
+					_videoSystem.Load(key, xmlX, xmlY, xmlWidth, xmlHeight);
 				}
 				else if (xmlType.toUpperCase() == "AUDIO")
 				{
@@ -270,58 +275,7 @@ package Systems
 			}
 		}
 		
-		private function loadVideo(key:String):void 
-		{
-			var vv:VideoViewer = createViewer(new VideoViewer(), 400, 400, 500, 350) as VideoViewer;
-			vv.autoTextLayout = false;
-			vv.clusterBubbling = true;
-			vv.mouseChildren = true;
-			vv.gestureList = {"n-drag": true, "n-scale": true, "n-rotate": true};
-			addChild(vv);
-			
-			for each (var child:String in getFilesInDirectoryRelative(key))
-			{
-				if (isDirectory(child))
-				{
-					continue;
-				}
-				var extention:String = getExtention(child).toUpperCase();
-				if (extention == "TXT")
-				{
-					continue;
-				}
-				vv.addChild(getVideo(child, vv.width, vv.height));
-				// Load its associated description
-				var textFile:String = child.toUpperCase().replace(extention, "TXT");
-				var loader:URLLoader = new URLLoader(new URLRequest(textFile));
-				loader.addEventListener(Event.COMPLETE, FinalizeVideo(vv, key));
-			}
-		}
 		
-		private function FinalizeVideo(vv:VideoViewer, key:String):Function
-		{
-			return function(event:Event):void
-			{
-				var content:String = URLLoader(event.currentTarget).data;
-				var index:int = content.search("\n");
-				addInfoPanel(vv, content.slice(0, index), content.slice(index + 1, content.length), 12);
-				addFrame(vv);
-				addViewerMenu(vv, true, true, true, true);
-				_videoMap[key] = vv;
-				DisplayUtils.initAll(vv);
-				hideComponent(vv);
-			}
-		}
-		
-		private function getVideo(source:String, width:uint, height:uint):Video
-		{
-			var vid:Video = new Video();
-			vid.autoplay = true;
-			vid.width = width;
-			vid.height = height;
-			vid.open(source);
-			return vid;
-		}
 		
 		// Button handler
 		private function onClick(key:String):Function
@@ -333,17 +287,7 @@ package Systems
 					return;
 				
 				
-				if (_videoMap[key] != null)
-				{
-					if (_videoMap[key].alpha > 0)
-					{
-						hideComponent(_videoMap[key]);
-					}
-					else if (_videoMap[key].alpha == 0)
-					{
-						showComponent(_buttonMap[key].x + (_buttonMap[key].width >> 1) - (_videoMap[key].width >> 1), _buttonMap[key].y + (_buttonMap[key].height >> 1) - (_videoMap[key].height >> 1), _videoMap[key]);
-					}
-				}
+				
 				if (_audioMap[key] != null)
 				{
 					if (_audioMap[key].alpha > 0)
