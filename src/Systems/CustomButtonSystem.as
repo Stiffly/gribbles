@@ -73,12 +73,12 @@ package Systems
 			_textBoxSystem = new CustomTextBoxSystem();
 			addChild(_textBoxSystem);
 			super();
-		
 		}
 		
 		override public function Init():void
 		{
 			super.Init();
+			_textBoxSystem.Init();
 			for each (var key:String in getFilesInDirectoryRelative("custom"))
 			{
 				_numChildren[key] = 0;

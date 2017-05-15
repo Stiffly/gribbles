@@ -43,6 +43,7 @@ package Systems
 		public function Load(key:String, bx:int, by:int, bw:int, bh:int):void
 		{
 			var button:Button = new Button();
+			button.addEventListener(StateEvent.CHANGE, onClick(key));
 			button.width = bw;
 			button.height = bh;
 			button.x = bx;
