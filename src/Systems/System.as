@@ -66,7 +66,7 @@ package Systems
 		
 		protected function showComponent(x:int, y:int, component:Component):void
 		{
-			component.alpha = 1.0;
+			component.visible = true;
 			component.touchEnabled = true;
 			component.scale = 1.0;
 			component.x = x;
@@ -98,7 +98,7 @@ package Systems
 		
 		protected function hideComponent(component:Component):void
 		{
-			component.alpha = .0;
+			component.visible = false;
 			component.touchEnabled = false;
 			// "Hide" the component
 			component.x = 13337; 
@@ -116,11 +116,11 @@ package Systems
 			{
 				return;
 			}
-			if (component.alpha > 0)
+			if (component.visible)
 			{
 				hideComponent(component);
 			}
-			else if (component.alpha == 0)
+			else if (!component.visible)
 			{
 				showComponent(x, y, component);
 			}
@@ -202,14 +202,14 @@ package Systems
 		
 		public function Deactivate():void
 		{
-			_button.active = false;
-			_button.visible = false;
+			//_button.active = false;
+			//_button.visible = false;
 		}
 		
 		public function Activate():void
 		{
-			_button.active = true;
-			_button.visible = true;
+			//_button.active = true;
+			//_button.visible = true;
 		}
 		
 		protected function onClose(e:MenuEvent):void

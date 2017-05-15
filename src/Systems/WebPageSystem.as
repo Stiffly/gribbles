@@ -57,8 +57,23 @@ package Systems
 			}
 		}
 		
-		override public function Deactivate():void
+		override public function Activate():void 
 		{
+			for (var key:String in _buttonMap)
+			{
+				_buttonMap[key].visible = true;
+				_buttonMap[key].touchEnabled = true;
+			}
+		}
+		
+		override public function Deactivate():void 
+		{
+			for (var key:String in _buttonMap)
+			{
+				hideComponent(_webMap[key]);
+				_buttonMap[key].visible = false;
+				_buttonMap[key].touchEnabled = false;
+			}
 		}
 		
 		override public function Hide():void 
@@ -136,11 +151,11 @@ package Systems
 					
 				if (_webMap[key] != null)
 				{
-					if (_webMap[key].alpha > 0)
+					if (_webMap[key].visible)
 					{
 						hideComponent(_webMap[key]);
 					}
-					else if (_webMap[key].alpha == 0)
+					else if (!_webMap[key].visible)
 					{
 						showComponent((stage.stageWidth >> 1) - (_webMap[key].width >> 1), (stage.stageHeight >> 1) - (_webMap[key].height >> 1), _webMap[key]);
 					}

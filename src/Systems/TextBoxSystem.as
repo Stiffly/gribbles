@@ -92,11 +92,23 @@ package Systems
 			}
 		}
 		
+		override public function Activate():void 
+		{
+			for (var key:String in _buttonMap)
+			{
+				_buttonMap[key].visible = true;
+				_buttonMap[key].touchEnabled = true;
+			}
+		}
+		
 		override public function Deactivate():void 
 		{
-			for each (var tb:TextBox in _textBoxMap)
+			for (var key:String in _buttonMap)
 			{
-				tb.Kill();
+				hideComponent(_textBoxMap[key]);
+				_textBoxMap[key].Kill();
+				_buttonMap[key].visible = false;
+				_buttonMap[key].touchEnabled = false;
 			}
 		}
 		
@@ -118,13 +130,13 @@ package Systems
 					return;
 				if (_textBoxMap[key] != null)
 				{
-					if (_textBoxMap[key].alpha > 0)
+					if (_textBoxMap[key].visible)
 					{
 						_textBoxMap[key].Kill();
 						hideComponent(_textBoxMap[key]);
 						
 					}
-					else if (_textBoxMap[key].alpha == 0)
+					else if (!_textBoxMap[key].visible)
 					{
 						for each (var tb:TextBox in _textBoxMap)
 						{

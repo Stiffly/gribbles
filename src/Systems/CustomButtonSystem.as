@@ -44,35 +44,26 @@ package Systems
 	
 	public class CustomButtonSystem extends System
 	{
-		
-		// The textbox map keeps track of all textboxes, with unique parent folder as key
-		//private var _textBoxMap:Object = new Object();
-		// A list of approved url's
-		
-		private var _textBoxSystem:TextBoxSystem = null;
-		private var _wepPageSystem:WebPageSystem = null;
-		private var _albumSystem:AlbumSystem = null;
-		private var _videoSystem:VideoSystem = null;
-		private var _audioSystem:AudioSystem = null;
+		private var _systemMap:Object = new Object();
 				
 		public function CustomButtonSystem()
 		{
-			_textBoxSystem = TextBoxSystem(addChild(new TextBoxSystem()));
-			_wepPageSystem = WebPageSystem(addChild(new WebPageSystem()));
-			_albumSystem = AlbumSystem(addChild(new AlbumSystem()));
-			_videoSystem = VideoSystem(addChild(new VideoSystem()));
-			_audioSystem = AudioSystem(addChild(new AudioSystem()));
+			_systemMap["TEXT"] = TextBoxSystem(addChild(new TextBoxSystem()));
+			_systemMap["WEB"] = WebPageSystem(addChild(new WebPageSystem()));
+			_systemMap["ALBUM"] = AlbumSystem(addChild(new AlbumSystem()));
+			_systemMap["VIDEO"] = VideoSystem(addChild(new VideoSystem()));
+			_systemMap["AUDIO"] = AudioSystem(addChild(new AudioSystem()));
 			super();
 		}
 		
 		override public function Init():void
 		{
 			super.Init();
-			_textBoxSystem.Init();
-			_wepPageSystem.Init();
-			_albumSystem.Init();
-			_videoSystem.Init();
-			_audioSystem.Init();
+			for each (var value:System in _systemMap)
+			{
+				value.Init();
+			}
+			
 			for each (var key:String in getFilesInDirectoryRelative("custom"))
 			{
 				// Button properties loaded from XML
@@ -84,30 +75,26 @@ package Systems
 		
 		override public function Update():void
 		{
-			_audioSystem.Update();
-			_textBoxSystem.Update();
-			_wepPageSystem.Update();
-			_albumSystem.Update();
-			_videoSystem.Update();
+			for each (var value:System in _systemMap)
+			{
+				value.Update();
+			}
 		}
 		
 		override public function Activate():void
 		{
-			/*for each (var b:Button in _buttonMap)
+			for each (var value:System in _systemMap)
 			{
-				b.visible = true;
-				b.active = true;
-			}*/
+				value.Activate();
+			}
 		}
 		
 		override public function Deactivate():void
 		{
-			/*for each (var b:Button in _buttonMap)
+			for each (var value:System in _systemMap)
 			{
-				b.visible = false;
-				b.active = false;
-			}*/
-
+				value.Deactivate();
+			}
 		}
 		
 		// This is the event handler that triggers when the XML file describing the button is loaded
@@ -117,65 +104,72 @@ package Systems
 			{
 				// Create button from the XML data
 				var buttonProperties:XML = XML(e.target.data);
-				var xmlType:String = buttonProperties.child("type");
+				var xmlType:String = String(buttonProperties.child("type")).toUpperCase();
 				var xmlWidth:uint = buttonProperties.child("width");
 				var xmlHeight:uint = buttonProperties.child("height");
 				var xmlX:uint = buttonProperties.child("x");
 				var xmlY:uint = buttonProperties.child("y");
 				
-				if (xmlType.toUpperCase() == "ALBUM")
+				switch (xmlType)
 				{
-					// Get the number of children, exluding directories
-					var children:Array = getFilesInDirectoryRelative(key);
-					var numberOfChildren:int = children.length;
-					for each (var child:String in children)
-					{
-						if (isDirectory(child))
+					case "ALBUM":
+						var numberOfChildren:int = getAlbumChildren(key);
+						
+						// An image with associated description file
+						if (numberOfChildren == 2)
 						{
-							numberOfChildren--;
+							_systemMap[xmlType].LoadImage(key, xmlX, xmlY, xmlWidth, xmlHeight);
 						}
-					}
-					// An image with associated description file
-					if (numberOfChildren == 2)
-					{
-						_albumSystem.LoadImage(key, xmlX, xmlY, xmlWidth, xmlHeight);
-					}
-					else if (numberOfChildren > 2)
-					{
-						_albumSystem.LoadAlbum(key, xmlX, xmlY, xmlWidth, xmlHeight);
-					}
-					else
-					{
-						throw("Error: No content in album " + key + ". Please double check the type in properties.xml");
-					}
-				}
-				else if (xmlType.toUpperCase() == "TEXT")
-				{
-					_textBoxSystem.Load(key, xmlX, xmlY, xmlWidth, xmlHeight);
-				}
-				else if (xmlType.toUpperCase() == "VIDEO")
-				{
-					//loadVideo(key);					
-					_videoSystem.Load(key, xmlX, xmlY, xmlWidth, xmlHeight);
-				}
-				else if (xmlType.toUpperCase() == "AUDIO")
-				{
-					//loadAudio(key);
-					_audioSystem.Load(key, xmlX, xmlY, xmlWidth, xmlHeight);
-				}
-				else if (xmlType.toUpperCase() == "WEB")
-				{
-					_wepPageSystem.Load(key, xmlX, xmlY, xmlWidth, xmlHeight);
-				}
-				else
-				{
-					throw("ERROR: Unhandled type: " + xmlType + " in " + key + "/button/properties.xml. Type should either be \"Text\" or \"Album\".");
+						else if (numberOfChildren > 2)
+						{
+							_systemMap[xmlType].LoadAlbum(key, xmlX, xmlY, xmlWidth, xmlHeight);
+						}
+						else
+						{
+							throw("Error: No content in album " + key + ". Please double check the type in properties.xml");
+						}
+						break;
+					case "TEXT":
+						_systemMap[xmlType].Load(key, xmlX, xmlY, xmlWidth, xmlHeight);
+						break;
+					case "VIDEO":
+						_systemMap[xmlType].Load(key, xmlX, xmlY, xmlWidth, xmlHeight);
+						break;
+					case "WEB":
+						_systemMap[xmlType].Load(key, xmlX, xmlY, xmlWidth, xmlHeight);
+						break;
+					case "AUDIO":
+						_systemMap[xmlType].Load(key, xmlX, xmlY, xmlWidth, xmlHeight);
+						break;
+					default:
+						throw("ERROR: Unhandled type: " + xmlType + " in " + key + "/button/properties.xml. Type should either be \"Text\" or \"Album\".");
+						break;
 				}
 			}
 		}
+		
+		private function getAlbumChildren(key:String):int 
+		{
+			// Get the number of children, exluding directories
+			var children:Array = getFilesInDirectoryRelative(key);
+			var numberOfChildren:int = children.length;
+			for each (var child:String in children)
+			{
+				if (isDirectory(child))
+				{
+					numberOfChildren--;
+				}
+			}
+			return numberOfChildren;
+		}
+		
 		// Hides all the albums
 		override public function Hide():void
 		{
+			for each (var value:System in _systemMap)
+			{
+				value.Hide();
+			}
 		}
 	}
 }

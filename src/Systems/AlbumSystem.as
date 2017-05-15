@@ -313,6 +313,32 @@ package Systems
 			}
 		}
 		
+		override public function Activate():void 
+		{
+			for (var key:String in _buttonMap)
+			{
+				_buttonMap[key].visible = true;
+				_buttonMap[key].touchEnabled = true;
+			}
+		}
+		
+		override public function Deactivate():void 
+		{
+			for (var key:String in _buttonMap)
+			{
+				if (_albumMap[key] != null)
+				{
+					hideComponent(_albumMap[key]);
+				}
+				else if (_imageMap[key] != null)
+				{
+					hideComponent(_imageMap[key]);
+				}
+				_buttonMap[key].visible = false;
+				_buttonMap[key].touchEnabled = false;
+			}
+		}
+		
 		// Button handler
 		private function onClick(key:String):Function
 		{
@@ -325,22 +351,22 @@ package Systems
 				}
 				if (_albumMap[key] != null)
 				{
-					if (_albumMap[key].alpha > 0)
+					if (_albumMap[key].visible)
 					{
 						hideComponent(_albumMap[key]);
 					}
-					else if (_albumMap[key].alpha == 0)
+					else if (!_albumMap[key].visible)
 					{
 						showComponent(_buttonMap[key].x + (_buttonMap[key].width >> 1) - (_albumMap[key].width >> 1), _buttonMap[key].y + (_buttonMap[key].height >> 1) - (_albumMap[key].height >> 1), _albumMap[key]);
 					}
 				}
 				if (_imageMap[key] != null)
 				{
-					if (_imageMap[key].alpha > 0)
+					if (_imageMap[key].visible)
 					{
 						hideComponent(_imageMap[key]);
 					}
-					else if (_imageMap[key].alpha == 0)
+					else if (!_imageMap[key].visible)
 					{
 						showComponent(_buttonMap[key].x + (_buttonMap[key].width >> 1) - (_imageMap[key].width >> 1), _buttonMap[key].y + (_buttonMap[key].height >> 1) - (_imageMap[key].height >> 1), _imageMap[key]);
 					}

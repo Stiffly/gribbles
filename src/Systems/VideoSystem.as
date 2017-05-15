@@ -89,6 +89,25 @@ package Systems
 			return vid;
 		}
 		
+		override public function Activate():void 
+		{
+			for (var key:String in _buttonMap)
+			{
+				_buttonMap[key].visible = true;
+				_buttonMap[key].touchEnabled = true;
+			}
+		}
+		
+		override public function Deactivate():void 
+		{
+			for (var key:String in _buttonMap)
+			{
+				hideComponent(_videoMap[key]);
+				_buttonMap[key].visible = false;
+				_buttonMap[key].touchEnabled = false;
+			}
+		}
+		
 		private function onClick(key:String):Function
 		{
 			return function(e:StateEvent):void
@@ -101,11 +120,11 @@ package Systems
 				
 				if (_videoMap[key] != null)
 				{
-					if (_videoMap[key].alpha > 0)
+					if (_videoMap[key].visible)
 					{
 						hideComponent(_videoMap[key]);
 					}
-					else if (_videoMap[key].alpha == 0)
+					else if (!_videoMap[key].visible)
 					{
 						showComponent(_buttonMap[key].x + (_buttonMap[key].width >> 1) - (_videoMap[key].width >> 1), _buttonMap[key].y + (_buttonMap[key].height >> 1) - (_videoMap[key].height >> 1), _videoMap[key]);
 					}
