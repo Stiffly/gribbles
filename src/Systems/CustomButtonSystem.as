@@ -270,7 +270,7 @@ package Systems
 							var ly:Number = bOriginY - halfBoxHeight;
 							showComponent(lx, ly, _systemMap["TEXT"].GetViewer(key));
 							removeChild(_systemMap["TEXT"].GetViewer(key)._Line);
-							var lline:Graphic = getLine(0x999999, bOriginX, bOriginY, lx - (_frameThickness << 1), ly + halfBoxHeight, 3, .8);
+							var lline:Graphic = getLine(0x999999, bOriginX, bOriginY, lx - (_frameThickness << 1), ly + halfBoxHeight, 3, .5);
 							_systemMap["TEXT"].GetViewer(key)._Line = lline;
 							addChild(lline);
 							_systemMap["TEXT"].GetViewer(key).Rebirth();

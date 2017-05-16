@@ -79,6 +79,7 @@ package Systems
 		{
 			var vid:Video = new Video();
 			vid.autoplay = true;
+			vid.loop = true;
 			vid.width = width;
 			vid.height = height;
 			vid.open(source);
