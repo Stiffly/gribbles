@@ -1,5 +1,6 @@
 package
 {
+	import Components.TextBox;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.utils.getTimer;
@@ -7,6 +8,7 @@ package
 	import flash.text.TextField;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
+	import util.TextContent;
 	
 	import com.gestureworks.cml.elements.Graphic;
 	import com.gestureworks.cml.core.CMLAir;
@@ -63,6 +65,8 @@ package
 		private var _systemsAreInitiated:Boolean = false;
 		private var _PDFLoaded:Boolean = false;
 		
+		private var _tutorialBox:TextBox = null;
+		
 		public function Main()
 		{
 			trace("gribbles starting");
@@ -108,10 +112,7 @@ package
 			}
 			addChild(_screenSaver);
 			_screenSaver.Init();
-			switchToScreenSaver();
-			// Do not update systems until they're all initiated
-			_systemsAreInitiated = true;
-			_loaderImage.visible = false;
+			_screenSaver.Deactivate();
 		}
 		
 		
@@ -122,7 +123,6 @@ package
 			_loaderImage.graphics.beginBitmapFill(new _loaderSource().bitmapData, null, true, true);
 			_loaderImage.graphics.drawRect(.0, .0, stage.stageWidth, stage.stageHeight);
 			_loaderImage.graphics.endFill();
-			addChild(_loaderImage);
 			addChildAt(_loaderImage, numChildren - 1);
 			
 			_backgroundImage = new Sprite();
@@ -130,8 +130,10 @@ package
 			_backgroundImage.graphics.drawRect(.0, .0, stage.stageWidth, stage.stageHeight);
 			_backgroundImage.graphics.endFill();
 			_backgroundImage.visible = false;
-			addChild(_backgroundImage);
 			addChildAt(_backgroundImage, 0);
+			
+			_tutorialBox = new TextBox(new TextContent("Välkommen", "Utforska skeppsvraket på botten genom att klicka på vrakdelarna"), 15);
+			addChildAt(_tutorialBox, numChildren - 1);
 			
 			// Hide mouse
 			//Mouse.hide();
@@ -176,12 +178,16 @@ package
 				// 10 seconds have passed, should be safe to hide PDF
 				for each (var sy:System in _systems)
 				{
-					if (sy is PDFSystem) {
+					if (sy is PDFSystem) 
+					{
 						sy.Hide();
+						_loaderImage.visible = false;
 						_PDFLoaded = true;
+						switchToScreenSaver();
+						// Do not update systems until they're all initiated
+						_systemsAreInitiated = true;
 					}
 				}
-				
 			}
 			// Idle logic
 			if (_currentState == State.MAINAPP)

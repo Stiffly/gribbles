@@ -1,6 +1,8 @@
 package Systems 
 {
+	import Components.Audio;
 	import Components.TextBox;
+	import com.gestureworks.cml.components.Component;
 	import com.gestureworks.cml.elements.Button;
 	import com.gestureworks.cml.elements.Graphic;
 	import com.gestureworks.cml.elements.Image;
@@ -40,14 +42,8 @@ package Systems
 		}
 		
 		// This loads a specified from a .txt file on disk
-		public function Load(key:String, bx:int, by:int, bw:int, bh:int):void
-		{
-			var button:Button = createCustomButton(key, bx, by, bw, bh);
-			button.addEventListener(StateEvent.CHANGE, onClick(key));
-			// Add tracking of the button by adding it to the button map
-			_buttonMap[key] = button;
-			addChild(button);
-			
+		public function Load(key:String):void
+		{			
 			for each (var childPath:String in getFilesInDirectoryRelative(key))
 			{
 				if (isDirectory(childPath))
@@ -120,6 +116,20 @@ package Systems
 			}
 		}
 		
+		public function GetViewer(key:String):Component
+		{
+			if (_textBoxMap[key] != null)
+			{
+				return _textBoxMap[key];
+			}
+			return null;
+		}
+		
+		public function GetMap():Object
+		{
+			return _textBoxMap;
+		}
+		
 		// Button handler
 		public function onClick(key:String):Function
 		{
@@ -128,58 +138,7 @@ package Systems
 				// On release
 				if (e.value != "up")
 					return;
-				if (_textBoxMap[key] != null)
-				{
-					if (_textBoxMap[key].visible)
-					{
-						_textBoxMap[key].Kill();
-						hideComponent(_textBoxMap[key]);
-						
-					}
-					else if (!_textBoxMap[key].visible)
-					{
-						for each (var tb:TextBox in _textBoxMap)
-						{
-							if (tb.visible == true)
-							{
-								tb.Kill();
-								hideComponent(tb);
-							}
-						}
-						
-						var bOriginX:Number = _buttonMap[key].x + _buttonMap[key].width / 2;
-						var bOriginY:Number = _buttonMap[key].y + _buttonMap[key].height / 2;
-						var tbWidth:Number = _textBoxMap[key].width;
-						var tby:Number = _textBoxMap[key].y;
-						var halfBoxHeight:Number = (_textBoxMap[key].height >> 1);
-						var verticalOffset:Number = 300;
-						
-						// Right side of the screen
-						if (bOriginX > stage.stageWidth * .5)
-						{
-							var rx:Number = bOriginX - verticalOffset - tbWidth;
-							var ry:Number = bOriginY - halfBoxHeight;
-							showComponent(rx, ry, _textBoxMap[key]);
-							removeChild(_textBoxMap[key]._Line);
-							var rline:Graphic = getLine(0x999999, bOriginX, bOriginY, rx + tbWidth + (_frameThickness << 1), ry + halfBoxHeight, 3, .8);
-							_textBoxMap[key]._Line = rline;
-							addChild(rline);
-							_textBoxMap[key].Rebirth();
-						}
-						// Left side of the screen
-						else
-						{
-							var lx:Number = bOriginX + verticalOffset;
-							var ly:Number = bOriginY - halfBoxHeight;
-							showComponent(lx, ly, _textBoxMap[key]);
-							removeChild(_textBoxMap[key]._Line);
-							var lline:Graphic = getLine(0x999999, bOriginX, bOriginY, lx - (_frameThickness << 1), ly + halfBoxHeight, 3, .8);
-							_textBoxMap[key]._Line = lline;
-							addChild(lline);
-							_textBoxMap[key].Rebirth();
-						}
-					}
-				}
+				
 			}
 		}
 	}

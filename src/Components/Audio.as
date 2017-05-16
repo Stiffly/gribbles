@@ -18,8 +18,8 @@ package Components
 	public class Audio extends Component 
 	{
 		private var _type:String = "";
-		private var _mp3Viewer:MP3Player;
-		private var _wavViewer:WAVPlayer;
+		public var _mp3Viewer:MP3Player;
+		public var _wavViewer:WAVPlayer;
 		
 		public function Audio(type:String, width:int, height:int) 
 		{

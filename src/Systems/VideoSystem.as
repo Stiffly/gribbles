@@ -1,9 +1,11 @@
 package Systems
 {
 
+	import com.gestureworks.cml.components.Component;
 	import com.gestureworks.cml.components.VideoViewer;
 	import com.gestureworks.cml.elements.Image;
 	import com.gestureworks.cml.elements.Video;
+	import com.greensock.plugins.ColorMatrixFilterPlugin;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.events.Event;
@@ -30,14 +32,8 @@ package Systems
 		
 		}
 		
-		public function Load(key:String, bx:int, by:int, bw:int, bh:int):void
+		public function Load(key:String):void
 		{
-			var button:Button = createCustomButton(key, bx, by, bw, bh);
-			button.addEventListener(StateEvent.CHANGE, onClick(key));
-			// Add tracking of the button by adding it to the button map
-			_buttonMap[key] = button;
-			addChild(button);
-			
 			var vv:VideoViewer = createViewer(new VideoViewer(), 400, 400, 500, 350) as VideoViewer;
 			vv.autoTextLayout = false;
 			vv.clusterBubbling = true;
@@ -108,6 +104,15 @@ package Systems
 			}
 		}
 		
+		public function GetViewer(key:String):Component
+		{
+			if (_videoMap[key] != null)
+			{
+				return _videoMap[key];
+			}
+			return null;
+		}
+		
 		private function onClick(key:String):Function
 		{
 			return function(e:StateEvent):void
@@ -118,17 +123,7 @@ package Systems
 					return;
 				}
 				
-				if (_videoMap[key] != null)
-				{
-					if (_videoMap[key].visible)
-					{
-						hideComponent(_videoMap[key]);
-					}
-					else if (!_videoMap[key].visible)
-					{
-						showComponent(_buttonMap[key].x + (_buttonMap[key].width >> 1) - (_videoMap[key].width >> 1), _buttonMap[key].y + (_buttonMap[key].height >> 1) - (_videoMap[key].height >> 1), _videoMap[key]);
-					}
-				}
+				
 			}
 		}
 	}

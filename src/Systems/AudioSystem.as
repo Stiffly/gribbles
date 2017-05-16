@@ -1,6 +1,7 @@
 package Systems
 {
 	
+	import com.gestureworks.cml.components.Component;
 	import com.gestureworks.cml.elements.Image;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
@@ -20,9 +21,6 @@ package Systems
 	 */
 	public class AudioSystem extends System
 	{
-		
-		// The button map keeps track of all button, with the unique parent folder as key
-		private var _buttonMap:Object = new Object();
 		// The audio map ...
 		private var _audioMap:Object = new Object();
 		
@@ -32,14 +30,8 @@ package Systems
 		
 		}
 		
-		public function Load(key:String, bx:int, by:int, bw:int, bh:int):void
+		public function Load(key:String):void
 		{
-			var button:Button = createCustomButton(key, bx, by, bw, bh);
-			button.addEventListener(StateEvent.CHANGE, onClick(key));
-			// Add tracking of the button by adding it to the button map
-			_buttonMap[key] = button;
-			addChild(button);
-			
 			for each (var child:String in getFilesInDirectoryRelative(key))
 			{
 				if (isDirectory(child))
@@ -83,7 +75,7 @@ package Systems
 					addTouchContainer(mp3);
 					_audioMap[key] = av;
 					DisplayUtils.initAll(av);
-					hideComponent(av);
+					hideComponent(av._mp3Viewer);
 				}
 				else if (av.Type == "WAV")
 				{
@@ -94,12 +86,12 @@ package Systems
 					addTouchContainer(wav);
 					_audioMap[key] = av;
 					DisplayUtils.initAll(av);
-					hideComponent(av);
+					hideComponent(av._wavViewer);
 				}
 			}
 		}
 		
-		override public function Activate():void 
+		/*override public function Activate():void 
 		{
 			for (var key:String in _buttonMap)
 			{
@@ -116,7 +108,7 @@ package Systems
 				_buttonMap[key].visible = false;
 				_buttonMap[key].touchEnabled = false;
 			}
-		}
+		}*/
 		
 		// Button handler
 		private function onClick(key:String):Function
@@ -127,18 +119,19 @@ package Systems
 				if (e.value != "up")
 					return;
 				
-				if (_audioMap[key] != null)
-				{
-					if (_audioMap[key].visible)
-					{
-						hideComponent(_audioMap[key]);
-					}
-					else if (!_audioMap[key].visible)
-					{
-						showComponent(_buttonMap[key].x + (_buttonMap[key].width >> 1) - (_audioMap[key].width >> 1), _buttonMap[key].y + (_buttonMap[key].height >> 1) - (_audioMap[key].height >> 1), _audioMap[key]);
-					}
-				}
+				
 			}
+		}
+		
+		public function GetViewer(key:String):Component
+		{
+			if (_audioMap[key] != null)
+			{
+				
+				return _audioMap[key];
+				
+			}
+			return null;
 		}
 	}
 }

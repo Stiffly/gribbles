@@ -1,6 +1,7 @@
 package Systems
 {
 	import com.gestureworks.cml.components.AlbumViewer;
+	import com.gestureworks.cml.components.Component;
 	import com.gestureworks.cml.components.ImageViewer;
 	import com.gestureworks.cml.elements.Album;
 	import com.gestureworks.cml.elements.Graphic;
@@ -19,8 +20,6 @@ package Systems
 	 */
 	public class AlbumSystem extends System
 	{
-		// The button map keeps track of all button, with the unique parent folder as key
-		private var _buttonMap:Object = new Object();
 		// The album map keeps track of all album viewers, with unique parent folder as key
 		private var _albumMap:Object = new Object();
 		// The image map keeps track of all image viewers, with unique parent folder as key
@@ -48,15 +47,10 @@ package Systems
 		}
 		
 		// This loads an album form disk
-		public function LoadAlbum(key:String, bx:int, by:int, bw:int, bh:int):void
+		public function LoadAlbum(key:String):void
 		{
 			_numChildren[key] = 0;
-			var button:Button = createCustomButton(key, bx, by, bw, bh);			
-			button.addEventListener(StateEvent.CHANGE, onClick(key));
-			// Add tracking of the button by adding it to the button map
-			_buttonMap[key] = button;
-			addChild(button);
-			
+
 			// Create album viewer
 			var av:AlbumViewer = createViewer(new AlbumViewer(), 400, 400, 500, 350) as AlbumViewer;
 			av.autoTextLayout = false;
@@ -114,32 +108,8 @@ package Systems
 		}
 		
 		// This loads an imageviewer with an image from disk
-		public function LoadImage(key:String, bx:int, by:int, bw:int, bh:int):void
-		{
-			var button:Button = new Button();
-			button.addEventListener(StateEvent.CHANGE, onClick(key));
-			button.width = bw;
-			button.height = bh;
-			button.x = bx;
-			button.y = by;
-			button.dispatch = "initial:initial:down:down:up:up:over:over:out:out:hit:hit";
-			var img:Image = getImage(key + "/button/button.png", button.width, button.height);
-			var downImg:Image = getImage(key + "/button/button.png", button.width, button.height);
-			downImg.alpha = 0.5;
-			
-			button.hit = getRectangle(0x000000, 0, 0, button.width, button.height, 0);
-			
-			button.initial = img;
-			button.down = downImg;
-			button.up = img;
-			button.over = downImg;
-			button.out = img;
-			button.init();
-			// Add tracking of the button by adding it to the button map
-			_buttonMap[key] = button;
-
-			addChild(button);
-			
+		public function LoadImage(key:String):void
+		{			
 			var iv:ImageViewer = createViewer(new ImageViewer(), 400, 400, 500, 350) as ImageViewer;
 			iv.autoTextLayout = false;
 			iv.clusterBubbling = true;
@@ -314,17 +284,17 @@ package Systems
 		}
 		
 		override public function Activate():void 
-		{
+		{/*
 			for (var key:String in _buttonMap)
 			{
 				_buttonMap[key].visible = true;
 				_buttonMap[key].touchEnabled = true;
-			}
+			}*/
 		}
 		
 		override public function Deactivate():void 
 		{
-			for (var key:String in _buttonMap)
+			/*for (var key:String in _buttonMap)
 			{
 				if (_albumMap[key] != null)
 				{
@@ -336,7 +306,20 @@ package Systems
 				}
 				_buttonMap[key].visible = false;
 				_buttonMap[key].touchEnabled = false;
+			}*/
+		}
+		
+		public function GetViewer(key:String):Component
+		{
+			if (_albumMap[key] != null)
+			{
+				return _albumMap[key];
 			}
+			else if (_imageMap[key] != null)
+			{
+				return _imageMap[key];
+			}
+			return null;
 		}
 		
 		// Button handler
@@ -349,28 +332,7 @@ package Systems
 				{
 					return;
 				}
-				if (_albumMap[key] != null)
-				{
-					if (_albumMap[key].visible)
-					{
-						hideComponent(_albumMap[key]);
-					}
-					else if (!_albumMap[key].visible)
-					{
-						showComponent(_buttonMap[key].x + (_buttonMap[key].width >> 1) - (_albumMap[key].width >> 1), _buttonMap[key].y + (_buttonMap[key].height >> 1) - (_albumMap[key].height >> 1), _albumMap[key]);
-					}
-				}
-				if (_imageMap[key] != null)
-				{
-					if (_imageMap[key].visible)
-					{
-						hideComponent(_imageMap[key]);
-					}
-					else if (!_imageMap[key].visible)
-					{
-						showComponent(_buttonMap[key].x + (_buttonMap[key].width >> 1) - (_imageMap[key].width >> 1), _buttonMap[key].y + (_buttonMap[key].height >> 1) - (_imageMap[key].height >> 1), _imageMap[key]);
-					}
-				}
+				
 			}
 		}
 	}

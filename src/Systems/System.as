@@ -28,6 +28,7 @@ package Systems
 	import util.TextContent;
 	import util.FileSystem;
 	import util.Geometry;
+	import util.LayerHandler;
 	
 	/**
 	 * Systems.System
@@ -72,19 +73,7 @@ package Systems
 			component.x = x;
 			component.y = y;
 			component.rotation = 1;
-			if (component.parent is Audio)
-			{
-				setChildIndex(Audio(component.parent), numChildren - 1);
-			}
-			else 
-			{
-				var object:DisplayObjectContainer = component;
-				while (object.parent != null)
-				{
-					object.parent.setChildIndex(object, object.parent.numChildren - 1)
-					object = object.parent;
-				}
-			}
+			LayerHandler.BRING_TO_FRONT(component);
 		}
 		
 		// Loads an image from the disc
@@ -104,9 +93,9 @@ package Systems
 			// "Hide" the component
 			component.x = 13337; 
 			component.y = 13337;
-			if (component is Audio)
+			if (component.parent is Audio)
 			{
-				Audio(component).Stop();
+				Audio(component.parent).Stop();
 			}
 		}
 		
@@ -169,7 +158,7 @@ package Systems
 		{
 			var menu:ViewerMenu = new ViewerMenu(info, close, play, pause);
 			menu.y = 5;
-			menu.paddingLeft = component.width - menu.numChildren * 2 * (20 + 3); // 20 + 3 i radius + linestroke in "menubutton.as"
+			menu.paddingLeft = component.width - menu.numChildren * 2 * (20 + 3); // 20 + 3 is radius + linestroke in "menubutton.as"
 			menu.paddingRight = 10;
 			menu.autohide = false;
 			menu.visible = true;
@@ -190,15 +179,7 @@ package Systems
 		
 		protected function onTouch(event:TouchEvent):void
 		{
-			var component:Component = Component(event.currentTarget);
-			if (component.parent is Audio)
-			{
-				setChildIndex(Audio(component.parent), numChildren - 1);
-			}
-			else
-			{
-				setChildIndex(component, numChildren - 1);
-			}
+			LayerHandler.BRING_TO_FRONT(Component(event.currentTarget));
 		}
 		
 		public function Deactivate():void
@@ -215,15 +196,7 @@ package Systems
 		
 		protected function onClose(e:MenuEvent):void
 		{
-			var component:Component = Component(e.result);
-			if (component.parent is Audio)
-			{
-				hideComponent(Audio(component.parent));
-			}
-			else
-			{
-				hideComponent(component);
-			}
+			hideComponent(Component(e.result));
 		}
 		
 		protected function createCustomButton(key:String, bx:int, by:int, bw:int, bh:int):Button

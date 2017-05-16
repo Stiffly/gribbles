@@ -1,6 +1,7 @@
 package Systems
 {
 	import Systems.System;
+	import com.gestureworks.cml.components.Component;
 	import com.gestureworks.cml.components.HTMLViewer;
 	import com.gestureworks.cml.elements.Button;
 	import com.gestureworks.cml.elements.HTML;
@@ -33,14 +34,8 @@ package Systems
 			
 		}
 		
-		public function Load(key:String, bx:int, by:int, bw:int, bh:int):void
-		{
-			var button:Button = createCustomButton(key, bx, by, bw, bh);
-			button.addEventListener(StateEvent.CHANGE, onClick(key));
-			// Add tracking of the button by adding it to the button map
-			_buttonMap[key] = button;
-			addChild(button);
-			
+		public function Load(key:String):void
+		{			
 			for each (var child:String in getFilesInDirectoryRelative(key))
 			{
 				if (isDirectory(child))
@@ -138,6 +133,15 @@ package Systems
 			}
 		}
 		
+		public function GetViewer(key:String):Component
+		{
+			if (_webMap[key] != null)
+			{
+				return _webMap[key];
+			}
+			return null;
+		}
+		
 		// Button handler
 		private function onClick(key:String):Function
 		{
@@ -149,17 +153,7 @@ package Systems
 					return;
 				}
 					
-				if (_webMap[key] != null)
-				{
-					if (_webMap[key].visible)
-					{
-						hideComponent(_webMap[key]);
-					}
-					else if (!_webMap[key].visible)
-					{
-						showComponent((stage.stageWidth >> 1) - (_webMap[key].width >> 1), (stage.stageHeight >> 1) - (_webMap[key].height >> 1), _webMap[key]);
-					}
-				}
+				
 			}
 		}
 	
