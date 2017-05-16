@@ -130,14 +130,8 @@ package Systems
 						}
 						break;
 					case "TEXT":
-						_systemMap[xmlType].Load(key, xmlX, xmlY, xmlWidth, xmlHeight);
-						break;
 					case "VIDEO":
-						_systemMap[xmlType].Load(key, xmlX, xmlY, xmlWidth, xmlHeight);
-						break;
 					case "WEB":
-						_systemMap[xmlType].Load(key, xmlX, xmlY, xmlWidth, xmlHeight);
-						break;
 					case "AUDIO":
 						_systemMap[xmlType].Load(key, xmlX, xmlY, xmlWidth, xmlHeight);
 						break;

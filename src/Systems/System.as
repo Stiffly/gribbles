@@ -71,6 +71,7 @@ package Systems
 			component.scale = 1.0;
 			component.x = x;
 			component.y = y;
+			component.rotation = 1;
 			if (component.parent is Audio)
 			{
 				setChildIndex(Audio(component.parent), numChildren - 1);
