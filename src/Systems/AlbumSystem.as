@@ -284,29 +284,20 @@ package Systems
 		}
 		
 		override public function Activate():void 
-		{/*
-			for (var key:String in _buttonMap)
-			{
-				_buttonMap[key].visible = true;
-				_buttonMap[key].touchEnabled = true;
-			}*/
+		{
+			
 		}
 		
 		override public function Deactivate():void 
 		{
-			/*for (var key:String in _buttonMap)
+			for (var a:String in _albumMap)
 			{
-				if (_albumMap[key] != null)
-				{
-					hideComponent(_albumMap[key]);
-				}
-				else if (_imageMap[key] != null)
-				{
-					hideComponent(_imageMap[key]);
-				}
-				_buttonMap[key].visible = false;
-				_buttonMap[key].touchEnabled = false;
-			}*/
+				hideComponent(_albumMap[a]);
+			}
+			for (var i:String in _imageMap)
+			{
+				hideComponent(_imageMap[i]);
+			}
 		}
 		
 		public function GetViewer(key:String):Component

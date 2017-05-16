@@ -23,8 +23,6 @@ package Systems
 		
 		// The video map ...
 		private var _videoMap:Object = new Object();
-		// The button map keeps track of all button, with the unique parent folder as key
-		private var _buttonMap:Object = new Object();
 		
 		public function VideoSystem()
 		{
@@ -88,20 +86,13 @@ package Systems
 		
 		override public function Activate():void 
 		{
-			for (var key:String in _buttonMap)
-			{
-				_buttonMap[key].visible = true;
-				_buttonMap[key].touchEnabled = true;
-			}
 		}
 		
 		override public function Deactivate():void 
 		{
-			for (var key:String in _buttonMap)
+			for (var key:String in _videoMap)
 			{
 				hideComponent(_videoMap[key]);
-				_buttonMap[key].visible = false;
-				_buttonMap[key].touchEnabled = false;
 			}
 		}
 		

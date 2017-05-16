@@ -67,7 +67,7 @@ package Components
 		{
 			// Initiates the textbox, with font, size etc.
 			var padding:Number = 5;
-			var textHeight:Number = 4 * padding + getTextHeightInPixels(_title.text, padding, 30) + getTextHeightInPixels(_description, padding, 20);
+			var textHeight:Number = 4 * padding + getTextHeightInPixels(_title.text, padding, 30) + getTextHeightInPixels(_description, padding, 20) + 20;
 			this.height = textHeight;
 			var tc:TouchContainer = createDescription(new TextContent(_title.text, _currentDescription.text), this.width, this.height, .8, padding);
 			this.addChild(tc);

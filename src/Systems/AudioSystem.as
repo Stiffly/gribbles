@@ -80,7 +80,7 @@ package Systems
 					addInfoPanel(mp3, content.slice(0, index), content.slice(index + 1, content.length), 12);
 					addFrame(mp3);
 					addViewerMenu(mp3, true, true, true, true);
-					addTouchContainer(mp3);
+					//addTouchContainer(mp3);
 					_audioMap[key] = av;
 					DisplayUtils.initAll(av);
 					hideComponent(av._mp3Viewer);
@@ -91,7 +91,7 @@ package Systems
 					addInfoPanel(wav, content.slice(0, index), content.slice(index + 1, content.length), 12);
 					addFrame(wav);
 					addViewerMenu(wav, true, true, true, true);
-					addTouchContainer(wav);
+					//addTouchContainer(wav);
 					_audioMap[key] = av;
 					DisplayUtils.initAll(av);
 					hideComponent(av._wavViewer);
@@ -99,32 +99,26 @@ package Systems
 			}
 		}
 		
-		/*override public function Activate():void 
+		override public function Activate():void 
 		{
-			for (var key:String in _buttonMap)
-			{
-				_buttonMap[key].visible = true;
-				_buttonMap[key].touchEnabled = true;
-			}
 		}
 		
 		override public function Deactivate():void 
 		{
-			for (var key:String in _buttonMap)
+			for (var key:String in _audioMap)
 			{
-				hideComponent(_audioMap[key]);
-				_buttonMap[key].visible = false;
-				_buttonMap[key].touchEnabled = false;
+				if (_audioMap[key].Type == "MP3")
+					hideComponent(_audioMap[key]._mp3Viewer);
+				if (_audioMap[key].Type == "WAV")
+					hideComponent(_audioMap[key]._wavViewer);
 			}
-		}*/
+		}
 		
 		public function GetViewer(key:String):Component
 		{
 			if (_audioMap[key] != null)
 			{
-				
 				return _audioMap[key];
-				
 			}
 			return null;
 		}
