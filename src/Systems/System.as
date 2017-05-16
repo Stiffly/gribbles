@@ -146,6 +146,8 @@ package Systems
 		protected function addFrame(component:Component):Frame
 		{
 			var frame:Frame = new Frame();
+			frame.frameColor = 0x000000;
+			frame.frameAlpha = 0.5;
 			frame.targetParent = true;
 			frame.mouseChildren = false;
 			frame.className = "frame";
