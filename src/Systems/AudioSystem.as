@@ -60,6 +60,14 @@ package Systems
 			}
 		}
 		
+		override public function Update():void 
+		{
+			for each (var value:Audio in _audioMap)
+			{
+				value.Update();
+			}
+		}
+		
 		private function FinalizeAudio(av:Audio, key:String):Function
 		{
 			return function(event:Event):void
@@ -109,19 +117,6 @@ package Systems
 				_buttonMap[key].touchEnabled = false;
 			}
 		}*/
-		
-		// Button handler
-		private function onClick(key:String):Function
-		{
-			return function(e:StateEvent):void
-			{
-				// On release
-				if (e.value != "up")
-					return;
-				
-				
-			}
-		}
 		
 		public function GetViewer(key:String):Component
 		{

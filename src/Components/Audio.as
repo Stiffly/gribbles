@@ -20,11 +20,12 @@ package Components
 		private var _type:String = "";
 		public var _mp3Viewer:MP3Player;
 		public var _wavViewer:WAVPlayer;
-		
-		public function Audio(type:String, width:int, height:int) 
+		private var _frameWidth:Number = 0;
+		public function Audio(type:String, width:int, height:int, frameWidth:Number = 15) 
 		{
 			super();
 			_type = type;
+			_frameWidth = frameWidth * 2;
 			this.width = width;
 			this.height = height;
 			if (_type.toUpperCase() == "MP3")
@@ -47,6 +48,49 @@ package Components
 				_wavViewer.mouseChildren = true;
 				_wavViewer.gestureList = {"n-drag": true, "n-scale": true, "n-rotate": true};
 				addChild(_wavViewer);
+			}
+		}
+		
+		public function Update():void
+		{
+			// Logic to keep the box within the screen
+			if (isMP3())
+			{
+				if (_mp3Viewer.x + _mp3Viewer.width + _frameWidth > stage.stageWidth)
+				{
+					_mp3Viewer.x = stage.stageWidth - _mp3Viewer.width - _frameWidth;
+				}
+				if (_mp3Viewer.x - _frameWidth < 0)
+				{
+					_mp3Viewer.x = _frameWidth;
+				}
+				if (_mp3Viewer.y + _mp3Viewer.height + _frameWidth > stage.stageHeight)
+				{
+					_mp3Viewer.y = stage.stageHeight - _mp3Viewer.height - _frameWidth;
+				}
+				if (_mp3Viewer.y - _frameWidth < 0)
+				{
+					_mp3Viewer.y = _frameWidth;
+				}
+			}
+			else if (isWAV())
+			{
+				if (_wavViewer.x + _wavViewer.width + _frameWidth > stage.stageWidth)
+				{
+					_wavViewer.x = stage.stageWidth - _wavViewer.width - _frameWidth;
+				}
+				if (_wavViewer.x - _frameWidth < 0)
+				{
+					_wavViewer.x = _frameWidth;
+				}
+				if (_wavViewer.y + _wavViewer.height + _frameWidth > stage.stageHeight)
+				{
+					_wavViewer.y = stage.stageHeight - _wavViewer.height - _frameWidth;
+				}
+				if (_wavViewer.y - _frameWidth < 0)
+				{
+					_wavViewer.y = _frameWidth;
+				}
 			}
 		}
 		
