@@ -20,7 +20,7 @@ package
 	import com.gestureworks.cml.elements.Button;
 	import com.gestureworks.cml.elements.Image;
 	import com.gestureworks.cml.elements.Menu;
-	
+	import com.gestureworks.cml.utils.DisplayUtils;
 	import Systems.System;
 	import Systems.WaterSystem;
 	import Systems.PDFSystem;
@@ -133,6 +133,14 @@ package
 			addChildAt(_backgroundImage, 0);
 			
 			_tutorialBox = new TextBox(new TextContent("Välkommen", "Utforska skeppsvraket på botten genom att klicka på vrakdelarna"), 15);
+			
+			_tutorialBox.width = 1000;
+			_tutorialBox.x = stage.stageWidth / 2 - _tutorialBox.width / 2;
+			_tutorialBox.y = stage.stageHeight / 2 - _tutorialBox.height / 2;
+			_tutorialBox.nativeTransform = true;
+			_tutorialBox.clusterBubbling = true;
+			_tutorialBox.mouseChildren = true;
+			DisplayUtils.initAll(_tutorialBox);
 			addChildAt(_tutorialBox, numChildren - 1);
 			
 			// Hide mouse
@@ -161,6 +169,7 @@ package
 				switch (_currentState)
 				{
 				case State.MAINAPP: 
+					_tutorialBox.Update();
 					for each (var s:System in _systems)
 						s.Update();
 					break;
@@ -252,6 +261,12 @@ package
 			{
 				s.Activate();
 			}
+			
+			_tutorialBox.Rebirth();
+			_tutorialBox.x = stage.stageWidth / 2 - _tutorialBox.width / 2;
+			_tutorialBox.y = stage.stageHeight / 2 - _tutorialBox.height / 2;
+			_tutorialBox.visible = true;
+			setChildIndex(_tutorialBox, numChildren - 1);
 			_backgroundImage.visible = true;
 			_currentState = State.MAINAPP;
 			_mainButton.visible = false;
@@ -329,6 +344,8 @@ package
 			if (_currentState == State.MAINAPP)
 			{
 				_idleStart = getTimer();
+				_tutorialBox.Kill();
+				_tutorialBox.visible = false;
 			}
 		}
 	}
