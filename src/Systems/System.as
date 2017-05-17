@@ -92,7 +92,7 @@ package Systems
 			component.visible = false;
 			component.touchEnabled = false;
 			// "Hide" the component
-			component.x = 13337; 
+			component.x = 13337;
 			component.y = 13337;
 			if (component.parent is Audio)
 			{
@@ -132,7 +132,7 @@ package Systems
 			component.gestureEvents = true;
 			component.gestureList = {"n-drag": true, "n-scale": true, "n-rotate": true};
 			component.maxScale = 2.0;
-			component.minScale = .2;
+			component.minScale = .5;
 			return component;
 		}
 		
@@ -169,7 +169,7 @@ package Systems
 				menu.y = -30;
 				menu.paddingLeft = component.width - 10;
 			}
-			else 
+			else
 			{
 				menu.y = 5;
 				menu.paddingLeft = component.width - menu.numChildren * 2 * (20 + 3); // 20 + 3 is radius + linestroke in "menubutton.as"
@@ -199,14 +199,10 @@ package Systems
 		
 		public function Deactivate():void
 		{
-			//_button.active = false;
-			//_button.visible = false;
 		}
 		
 		public function Activate():void
 		{
-			//_button.active = true;
-			//_button.visible = true;
 		}
 		
 		protected function onClose(e:MenuEvent):void
