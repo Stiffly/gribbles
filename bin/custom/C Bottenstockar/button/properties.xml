@@ -2,6 +2,7 @@
 
 <button>
 	<type>Album</type>
+	<description></description>
 	<width>61</width>
 	<height>123</height>
 	<x>1513</x>

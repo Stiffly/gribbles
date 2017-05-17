@@ -50,7 +50,7 @@ package Components
 		
 		public var _Line:Graphic = new Graphic();
 		
-		public function TextBox(content:TextContent, frameWidth:uint, updateFrequenzy:Number = .0, lifeTime:Number = 10)
+		public function TextBox(content:TextContent, frameWidth:uint, updateFrequenzy:Number = .2, lifeTime:Number = 10)
 		{
 			_title = new Text();
 			_title.text = content.title;

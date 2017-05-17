@@ -1,5 +1,6 @@
 package Systems
 {
+	import com.gestureworks.cml.elements.Text;
 	import flash.display.Shape;
 	import flash.geom.Rectangle;
 	import flash.net.URLRequest;
@@ -7,6 +8,7 @@ package Systems
 	import flash.net.URLLoader;
 	import flash.events.TouchEvent;
 	import flash.events.LocationChangeEvent;
+	import flash.text.TextField;
 	
 	import com.gestureworks.cml.components.AlbumViewer;
 	import com.gestureworks.cml.components.ImageViewer;
@@ -117,6 +119,7 @@ package Systems
 				// Create button from the XML data
 				var buttonProperties:XML = XML(e.target.data);
 				var xmlType:String = String(buttonProperties.child("type")).toUpperCase();
+				var xmlDescription:String = buttonProperties.child("description");
 				var xmlWidth:uint = buttonProperties.child("width");
 				var xmlHeight:uint = buttonProperties.child("height");
 				var xmlX:uint = buttonProperties.child("x");
@@ -128,11 +131,19 @@ package Systems
 				_buttonMap[key] = button;
 				addChild(button);
 				
+				var description:Text = new Text();
+				description.font = "arial";
+				description.text = xmlDescription;
+				description.init();
+				description.y = button.height;
+				description.width = description.textWidth + 10;
+				description.x = button.width / 2 - description.textWidth / 2;
+				button.addChild(description);
+				
 				switch (xmlType)
 				{
-				case "ALBUM": 
+				case "ALBUM":
 					var numberOfChildren:int = getAlbumChildren(key);
-					
 					// An image with associated description file
 					if (numberOfChildren == 2)
 					{

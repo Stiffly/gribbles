@@ -2,6 +2,7 @@
 
 <button>
 	<type>Text</type>
+	<description></description>
 	<width>305</width>
 	<height>429</height>
 	<x>795</x>

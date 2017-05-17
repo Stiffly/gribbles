@@ -51,9 +51,9 @@ package
 		
 		private var _systems:Array = new Array();
 		private var _screenSaver:WaterSystem;
-		private var _passedFrames:int = 0;
+		//private var _passedFrames:int = 0;
 		private var _startTime:Number = .0;
-		private var _FPSCounter:TextField = new TextField();
+		//private var _FPSCounter:TextField = new TextField();
 		private var _elapsedTime:int = 0;
 		private var _elapsedTimeText:TextField = new TextField();
 		private var _mainButton:Button;
@@ -100,7 +100,7 @@ package
 			// Create a button for switching to mainapp
 			createMiddleButton();
 			// Create a button for switching to screensaver
-			createBackButton();
+			//createBackButton();
 			
 			addChildAt(_loaderImage, numChildren - 1);
 			
@@ -132,7 +132,7 @@ package
 			_backgroundImage.visible = false;
 			addChildAt(_backgroundImage, 0);
 			
-			_tutorialBox = new TextBox(new TextContent("Välkommen", "Utforska skeppsvraket på botten genom att klicka på vrakdelarna"), 15);
+			_tutorialBox = new TextBox(new TextContent("Välkommen", "Utforska skeppsvraket på botten"), 15, .0);
 			
 			_tutorialBox.width = 1000;
 			_tutorialBox.x = stage.stageWidth / 2 - _tutorialBox.width / 2;
@@ -149,20 +149,20 @@ package
 			// Show FPS-counter
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			addEventListener(MouseEvent.MOUSE_MOVE, onInteraction);
-			addChild(_FPSCounter);
+			//addChild(_FPSCounter);
 			_elapsedTimeText.y = 10;
 		}
 		
 		private function onEnterFrame(event:Event):void
 		{
 			var updateFreq:int = 1; // Times per second
-			_passedFrames++;
+			//_passedFrames++;
 			var dt:Number = (getTimer() - _startTime) / 1000;
 			if (dt > 1 / updateFreq)
 			{
-				_FPSCounter.text = "FPS: " + _passedFrames * updateFreq;
+				//_FPSCounter.text = "FPS: " + _passedFrames * updateFreq;
 				_startTime = getTimer();
-				_passedFrames = 0;
+				//_passedFrames = 0;
 			}
 			if (_systemsAreInitiated)
 			{
@@ -220,9 +220,7 @@ package
 		{
 			var circle:Graphic = new Graphic();
 			circle.shape = "circle";
-			circle.width = width;
-			circle.height = height;
-			circle.radius = 100;
+			circle.radius = width / 2;
 			circle.color = color;
 			circle.alpha = alpha;
 			circle.lineStroke = 0;
@@ -270,7 +268,7 @@ package
 			_backgroundImage.visible = true;
 			_currentState = State.MAINAPP;
 			_mainButton.visible = false;
-			_backButton.visible = true;
+			//_backButton.visible = true;
 		}
 		
 		private function switchToScreenSaver():void
@@ -286,7 +284,7 @@ package
 			_backgroundImage.visible = false;
 			_currentState = State.SCREENSAVER;
 			_mainButton.visible = true;
-			_backButton.visible = false;
+			//_backButton.visible = false;
 			setChildIndex(_mainButton, numChildren - 1);
 		}
 		

@@ -170,6 +170,7 @@ package Systems
 					av.back = back;
 					av.addChild(front);
 					av.addChild(back);
+					av.affineTransform = true;
 					addFrame(av);
 					addViewerMenu(av, true, true, false, false);
 					addButtons(av);
