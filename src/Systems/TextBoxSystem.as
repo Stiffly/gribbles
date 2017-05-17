@@ -23,7 +23,7 @@ package Systems
 	{
 		
 		private var _textBoxMap:Object = new Object();
-		private var _buttonMap:Object = new Object();
+		//private var _buttonMap:Object = new Object();
 		
 		public function TextBoxSystem()
 		{
@@ -94,21 +94,21 @@ package Systems
 		
 		override public function Activate():void 
 		{
-			for (var key:String in _buttonMap)
+			/*for (var key:String in _buttonMap)
 			{
 				_buttonMap[key].visible = true;
 				_buttonMap[key].touchEnabled = true;
-			}
+			}*/
 		}
 		
 		override public function Deactivate():void 
 		{
-			for (var key:String in _buttonMap)
+			for (var key:String in _textBoxMap)
 			{
 				hideComponent(_textBoxMap[key]);
 				_textBoxMap[key].Kill();
-				_buttonMap[key].visible = false;
-				_buttonMap[key].touchEnabled = false;
+				//_buttonMap[key].visible = false;
+				//_buttonMap[key].touchEnabled = false;
 			}
 		}
 		
