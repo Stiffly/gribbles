@@ -57,6 +57,7 @@ package Systems
 			_systemMap["ALBUM"] = AlbumSystem(addChild(new AlbumSystem()));
 			_systemMap["VIDEO"] = VideoSystem(addChild(new VideoSystem()));
 			_systemMap["AUDIO"] = AudioSystem(addChild(new AudioSystem()));
+			_systemMap["PDF"] = PDFSystem(addChild(new PDFSystem()));
 			super();
 		}
 		
@@ -133,9 +134,11 @@ package Systems
 				
 				var description:Text = new Text();
 				description.font = "arial";
+				description.fontSize = 14;
 				description.text = xmlDescription;
 				description.init();
 				description.y = button.height;
+				description.height = description.fontSize;
 				description.width = description.textWidth + 10;
 				description.x = button.width / 2 - description.textWidth / 2;
 				button.addChild(description);
@@ -162,7 +165,8 @@ package Systems
 					_systemMap[xmlType].Load(key);
 					break;
 				case "VIDEO": 
-				case "WEB": 
+				case "WEB":
+				case "PDF":
 				case "AUDIO": 
 					_systemMap[xmlType].Load(key);
 					break;

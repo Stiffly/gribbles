@@ -94,11 +94,6 @@ package Systems
 		
 		override public function Activate():void 
 		{
-			/*for (var key:String in _buttonMap)
-			{
-				_buttonMap[key].visible = true;
-				_buttonMap[key].touchEnabled = true;
-			}*/
 		}
 		
 		override public function Deactivate():void 
@@ -107,8 +102,6 @@ package Systems
 			{
 				hideComponent(_textBoxMap[key]);
 				_textBoxMap[key].Kill();
-				//_buttonMap[key].visible = false;
-				//_buttonMap[key].touchEnabled = false;
 			}
 		}
 		

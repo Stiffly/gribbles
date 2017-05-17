@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<button>
+	<type>PDF</type>
+	<description>Dykrapport</description>
+	<width>75</width>
+	<height>75</height>
+	<x>1000</x>
+	<y>1000</y>
+</button>

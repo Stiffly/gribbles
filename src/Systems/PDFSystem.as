@@ -1,123 +1,72 @@
-package Systems
+package Systems 
 {
-	import com.gestureworks.cml.components.Component;
-	import com.gestureworks.cml.utils.DisplayUtils;
-	import com.gestureworks.cml.core.CMLObjectList;
-	import com.gestureworks.cml.events.StateEvent;
-	import com.gestureworks.cml.elements.Button;
 	import com.gestureworks.cml.components.HTMLViewer;
 	import com.gestureworks.cml.elements.HTML;
-	import com.gestureworks.cml.elements.TouchContainer;
-	
+	import flash.net.URLLoader;
+	import com.gestureworks.cml.utils.DisplayUtils;
 	/**
-	 * Systems.PDFSystem
-	 *
-	 * The system that handles the PDFViewer
-	 *
-	 * @author Adam Byléhn
-	 * @contact adambylehn@hotmail.com
+	 * ...
+	 * @author Adam
 	 */
-	
-	public class PDFSystem extends System
+	public class PDFSystem extends System 
 	{
-		private var _PDFViewer:HTMLViewer;
-		
-		public function PDFSystem()
+		private var _pdfMap:Object = new Object();
+		public function PDFSystem() 
 		{
 			super();
+			
 		}
 		
-		override public function Init():void
+		public function Load(key:String):void
 		{
-			_PDFViewer = createViewer(new HTMLViewer(), 0, 0, 700, 800) as HTMLViewer;
-			_PDFViewer.targetParent = true;
-			_PDFViewer.mouseChildren = true;
-			_PDFViewer.clusterBubbling = true;
-			_PDFViewer.gestureList = {"n-drag": true, "n-rotate": false, "n-scale": false};
-			_PDFViewer.affineTransform = true;
-			
-			addChild(_PDFViewer);
-			setChildIndex(_PDFViewer, 0);
-			
-			// Loading an image through image element
-			
-			var PDF:HTML = new HTML();
-			
-			PDF.width = _PDFViewer.width;
-			PDF.height = _PDFViewer.height;
-			var pdfWidth:String = PDF.width.toString();
-			var pdfHeight:String = PDF.height.toString();
-			
-			// Load the PDF without toolbar 
-			PDF.srcString = "<body" + "<embed src=\"pdf/dykrapport.pdf#toolbar=0&navpanes=0&scrollbar=0\" width=" + pdfWidth + " height=" + pdfHeight + "/>" + "</body>";
-			//PDF.src = "pdf/dykrapport.pdf";
-			
-			// This has to be at 0,0 or the PDF will not be loaded properly (!?)
-			PDF.x = 0;
-			PDF.y = 0;
-			PDF.targetParent = true;
-			PDF.mouseChildren = true;
-			_PDFViewer.addChild(PDF);
-			
-			addFrame(_PDFViewer);
-			addTouchContainer(_PDFViewer);
-			addViewerMenu(_PDFViewer, true, false, false, false);
-			
-			DisplayUtils.initAll(_PDFViewer);
-			
-			_button = CMLObjectList.instance.getId("pdf-button");
-			_button.alpha = 1.0;
-			_button.y = 100;
-			_button.x = 800;
-			_button.addEventListener(StateEvent.CHANGE, buttonHandler);
-			addChild(_button);
-		}
-		
-		override public function Update():void
-		{
-		}
-		
-		private function buttonHandler(event:StateEvent):void
-		{
-			switchButtonState(event.value, _PDFViewer, 400, 400);
-		}
-		
-		protected override function switchButtonState(buttonState:String, component:Component, x:int, y:int):void
-		{
-			// On release
-			if (buttonState == "down-state")
+			for each (var child:String in getFilesInDirectoryRelative(key))
 			{
-				return;
+				if (isDirectory(child))
+				{
+					continue;
+				}
+				var extention:String = getExtention(child).toUpperCase();
+				if (extention != "PDF")
+				{
+					continue;
+				}
+				var pdfViewer:HTMLViewer = createViewer(new HTMLViewer(), 0, 0, 700, 800) as HTMLViewer;
+				pdfViewer.targetParent = true;
+				pdfViewer.mouseChildren = true;
+				pdfViewer.clusterBubbling = true;
+				pdfViewer.gestureList = {"n-drag": true, "n-rotate": false, "n-scale": false};
+				pdfViewer.affineTransform = true;
+				
+				addChild(pdfViewer);
+				setChildIndex(pdfViewer, 0);
+				
+				// Loading an image through image element
+				
+				var PDF:HTML = new HTML();
+				
+				PDF.width = pdfViewer.width;
+				PDF.height = pdfViewer.height;
+				var pdfWidth:String = PDF.width.toString();
+				var pdfHeight:String = PDF.height.toString();
+				
+				// Load the PDF without toolbar 
+				PDF.srcString = "<body" + "<embed src=\"" + child + "#toolbar=0&navpanes=0&scrollbar=0\" width=" + pdfWidth + " height=" + pdfHeight + "/>" + "</body>";
+				//PDF.src = "pdf/dykrapport.pdf";
+				
+				// This has to be at 0,0 or the PDF will not be loaded properly (!?)
+				PDF.x = 0;
+				PDF.y = 0;
+				PDF.targetParent = true;
+				PDF.mouseChildren = true;
+				pdfViewer.addChild(PDF);
+				
+				addFrame(pdfViewer);
+				addTouchContainer(pdfViewer);
+				addViewerMenu(pdfViewer, true, false, false, false);
+				
+				_pdfMap[key] = pdfViewer;
+				DisplayUtils.initAll(pdfViewer);
 			}
-			if (component.x < 10000)
-			{
-				hideComponent(component);
-			}
-			else if (component.x > 10000)
-			{
-				showComponent(0,0, component);
-			}
-		}
-		
-		protected override function hideComponent(component:Component):void
-		{
-			// "Hide" the component
-			component.x = 13337;
-			component.y = 13337;
-			component.visible = false;
-		}
-		
-		protected override function showComponent(x:int, y:int, component:Component):void
-		{
-			component.x = ((stage.stageWidth - component.width) >> 1);
-			component.y = ((stage.stageHeight - component.height) >> 1);
-			component.visible = true;
-			setChildIndex(component, numChildren - 1);
-		}
-		
-		public override function Hide():void
-		{
-			hideComponent(_PDFViewer);
 		}
 	}
 }

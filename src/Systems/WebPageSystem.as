@@ -21,7 +21,6 @@ package Systems
 	{
 		// The webpage map ...
 		private var _webMap:Object = new Object();
-		private var _buttonMap:Object = new Object();
 		private var _approvedURLs:Array = ["http://www.blekingemuseum.se/pages/275", "http://www.blekingemuseum.se/pages/377", "http://www.blekingemuseum.se/pages/378", "http://www.blekingemuseum.se/pages/379", "http://www.blekingemuseum.se/pages/380", "http://www.blekingemuseum.se/pages/403", "http://www.blekingemuseum.se/pages/423", "http://www.blekingemuseum.se/pages/1223"];
 		
 		public function WebPageSystem()
@@ -54,20 +53,13 @@ package Systems
 		
 		override public function Activate():void 
 		{
-			for (var key:String in _buttonMap)
-			{
-				_buttonMap[key].visible = true;
-				_buttonMap[key].touchEnabled = true;
-			}
 		}
 		
 		override public function Deactivate():void 
 		{
-			for (var key:String in _buttonMap)
+			for (var key:String in _webMap)
 			{
 				hideComponent(_webMap[key]);
-				_buttonMap[key].visible = false;
-				_buttonMap[key].touchEnabled = false;
 			}
 		}
 		

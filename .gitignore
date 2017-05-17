@@ -3,6 +3,7 @@ swfobject.js
 *.old
 *.swf
 *.swc
+*.pdf
 
 
 # Build folders and assets

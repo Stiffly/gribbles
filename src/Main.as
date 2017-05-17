@@ -23,7 +23,6 @@ package
 	import com.gestureworks.cml.utils.DisplayUtils;
 	import Systems.System;
 	import Systems.WaterSystem;
-	import Systems.PDFSystem;
 	import Systems.CustomButtonSystem;
 	import Events.MenuEvent;
 	
@@ -80,7 +79,6 @@ package
 			
 			// Add systems here
 			//_systems.push(new HTMLSystem());
-			_systems.push(new PDFSystem());
 			//_systems.push(new VideoSystem());
 			//_systems.push(new ImageSystem());
 			//_systems.push(new AudioSystem());
@@ -187,15 +185,12 @@ package
 				// 10 seconds have passed, should be safe to hide PDF
 				for each (var sy:System in _systems)
 				{
-					if (sy is PDFSystem) 
-					{
-						sy.Hide();
-						_loaderImage.visible = false;
-						_PDFLoaded = true;
-						switchToScreenSaver();
-						// Do not update systems until they're all initiated
-						_systemsAreInitiated = true;
-					}
+					sy.Hide();
+					_loaderImage.visible = false;
+					_PDFLoaded = true;s
+					switchToScreenSaver();
+					// Do not update systems until they're all initiated
+					_systemsAreInitiated = true;
 				}
 			}
 			// Idle logic
@@ -277,8 +272,6 @@ package
 			for each (var s:System in _systems)
 			{
 				s.Deactivate();
-				if (s is PDFSystem && !_PDFLoaded)
-					continue;
 				s.Hide();
 			}
 			_backgroundImage.visible = false;
