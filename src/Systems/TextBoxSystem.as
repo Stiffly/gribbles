@@ -11,6 +11,7 @@ package Systems
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.events.Event;
+	import ui.ViewerMenu;
 	import util.TextContent;
 	import com.gestureworks.cml.utils.DisplayUtils;
 	import com.gestureworks.cml.events.StateEvent;
@@ -79,12 +80,15 @@ package Systems
 				textBox.mouseChildren = true;
 				addFrame(textBox);
 				addTouchContainer(textBox);
+				var vm:ViewerMenu = addViewerMenu(textBox, true, false, false, false);
 				addChild(textBox);
 				_textBoxMap[key] = textBox;
 				hideComponent(textBox);
 				addChild(textBox._Line);
 				
 				DisplayUtils.initAll(textBox);
+				
+				textBox.setChildIndex(vm, textBox.numChildren - 1);
 			}
 		}
 		
