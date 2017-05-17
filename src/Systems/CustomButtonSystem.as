@@ -200,7 +200,7 @@ package Systems
 					}
 				}
 				
-				if (_systemMap["AUDIO"].GetViewer(key) != null)
+				else if (_systemMap["AUDIO"].GetViewer(key) != null)
 				{
 					
 					if (_systemMap["AUDIO"].GetViewer(key).Type == "MP3")
@@ -227,7 +227,7 @@ package Systems
 					}
 				}
 				
-				if (_systemMap["TEXT"].GetViewer(key) != null)
+				else if (_systemMap["TEXT"].GetViewer(key) != null)
 				{
 					if (_systemMap["TEXT"].GetViewer(key).visible)
 					{
@@ -278,7 +278,7 @@ package Systems
 					}
 				}
 				
-				if (_systemMap["VIDEO"].GetViewer(key) != null)
+				else if (_systemMap["VIDEO"].GetViewer(key) != null)
 				{
 					if (_systemMap["VIDEO"].GetViewer(key).visible)
 					{
@@ -290,7 +290,7 @@ package Systems
 					}
 				}
 				
-				if (_systemMap["WEB"].GetViewer(key) != null)
+				else if (_systemMap["WEB"].GetViewer(key) != null)
 				{
 					if (_systemMap["WEB"].GetViewer(key).visible)
 					{

@@ -1,6 +1,7 @@
 package Systems
 {
 	import Components.Audio;
+	import Components.TextBox;
 	import com.gestureworks.cml.elements.Image;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.TouchEvent;
@@ -96,6 +97,10 @@ package Systems
 			if (component.parent is Audio)
 			{
 				Audio(component.parent).Stop();
+			}
+			if (component is TextBox)
+			{
+				TextBox(component).Kill();
 			}
 		}
 		
