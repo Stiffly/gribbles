@@ -77,6 +77,8 @@ package Systems
 				if (av.Type == "MP3")
 				{
 					var mp3:MP3Player = av.GetAudioViewer();
+					mp3.maxScale = 2;
+					mp3.minScale = 0.5;
 					addInfoPanel(mp3, content.slice(0, index), content.slice(index + 1, content.length), 12);
 					addFrame(mp3);
 					addViewerMenu(mp3, true, true, true, true);
@@ -88,6 +90,8 @@ package Systems
 				else if (av.Type == "WAV")
 				{
 					var wav:WAVPlayer = av.GetAudioViewer();
+					wav.maxScale = 2;
+					wav.minScale = 0.5;
 					addInfoPanel(wav, content.slice(0, index), content.slice(index + 1, content.length), 12);
 					addFrame(wav);
 					addViewerMenu(wav, true, true, true, true);
