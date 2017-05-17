@@ -27,7 +27,6 @@ package Systems
 		public function VideoSystem()
 		{
 			super();
-		
 		}
 		
 		public function Load(key:String):void
@@ -114,8 +113,6 @@ package Systems
 				{
 					return;
 				}
-				
-				
 			}
 		}
 	}

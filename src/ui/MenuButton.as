@@ -22,7 +22,7 @@ package ui
 			btnUpBg.shape = "circle";
 			btnUpBg.alpha = 1;
 			btnUpBg.radius = 20;
-			btnUpBg.lineStroke = 1.5;		
+			btnUpBg.lineStroke = 1.5;
 			btnUp.addChild(btnUpBg);
 			
 			var btnUpIcon:Sprite = new btnClass();
@@ -76,7 +76,7 @@ package ui
 			down = type + "-down";
 			hit = type + "-hit";
 			
-			dispatch = "down:" + type;
+			dispatch = "up:" + type;
 		}	
 		
 		override public function init():void {
