@@ -159,9 +159,17 @@ package Systems
 		protected function addViewerMenu(component:Component, close:Boolean, info:Boolean, play:Boolean, pause:Boolean):ViewerMenu
 		{
 			var menu:ViewerMenu = new ViewerMenu(info, close, play, pause);
-			menu.y = 5;
-			menu.paddingLeft = component.width - menu.numChildren * 2 * (20 + 3); // 20 + 3 is radius + linestroke in "menubutton.as"
-			menu.paddingRight = 10;
+			if (close && !info && !play && !pause)
+			{
+				menu.y = -30;
+				menu.paddingLeft = component.width - 10;
+			}
+			else 
+			{
+				menu.y = 5;
+				menu.paddingLeft = component.width - menu.numChildren * 2 * (20 + 3); // 20 + 3 is radius + linestroke in "menubutton.as"
+				menu.paddingRight = 10;
+			}
 			menu.autohide = false;
 			menu.visible = true;
 			component.addChild(menu);

@@ -70,5 +70,4 @@ package ui
 			}
 		}
 	}
-
 }
