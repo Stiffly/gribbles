@@ -29,7 +29,7 @@ package Systems
 		
 		override public function Init():void
 		{
-			_PDFViewer = createViewer(new HTMLViewer(), 0, 0, 600, 500) as HTMLViewer;
+			_PDFViewer = createViewer(new HTMLViewer(), 0, 0, 700, 800) as HTMLViewer;
 			_PDFViewer.targetParent = true;
 			_PDFViewer.mouseChildren = true;
 			_PDFViewer.clusterBubbling = true;
@@ -43,8 +43,8 @@ package Systems
 			
 			var PDF:HTML = new HTML();
 			
-			PDF.width = 700;
-			PDF.height = 800;
+			PDF.width = _PDFViewer.width;
+			PDF.height = _PDFViewer.height;
 			var pdfWidth:String = PDF.width.toString();
 			var pdfHeight:String = PDF.height.toString();
 			
