@@ -19,7 +19,6 @@ package Systems
 	import com.gestureworks.cml.components.Component;
 	import com.gestureworks.cml.elements.Graphic;
 	import com.gestureworks.cml.elements.TouchContainer;
-	import com.gestureworks.cml.utils.DisplayUtils;
 	import com.gestureworks.cml.components.HTMLViewer;
 	import com.gestureworks.cml.components.MP3Player;
 	import com.gestureworks.cml.components.VideoViewer;
@@ -314,6 +313,18 @@ package Systems
 					else if (!_systemMap["WEB"].GetViewer(key).visible)
 					{
 						showComponent((stage.stageWidth >> 1) - (_systemMap["WEB"].GetViewer(key).width >> 1), (stage.stageHeight >> 1) - (_systemMap["WEB"].GetViewer(key).height >> 1), _systemMap["WEB"].GetViewer(key));
+					}
+				}
+				
+				else if (_systemMap["PDF"].GetViewer(key) != null)
+				{
+					if (_systemMap["PDF"].GetViewer(key).visible)
+					{
+						hideComponent(_systemMap["PDF"].GetViewer(key));
+					}
+					else if (!_systemMap["PDF"].GetViewer(key).visible)
+					{
+						_systemMap["PDF"].ShowComponent((stage.stageWidth >> 1) - (_systemMap["PDF"].GetViewer(key).width >> 1), (stage.stageHeight >> 1) - (_systemMap["PDF"].GetViewer(key).height >> 1), _systemMap["PDF"].GetViewer(key));
 					}
 				}
 			}

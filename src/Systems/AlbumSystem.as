@@ -11,7 +11,6 @@ package Systems
 	import flash.events.Event;
 	import com.gestureworks.cml.events.StateEvent;
 	import com.gestureworks.cml.elements.Button;
-	import com.gestureworks.cml.utils.DisplayUtils;
 	import util.TextContent;
 	
 	/**
@@ -145,7 +144,7 @@ package Systems
 				addFrame(iv);
 				addViewerMenu(iv, true, true, false, false);
 				_imageMap[key] = iv;
-				DisplayUtils.initAll(iv);
+				recursiveInit(iv);
 				hideComponent(iv);
 			}
 		}
@@ -182,7 +181,7 @@ package Systems
 						av.addChild(g);
 					}
 					UpdateIndexCircles();
-					DisplayUtils.initAll(av);
+					recursiveInit(av);
 					_albumMap[key] = av;
 					hideComponent(av);
 					_i = 0;

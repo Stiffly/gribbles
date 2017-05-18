@@ -1,9 +1,10 @@
 package Systems 
 {
+	import com.gestureworks.cml.components.Component;
 	import com.gestureworks.cml.components.HTMLViewer;
 	import com.gestureworks.cml.elements.HTML;
 	import flash.net.URLLoader;
-	import com.gestureworks.cml.utils.DisplayUtils;
+	import Events.PDFEvent;
 	/**
 	 * ...
 	 * @author Adam
@@ -39,7 +40,7 @@ package Systems
 				
 				addChild(pdfViewer);
 				setChildIndex(pdfViewer, 0);
-				
+				stage.addEventListener(PDFEvent.PDFLoaded, OnPDFLoaded);
 				// Loading an image through image element
 				
 				var PDF:HTML = new HTML();
@@ -64,11 +65,43 @@ package Systems
 				addTouchContainer(pdfViewer);
 				addViewerMenu(pdfViewer, true, false, false, false);
 				
-				hideComponent(pdfViewer);
-				
 				_pdfMap[key] = pdfViewer;
-				DisplayUtils.initAll(pdfViewer);
+				recursiveInit(pdfViewer);
 			}
+		}
+		
+		private function OnPDFLoaded(e:PDFEvent):void 
+		{
+			for each (var value:HTMLViewer in _pdfMap)
+			{
+				hideComponent(value);
+			}
+		}
+		
+		public function GetViewer(key:String):Component
+		{
+			if (_pdfMap[key] != null)
+			{
+				return _pdfMap[key];
+			}
+			return null;
+		}
+		
+		protected override function hideComponent(component:Component):void
+		{
+			// "Hide" the component
+			component.x = 13337;
+			component.y = 13337;
+			component.visible = false;
+		}
+		
+		public function ShowComponent(x:int, y:int, component:Component):void
+		{
+			component.x = ((stage.stageWidth - component.width) >> 1);
+			component.y = ((stage.stageHeight - component.height) >> 1);
+			component.visible = true;
+			setChildIndex(component, numChildren - 1);
+			bringToFront(component);
 		}
 	}
 }

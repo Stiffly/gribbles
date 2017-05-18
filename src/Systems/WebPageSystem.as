@@ -11,7 +11,6 @@ package Systems
 	import flash.net.URLRequest;
 	import flash.events.Event;
 	import flash.events.LocationChangeEvent;
-	import com.gestureworks.cml.utils.DisplayUtils;
 	
 	/**
 	 * ...
@@ -98,7 +97,7 @@ package Systems
 				
 				addChild(htmlViewer);
 				// Initialize all of its elements
-				DisplayUtils.initAll(htmlViewer);
+				recursiveInit(htmlViewer);
 			}
 		}
 		

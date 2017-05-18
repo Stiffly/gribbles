@@ -278,5 +278,15 @@ package Systems
 		{
 			return Geometry.GET_LINE(color, startX, startY, goalX, goalY, lineWidth, alpha);
 		}
+		
+		protected function bringToFront(object:*):void
+		{
+			LayerHandler.BRING_TO_FRONT(object);
+		}
+		
+		protected function recursiveInit(component:*):void
+		{
+			DisplayUtils.initAll(component);
+		}
 	}
 }

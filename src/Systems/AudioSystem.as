@@ -8,7 +8,6 @@ package Systems
 	import flash.events.Event;
 	import com.gestureworks.cml.events.StateEvent;
 	import com.gestureworks.cml.elements.Button;
-	import com.gestureworks.cml.utils.DisplayUtils;
 	import Components.Audio;
 	import com.gestureworks.cml.components.MP3Player;
 	import com.gestureworks.cml.components.WAVPlayer;
@@ -84,7 +83,7 @@ package Systems
 					addViewerMenu(mp3, true, true, true, true);
 					//addTouchContainer(mp3);
 					_audioMap[key] = av;
-					DisplayUtils.initAll(av);
+					recursiveInit(av);
 					hideComponent(av._mp3Viewer);
 				}
 				else if (av.Type == "WAV")
@@ -97,7 +96,7 @@ package Systems
 					addViewerMenu(wav, true, true, true, true);
 					//addTouchContainer(wav);
 					_audioMap[key] = av;
-					DisplayUtils.initAll(av);
+					recursiveInit(av);
 					hideComponent(av._wavViewer);
 				}
 			}

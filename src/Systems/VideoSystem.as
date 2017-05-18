@@ -11,7 +11,6 @@ package Systems
 	import flash.events.Event;
 	import com.gestureworks.cml.events.StateEvent;
 	import com.gestureworks.cml.elements.Button;
-	import com.gestureworks.cml.utils.DisplayUtils;
 	import util.TextContent;
 	
 	/**
@@ -67,7 +66,7 @@ package Systems
 				addFrame(vv);
 				addViewerMenu(vv, true, true, true, true);
 				_videoMap[key] = vv;
-				DisplayUtils.initAll(vv);
+				recursiveInit(vv);
 				hideComponent(vv);
 			}
 		}

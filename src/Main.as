@@ -1,6 +1,9 @@
 package
 {
 	import Components.TextBox;
+	import Events.PDFEvent;
+	import com.gestureworks.cml.elements.Container;
+	import com.gestureworks.cml.elements.Text;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.utils.getTimer;
@@ -25,6 +28,7 @@ package
 	import Systems.WaterSystem;
 	import Systems.CustomButtonSystem;
 	import Events.MenuEvent;
+	import util.LayerHandler;
 	
 	/**
 	 * Main
@@ -64,7 +68,7 @@ package
 		private var _systemsAreInitiated:Boolean = false;
 		private var _PDFLoaded:Boolean = false;
 		
-		private var _tutorialBox:TextBox = null;
+		private var _tutorialBox:Container = null;
 		
 		public function Main()
 		{
@@ -98,7 +102,7 @@ package
 			// Create a button for switching to mainapp
 			createMiddleButton();
 			// Create a button for switching to screensaver
-			//createBackButton();
+			createBackButton();
 			
 			addChildAt(_loaderImage, numChildren - 1);
 			
@@ -130,16 +134,28 @@ package
 			_backgroundImage.visible = false;
 			addChildAt(_backgroundImage, 0);
 			
-			_tutorialBox = new TextBox(new TextContent("Välkommen", "Utforska skeppsvraket på botten"), 15, .0, 10, "center");
+			_tutorialBox = new Container();
+			_tutorialBox.width = 500;
+			_tutorialBox.height = 500;
 			
-			_tutorialBox.width = 1000;
-			_tutorialBox.x = stage.stageWidth / 2 - _tutorialBox.width / 2;
-			_tutorialBox.y = stage.stageHeight / 2 - _tutorialBox.height / 2;
-			_tutorialBox.nativeTransform = true;
-			_tutorialBox.clusterBubbling = true;
-			_tutorialBox.mouseChildren = true;
+			var g:Graphic = new Graphic();
+			g.shape = "rectangle";
+			g.width = _tutorialBox.width;
+			g.height = _tutorialBox.height;
+			_tutorialBox.addChild(g);
+			
+			var textBox:TextBox = new TextBox(new TextContent("Välkommen", "Utforska skeppsvraket på botten\n\nHåll utkik efter ikonerna nedan som står för information, play/spela, pausa och stäng i den ordningen."), 0, .0, 10, "center");
+			textBox.width =  _tutorialBox.width;
+			_tutorialBox.addChild(textBox);
+			
+			var ippc:Image = new Image();
+			ippc.open("images/buttons/ippc.png");
+			ippc.width = 200;
+			ippc.x = _tutorialBox.width / 2 - ippc.width / 2;
+			ippc.y = 200;
+			_tutorialBox.addChild(ippc);
 			DisplayUtils.initAll(_tutorialBox);
-			addChildAt(_tutorialBox, numChildren - 1);
+			addChild(_tutorialBox);
 			
 			// Hide mouse
 			//Mouse.hide();
@@ -167,7 +183,13 @@ package
 				switch (_currentState)
 				{
 				case State.MAINAPP: 
-					_tutorialBox.Update();
+					for each (var child:* in _tutorialBox.childList)
+					{
+						if (child is TextBox)
+						{
+							child.Update();
+						}
+					}
 					for each (var s:System in _systems)
 						s.Update();
 					break;
@@ -187,8 +209,9 @@ package
 				{
 					sy.Hide();
 					_loaderImage.visible = false;
-					_PDFLoaded = true;s
+					_PDFLoaded = true;
 					switchToScreenSaver();
+					stage.dispatchEvent(new PDFEvent(PDFEvent.PDFLoaded));
 					// Do not update systems until they're all initiated
 					_systemsAreInitiated = true;
 				}
@@ -254,12 +277,20 @@ package
 			{
 				s.Activate();
 			}
+			for each (var child:* in _tutorialBox.childList)
+			{
+				if (child is TextBox)
+				{
+					child.Rebirth();
+				}
+			}
 			
-			_tutorialBox.Rebirth();
 			_tutorialBox.x = stage.stageWidth / 2 - _tutorialBox.width / 2;
 			_tutorialBox.y = stage.stageHeight / 2 - _tutorialBox.height / 2;
 			_tutorialBox.visible = true;
-			setChildIndex(_tutorialBox, numChildren - 1);
+			LayerHandler.BRING_TO_FRONT(_tutorialBox);
+			
+			//setChildIndex(_textBox, numChildren - 1);
 			_backgroundImage.visible = true;
 			_currentState = State.MAINAPP;
 			_mainButton.visible = false;
@@ -335,7 +366,13 @@ package
 			if (_currentState == State.MAINAPP)
 			{
 				_idleStart = getTimer();
-				_tutorialBox.Kill();
+				for each (var child:* in _tutorialBox.childList)
+				{
+					if (child is TextBox)
+					{
+						child.Kill();
+					}
+				}
 				_tutorialBox.visible = false;
 			}
 		}
