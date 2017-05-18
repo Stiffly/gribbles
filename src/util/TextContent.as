@@ -18,24 +18,22 @@ package util
 	
 	final public class TextContent
 	{
-		public function TextContent(t:String, d:String)  { title = t; description = d; }
-		;
+		public function TextContent(t:String, d:String)  { title = t; description = d; };
 		public var title:String;
 		public var description:String;
 		
-		static public function CREATE_DESCRIPTION(content:TextContent, width:uint, height:uint, alpha:Number, padding:Number = 30, fontSize:Number = 20):TouchContainer
+		static public function CREATE_DESCRIPTION(content:TextContent, width:uint, height:uint, alpha:Number, padding:Number = 30, fontSize:Number = 16):TouchContainer
 		{
 			var tc:TouchContainer = new TouchContainer();
 			tc.width = width;
 			tc.height = height;
-			tc.alpha = alpha;
 			
 			var g:Graphic = new Graphic();
 			g.shape = "rectangle";
-			//g.color = 0x15B011;
-			g.color = 0x555555;
+			g.color = 0x665533;
 			g.width = tc.width;
 			g.height = tc.height;
+			g.fillAlpha = alpha;
 			g.alpha = alpha;
 			tc.addChild(g);
 			

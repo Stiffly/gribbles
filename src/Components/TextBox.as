@@ -47,12 +47,15 @@ package Components
 		private var _gettingText:Boolean = true;
 		// Used to keep the textboxes inside the stage screen
 		private var _frameWidth:uint = 0;
+		// Decides if the text will allign to the center, left or right
+		private var _allign:String = "";
 		
 		public var _Line:Graphic = new Graphic();
 		
-		public function TextBox(content:TextContent, frameWidth:uint, updateFrequenzy:Number = .2, lifeTime:Number = 10)
+		public function TextBox(content:TextContent, frameWidth:uint, updateFrequenzy:Number = .2, lifeTime:Number = 10, textAllign:String = "left")
 		{
 			_title = new Text();
+			_allign = textAllign;
 			_title.text = content.title;
 			_currentDescription = new Text();
 			_description = content.description;
@@ -67,7 +70,7 @@ package Components
 		{
 			// Initiates the textbox, with font, size etc.
 			var padding:Number = 5;
-			var textHeight:Number = 4 * padding + getTextHeightInPixels(_title.text, padding, 30) + getTextHeightInPixels(_description, padding, 20) + 20;
+			var textHeight:Number = 4 * padding + getTextHeightInPixels(_title.text, padding, 30) + getTextHeightInPixels(_description, padding, 16) + 20;
 			this.height = textHeight;
 			var tc:TouchContainer = createDescription(new TextContent(_title.text, _currentDescription.text), this.width, this.height, .8, padding);
 			this.addChild(tc);
@@ -212,7 +215,7 @@ package Components
 			
 			var t:Text = new Text();
 			t.text = content.title;
-			t.fontSize = 30;
+			t.fontSize = 26;
 			t.color = 0xFFFFFF;
 			t.font = "Arial";
 			t.autosize = true;
@@ -220,18 +223,18 @@ package Components
 			t.multiline = true;
 			t.width = c.width;
 			t.wordWrap = true;
-			t.textAlign = "center";
+			t.textAlign = _allign;
 			c.addChild(t);
 			
 			_currentDescription.str = content.description;
-			_currentDescription.fontSize = 20;
+			_currentDescription.fontSize = 16;
 			_currentDescription.color = 0xFFFFFF;
 			_currentDescription.font = "Arial";
 			_currentDescription.wordWrap = true;
 			_currentDescription.autosize = true;
 			_currentDescription.multiline = true;
 			_currentDescription.width = c.width;
-			_currentDescription.textAlign = "center";
+			_currentDescription.textAlign = _allign;
 			c.addChild(_currentDescription);
 			
 			DisplayUtils.initAll(tc);

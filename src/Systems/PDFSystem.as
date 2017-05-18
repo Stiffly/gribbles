@@ -64,6 +64,8 @@ package Systems
 				addTouchContainer(pdfViewer);
 				addViewerMenu(pdfViewer, true, false, false, false);
 				
+				hideComponent(pdfViewer);
+				
 				_pdfMap[key] = pdfViewer;
 				DisplayUtils.initAll(pdfViewer);
 			}

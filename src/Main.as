@@ -130,7 +130,7 @@ package
 			_backgroundImage.visible = false;
 			addChildAt(_backgroundImage, 0);
 			
-			_tutorialBox = new TextBox(new TextContent("Välkommen", "Utforska skeppsvraket på botten"), 15, .0);
+			_tutorialBox = new TextBox(new TextContent("Välkommen", "Utforska skeppsvraket på botten"), 15, .0, 10, "center");
 			
 			_tutorialBox.width = 1000;
 			_tutorialBox.x = stage.stageWidth / 2 - _tutorialBox.width / 2;

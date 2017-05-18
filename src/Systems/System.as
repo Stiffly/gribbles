@@ -2,6 +2,7 @@ package Systems
 {
 	import Components.Audio;
 	import Components.TextBox;
+	import com.gestureworks.cml.elements.Album;
 	import com.gestureworks.cml.elements.Image;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.TouchEvent;
@@ -72,6 +73,10 @@ package Systems
 			component.touchEnabled = true;
 			component.scale = 1.0;
 			component.x = x;
+			if (component.back)
+			{
+				component.back.visible = false;
+			}
 			component.y = y;
 			component.rotation = 1;
 			LayerHandler.BRING_TO_FRONT(component);
@@ -181,7 +186,7 @@ package Systems
 			return menu;
 		}
 		
-		protected function addInfoPanel(component:Component, title:String, descr:String, descriptionfontSize:Number = 20):InfoPanel
+		protected function addInfoPanel(component:*, title:String, descr:String, descriptionfontSize:Number = 16):InfoPanel
 		{
 			var infoPanel:InfoPanel = new InfoPanel(descriptionfontSize);
 			infoPanel.bkgColor = 0x665533;

@@ -75,7 +75,6 @@ package Systems
 			var back:Album = new Album();
 			back.id = "back";
 			back.loop = true;
-			back.alpha = .4;
 			back.horizontal = true;
 			back.touchEnabled = false;
 			back.margin = 8;
@@ -142,7 +141,7 @@ package Systems
 			{
 				var content:String = URLLoader(event.currentTarget).data;
 				var index:int = content.search("\n");
-				addInfoPanel(iv, content.slice(0, index), content.slice(index + 1, content.length), 12);
+				addInfoPanel(iv, content.slice(0, index), content.slice(index + 1, content.length), 16);
 				addFrame(iv);
 				addViewerMenu(iv, true, true, false, false);
 				_imageMap[key] = iv;
@@ -161,7 +160,7 @@ package Systems
 				var content:String = URLLoader(event.currentTarget).data;
 				// Finds the first newline and creates a text content that is used for the description
 				var index:int = content.search("\n");
-				back.addChild(TextContent.CREATE_DESCRIPTION(new TextContent(content.slice(0, index), content.slice(index + 1, content.length)), av.width, av.height, 1, 30, 12));
+				back.addChild(TextContent.CREATE_DESCRIPTION(new TextContent(content.slice(0, index), content.slice(index + 1, content.length)), av.width, av.height, 0.1, 15, 16));
 				// This is true when all of the description files are loaded
 				if (_numChildren[key] == _i)
 				{
@@ -170,7 +169,6 @@ package Systems
 					av.back = back;
 					av.addChild(front);
 					av.addChild(back);
-					av.affineTransform = true;
 					addFrame(av);
 					addViewerMenu(av, true, true, false, false);
 					addButtons(av);

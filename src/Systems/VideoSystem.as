@@ -63,7 +63,7 @@ package Systems
 			{
 				var content:String = URLLoader(event.currentTarget).data;
 				var index:int = content.search("\n");
-				addInfoPanel(vv, content.slice(0, index), content.slice(index + 1, content.length), 12);
+				addInfoPanel(vv, content.slice(0, index), content.slice(index + 1, content.length), 16);
 				addFrame(vv);
 				addViewerMenu(vv, true, true, true, true);
 				_videoMap[key] = vv;
