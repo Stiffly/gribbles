@@ -159,7 +159,7 @@ package Systems
 				var content:String = URLLoader(event.currentTarget).data;
 				// Finds the first newline and creates a text content that is used for the description
 				var index:int = content.search("\n");
-				back.addChild(TextContent.CREATE_DESCRIPTION(new TextContent(content.slice(0, index), content.slice(index + 1, content.length)), av.width, av.height, 0.1, 15, 16));
+				back.addChild(TextContent.CREATE_DESCRIPTION(new TextContent(content.slice(0, index), content.slice(index + 1, content.length)), av.width, av.height, 0.1, 15));
 				// This is true when all of the description files are loaded
 				if (_numChildren[key] == _i)
 				{
@@ -180,9 +180,9 @@ package Systems
 						_indexCircles[key].push(g);
 						av.addChild(g);
 					}
-					UpdateIndexCircles();
 					recursiveInit(av);
 					_albumMap[key] = av;
+					UpdateIndexCircles();
 					hideComponent(av);
 					_i = 0;
 					return;
@@ -264,7 +264,7 @@ package Systems
 			}
 		}
 		
-		private function UpdateIndexCircles():void 
+		private function UpdateIndexCircles():void
 		{
 			// For all parent folders...
 			for (var key:String in _indexCircles)
@@ -277,11 +277,10 @@ package Systems
 					circle.color = 0x999999;
 				}
 				_indexCircles[key][_albumMap[key].front.currentIndex].color = 0x000000;
-				
 			}
 		}
 		
-		override public function Activate():void 
+		override public function Activate():void
 		{
 			
 		}

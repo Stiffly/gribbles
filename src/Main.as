@@ -117,7 +117,6 @@ package
 			_screenSaver.Deactivate();
 		}
 		
-		
 		override protected function gestureworksInit():void
 		{
 			trace("Gestureworks initiated");
@@ -134,28 +133,7 @@ package
 			_backgroundImage.visible = false;
 			addChildAt(_backgroundImage, 0);
 			
-			_tutorialBox = new Container();
-			_tutorialBox.width = 500;
-			_tutorialBox.height = 500;
-			
-			var g:Graphic = new Graphic();
-			g.shape = "rectangle";
-			g.width = _tutorialBox.width;
-			g.height = _tutorialBox.height;
-			_tutorialBox.addChild(g);
-			
-			var textBox:TextBox = new TextBox(new TextContent("Välkommen", "Utforska skeppsvraket på botten\n\nHåll utkik efter ikonerna nedan som står för information, play/spela, pausa och stäng i den ordningen."), 0, .0, 10, "center");
-			textBox.width =  _tutorialBox.width;
-			_tutorialBox.addChild(textBox);
-			
-			var ippc:Image = new Image();
-			ippc.open("images/buttons/ippc.png");
-			ippc.width = 200;
-			ippc.x = _tutorialBox.width / 2 - ippc.width / 2;
-			ippc.y = 200;
-			_tutorialBox.addChild(ippc);
-			DisplayUtils.initAll(_tutorialBox);
-			addChild(_tutorialBox);
+			createTutorialBox();
 			
 			// Hide mouse
 			//Mouse.hide();
@@ -167,6 +145,124 @@ package
 			_elapsedTimeText.y = 10;
 		}
 		
+		private function createTutorialBox():void
+		{
+			_tutorialBox = new Container();
+			_tutorialBox.width = 1000;
+			_tutorialBox.height = 500;
+			
+			var g:Graphic = new Graphic();
+			g.shape = "rectangle";
+			g.width = _tutorialBox.width;
+			g.height = _tutorialBox.height;
+			g.alpha = 0.7;
+			g.color = 0x000000;
+			_tutorialBox.addChild(g);
+			
+			var bigTitle:Text = new Text();
+			bigTitle.text = "Gribshunden (1495)";
+			bigTitle.fontSize = "72";
+			bigTitle.textColor = 0xFFFFFF;
+			bigTitle.height = bigTitle.textHeight;
+			bigTitle.width = bigTitle.textWidth + 3;
+			bigTitle.x = _tutorialBox.width / 2 - bigTitle.width / 2;
+			_tutorialBox.addChild(bigTitle);
+			
+			var textBox:TextBox = new TextBox(new TextContent("", "\nUtforska skeppsvraket på botten.\n\n" + "Håll utkik efter ikonerna nedan som används för att navigera i applikationen\n\n" + "Rör vart som helst på skärmen för att börja."), 0, .0, 999999, "center", 20, 0);
+			textBox.width = _tutorialBox.width;
+			textBox.y = bigTitle.height;
+			_tutorialBox.addChild(textBox);
+			
+			var ci:Container = new Container;
+			ci.width = 150;
+			ci.x = _tutorialBox.width / 2 - ci.width / 2;
+			ci.y = textBox.y + 170;
+			
+			var ii:Image = new Image();
+			ii.open("images/buttons/info.png");
+			ii.width = 50;
+			ii.alpha = 1;
+			ci.addChild(ii);
+			
+			var it:Text = new Text();
+			it.fontSize = 20;
+			it.x = ii.width + 15;
+			it.y = 10;
+			it.text = "Info";
+			it.textColor = 0xFFFFFF;
+			ci.addChild(it);
+			
+			_tutorialBox.addChild(ci);
+			
+			var cpl:Container = new Container;
+			cpl.width = 150;
+			cpl.x = _tutorialBox.width / 2 - cpl.width / 2;
+			cpl.y = ci.y + 50;
+			
+			var pli:Image = new Image();
+			pli.open("images/buttons/play.png");
+			pli.width = 50;
+			pli.alpha = 1;
+			cpl.addChild(pli);
+			
+			var plt:Text = new Text();
+			plt.fontSize = 20;
+			plt.x = pli.width  + 15;
+			plt.y = 10;
+			plt.text = "Play";
+			plt.textColor = 0xFFFFFF;
+			cpl.addChild(plt);
+			
+			_tutorialBox.addChild(cpl);
+			
+			var cpa:Container = new Container;
+			cpa.width = 150;
+			cpa.x = _tutorialBox.width / 2 - cpa.width / 2;
+			cpa.y = cpl.y + 50;
+			
+			var pai:Image = new Image();
+			pai.open("images/buttons/pause.png");
+			pai.width = 50;
+			pai.alpha = 1;
+			cpa.addChild(pai);
+			
+			var pat:Text = new Text();
+			pat.fontSize = 20;
+			pat.y = 10;
+			pat.x = pai.width + 15;
+			pat.text = "Pause";
+			pat.textColor = 0xFFFFFF;
+			cpa.addChild(pat);
+			
+			_tutorialBox.addChild(cpa);
+			
+			var cc:Container = new Container;	
+			cc.width = 150;		
+			cc.x = _tutorialBox.width / 2 - cc.width / 2;
+			cc.y = cpa.y + 50;
+			
+			var cli:Image = new Image();
+			cli.open("images/buttons/close.png");
+			cli.width = 50;
+			cli.alpha = 1;
+			cc.addChild(cli);
+			
+			var ct:Text = new Text();
+			ct.fontSize = 20;
+			ct.font = "Arial";
+			ct.x = cli.width + 15;
+			ct.y = 10;
+			ct.text = "Stäng";
+			ct.textColor = 0xFFFFFF;
+			cc.addChild(ct);
+			
+			_tutorialBox.addChild(cc);
+			
+			
+			DisplayUtils.initAll(_tutorialBox);
+			addChild(_tutorialBox);
+		}
+		
 		private function onEnterFrame(event:Event):void
 		{
 			var updateFreq:int = 1; // Times per second
@@ -176,7 +272,7 @@ package
 			{
 				//_FPSCounter.text = "FPS: " + _passedFrames * updateFreq;
 				_startTime = getTimer();
-				//_passedFrames = 0;
+					//_passedFrames = 0;
 			}
 			if (_systemsAreInitiated)
 			{
@@ -290,7 +386,6 @@ package
 			_tutorialBox.visible = true;
 			LayerHandler.BRING_TO_FRONT(_tutorialBox);
 			
-			//setChildIndex(_textBox, numChildren - 1);
 			_backgroundImage.visible = true;
 			_currentState = State.MAINAPP;
 			_mainButton.visible = false;
@@ -308,6 +403,8 @@ package
 			_backgroundImage.visible = false;
 			_currentState = State.SCREENSAVER;
 			_mainButton.visible = true;
+			
+			_tutorialBox.visible = false;
 			//_backButton.visible = false;
 			setChildIndex(_mainButton, numChildren - 1);
 		}
@@ -336,7 +433,7 @@ package
 			addChild(_mainButton);
 		}
 		
-		private function createBackButton():void 
+		private function createBackButton():void
 		{
 			_backButton = new Button();
 			_backButton.width = 100;
@@ -363,6 +460,10 @@ package
 		
 		private function onInteraction(event:MouseEvent):void
 		{
+			if ((getTimer() - _idleStart) / 1000 < 1)
+			{
+				return;
+			}
 			if (_currentState == State.MAINAPP)
 			{
 				_idleStart = getTimer();

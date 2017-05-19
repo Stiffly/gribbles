@@ -3,6 +3,7 @@ package ui
 	import com.gestureworks.cml.elements.Container;
 	import com.gestureworks.cml.elements.Graphic;
 	import com.gestureworks.cml.elements.Text;
+	import flash.text.AntiAliasType;
 	import util.TextContent;
 	
 	public class InfoPanel extends Container
@@ -65,6 +66,7 @@ package ui
 			if (title)
 			{
 				var t:Text = new Text();
+				t.antiAliasType = AntiAliasType.NORMAL;
 				t.str = title;
 				t.fontSize = tFontSize;
 				t.color = tFontColor;
@@ -78,7 +80,7 @@ package ui
 			{
 				var d:Text = new Text();
 				d.fontSize = dFontSize;
-				
+				d.antiAliasType = AntiAliasType.NORMAL;
 				d.wordWrap = true;
 				d.color = dFontColor;
 				d.widthPercent = 100;

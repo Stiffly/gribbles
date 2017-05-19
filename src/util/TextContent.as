@@ -29,12 +29,11 @@ package util
 			tc.height = height;
 			
 			var g:Graphic = new Graphic();
-			g.shape = "rectangle";
-			g.color = 0x665533;
 			g.width = tc.width;
 			g.height = tc.height;
-			g.fillAlpha = alpha;
-			g.alpha = alpha;
+			g.alpha = 1;
+			g.shape = "rectangle";
+			g.color = 0xFF0000;
 			tc.addChild(g);
 			
 			var c:Container = new Container();

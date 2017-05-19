@@ -142,6 +142,18 @@ package Components
 			}
 		}
 		
+		public function Play():void
+		{
+			if (isMP3())
+			{
+				MP3(_mp3Viewer.getChildAt(0)).play();
+			}
+			else if (isWAV())
+			{
+				WAV(_wavViewer.getChildAt(0)).play();
+			}
+		}
+		
 		private function isMP3():Boolean
 		{
 			return this._type == "MP3";

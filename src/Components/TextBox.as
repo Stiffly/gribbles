@@ -49,11 +49,14 @@ package Components
 		private var _frameWidth:uint = 0;
 		// Decides if the text will allign to the center, left or right
 		private var _allign:String = "";
-		
+		private var _fontSize:int = 0;
 		public var _Line:Graphic = new Graphic();
+		private var _bgAlpha:Number;
 		
-		public function TextBox(content:TextContent, frameWidth:uint, updateFrequenzy:Number = .2, lifeTime:Number = 10, textAllign:String = "left")
+		public function TextBox(content:TextContent, frameWidth:uint, updateFrequenzy:Number = .2, lifeTime:Number = 10, textAllign:String = "left", fontSize:int = 16, bgAlpha:Number = 1)
 		{
+			_fontSize = fontSize;
+			_bgAlpha = bgAlpha;
 			_title = new Text();
 			_allign = textAllign;
 			_title.text = content.title;
@@ -194,14 +197,14 @@ package Components
 			var tc:TouchContainer = new TouchContainer();
 			tc.width = width;
 			tc.height = height;
-			tc.alpha = alpha;
+			//tc.alpha = alpha;
 			
 			var g:Graphic = new Graphic();
 			g.shape = "rectangle";
-			g.color = 0x555555;
+			g.color = 0x000000;
 			g.width = tc.width;
 			g.height = tc.height;
-			g.alpha = alpha;
+			g.alpha = alpha * _bgAlpha;
 			tc.addChild(g);
 			
 			var c:Container = new Container();
@@ -215,7 +218,7 @@ package Components
 			
 			var t:Text = new Text();
 			t.text = content.title;
-			t.fontSize = 26;
+			t.fontSize = _fontSize + 10;
 			t.color = 0xFFFFFF;
 			t.font = "Arial";
 			t.autosize = true;
@@ -227,7 +230,7 @@ package Components
 			c.addChild(t);
 			
 			_currentDescription.str = content.description;
-			_currentDescription.fontSize = 16;
+			_currentDescription.fontSize = _fontSize;
 			_currentDescription.color = 0xFFFFFF;
 			_currentDescription.font = "Arial";
 			_currentDescription.wordWrap = true;

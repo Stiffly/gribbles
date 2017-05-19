@@ -77,6 +77,10 @@ package Systems
 			{
 				component.back.visible = false;
 			}
+			if (component.parent is Audio)
+			{
+				Audio(component.parent).Play();
+			}
 			component.y = y;
 			component.rotation = 1;
 			LayerHandler.BRING_TO_FRONT(component);
@@ -189,7 +193,7 @@ package Systems
 		protected function addInfoPanel(component:*, title:String, descr:String, descriptionfontSize:Number = 16):InfoPanel
 		{
 			var infoPanel:InfoPanel = new InfoPanel(descriptionfontSize);
-			infoPanel.bkgColor = 0x665533;
+			infoPanel.bkgColor = 0x000000;
 			infoPanel.title = title;
 			infoPanel.descr = descr;
 			component.addChild(infoPanel);
