@@ -24,7 +24,6 @@ package Systems
 	import ui.ViewerMenu;
 	import ui.InfoPanel;
 	
-
 	
 	public class System extends GestureWorks
 	{

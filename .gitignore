@@ -6,4 +6,4 @@ swfobject.js
 bin/images/
 bin/videos/
 bin/audio/
-gribbles.swf
+*.swf

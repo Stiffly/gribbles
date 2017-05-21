@@ -18,6 +18,9 @@ package Systems
 	
 	import be.nascom.flash.graphics.Rippler;
 	
+	//for the boid algorithm
+	import Systems.Boid;
+	
 	public class WaterSystem extends Sprite
 	{
 		// Embed an image which will be used as a background
@@ -31,10 +34,13 @@ package Systems
 		// The touch object, in this case the entire screen
 		private var _touchSprite:TouchSprite;
 		
+		//
+		private var _flock:Fishes;
 		// Constructor
 		public function WaterSystem()
 		{
 			super();
+			_flock = new Fishes;
 		}
 		
 		public function Init():void
@@ -55,17 +61,27 @@ package Systems
 			
 			// Make the TouchSprite listen to the TOUCH_MOVE event
 			_touchSprite.addEventListener(TouchEvent.TOUCH_MOVE, handleDrag);
+			_touchSprite.addEventListener(MouseEvent.MOUSE_MOVE, handleMouseMove);
 			
 			_dustEmitter = new DustEmitter(100, stage);
+			
+			//we should implement the boids here
+			_flock.Init(stage);
 		}
 		
 		public function Update():void
 		{
 			_rippler.Update();
 			_dustEmitter.Update();
+			_flock.Update();
 		}
 		
 		private function handleDrag(event:TouchEvent):void
+		{
+			_rippler.drawRipple(event.stageX, event.stageY, 20, 1);
+		}
+		
+		private function handleMouseMove(event:MouseEvent):void
 		{
 			_rippler.drawRipple(event.stageX, event.stageY, 20, 1);
 		}
