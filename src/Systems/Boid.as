@@ -54,13 +54,28 @@ package Systems
 		}
 		
 		public function Update():void
-		{
-			//update shit here
+		{	
+			var pos : Vector2D = this.getPos();
+			
+			if (pos._x > 1920 || pos._y > 1080)
+			{
+				//find vector to point
+				var spawnPoint : Vector2D = new Vector2D(1920 -(Math.random() * 1000), 0);
+				var center : Vector2D = new Vector2D(1920 / 2, 1080 / 2);
+				var dirToCenter : Vector2D = spawnPoint.findVector(center);
+					
+				//respawn boid
+				this.setPos(spawnPoint);
+				this.setDir(dirToCenter);
+			}
+			
+			//temp update head and body
 			this._sprite.x += (_dir._x * _speed);
 			this._sprite.y += (_dir._y * _speed);
 			
 			this._spriteHead.x += (_dir._x * _speed);
 			this._spriteHead.y += (_dir._y * _speed);
+		
 		}
 		
 		public function Render():void 

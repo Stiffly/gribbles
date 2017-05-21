@@ -38,16 +38,10 @@ package Systems
 				
 			}
 			
-			_boids[0].setPos(new Vector2D(200, 200));
-			_boids[1].setPos(new Vector2D(240, 250));
-			_boids[2].setPos(new Vector2D(220, 235));
-			_boids[3].setPos(new Vector2D(300, 300));
-			
-			_boids[0].setDir(_boids[0].getPos().findVector(_boids[1].getPos()));
-			_boids[1].setDir(new Vector2D(0, -1));
-			//_boids[1].setDir(_boids[1].getPos().findVector(_boids[0].getPos()));
-			//_boids[2].setDir(_boids[2].getPos().findVector(_boids[3].getPos()));
-			//_boids[3].setDir(_boids[3].getPos().findVector(_boids[2].getPos()));
+			//_boids[0].setPos(new Vector2D(200, 200));
+			//_boids[1].setPos(new Vector2D(240, 250));
+			//_boids[2].setPos(new Vector2D(220, 235));
+			//_boids[3].setPos(new Vector2D(300, 300));
 		}
 		
 		public function Update():void 
@@ -108,6 +102,7 @@ package Systems
 					{
 						tempBoid = _boids[i].getPos();
 						
+						newAveragePosition = _boids[i].getPos();
 						var boidVec : Vector2D = activeBoid.findVector(tempBoid);
 						var boidLen : Number = boidVec.length();
 						
@@ -139,7 +134,8 @@ package Systems
 					v2 = averageDirection;
 					
 					
-					v3 = newAveragePosition.normalize();
+					//v3 = newAveragePosition.normalize();
+					v3 = newAveragePosition;
 				}
 				
 				totalNewDir = new Vector2D(0, 0);
@@ -148,6 +144,9 @@ package Systems
 				totalNewDir.addition(v1);
 				totalNewDir.addition(v2);
 				totalNewDir.addition(v3);
+				
+				//always steer around center
+				
 				
 				if (totalNewDir._x != 0 && totalNewDir._y != 0)
 				{
