@@ -57,6 +57,7 @@ package Systems
 		{	
 			var pos : Vector2D = this.getPos();
 			
+			//if the fish escapes the sceen it will reset to a random position from above
 			if (pos._x > 1920 || pos._y > 1080)
 			{
 				//find vector to point

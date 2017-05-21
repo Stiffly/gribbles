@@ -35,18 +35,12 @@ package Systems
 			{
 				_boids[i] = new Boid();
 				_boids[i].Init(stage);
-				
 			}
-			
-			//_boids[0].setPos(new Vector2D(200, 200));
-			//_boids[1].setPos(new Vector2D(240, 250));
-			//_boids[2].setPos(new Vector2D(220, 235));
-			//_boids[3].setPos(new Vector2D(300, 300));
 		}
 		
 		public function Update():void 
 		{
-			this.boidsFirstRules();
+			this.boidAlgorithm();
 			
 			var i : uint;
 			for (i = 0; i < _amountOfFish; i++)
@@ -60,7 +54,7 @@ package Systems
 			
 		}
 		
-		public function boidsFirstRules():void 
+		public function boidAlgorithm():void 
 		{
 			var averageSepForce : Vector2D 		= new Vector2D(0, 0);
 			var newAveragePosition : Vector2D 	= new Vector2D(0, 0);
@@ -79,7 +73,6 @@ package Systems
 			boidsKeepDistance = 0;
 			
 			var arrSize : uint;
-			
 			
 			var activeBoid : Vector2D;
 			var tempBoid : Vector2D;
@@ -112,7 +105,6 @@ package Systems
 							newAveragePosition.addition(_boids[i].getPos());
 							averageDirection.addition(_boids[i].getDir());	
 							
-							
 							boidVec = boidVec.normalize();
 							v1.addition(boidVec.rescale((boidLen / _keepdistance) - 1));
 						}
@@ -132,20 +124,15 @@ package Systems
 					//alignment
 					averageDirection.rescale(1/boidsInVisibalDistance);
 					v2 = averageDirection;
-					
-					
-					//v3 = newAveragePosition.normalize();
 					v3 = newAveragePosition;
 				}
-				
 				totalNewDir = new Vector2D(0, 0);
 				totalNewDir.addition(_boids[n].getDir());
 				
+				//add the vectors to the new direction
 				totalNewDir.addition(v1);
 				totalNewDir.addition(v2);
 				totalNewDir.addition(v3);
-				
-				//always steer around center
 				
 				
 				if (totalNewDir._x != 0 && totalNewDir._y != 0)
