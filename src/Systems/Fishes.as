@@ -24,7 +24,7 @@ package Systems
 		
 		public function Init(stage:Stage):void
 		{
-			_viewDistance = 100;
+			_viewDistance = 120;
 			_keepdistance = 50;
 			_amountOfFish = 25;		
 			
@@ -40,7 +40,7 @@ package Systems
 		
 		public function Update():void 
 		{
-			this.boidAlgorithm();
+			this.BoidAlgorithm();
 			
 			var i : uint;
 			for (i = 0; i < _amountOfFish; i++)
@@ -51,10 +51,9 @@ package Systems
 		
 		public function Shutdown():void 
 		{
-			
 		}
 		
-		public function boidAlgorithm():void 
+		private function BoidAlgorithm():void 
 		{
 			var averageSepForce : Vector2D 		= new Vector2D(0, 0);
 			var newAveragePosition : Vector2D 	= new Vector2D(0, 0);
@@ -62,7 +61,7 @@ package Systems
 			var v1 : Vector2D = new Vector2D(0, 0);
 			var v2 : Vector2D = new Vector2D(0, 0);
 			var v3 : Vector2D = new Vector2D(0, 0);
-			
+			var v4 : Vector2D = new Vector2D(0, 0);
 			
 			var totalNewDir : Vector2D			= new Vector2D(0, 0);
 			
@@ -98,6 +97,10 @@ package Systems
 						newAveragePosition = _boids[i].getPos();
 						var boidVec : Vector2D = activeBoid.findVector(tempBoid);
 						var boidLen : Number = boidVec.length();
+						var obsPos : Vector2D = new Vector2D(1920 / 2, 1080 / 2);
+						var obsVec : Vector2D = activeBoid.findVector(obsPos);
+						var obsLen : Number = obsVec.length();
+						var inHood : Number = 0;
 						
 						if (boidLen < _viewDistance)
 						{
@@ -107,12 +110,34 @@ package Systems
 							
 							boidVec = boidVec.normalize();
 							v1.addition(boidVec.rescale((boidLen / _keepdistance) - 1));
+							
+							inHood++;
 						}
+						
+						
+						/*
+						if (obsLen < _viewDistance)
+						{
+							//heavy computation here
+							var obsRad : Number = 1000;
+							var avoidDegree : Number = Math.sqrt(Math.pow(obsLen, 2) - Math.pow(obsRad / 2, 2));
+							avoidDegree /= obsLen;
+							
+							var DirObsAngle : Number = _boids[n].getDir().dot(obsVec);
+							if (DirObsAngle >= avoidDegree)
+							{
+								v4 = obsVec.normalize();
+								var magnifier : Number = ( -1 * avoidDegree * (1 - (obsLen / _viewDistance)));
+								v4 = obsVec.rescale(magnifier);   
+							}
+						}
+						*/
 					}
 				}
 				//end sep
 				if (averageSepForce._x != 0 && averageSepForce._y != 0)
 				{
+					newAveragePosition.rescale(1 / inHood);
 					totalNewDir.addition(activeBoid.findVector(newAveragePosition));
 				}
 				
@@ -130,10 +155,11 @@ package Systems
 				totalNewDir.addition(_boids[n].getDir());
 				
 				//add the vectors to the new direction
+				
 				totalNewDir.addition(v1);
 				totalNewDir.addition(v2);
 				totalNewDir.addition(v3);
-				
+				totalNewDir.addition(v4);
 				
 				if (totalNewDir._x != 0 && totalNewDir._y != 0)
 				{
