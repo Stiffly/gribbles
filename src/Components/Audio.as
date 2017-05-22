@@ -6,6 +6,7 @@ package Components
 	import com.gestureworks.cml.elements.Image;
 	import com.gestureworks.cml.elements.MP3;
 	import com.gestureworks.cml.elements.WAV;
+	import util.FileSystem;
 	
 	/**
 	 * Components.Audio
@@ -112,6 +113,17 @@ package Components
 				mp3.targetParent = true;
 				mp3.mouseChildren = false;
 				_mp3Viewer.addChild(mp3);
+				
+				var imageSource:String = source.toUpperCase().replace(FileSystem.GET_EXTENTION(source).toUpperCase(), "PNG");
+				if (FileSystem.EXISTS(imageSource))
+				{
+					var image:Image = new Image();
+					image.width = _mp3Viewer.width;
+					image.height = _mp3Viewer.height;
+					image.open(imageSource);
+					image.alpha = 0.5;
+					_mp3Viewer.addChild(image);
+				}
 			}
 			else if (_type.toUpperCase() == "WAV")
 			{
@@ -128,6 +140,17 @@ package Components
 				wav.targetParent = true;
 				wav.mouseChildren = false;
 				_wavViewer.addChild(wav);
+				
+				var imageSource:String = source.toUpperCase().replace(FileSystem.GET_EXTENTION(source).toUpperCase(), "PNG");
+				if (FileSystem.EXISTS(imageSource))
+				{
+					var image:Image = new Image();
+					image.width = _wavViewer.width;
+					image.height = _wavViewer.height;
+					image.open(imageSource);
+					image.alpha = 0.5;
+					_wavViewer.addChild(image);
+				}
 			}
 		}
 		
