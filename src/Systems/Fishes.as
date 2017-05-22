@@ -16,7 +16,7 @@ package Systems
 		private var _keepdistance : Number;
 		private var _amountOfFish : int;
 		private var _boids:Vector.<Boid>;
-		
+		private var _enemy : Boid;
 		
 		public function Fishes() 
 		{
@@ -36,6 +36,10 @@ package Systems
 				_boids[i] = new Boid();
 				_boids[i].Init(stage);
 			}
+			_enemy = new Boid();
+			_enemy.Init(stage);
+			_enemy.setRed();
+			_enemy.setSpeed(5);
 		}
 		
 		public function Update():void 
@@ -47,6 +51,7 @@ package Systems
 			{
 				_boids[i].Update();
 			}
+			_enemy.Update();
 		}
 		
 		public function Shutdown():void 
@@ -62,6 +67,8 @@ package Systems
 			var v2 : Vector2D = new Vector2D(0, 0);
 			var v3 : Vector2D = new Vector2D(0, 0);
 			var v4 : Vector2D = new Vector2D(0, 0);
+			var v5 : Vector2D = new Vector2D(0, 0);
+			
 			
 			var totalNewDir : Vector2D			= new Vector2D(0, 0);
 			
@@ -119,7 +126,7 @@ package Systems
 						if (obsLen < _viewDistance)
 						{
 							//heavy computation here
-							var obsRad : Number = 1000;
+							var obsRad : Number = 100;
 							var avoidDegree : Number = Math.sqrt(Math.pow(obsLen, 2) - Math.pow(obsRad / 2, 2));
 							avoidDegree /= obsLen;
 							
@@ -161,6 +168,11 @@ package Systems
 				totalNewDir.addition(v3);
 				totalNewDir.addition(v4);
 				
+				v5 = this.AvoidEnemyBoid(_boids[n]);
+				totalNewDir.addition(v5);
+				
+				
+				
 				if (totalNewDir._x != 0 && totalNewDir._y != 0)
 				{
 					_boids[n].setDir(totalNewDir);
@@ -168,6 +180,43 @@ package Systems
 			}
 			
 		}
+	
+		private function AvoidEnemyBoid(boidToScare:Boid):Vector2D
+		{
+			var avoidVec : Vector2D = new Vector2D(0, 0);
+			
+			//not sure if right way
+			var OtherVec : Vector2D = _enemy.getPos().findVector(boidToScare.getPos());
+			var OtherLen : Number = OtherVec.length();
+			if (OtherLen < _viewDistance)
+			{
+				var constant : Number = OtherLen / _viewDistance;
+				avoidVec = OtherVec.rescale(OtherLen);
+				avoidVec = avoidVec.rescale(constant);
+				
+				var w : Number = 2.0;
+				var speedMod : Number = OtherLen / _viewDistance; 
+				var speed : Number = boidToScare.getSpeed();
+				speed += speedMod;
+				
+				if (3 < speed)
+				{
+					speed = 3;
+				}
+				
+				
+				avoidVec.rescale(w);
+			}
+			else
+			{
+				//no enemies in sight
+				speed = 1;
+			}
+			
+			boidToScare.setSpeed(speed);
+			return avoidVec;
+		}
+		
 	}
 
 }

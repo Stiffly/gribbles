@@ -57,15 +57,29 @@ package Systems
 		{	
 			var pos : Vector2D = this.getPos();
 			
+			var spawnPoint : Vector2D;
+			var center : Vector2D;
+			var dirToCenter : Vector2D;
+			
 			//if the fish escapes the sceen it will reset to a random position from above
 			if (pos._x > 1920 || pos._y > 1080)
 			{
 				//find vector to point
-				var spawnPoint : Vector2D = new Vector2D(1920 -(Math.random() * 1000), 0);
-				var center : Vector2D = new Vector2D(1920 / 2, 1080 / 2);
-				var dirToCenter : Vector2D = spawnPoint.findVector(center);
+				spawnPoint = new Vector2D(1920 -(Math.random() * 1000), 0);
+				center = new Vector2D(1920 / 2, 1080 / 2);
+				dirToCenter = spawnPoint.findVector(center);
 					
 				//respawn boid
+				this.setPos(spawnPoint);
+				this.setDir(dirToCenter);
+			}
+			
+			if (pos._x < -10 || pos._y < -10)
+			{
+				spawnPoint = new Vector2D(1920 -(Math.random() * 1000), 0);
+				center = new Vector2D(1920 / 2, 1080 / 2);
+				dirToCenter = spawnPoint.findVector(center);
+				
 				this.setPos(spawnPoint);
 				this.setDir(dirToCenter);
 			}
@@ -76,7 +90,6 @@ package Systems
 			
 			this._spriteHead.x += (_dir._x * _speed);
 			this._spriteHead.y += (_dir._y * _speed);
-		
 		}
 		
 		public function Render():void 
@@ -116,10 +129,26 @@ package Systems
 			return _dir;
 		}
 		
+		public function getSpeed():Number
+		{
+			return _speed;
+		}
+		
+		public function setSpeed(newSpeed:Number):void 
+		{
+			_speed = newSpeed;
+		}
+		
 		public function spawnAtRandomPoint():void 
 		{
 			_sprite.x = (Math.random() * 1920);
 		    _sprite.y = (Math.random() * 1920);
+		}
+		
+		public function setRed() : void
+		{
+			_sprite.graphics.beginFill(0xFF0000);
+			_sprite.graphics.drawCircle(0, 0, 20);
 		}
 	}
 
