@@ -161,15 +161,21 @@ package Systems
 				totalNewDir = new Vector2D(0, 0);
 				totalNewDir.addition(_boids[n].getDir());
 				
-				//add the vectors to the new direction
-				
-				totalNewDir.addition(v1);
-				totalNewDir.addition(v2);
-				totalNewDir.addition(v3);
-				totalNewDir.addition(v4);
-				
 				v5 = this.AvoidEnemyBoid(_boids[n]);
-				totalNewDir.addition(v5);
+				
+				//add the vectors to the new direction
+				if (_boids[n].isPanic() == false)
+				{
+					totalNewDir.addition(v1);
+					totalNewDir.addition(v2);
+					totalNewDir.addition(v3);
+					totalNewDir.addition(v4);
+				}
+				else
+				{	
+					totalNewDir.addition(v5);
+				}
+				
 				
 				
 				
@@ -184,6 +190,8 @@ package Systems
 		private function AvoidEnemyBoid(boidToScare:Boid):Vector2D
 		{
 			var avoidVec : Vector2D = new Vector2D(0, 0);
+			var fallOffSpeed : Number = boidToScare.getSpeed();
+			var speed : Number = boidToScare.getSpeed();
 			
 			//not sure if right way
 			var OtherVec : Vector2D = _enemy.getPos().findVector(boidToScare.getPos());
@@ -196,21 +204,41 @@ package Systems
 				
 				var w : Number = 2.0;
 				var speedMod : Number = OtherLen / _viewDistance; 
-				var speed : Number = boidToScare.getSpeed();
+				
 				speed += speedMod;
 				
-				if (3 < speed)
+				if (3.0 < speed)
 				{
 					speed = 3;
 				}
 				
 				
 				avoidVec.rescale(w);
+				//switch to panic
+				if (boidToScare.isPanic() == false)
+				{
+					boidToScare.panicSwitch();
+				}
 			}
 			else
 			{
-				//no enemies in sight
-				speed = 1;
+				if (speed <= 3.0 && speed > 1.0)
+				{
+					speed -= speed * 0.01;
+				}
+				else if (speed < 1.0 )
+				{
+					speed = 1.0;
+				}
+				
+				//no panic
+				if (boidToScare.isPanic() == true)
+				{
+					//if not panic
+					
+					
+					boidToScare.panicSwitch();
+				}
 			}
 			
 			boidToScare.setSpeed(speed);

@@ -17,6 +17,7 @@ package Systems
 		
 		private var _sprite:Sprite;
 		private var _spriteHead:Sprite;
+		private var _inPanic : Boolean;
 		
 		public function Boid()
 		{
@@ -49,7 +50,7 @@ package Systems
 			
 			stage.addChild(_sprite);
 			stage.addChild(_spriteHead);
-			
+			_inPanic = false;
 			
 		}
 		
@@ -149,6 +150,16 @@ package Systems
 		{
 			_sprite.graphics.beginFill(0xFF0000);
 			_sprite.graphics.drawCircle(0, 0, 20);
+		}
+		
+		public function panicSwitch() : void
+		{
+			_inPanic = !_inPanic;
+		}
+		
+		public function isPanic() : Boolean
+		{
+			return _inPanic;
 		}
 	}
 
