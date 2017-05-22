@@ -34,10 +34,10 @@ package Systems
 			for (i = 0; i < _amountOfFish; i++)
 			{
 				_boids[i] = new Boid();
-				_boids[i].Init(stage);
+				_boids[i].Init(stage, _viewDistance, false);
 			}
 			_enemy = new Boid();
-			_enemy.Init(stage);
+			_enemy.Init(stage, _viewDistance, true);
 			_enemy.setRed();
 			_enemy.setSpeed(5);
 		}

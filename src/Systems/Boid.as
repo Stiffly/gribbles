@@ -17,7 +17,9 @@ package Systems
 		
 		private var _sprite:Sprite;
 		private var _spriteHead:Sprite;
+		private var _spriteVisDist:Sprite;
 		private var _inPanic : Boolean;
+		private var _showVisDist : Boolean;
 		
 		public function Boid()
 		{
@@ -25,9 +27,11 @@ package Systems
 		}
 		
 		
-		public function Init(stage:Stage):void
+		public function Init(stage:Stage, viewDist : Number, showVisDist : Boolean):void
 		{
 			_speed = 1;
+			_inPanic = false;
+			_showVisDist = showVisDist;
 			
 			_sprite = new Sprite();
 			_sprite.graphics.clear();
@@ -48,10 +52,19 @@ package Systems
 			_spriteHead.y = _sprite.y + (_dir._y * _OFFSET);
 			_spriteHead.graphics.endFill();
 			
+			if (showVisDist == true)
+			{
+				_spriteVisDist = new Sprite();
+				_spriteVisDist.graphics.clear();
+				_spriteVisDist.graphics.beginFill(0x0000CC);
+				_spriteVisDist.graphics.drawCircle(0, 0, viewDist);
+				_spriteVisDist.graphics.endFill();
+				
+				stage.addChild(_spriteVisDist);
+			}
+			
 			stage.addChild(_sprite);
 			stage.addChild(_spriteHead);
-			_inPanic = false;
-			
 		}
 		
 		public function Update():void
@@ -91,6 +104,12 @@ package Systems
 			
 			this._spriteHead.x += (_dir._x * _speed);
 			this._spriteHead.y += (_dir._y * _speed);
+			
+			if (_showVisDist == true)
+			{
+				_spriteVisDist.x = _sprite.x;
+				_spriteVisDist.y = _sprite.y;
+			}
 		}
 		
 		public function Render():void 
@@ -104,6 +123,12 @@ package Systems
 			
 			_spriteHead.x = _sprite.x + (_dir._x * _OFFSET);
 			_spriteHead.y = _sprite.y + (_dir._y * _OFFSET);
+			
+			if (_showVisDist == true)
+			{
+				_spriteVisDist.x = _sprite.x;
+				_spriteVisDist.y = _sprite.y;
+			}
 		}
 		
 		public function setDir(newDir : Vector2D):void 
