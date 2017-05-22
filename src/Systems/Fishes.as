@@ -107,7 +107,6 @@ package Systems
 						var obsPos : Vector2D = new Vector2D(1920 / 2, 1080 / 2);
 						var obsVec : Vector2D = activeBoid.findVector(obsPos);
 						var obsLen : Number = obsVec.length();
-						var inHood : Number = 0;
 						
 						if (boidLen < _viewDistance)
 						{
@@ -118,7 +117,7 @@ package Systems
 							boidVec = boidVec.normalize();
 							v1.addition(boidVec.rescale((boidLen / _keepdistance) - 1));
 							
-							inHood++;
+							boidsInVisibalDistance++;
 						}
 						
 						
@@ -142,21 +141,23 @@ package Systems
 					}
 				}
 				//end sep
+				/*
 				if (averageSepForce._x != 0 && averageSepForce._y != 0)
 				{
 					newAveragePosition.rescale(1 / inHood);
-					v2.addition(activeBoid.findVector(newAveragePosition));
+					v3.addition(activeBoid.findVector(newAveragePosition));
 				}
-				
+				*/
 				if (boidsInVisibalDistance > 0)
 				{
-					//rescale, avg position
-					newAveragePosition.rescale((1 / boidsInVisibalDistance));
+					//rescale, avg direction
+					averageDirection = averageDirection.rescale(1 / boidsInVisibalDistance);
+					v2 = averageDirection;
 					
-					//alignment
-					averageDirection.rescale(1/boidsInVisibalDistance);
-					//v2 = averageDirection;
-					v3 = newAveragePosition;
+					//rescale, avg position
+					newAveragePosition = newAveragePosition.rescale((1 / boidsInVisibalDistance));
+					//find the vector form boid to average point, v3
+					v3.addition(activeBoid.findVector(newAveragePosition));
 				}
 				totalNewDir = new Vector2D(0, 0);
 				totalNewDir.addition(_boids[n].getDir());
@@ -168,7 +169,7 @@ package Systems
 				{
 					totalNewDir.addition(v1);
 					totalNewDir.addition(v2);
-					totalNewDir.addition(v3);
+					//totalNewDir.addition(v3);
 					totalNewDir.addition(v4);
 				}
 				else
