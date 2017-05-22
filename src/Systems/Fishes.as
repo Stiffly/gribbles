@@ -145,7 +145,7 @@ package Systems
 				if (averageSepForce._x != 0 && averageSepForce._y != 0)
 				{
 					newAveragePosition.rescale(1 / inHood);
-					totalNewDir.addition(activeBoid.findVector(newAveragePosition));
+					v2.addition(activeBoid.findVector(newAveragePosition));
 				}
 				
 				if (boidsInVisibalDistance > 0)
@@ -155,7 +155,7 @@ package Systems
 					
 					//alignment
 					averageDirection.rescale(1/boidsInVisibalDistance);
-					v2 = averageDirection;
+					//v2 = averageDirection;
 					v3 = newAveragePosition;
 				}
 				totalNewDir = new Vector2D(0, 0);
