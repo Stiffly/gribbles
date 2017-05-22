@@ -44,5 +44,15 @@ package util
 			var root:File = File.applicationDirectory;
 			return root.resolvePath(file).extension;
 		}
+		
+		static public function EXISTS(file:String):Boolean
+		{
+			var root:File = File.applicationDirectory;
+			if (root.resolvePath(file).exists) 
+			{
+				return true;
+			}
+			return false;
+		}
 	}
 }
