@@ -141,10 +141,10 @@ package Components
 				wav.mouseChildren = false;
 				_wavViewer.addChild(wav);
 				
-				var imageSource:String = source.toUpperCase().replace(FileSystem.GET_EXTENTION(source).toUpperCase(), "PNG");
+				imageSource = source.toUpperCase().replace(FileSystem.GET_EXTENTION(source).toUpperCase(), "PNG");
 				if (FileSystem.EXISTS(imageSource))
 				{
-					var image:Image = new Image();
+					image = new Image();
 					image.width = _wavViewer.width;
 					image.height = _wavViewer.height;
 					image.open(imageSource);
