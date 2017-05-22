@@ -62,6 +62,7 @@ package
 		private var _mainButton:Button;
 		private var _backButton:Button;
 		private var _idleStart:Number = .0;
+		private var _idle:Boolean = true;
 		
 		private var _currentState:String = State.SCREENSAVER;
 		
@@ -312,7 +313,22 @@ package
 					_systemsAreInitiated = true;
 				}
 			}
+			
 			// Idle logic
+			if (_idle && _PDFLoaded && _currentState == State.SCREENSAVER)
+			{
+				if (Math.floor(((getTimer() - _idleStart) / 1000)) % 2 == 0)
+				{
+					_screenSaver.Ripple();
+				}
+			}
+			if (_currentState == State.SCREENSAVER)
+			{
+				if (((getTimer() - _idleStart) / 1000) > 20 && !_idle)
+				{
+					_idle = true;
+				}
+			}
 			if (_currentState == State.MAINAPP)
 			{
 				if (((getTimer() - _idleStart) / 1000) > 60)
@@ -460,6 +476,7 @@ package
 		
 		private function onInteraction(event:MouseEvent):void
 		{
+			_idle = false;
 			if ((getTimer() - _idleStart) / 1000 < 1)
 			{
 				return;

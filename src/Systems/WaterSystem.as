@@ -22,7 +22,7 @@ package Systems
 	public class WaterSystem extends Sprite
 	{
 		// Embed an image which will be used as a background
-		[Embed(source = "../../bin/images/we.jpg")]
+		[Embed(source = "../../bin/images/bottenbild3.png")]
 		private var _sourceImage:Class;
 		
 		private var _dustEmitter:DustEmitter;
@@ -89,6 +89,11 @@ package Systems
 			_rippler = new Rippler(_touchSprite, 20, 10);
 			_touchSprite.visible = true;
 			_dustEmitter.Activate();
+		}
+		
+		public function Ripple():void
+		{
+			_rippler.drawRipple(Math.floor(Math.random() * stage.stageWidth), Math.floor(Math.random() * stage.stageHeight), 20, 1);
 		}
 	}
 }
