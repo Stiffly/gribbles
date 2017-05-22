@@ -49,6 +49,8 @@ package Systems
 				av.clusterBubbling = true;
 				av.width = 500;
 				av.height = 350;
+			
+				
 				av.Open(child);
 				addChild(av);
 				
@@ -78,6 +80,7 @@ package Systems
 					var mp3:MP3Player = av.GetAudioViewer();
 					mp3.maxScale = 2;
 					mp3.minScale = 0.5;
+				
 					addInfoPanel(mp3, content.slice(0, index), content.slice(index + 1, content.length), 16);
 					addFrame(mp3);
 					addViewerMenu(mp3, true, true, true, true);

@@ -3,6 +3,7 @@ package Components
 	import com.gestureworks.cml.components.Component;
 	import com.gestureworks.cml.components.MP3Player;
 	import com.gestureworks.cml.components.WAVPlayer;
+	import com.gestureworks.cml.elements.Image;
 	import com.gestureworks.cml.elements.MP3;
 	import com.gestureworks.cml.elements.WAV;
 	
@@ -134,11 +135,23 @@ package Components
 		{
 			if (isMP3())
 			{
-				MP3(_mp3Viewer.getChildAt(0)).stop();
+				for each (var mp3:* in _mp3Viewer.childList)
+				{
+					if (mp3 is MP3)
+					{
+						MP3(mp3).stop();
+					}
+				}
 			}
 			else if (isWAV())
 			{
-				WAV(_wavViewer.getChildAt(0)).stop();
+				for each (var wav:* in _wavViewer.childList)
+				{
+					if (wav is WAV)
+					{
+						WAV(mp3).stop();
+					}
+				}
 			}
 		}
 		
@@ -146,11 +159,23 @@ package Components
 		{
 			if (isMP3())
 			{
-				MP3(_mp3Viewer.getChildAt(0)).play();
+				for each (var mp3:* in _mp3Viewer.childList)
+				{
+					if (mp3 is MP3)
+					{
+						MP3(mp3).play();
+					}
+				}
 			}
 			else if (isWAV())
 			{
-				WAV(_wavViewer.getChildAt(0)).play();
+				for each (var wav:* in _wavViewer.childList)
+				{
+					if (wav is WAV)
+					{
+						WAV(mp3).play();
+					}
+				}
 			}
 		}
 		
