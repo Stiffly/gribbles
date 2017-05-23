@@ -40,7 +40,7 @@ package Systems
 		
 		public function Update():void 
 		{
-			this.BoidAlgorithm();
+			//this.BoidAlgorithm();
 			
 			var i : uint;
 			for (i = 0; i < _amountOfFish; i++)

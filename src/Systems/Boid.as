@@ -1,10 +1,12 @@
 package Systems 
 {
 	import Systems.Vector2D;
+	import com.leapmotion.leap.Matrix;
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import Math;
+	import flash.geom.Point;
 	import flashx.textLayout.formats.Float;
 	/**
 	 * ...
@@ -39,6 +41,7 @@ package Systems
 		private var _pos:Vector2D;
 		private var _dir:Vector2D;
 		private var _dirVector:Vector.<Vector2D>;
+		private var _distanceVector:Vector.<int>;
 		private var _speed : Number;
 		
 		
@@ -52,6 +55,14 @@ package Systems
 			{
 				_dirVector[n] = new Vector2D(0, 0);
 			}
+			
+			_distanceVector = new Vector.<int>(6);
+			_distanceVector[0] = 20;
+			_distanceVector[1] = 14;
+			_distanceVector[2] = 11;
+			_distanceVector[3] = 20;
+			_distanceVector[4] = 21;
+			_distanceVector[5] = 20;
 		}
 		
 		
@@ -67,7 +78,7 @@ package Systems
 			textureVec[4] = b4BM;
 			textureVec[5] = tailBM;
 			
-			_speed = 1;
+			_speed = 2.1;
 			
 			spawnAtRandomPoint();
 			
@@ -86,8 +97,8 @@ package Systems
 		
 		public function Update():void
 		{	
-			var pos : Vector2D = this.getPos();
-			
+			//var pos : Vector2D = this.getPos();
+			/*
 			//if the fish escapes the sceen it will reset to a random position from above
 			if (_pos._x > 1920 || pos._y > 1080)
 			{
@@ -100,9 +111,9 @@ package Systems
 				this.setPos(spawnPoint);
 				this.setDir(dirToCenter);
 			}
-			
+			*/
 			//temp update head and body
-			//_dir.normalize();
+			_dir = _dir.normalize();
 			this._pos._x += (_dir._x * _speed);
 			this._pos._y += (_dir._y * _speed);
 			
@@ -117,20 +128,27 @@ package Systems
 			var rotation:Number = Math.atan2(_dir._y, _dir._x);
 			var rotToFront:Vector2D = new Vector2D(0,0);
 			var countDown:int = 0;
-			var lastPos:Vector2D = _pos;
+			var lastPos:Vector2D = new Vector2D(0, 0);
+			lastPos._x = _pos._x;
+			lastPos._y = _pos._y;
+			
+			//textureVec[0].x = int(lastPos._x);
+			//textureVec[0].y = int(lastPos._y);
+			
+				
 			for (n = 0; n < textureVec.length; n++ )
 			{
 				rotToFront = _dirVector[countDown];
 				
 				rotation = Math.atan2(rotToFront._y, rotToFront._x);
-				rotation += 1.57079633;
 				
-				textureVec[n].rotation = radianToDegree(rotation);
-				textureVec[n].x = lastPos._x;
-				textureVec[n].y = lastPos._y;
+				rotateAroundPoint(textureVec[n], radianToDegree(rotation));
+				//textureVec[n].rotation = radianToDegree(rotation);
+				textureVec[n].x = lastPos._x - textureVec[n].width/2;
+				textureVec[n].y = lastPos._y + textureVec[n].height;
 				
-				lastPos._x = lastPos._x - (_dirVector[countDown]._x * 3);
-				lastPos._y = lastPos._y - (_dirVector[countDown]._y * 3);
+				lastPos._x = lastPos._x - (_dirVector[countDown]._x * _distanceVector[n] );
+				lastPos._y = lastPos._y - (_dirVector[countDown]._y *_distanceVector[n]);
 				
 				countDown += 4;
 			}
@@ -140,18 +158,36 @@ package Systems
 		{
 		}
 		
+		private function rotateAroundPoint(image:Bitmap,value:Number):void
+		{
+			var center:Point = new Point(image.parent.width / 2, image.parent.height);
+			center = image.parent.localToGlobal(center);
+			center = image.globalToLocal(center);
+			var angle:Number = value;// - image.rotation;
+			var radians:Number = angle * (Math.PI / 180.0);
+			var shiftByX:Number = center.x;
+			var shiftByY:Number = center.y;
+			
+			image.transform.matrix.translate(-shiftByX, -shiftByY);
+			image.transform.matrix.rotate(radians);
+			image.transform.matrix.translate(+shiftByX, +shiftByY);
+			image.transform.matrix.concat(image.transform.matrix);
+			image.rotation = Math.round(image.rotation);
+			
+		}
+		
 		public function setPos(newPos : Vector2D):void
 		{
-			_pos._x = _pos._x + (_dir._x * _OFFSET);
-			_pos._y = _pos._y + (_dir._y * _OFFSET);
+			//_pos._x = _pos._x + (_dir._x * _OFFSET);
+			//_pos._y = _pos._y + (_dir._y * _OFFSET);
 		}
 		
 		public function setDir(newDir : Vector2D):void 
 		{
 			_dir = newDir.normalize();
 			
-			_pos._x = _pos._x + (_dir._x * _OFFSET);
-			_pos._y = _pos._y + (_dir._y * _OFFSET);
+			//_pos._x = _pos._x + (_dir._x * _OFFSET);
+			//_pos._y = _pos._y + (_dir._y * _OFFSET);
 		}
 		
 		public function getPos(): Vector2D
