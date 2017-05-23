@@ -24,11 +24,11 @@ package Systems
 		
 		public function Init(stage:Stage):void
 		{
-			_viewDistance = 150;
+			_viewDistance = 200;
 			_keepdistance = 100;
-			_amountOfFish = 50;		
+			_amountOfFish = 6;		
 			
-			/*
+			
 			_boids = new Vector.<Boid>(_amountOfFish);
 			
 			_boids[0] = new Boid();
@@ -50,11 +50,20 @@ package Systems
 			
 			_boids[3] = new Boid();
 			_boids[3].Init(stage, _viewDistance, false);
-			_boids[3].setPos(new Vector2D(0, 0));
-			_boids[3].setSpeed(0.3);
+			_boids[3].setPos(new Vector2D(845, 450));
+			_boids[3].setSpeed(1.0);
 			
-			*/
+			_boids[4] = new Boid();
+			_boids[4].Init(stage, _viewDistance, false);
+			_boids[4].setPos(new Vector2D(846, 450));
+			_boids[4].setSpeed(1.0);
 			
+			_boids[5] = new Boid();
+			_boids[5].Init(stage, _viewDistance, false);
+			_boids[5].setPos(new Vector2D(847, 450));
+			_boids[5].setSpeed(1.0);
+			
+			/*
 			_boids = new Vector.<Boid>(_amountOfFish);
 			var i:int;
 			for (i = 0; i < _amountOfFish; i++)
@@ -62,7 +71,7 @@ package Systems
 				_boids[i] = new Boid();
 				_boids[i].Init(stage, _viewDistance, false);
 			}
-			
+			*/
 			_enemy = new Boid();
 			_enemy.Init(stage, _viewDistance, false);
 			_enemy.setRed();
@@ -124,17 +133,19 @@ package Systems
 							boidsInVisibalDistance++;
 							
 							averageSpeed += _boids[i].getSpeed();
+							
+							if (boidLen < _keepdistance)
+							{
+								//separation, the closer to a flockmate, the more they are repelled
+								var normVec : Vector2D = boidVec;
+								normVec.multiplyNormVec((boidLen / _keepdistance) - 1);
+								
+								averageSepForce.addition(normVec);
+								boidsKeepDistance++;
+							}
 						}
 						
-						if (boidLen < _keepdistance)
-						{
-							//separation, the closer to a flockmate, the more they are repelled
-							var normVec : Vector2D = boidVec;
-							normVec.multiplyNormVec((boidLen / _keepdistance) - 1);
-							
-							averageSepForce.addition(normVec);
-							boidsKeepDistance++;
-						}
+
 					}
 				}
 				
@@ -152,16 +163,13 @@ package Systems
 					var dirToCenter : Vector2D = _boids[i].getPos().findVector(newAveragePosition);
 					const MIDDLE_OFFSET : int = 7;
 					
-					if (dirToCenter.length() > MIDDLE_OFFSET)
+				
+					_boids[i].increaseDir(dirToCenter);
+					
+					if (boidsKeepDistance > 0)
 					{
-						_boids[i].increaseDir(dirToCenter);
-					
-						if (boidsKeepDistance > 0)
-						{
-							_boids[i].increaseDir(averageSepForce);
-						}
-					}
-					
+						_boids[i].increaseDir(averageSepForce);
+					}					
 				}
 			}
 			
