@@ -43,12 +43,12 @@ package
 	public class Main extends GestureWorksAIR
 	{
 		// Loader image
-		[Embed(source = "../bin/images/loader.png")]
+		[Embed(source = "../bin/images/backgrounds/loader.png")]
 		private var _loaderSource:Class;
 		private var _loaderImage:Sprite;
 		
 		// Background image
-		[Embed(source = "../bin/images/bottenbild2.png")]
+		[Embed(source = "../bin/images/backgrounds/bottenbild2.png")]
 		private var _backgroundSource:Class;
 		private var _backgroundImage:Sprite;
 		
