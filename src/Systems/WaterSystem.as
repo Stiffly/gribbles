@@ -6,9 +6,10 @@ package Systems
 	import flash.events.TouchEvent;
 	
 	import com.gestureworks.core.GestureWorks;
-	import com.gestureworks.core.TouchSprite
+	import com.gestureworks.core.TouchSprite;
 	
 	import be.nascom.flash.graphics.Rippler;
+	import util.LayerHandler;
 	
 	/**
 	 * Systems.WaterSystem
@@ -149,6 +150,7 @@ class DustEmitter extends Sprite
 	}
 }
 
+import util.LayerHandler;
 class Particle extends Sprite
 {
 	private var _dot:Sprite;
@@ -168,7 +170,7 @@ class Particle extends Sprite
 		_stageHeight = stage.stageHeight;
 	}
 	
-	public function Update(x:Number, y:Number):void
+	public function Update(groupVelX:Number, groupVelY:Number):void
 	{
 		if (_dot.x > _stageWidth)
 			_dot.x = 0;
@@ -179,8 +181,8 @@ class Particle extends Sprite
 		else if (_dot.y < 0)
 			_dot.y = _stageHeight;
 		
-		_dot.x += x * Math.random() + Math.random() * 2 - 1;
-		_dot.y += y * Math.random() + Math.random() * 2 - 1;
+		_dot.x += groupVelX * Math.random() + (Math.random() * 2 - 1);
+		_dot.y += groupVelY * Math.random() + (Math.random() * 2 - 1);
 	}
 	
 	public function Deactivate():void
@@ -191,5 +193,6 @@ class Particle extends Sprite
 	public function Activate():void
 	{
 		_dot.visible = true;
+		LayerHandler.BRING_TO_FRONT(_dot);
 	}
 }

@@ -63,6 +63,7 @@ package
 		private var _backButton:Button;
 		private var _idleStart:Number = .0;
 		private var _idle:Boolean = true;
+		private var _letItRip:Boolean = true;
 		
 		private var _currentState:String = State.SCREENSAVER;
 		
@@ -169,7 +170,7 @@ package
 			bigTitle.x = _tutorialBox.width / 2 - bigTitle.width / 2;
 			_tutorialBox.addChild(bigTitle);
 			
-			var textBox:TextBox = new TextBox(new TextContent("", "\nUtforska skeppsvraket på botten.\n\n" + "Håll utkik efter ikonerna nedan som används för att navigera i applikationen\n\n" + "Rör vart som helst på skärmen för att börja."), 0, .0, 999999, "center", 20, 0);
+			var textBox:TextBox = new TextBox(new TextContent("", "\nUtforska skeppsvraket på botten.\n\n" + "Håll utkik efter ikonerna nedan som används för att navigera i applikationen.\n\n" + "Rör vart som helst på skärmen för att börja."), 0, .0, 999999, "center", 20, 0);
 			textBox.width = _tutorialBox.width;
 			textBox.y = bigTitle.height;
 			_tutorialBox.addChild(textBox);
@@ -210,7 +211,7 @@ package
 			plt.fontSize = 20;
 			plt.x = pli.width  + 15;
 			plt.y = 10;
-			plt.text = "Play";
+			plt.text = "Spela";
 			plt.textColor = 0xFFFFFF;
 			cpl.addChild(plt);
 			
@@ -231,7 +232,7 @@ package
 			pat.fontSize = 20;
 			pat.y = 10;
 			pat.x = pai.width + 15;
-			pat.text = "Pause";
+			pat.text = "Paus";
 			pat.textColor = 0xFFFFFF;
 			cpa.addChild(pat);
 			
@@ -258,7 +259,6 @@ package
 			cc.addChild(ct);
 			
 			_tutorialBox.addChild(cc);
-			
 			
 			DisplayUtils.initAll(_tutorialBox);
 			addChild(_tutorialBox);
@@ -317,21 +317,23 @@ package
 			// Idle logic
 			if (_idle && _PDFLoaded && _currentState == State.SCREENSAVER)
 			{
-				if (Math.floor(((getTimer() - _idleStart) / 1000)) % 2 == 0)
+				if (Math.floor(((getTimer() - _idleStart) / 1000)) > 1)
 				{
 					_screenSaver.Ripple();
-				}
+					_idleStart = getTimer();
+				}	
 			}
 			if (_currentState == State.SCREENSAVER)
 			{
-				if (((getTimer() - _idleStart) / 1000) > 20 && !_idle)
+				if (!_idle && ((getTimer() - _idleStart) / 1000) > 10)
 				{
 					_idle = true;
+					_idleStart = getTimer();
 				}
 			}
 			if (_currentState == State.MAINAPP)
 			{
-				if (((getTimer() - _idleStart) / 1000) > 60)
+				if (((getTimer() - _idleStart) / 1000) > 120)
 				{
 					switchToScreenSaver();
 				}
