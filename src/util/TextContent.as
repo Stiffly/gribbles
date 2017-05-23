@@ -31,9 +31,9 @@ package util
 			var g:Graphic = new Graphic();
 			g.width = tc.width;
 			g.height = tc.height;
-			g.alpha = 1;
+			g.alpha = alpha;
 			g.shape = "rectangle";
-			g.color = 0xFF0000;
+			g.color = 0x000000;
 			tc.addChild(g);
 			
 			var c:Container = new Container();

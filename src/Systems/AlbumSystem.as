@@ -80,6 +80,7 @@ package Systems
 			back.clusterBubbling = false;
 			back.visible = false;
 			back.dragGesture = "";
+			back.backgroundAlpha = 0;
 			back.dragAngle = 0;
 			
 			// Add all the children, images etc.
@@ -159,7 +160,7 @@ package Systems
 				var content:String = URLLoader(event.currentTarget).data;
 				// Finds the first newline and creates a text content that is used for the description
 				var index:int = content.search("\n");
-				back.addChild(TextContent.CREATE_DESCRIPTION(new TextContent(content.slice(0, index), content.slice(index + 1, content.length)), av.width, av.height, 0.1, 15));
+				back.addChild(TextContent.CREATE_DESCRIPTION(new TextContent(content.slice(0, index), content.slice(index + 1, content.length)), av.width, av.height, 0.8, 15));
 				// This is true when all of the description files are loaded
 				if (_numChildren[key] == _i)
 				{
