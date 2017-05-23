@@ -66,6 +66,13 @@ package Systems
 			_x -= value._y;
 		}
 		
+		public function dividePoint(value : Number) : void
+		{
+			this._x /= value;
+			this._y /= value;
+		}
+		
+		
 		public function isEqvivalentTo(toComp : Vector2D): Boolean 
 		{
 			var toReturn : Boolean = false;

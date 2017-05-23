@@ -24,10 +24,34 @@ package Systems
 		
 		public function Init(stage:Stage):void
 		{
-			_viewDistance = 300;
-			_keepdistance = 150;
-			_amountOfFish = 25;		
+			_viewDistance = 150;
+			_keepdistance = 50;
+			_amountOfFish = 50;		
+			/*
+			_boids = new Vector.<Boid>(_amountOfFish);
 			
+			_boids[0] = new Boid();
+			_boids[0].Init(stage, _viewDistance, true);
+			_boids[0].setPos(new Vector2D(850, 400));
+			_boids[0].setDir(_boids[0].getPos().findVector(new Vector2D(800, 400)).normalize());
+			_boids[0].setSpeed(1);
+			
+			_boids[1] = new Boid();
+			_boids[1].Init(stage, _viewDistance, false);
+			_boids[1].setPos(new Vector2D(800, 400));
+			_boids[1].setSpeed(1);
+			
+			_boids[2] = new Boid();
+			_boids[2].Init(stage, _viewDistance, false);
+			_boids[2].setPos(new Vector2D(850, 450));
+			_boids[2].setSpeed(1);
+			
+			
+			_boids[3] = new Boid();
+			_boids[3].Init(stage, _viewDistance, false);
+			_boids[3].setPos(new Vector2D(0, 0));
+			_boids[3].setSpeed(1);
+			*/
 			
 			_boids = new Vector.<Boid>(_amountOfFish);
 			var i:int;
@@ -36,16 +60,19 @@ package Systems
 				_boids[i] = new Boid();
 				_boids[i].Init(stage, _viewDistance, false);
 			}
+			
 			_enemy = new Boid();
-			_enemy.Init(stage, _viewDistance, true);
+			_enemy.Init(stage, _viewDistance, false);
 			_enemy.setRed();
-			_enemy.setSpeed(5);
+			_enemy.setSpeed(0);
+			
 		}
 		
 		public function Update():void 
 		{
 			//this.BoidAlgorithm();
 			this.boidsFirstRules();
+			
 			
 			
 			
@@ -64,36 +91,33 @@ package Systems
 		
 		private function boidsFirstRules() : void
 		{
-			var averageSepForce : Vector2D = new Vector2D(0, 0);
-			var newAveragePosition : Vector2D = new Vector2D(0, 0);
-			var averageDirection : Vector2D = new Vector2D(0, 0);
-			var boidsInVisibalDistance : int = 0;
-			var boidsKeepDistance : int = 0;
-			var averageSpeed : Number = 0.0;
-			
 			var i : int;
 			for (i = 0; i < _amountOfFish; i++)
 			{
+				var averageSepForce : Vector2D = new Vector2D(0, 0);
+				var newAveragePosition : Vector2D = new Vector2D(0, 0);
+				var averageDirection : Vector2D = new Vector2D(0, 0);
+				var boidsInVisibalDistance : int = 0;
+				var boidsKeepDistance : int = 0;
+				var averageSpeed : Number = 0.0;
+				
 				//we walk through and process each boid here, different from boidtest
+				newAveragePosition.addition(_boids[i].getPos());
+				
 				var n : int;
 				for (n = 0; n < _amountOfFish; n++)
 				{
 					if (i != n)
 					{
-						//vector from activeBoid to checkingBoid
-						var test : Vector2D = _boids[n].getPos();
-						var test2 : Vector2D = _boids[i].getPos()
-						
-						//var boidVec : Vector2D = _boids[n].getPos().findVector(_boids[i].getPos());
-						var boidVec : Vector2D = test.findVector(test2);
+						var boidVec : Vector2D = _boids[n].getPos().findVector(_boids[i].getPos());
 						var boidLen : Number = boidVec.length();
 						
 						if (boidLen < _viewDistance)
 						{
 							//calculate the avg data for Alignment and cohesion
-							newAveragePosition.addition(_boids[i].getPos());
+							newAveragePosition.addition(_boids[n].getPos());
 							
-							averageDirection.addition(_boids[i].getDir());
+							averageDirection.addition(_boids[n].getDir());
 							
 							boidsInVisibalDistance++;
 							
@@ -106,7 +130,7 @@ package Systems
 							boidVec = boidVec.normalize() 
 							boidVec.rescale((boidLen / _keepdistance) - 1);
 							
-							averageSepForce + boidVec;
+							averageSepForce.addition(boidVec);
 							boidsKeepDistance++;
 						}
 					}
@@ -117,12 +141,17 @@ package Systems
 					//Adjust boid to follow thw flocks average position, cohation
 					if (averageDirection.isEqvivalentTo(_boids[i].getDir()) == false)
 					{
-						averageDirection.rescale(1 / boidsInVisibalDistance);
+						averageDirection = averageDirection.rescale(1 / (boidsInVisibalDistance + 1));
 						
 						_boids[i].increaseDir(averageDirection);
 					}
 					
-					newAveragePosition.rescale(1 / boidsInVisibalDistance);
+					//newAveragePosition = newAveragePosition.rescale(1 / (boidsInVisibalDistance + 1));
+					newAveragePosition.dividePoint(boidsInVisibalDistance + 1);
+					
+					
+					//var activeBoidPos : Vector2D = _boids[i].getPos();
+					//var friendPos : Vector2D = _boids[1].getPos();
 					
 					var dirToCenter : Vector2D = _boids[i].getPos().findVector(newAveragePosition);
 					const MIDDLE_OFFSET : int = 7;
@@ -147,7 +176,7 @@ package Systems
 			
 			
 		}
-		
+		/*
 		private function BoidAlgorithm():void 
 		{
 			var averageSepForce : Vector2D 		= new Vector2D(0, 0);
@@ -210,7 +239,7 @@ package Systems
 						}
 						
 						
-						/*
+						//comment out
 						if (obsLen < _viewDistance)
 						{
 							//heavy computation here
@@ -226,17 +255,17 @@ package Systems
 								v4 = obsVec.rescale(magnifier);   
 							}
 						}
-						*/
+						//comment out end
 					}
 				}
 				//end sep
-				/*
+				//comment out
 				if (averageSepForce._x != 0 && averageSepForce._y != 0)
 				{
 					newAveragePosition.rescale(1 / boidsInVisibalDistance);
 					v3.addition(activeBoid.findVector(newAveragePosition));
 				}
-				*/
+				//comment out end
 				
 				if (boidsInVisibalDistance > 0)
 				{
@@ -277,7 +306,7 @@ package Systems
 			}
 			
 		}
-	
+		*/
 		private function AvoidEnemyBoid(boidToScare:Boid):Vector2D
 		{
 			var avoidVec : Vector2D = new Vector2D(0, 0);
@@ -335,7 +364,6 @@ package Systems
 			boidToScare.setSpeed(speed);
 			return avoidVec;
 		}
-		
 	}
 
 }
