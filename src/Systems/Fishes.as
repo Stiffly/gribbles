@@ -25,8 +25,9 @@ package Systems
 		public function Init(stage:Stage):void
 		{
 			_viewDistance = 150;
-			_keepdistance = 50;
+			_keepdistance = 100;
 			_amountOfFish = 50;		
+			
 			/*
 			_boids = new Vector.<Boid>(_amountOfFish);
 			
@@ -34,23 +35,24 @@ package Systems
 			_boids[0].Init(stage, _viewDistance, true);
 			_boids[0].setPos(new Vector2D(850, 400));
 			_boids[0].setDir(_boids[0].getPos().findVector(new Vector2D(800, 400)).normalize());
-			_boids[0].setSpeed(1);
+			_boids[0].setSpeed(1.0);
 			
 			_boids[1] = new Boid();
 			_boids[1].Init(stage, _viewDistance, false);
-			_boids[1].setPos(new Vector2D(800, 400));
-			_boids[1].setSpeed(1);
+			_boids[1].setPos(new Vector2D(800, 450));
+			_boids[1].setSpeed(1.0);
 			
 			_boids[2] = new Boid();
 			_boids[2].Init(stage, _viewDistance, false);
 			_boids[2].setPos(new Vector2D(850, 450));
-			_boids[2].setSpeed(1);
+			_boids[2].setSpeed(1.0);
 			
 			
 			_boids[3] = new Boid();
 			_boids[3].Init(stage, _viewDistance, false);
 			_boids[3].setPos(new Vector2D(0, 0));
-			_boids[3].setSpeed(1);
+			_boids[3].setSpeed(0.3);
+			
 			*/
 			
 			_boids = new Vector.<Boid>(_amountOfFish);
@@ -109,7 +111,7 @@ package Systems
 				{
 					if (i != n)
 					{
-						var boidVec : Vector2D = _boids[n].getPos().findVector(_boids[i].getPos());
+						var boidVec : Vector2D = _boids[i].getPos().findVector(_boids[n].getPos());
 						var boidLen : Number = boidVec.length();
 						
 						if (boidLen < _viewDistance)
@@ -127,10 +129,10 @@ package Systems
 						if (boidLen < _keepdistance)
 						{
 							//separation, the closer to a flockmate, the more they are repelled
-							boidVec = boidVec.normalize() 
-							boidVec.rescale((boidLen / _keepdistance) - 1);
+							var normVec : Vector2D = boidVec;
+							normVec.multiplyNormVec((boidLen / _keepdistance) - 1);
 							
-							averageSepForce.addition(boidVec);
+							averageSepForce.addition(normVec);
 							boidsKeepDistance++;
 						}
 					}
@@ -141,31 +143,21 @@ package Systems
 					//Adjust boid to follow thw flocks average position, cohation
 					if (averageDirection.isEqvivalentTo(_boids[i].getDir()) == false)
 					{
-						averageDirection = averageDirection.rescale(1 / (boidsInVisibalDistance + 1));
-						
+						averageDirection.multiplyNormVec(0.3)
 						_boids[i].increaseDir(averageDirection);
 					}
 					
-					//newAveragePosition = newAveragePosition.rescale(1 / (boidsInVisibalDistance + 1));
 					newAveragePosition.dividePoint(boidsInVisibalDistance + 1);
-					
-					
-					//var activeBoidPos : Vector2D = _boids[i].getPos();
-					//var friendPos : Vector2D = _boids[1].getPos();
 					
 					var dirToCenter : Vector2D = _boids[i].getPos().findVector(newAveragePosition);
 					const MIDDLE_OFFSET : int = 7;
+					
 					if (dirToCenter.length() > MIDDLE_OFFSET)
 					{
-						dirToCenter = dirToCenter.normalize();
 						_boids[i].increaseDir(dirToCenter);
 					
 						if (boidsKeepDistance > 0)
 						{
-							if (boidsKeepDistance == 1)
-							{
-								//_boids[i].increaseDir(averageSepForce.rescale(2));
-							}
 							_boids[i].increaseDir(averageSepForce);
 						}
 					}

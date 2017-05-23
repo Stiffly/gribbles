@@ -66,10 +66,16 @@ package Systems
 			_x -= value._y;
 		}
 		
+		public function multiplyNormVec(value : Number) : void
+		{
+			_x *= value;
+			_y *= value;
+		}
+		
 		public function dividePoint(value : Number) : void
 		{
-			this._x /= value;
-			this._y /= value;
+			_x /= value;
+			_y /= value;
 		}
 		
 		
