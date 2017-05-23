@@ -24,8 +24,8 @@ package Systems
 		
 		public function Init(stage:Stage):void
 		{
-			_viewDistance = 120;
-			_keepdistance = 50;
+			_viewDistance = 300;
+			_keepdistance = 150;
 			_amountOfFish = 25;		
 			
 			
@@ -137,7 +137,7 @@ package Systems
 							{
 								//_boids[i].increaseDir(averageSepForce.rescale(2));
 							}
-							//_boids[i].increaseDir(averageSepForce);
+							_boids[i].increaseDir(averageSepForce);
 						}
 					}
 					
