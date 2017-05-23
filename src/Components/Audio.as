@@ -109,7 +109,6 @@ package Components
 				mp3.display = "waveform";
 				mp3.width = width;
 				mp3.height = height;
-				mp3.loop = true;
 				mp3.targetParent = true;
 				mp3.mouseChildren = false;
 				_mp3Viewer.addChild(mp3);
@@ -136,7 +135,6 @@ package Components
 				wav.display = "waveform";
 				wav.width = width;
 				wav.height = height;
-				wav.loop = true;
 				wav.targetParent = true;
 				wav.mouseChildren = false;
 				_wavViewer.addChild(wav);
