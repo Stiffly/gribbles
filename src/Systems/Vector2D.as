@@ -54,16 +54,27 @@ package Systems
 			return _x * vec._x + _y * vec._y;
 		}
 		
-		public function addition(value : Vector2D) :void
+		public function addition(value : Vector2D) : void
 		{
 			_x += value._x;
 			_y += value._y;
 		}
 		
-		public function subtraction(value : Vector2D) :void
+		public function subtraction(value : Vector2D) : void
 		{
 			_x -= value._x;
 			_x -= value._y;
+		}
+		
+		public function isEqvivalentTo(toComp : Vector2D): Boolean 
+		{
+			var toReturn : Boolean = false;
+			
+			if (_x == toComp._x && _y == toComp._y)
+			{
+				toReturn = true;
+			}
+			return toReturn;
 		}
 	}
 

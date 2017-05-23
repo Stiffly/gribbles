@@ -44,11 +44,15 @@ package Systems
 		
 		public function Update():void 
 		{
-			this.BoidAlgorithm();
+			//this.BoidAlgorithm();
+			this.boidsFirstRules();
+			
+			
 			
 			var i : uint;
 			for (i = 0; i < _amountOfFish; i++)
 			{
+				_boids[i].setDir(_boids[i].getDir().normalize());
 				_boids[i].Update();
 			}
 			_enemy.Update();
@@ -56,6 +60,92 @@ package Systems
 		
 		public function Shutdown():void 
 		{
+		}
+		
+		private function boidsFirstRules() : void
+		{
+			var averageSepForce : Vector2D = new Vector2D(0, 0);
+			var newAveragePosition : Vector2D = new Vector2D(0, 0);
+			var averageDirection : Vector2D = new Vector2D(0, 0);
+			var boidsInVisibalDistance : int = 0;
+			var boidsKeepDistance : int = 0;
+			var averageSpeed : Number = 0.0;
+			
+			var i : int;
+			for (i = 0; i < _amountOfFish; i++)
+			{
+				//we walk through and process each boid here, different from boidtest
+				var n : int;
+				for (n = 0; n < _amountOfFish; n++)
+				{
+					if (i != n)
+					{
+						//vector from activeBoid to checkingBoid
+						var test : Vector2D = _boids[n].getPos();
+						var test2 : Vector2D = _boids[i].getPos()
+						
+						//var boidVec : Vector2D = _boids[n].getPos().findVector(_boids[i].getPos());
+						var boidVec : Vector2D = test.findVector(test2);
+						var boidLen : Number = boidVec.length();
+						
+						if (boidLen < _viewDistance)
+						{
+							//calculate the avg data for Alignment and cohesion
+							newAveragePosition.addition(_boids[i].getPos());
+							
+							averageDirection.addition(_boids[i].getDir());
+							
+							boidsInVisibalDistance++;
+							
+							averageSpeed += _boids[i].getSpeed();
+						}
+						
+						if (boidLen < _keepdistance)
+						{
+							//separation, the closer to a flockmate, the more they are repelled
+							boidVec = boidVec.normalize() 
+							boidVec.rescale((boidLen / _keepdistance) - 1);
+							
+							averageSepForce + boidVec;
+							boidsKeepDistance++;
+						}
+					}
+				}
+				
+				if (boidsInVisibalDistance > 0)
+				{
+					//Adjust boid to follow thw flocks average position, cohation
+					if (averageDirection.isEqvivalentTo(_boids[i].getDir()) == false)
+					{
+						averageDirection.rescale(1 / boidsInVisibalDistance);
+						
+						_boids[i].increaseDir(averageDirection);
+					}
+					
+					newAveragePosition.rescale(1 / boidsInVisibalDistance);
+					
+					var dirToCenter : Vector2D = _boids[i].getPos().findVector(newAveragePosition);
+					const MIDDLE_OFFSET : int = 7;
+					if (dirToCenter.length() > MIDDLE_OFFSET)
+					{
+						dirToCenter = dirToCenter.normalize();
+						_boids[i].increaseDir(dirToCenter);
+					
+						if (boidsKeepDistance > 0)
+						{
+							if (boidsKeepDistance == 1)
+							{
+								//_boids[i].increaseDir(averageSepForce.rescale(2));
+							}
+							//_boids[i].increaseDir(averageSepForce);
+						}
+					}
+					
+				}
+			}
+			
+			
+			
 		}
 		
 		private function BoidAlgorithm():void 
@@ -93,7 +183,6 @@ package Systems
 				activeBoid = this._boids[n].getPos();
 				
 				var i : int;
-				
 				//first rule, separation
 				for (i = 0; i < _amountOfFish; i++)
 				{
@@ -144,10 +233,11 @@ package Systems
 				/*
 				if (averageSepForce._x != 0 && averageSepForce._y != 0)
 				{
-					newAveragePosition.rescale(1 / inHood);
+					newAveragePosition.rescale(1 / boidsInVisibalDistance);
 					v3.addition(activeBoid.findVector(newAveragePosition));
 				}
 				*/
+				
 				if (boidsInVisibalDistance > 0)
 				{
 					//rescale, avg direction
@@ -169,7 +259,7 @@ package Systems
 				{
 					totalNewDir.addition(v1);
 					totalNewDir.addition(v2);
-					//totalNewDir.addition(v3);
+					totalNewDir.addition(v3);
 					totalNewDir.addition(v4);
 				}
 				else

@@ -139,6 +139,12 @@ package Systems
 			_spriteHead.y = _sprite.y + (_dir._y * _OFFSET);
 		}
 		
+		public function increaseDir(toAdd : Vector2D) : void
+		{
+			_dir._x += toAdd._x;
+			_dir._y += toAdd._y;
+		}
+		
 		public function getSprite():Sprite
 		{
 			return this._sprite;
