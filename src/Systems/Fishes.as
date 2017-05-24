@@ -78,8 +78,9 @@ package Systems
 			
 			_enemy = new Boid();
 			_enemy.Init(stage, _viewDistance, false);
+			_enemy.setDir(new Vector2D(1920 / 2, -1080 / 2).normalize());
 			_enemy.setRed();
-			_enemy.setSpeed(0);
+			_enemy.setSpeed(1);
 			
 		}
 		
@@ -102,6 +103,11 @@ package Systems
 		
 		public function Shutdown():void 
 		{
+			var i : int = 0;
+			for (i = 0; i < _amountOfFish; i++)
+			{
+				delete _boids[i];
+			}
 		}
 		
 		private function boidsFirstRules() : void

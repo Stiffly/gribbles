@@ -129,7 +129,7 @@ package Systems
 		
 		public function setDir(newDir : Vector2D):void 
 		{
-			_dir = newDir.normalize();
+			_dir = newDir;
 			
 			_spriteHead.x = _sprite.x + (_dir._x * _OFFSET);
 			_spriteHead.y = _sprite.y + (_dir._y * _OFFSET);
