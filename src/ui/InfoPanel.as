@@ -14,17 +14,19 @@ package ui
 		
 		public var title:String;
 		public var tFontColor:uint = 0xFFFFFF;
-		public var tFontSize:Number = 30;
 		
 		public var descr:String;
 		public var descrHTML:String;
 		public var dFontColor:uint = 0xFFFFFF;
-		public var dFontSize:Number = 20;
 		
-		public function InfoPanel(fontSize:Number)
+		static public function set TextAllign(val:String):void  { _textAlign = val; }
+		static protected var _textAlign:String = "";
+		
+		static public function set FontSize(val:int):void  { _fontSize = val; }
+		static protected var _fontSize:int = 0;
+		
+		public function InfoPanel()
 		{
-			dFontSize = fontSize;
-			tFontSize = fontSize + 10;
 			visible = false;
 			targetParent = true;
 		}
@@ -68,10 +70,11 @@ package ui
 				var t:Text = new Text();
 				t.antiAliasType = AntiAliasType.NORMAL;
 				t.str = title;
-				t.fontSize = tFontSize;
+				t.fontSize = _fontSize + 10;
 				t.color = tFontColor;
 				t.font = "Arial";
 				t.autosize = true;
+				t.textAlign = _textAlign;
 				t.widthPercent = 100;
 				info.addChild(t);
 			}
@@ -79,13 +82,14 @@ package ui
 			if (descr || descrHTML)
 			{
 				var d:Text = new Text();
-				d.fontSize = dFontSize;
+				d.fontSize = _fontSize;
 				d.antiAliasType = AntiAliasType.NORMAL;
 				d.wordWrap = true;
 				d.color = dFontColor;
 				d.widthPercent = 100;
 				d.font = "Arial";
 				d.autosize = true;
+				d.textAlign = _textAlign;
 				d.multiline = true;
 				if (descr)
 				{

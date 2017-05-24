@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<scene>
+	<screensaverBackground url="" /> 
+	<mainapplicationBackground url="" />
+
+	<!-- Frame: Defines the frame that is surrounding all objects in application -->
+	<!-- @width: Sets the frame width in pixels -->
+	<!-- @color: Sets the frame color in hexadecimal notation -->
+	<frame thickness="15" color="0x000000" />
+
+	<!-- Text: Defines all text in the application -->
+	<!-- @fontsize: sets the fontsize of all text -->
+	<!-- @updatefrequenzy: the time it takes for next word to appear e.g. 0.2 gives 5 words per second -->
+	<!-- @allign: defines the alligment of the text. Possible values are left, center and right -->
+	<text fontsize="16" updatefrequenzy="0.2" allign="left" />
+
+	<!-- Component: This is equal to an object in the application e.g. videoviewer, albumviewer etc. -->
+	<!-- @width: the width of the components in pixels -->
+	<!-- @height: the height of the components in pixels -->
+	<component width="500" height="350" />
+</scene>

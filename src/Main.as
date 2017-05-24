@@ -6,6 +6,8 @@ package
 	import com.gestureworks.cml.elements.Text;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 	import flash.utils.getTimer;
 	import flash.ui.Mouse;
 	import flash.text.TextField;
@@ -29,7 +31,7 @@ package
 	import Systems.CustomButtonSystem;
 	import Events.MenuEvent;
 	import util.LayerHandler;
-	
+	import ui.InfoPanel;
 	/**
 	 * Main
 	 *
@@ -84,13 +86,10 @@ package
 			gml = "gml/gestures.gml"; // gml now required
 			
 			// Add systems here
-			//_systems.push(new HTMLSystem());
-			//_systems.push(new VideoSystem());
-			//_systems.push(new ImageSystem());
-			//_systems.push(new AudioSystem());
 			_systems.push(new CustomButtonSystem());
 			_screenSaver = new WaterSystem();
 			
+			loadXML();
 			CMLParser.addEventListener(CMLParser.COMPLETE, cmlComplete);
 		}
 		
@@ -104,7 +103,7 @@ package
 			// Create a button for switching to mainapp
 			createMiddleButton();
 			// Create a button for switching to screensaver
-			createBackButton();
+			//createBackButton();
 			
 			addChildAt(_loaderImage, numChildren - 1);
 			
@@ -138,7 +137,7 @@ package
 			createTutorialBox();
 			
 			// Hide mouse
-			//Mouse.hide();
+			Mouse.hide();
 			
 			// Show FPS-counter
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
@@ -170,7 +169,7 @@ package
 			bigTitle.x = _tutorialBox.width / 2 - bigTitle.width / 2;
 			_tutorialBox.addChild(bigTitle);
 			
-			var textBox:TextBox = new TextBox(new TextContent("", "\nUtforska skeppsvraket på botten.\n\n" + "Håll utkik efter ikonerna nedan som används för att navigera i applikationen.\n\n" + "Rör vart som helst på skärmen för att börja."), 0, .0, 999999, "center", 20, 0);
+			var textBox:TextBox = new TextBox(new TextContent("", "\nUtforska skeppsvraket på botten.\n\n" + "Håll utkik efter ikonerna nedan som används för att navigera i applikationen.\n\n" + "Rör vart som helst på skärmen för att börja."), .0, 999999, "center", 0);
 			textBox.width = _tutorialBox.width;
 			textBox.y = bigTitle.height;
 			_tutorialBox.addChild(textBox);
@@ -297,7 +296,6 @@ package
 			}
 			// Elapsed time counter
 			_elapsedTime += dt;
-			_elapsedTimeText.text = "Elapsed time: " + Math.floor(_elapsedTime / 60) + ":" + _elapsedTime % 60;
 			
 			if (!_PDFLoaded && _elapsedTime > 5)
 			{
@@ -449,6 +447,30 @@ package
 			_mainButton.init();
 			_mainButton.addEventListener(StateEvent.CHANGE, onButtonPress);
 			addChild(_mainButton);
+		}
+		
+		
+		private function loadXML():void
+		{
+			var urlRequest:URLRequest = new URLRequest("config.xml");
+			var loader:URLLoader = new URLLoader(urlRequest);
+			loader.addEventListener(Event.COMPLETE, onXMLLoaded);
+			
+			function onXMLLoaded (e:Event):void
+			{
+				var config:XML = XML(e.target.data);
+				System.FrameThickness = int(config.child("frame").attribute("thickness"));
+				System.FrameColor = uint(config.child("frame").attribute("color"));
+				System.ComponentWidth = int(config.child("component").attribute("width"));
+				System.ComponentHeight = int(config.child("component").attribute("height"));
+				TextBox.UpdateFrequenzy = Number(config.child("text").attribute("scrollspeed"));
+				TextBox.TextAllign = String(config.child("text").attribute("allign"));
+				TextBox.FontSize = int(config.child("text").attribute("fontsize"));
+				TextContent.TextAllign = String(config.child("text").attribute("allign"));
+				TextContent.FontSize = int(config.child("text").attribute("fontsize"));
+				InfoPanel.TextAllign = String(config.child("text").attribute("allign"));
+				InfoPanel.FontSize = int(config.child("text").attribute("fontsize"));
+			}
 		}
 		
 		private function createBackButton():void

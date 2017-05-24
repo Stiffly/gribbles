@@ -8,6 +8,8 @@ package Systems
 	import flash.events.TouchEvent;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 	import flash.utils.getQualifiedClassName;
 	import flash.display.DisplayObject;
 	
@@ -43,7 +45,19 @@ package Systems
 	
 	public class System extends GestureWorks
 	{
-		protected var _frameThickness:uint = 15;
+		
+		static public function set FrameThickness(val:int):void  { _frameThickness = val; }
+		static protected var _frameThickness:int = 0;
+		
+		static public function set FrameColor(val:uint):void  { _frameColor = val; }
+		static protected var _frameColor:uint = 0xFF0000;
+		
+		static public function set ComponentWidth(val:int):void  { _componentWidth = val; }
+		static protected var _componentWidth:int = 0;
+		
+		static public function set ComponentHeight(val:uint):void  { _componentHeight = val; }
+		static protected var _componentHeight:int = 0;
+		
 		protected var _button:Button;
 		
 		public function System()
@@ -130,7 +144,7 @@ package Systems
 			}
 		}
 		
-		protected function createViewer(component:Component, x:int, y:int, width:int, height:int):Component
+		protected function createViewer(component:Component, width:int, height:int):Component
 		{
 			component.addEventListener(TouchEvent.TOUCH_BEGIN, onTouch);
 			component.className = "component";
@@ -160,7 +174,7 @@ package Systems
 		protected function addFrame(component:Component):Frame
 		{
 			var frame:Frame = new Frame();
-			frame.frameColor = 0x000000;
+			frame.frameColor = _frameColor;
 			frame.frameAlpha = 0.5;
 			frame.targetParent = true;
 			frame.mouseChildren = false;
@@ -190,9 +204,9 @@ package Systems
 			return menu;
 		}
 		
-		protected function addInfoPanel(component:*, title:String, descr:String, descriptionfontSize:Number = 16):InfoPanel
+		protected function addInfoPanel(component:*, title:String, descr:String):InfoPanel
 		{
-			var infoPanel:InfoPanel = new InfoPanel(descriptionfontSize);
+			var infoPanel:InfoPanel = new InfoPanel();
 			infoPanel.bkgColor = 0x000000;
 			infoPanel.title = title;
 			infoPanel.descr = descr;

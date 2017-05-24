@@ -31,7 +31,7 @@ package Systems
 				{
 					continue;
 				}
-				var pdfViewer:HTMLViewer = createViewer(new HTMLViewer(), 0, 0, 700, 800) as HTMLViewer;
+				var pdfViewer:HTMLViewer = createViewer(new HTMLViewer(), 700, 800) as HTMLViewer;
 				pdfViewer.targetParent = true;
 				pdfViewer.mouseChildren = true;
 				pdfViewer.clusterBubbling = true;

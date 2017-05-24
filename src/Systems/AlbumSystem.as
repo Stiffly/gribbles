@@ -51,7 +51,7 @@ package Systems
 			_numChildren[key] = 0;
 
 			// Create album viewer
-			var av:AlbumViewer = createViewer(new AlbumViewer(), 400, 400, 500, 350) as AlbumViewer;
+			var av:AlbumViewer = createViewer(new AlbumViewer(), _componentWidth, _componentHeight) as AlbumViewer;
 			av.autoTextLayout = false;
 			av.linkAlbums = true;
 			av.clusterBubbling = true;
@@ -109,7 +109,7 @@ package Systems
 		// This loads an imageviewer with an image from disk
 		public function LoadImage(key:String):void
 		{			
-			var iv:ImageViewer = createViewer(new ImageViewer(), 400, 400, 500, 350) as ImageViewer;
+			var iv:ImageViewer = createViewer(new ImageViewer(), _componentWidth, _componentHeight) as ImageViewer;
 			iv.autoTextLayout = false;
 			iv.clusterBubbling = true;
 			iv.mouseChildren = true;
@@ -141,7 +141,7 @@ package Systems
 			{
 				var content:String = URLLoader(event.currentTarget).data;
 				var index:int = content.search("\n");
-				addInfoPanel(iv, content.slice(0, index), content.slice(index + 1, content.length), 16);
+				addInfoPanel(iv, content.slice(0, index), content.slice(index + 1, content.length));
 				addFrame(iv);
 				addViewerMenu(iv, true, true, false, false);
 				_imageMap[key] = iv;

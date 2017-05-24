@@ -43,13 +43,10 @@ package Systems
 					continue;
 				}
 				
-				var av:Audio = new Audio(extention, 500, 350);
+				var av:Audio = new Audio(extention, _componentWidth, _componentHeight);
 				av.addEventListener(TouchEvent.TOUCH_BEGIN, onTouch);
 				av.mouseChildren = true;
 				av.clusterBubbling = true;
-				av.width = 500;
-				av.height = 350;
-			
 				
 				av.Open(child);
 				addChild(av);
@@ -81,7 +78,7 @@ package Systems
 					mp3.maxScale = 2;
 					mp3.minScale = 0.5;
 				
-					addInfoPanel(mp3, content.slice(0, index), content.slice(index + 1, content.length), 16);
+					addInfoPanel(mp3, content.slice(0, index), content.slice(index + 1, content.length));
 					addFrame(mp3);
 					addViewerMenu(mp3, true, true, true, true);
 					//addTouchContainer(mp3);
@@ -94,7 +91,7 @@ package Systems
 					var wav:WAVPlayer = av.GetAudioViewer();
 					wav.maxScale = 2;
 					wav.minScale = 0.5;
-					addInfoPanel(wav, content.slice(0, index), content.slice(index + 1, content.length), 16);
+					addInfoPanel(wav, content.slice(0, index), content.slice(index + 1, content.length));
 					addFrame(wav);
 					addViewerMenu(wav, true, true, true, true);
 					//addTouchContainer(wav);

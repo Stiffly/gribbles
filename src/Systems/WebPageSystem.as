@@ -75,7 +75,7 @@ package Systems
 			return function(event:Event):void
 			{
 				var webURL:String = URLLoader(event.currentTarget).data;
-				var htmlViewer:HTMLViewer = createViewer(new HTMLViewer(), 0, 0, 800, 900) as HTMLViewer;
+				var htmlViewer:HTMLViewer = createViewer(new HTMLViewer(), 800, 900) as HTMLViewer;
 				
 				// Create the HTML Element, the actual html content
 				var html:HTML = new HTML();

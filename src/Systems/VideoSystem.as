@@ -30,7 +30,7 @@ package Systems
 		
 		public function Load(key:String):void
 		{
-			var vv:VideoViewer = createViewer(new VideoViewer(), 400, 400, 500, 350) as VideoViewer;
+			var vv:VideoViewer = createViewer(new VideoViewer(), _componentWidth, _componentHeight) as VideoViewer;
 			vv.autoTextLayout = false;
 			vv.clusterBubbling = true;
 			vv.mouseChildren = true;
@@ -62,7 +62,7 @@ package Systems
 			{
 				var content:String = URLLoader(event.currentTarget).data;
 				var index:int = content.search("\n");
-				addInfoPanel(vv, content.slice(0, index), content.slice(index + 1, content.length), 16);
+				addInfoPanel(vv, content.slice(0, index), content.slice(index + 1, content.length));
 				addFrame(vv);
 				addViewerMenu(vv, true, true, true, true);
 				_videoMap[key] = vv;

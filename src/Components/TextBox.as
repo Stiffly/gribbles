@@ -30,7 +30,7 @@ package Components
 		// The title of the content, the title is present from the start
 		private var _title:Text;
 		// The update frequenzy determines when it is time to add another word to the final text
-		private var _updateFrequenzy:Number = 0;
+		//private var _updateFrequenzy:Number = 0;
 		// The timestamp is used to calculate when a word was latest added to the final text
 		private var _timestamp:int = 0;
 		// The current description is the text that is present
@@ -47,22 +47,25 @@ package Components
 		private var _gettingText:Boolean = true;
 		// Used to keep the textboxes inside the stage screen
 		private var _frameWidth:uint = 0;
-		// Decides if the text will allign to the center, left or right
-		private var _allign:String = "";
-		private var _fontSize:int = 0;
 		public var _Line:Graphic = new Graphic();
 		private var _bgAlpha:Number;
 		
-		public function TextBox(content:TextContent, frameWidth:uint, updateFrequenzy:Number = .2, lifeTime:Number = 10, textAllign:String = "left", fontSize:int = 16, bgAlpha:Number = 1)
+		static public function set UpdateFrequenzy(val:Number):void  { _updateFrequenzy = val; }
+		static protected var _updateFrequenzy:Number = 0;
+		
+		static public function set TextAllign(val:String):void  { _textAlign = val; }
+		static protected var _textAlign:String = "";
+		
+		static public function set FontSize(val:int):void  { _fontSize = val; }
+		static protected var _fontSize:int = 0;
+		
+		public function TextBox(content:TextContent, frameWidth:uint, lifeTime:Number = 10, textAllign:String = "left", bgAlpha:Number = 1)
 		{
-			_fontSize = fontSize;
 			_bgAlpha = bgAlpha;
 			_title = new Text();
-			_allign = textAllign;
 			_title.text = content.title;
 			_currentDescription = new Text();
 			_description = content.description;
-			_updateFrequenzy = updateFrequenzy;
 			_lifeTime = lifeTime;
 			_frameWidth = frameWidth * 2;
 			_dead = true;
@@ -226,7 +229,7 @@ package Components
 			t.multiline = true;
 			t.width = c.width;
 			t.wordWrap = true;
-			t.textAlign = _allign;
+			t.textAlign = _textAlign;
 			c.addChild(t);
 			
 			_currentDescription.str = content.description;
@@ -237,7 +240,7 @@ package Components
 			_currentDescription.autosize = true;
 			_currentDescription.multiline = true;
 			_currentDescription.width = c.width;
-			_currentDescription.textAlign = _allign;
+			_currentDescription.textAlign = _textAlign;
 			c.addChild(_currentDescription);
 			
 			DisplayUtils.initAll(tc);

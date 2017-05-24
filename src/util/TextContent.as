@@ -16,13 +16,19 @@ package util
 	 * @contact adambylehn@hotmail.com
 	 */
 	
-	final public class TextContent
+	public class TextContent
 	{
 		public function TextContent(t:String, d:String)  { title = t; description = d; };
 		public var title:String;
 		public var description:String;
 		
-		static public function CREATE_DESCRIPTION(content:TextContent, width:uint, height:uint, alpha:Number, padding:Number = 30, fontSize:Number = 16):TouchContainer
+		static public function set TextAllign(val:String):void  { _textAlign = val; }
+		static private var _textAlign:String = "";
+		
+		static public function set FontSize(val:int):void  { _fontSize = val; }
+		static private var _fontSize:int = 0;
+		
+		static public function CREATE_DESCRIPTION(content:TextContent, width:uint, height:uint, alpha:Number, padding:Number = 30):TouchContainer
 		{
 			var tc:TouchContainer = new TouchContainer();
 			tc.width = width;
@@ -47,21 +53,23 @@ package util
 			
 			var t:Text = new Text();
 			t.str = content.title;
-			t.fontSize = fontSize + 10;
+			t.fontSize = _fontSize + 10;
 			t.color = 0xFFFFFF;
 			t.font = "Arial";
 			t.autosize = true;
 			t.width = width;
+			t.textAlign = _textAlign;
 			c.addChild(t);
 			
 			var d:Text = new Text();
 			d.str = content.description;
-			d.fontSize = fontSize;
+			d.fontSize = _fontSize;
 			d.color = 0xFFFFFF;
 			d.font = "Arial";
 			d.wordWrap = true;
 			d.autosize = true;
 			d.multiline = true;
+			d.textAlign = _textAlign;
 			d.width = width;
 			c.addChild(d);
 			
