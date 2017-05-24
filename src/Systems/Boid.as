@@ -78,6 +78,7 @@ package Systems
 				spawnPoint = new Vector2D(1920 -(Math.random() * 1000), 0);
 				center = new Vector2D(1920 / 2, 1080 / 2);
 				dirToCenter = spawnPoint.findVector(center);
+				dirToCenter = dirToCenter.normalize();
 					
 				//respawn boid
 				this.setPos(spawnPoint);
@@ -89,6 +90,7 @@ package Systems
 				spawnPoint = new Vector2D(1920 -(Math.random() * 1000), 0);
 				center = new Vector2D(1920 / 2, 1080 / 2);
 				dirToCenter = spawnPoint.findVector(center);
+				dirToCenter = dirToCenter.normalize();
 				
 				this.setPos(spawnPoint);
 				this.setDir(dirToCenter);

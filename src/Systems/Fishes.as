@@ -76,12 +76,17 @@ package Systems
 				
 			}
 			
+
 			_enemy = new Boid();
 			_enemy.Init(stage, _viewDistance, false);
-			_enemy.setDir(new Vector2D(1920 / 2, -1080 / 2).normalize());
-			_enemy.setRed();
-			_enemy.setSpeed(1);
 			
+			_enemy.setRed();
+			_enemy.setSpeed(4);
+			
+			var centerPos : Vector2D = new Vector2D(1920 / 2, -1080 / 2);
+			var pos : Vector2D = _enemy.getPos();
+			
+			_enemy.setDir(pos.findVector(centerPos).normalize());
 		}
 		
 		public function Update():void 
@@ -93,6 +98,14 @@ package Systems
 			for (i = 0; i < _amountOfFish; i++)
 			{
 				var normDir : Vector2D = _boids[i].getDir();
+				var dangerDir : Vector2D = new Vector2D(0, 0);
+				dangerDir = AvoidEnemyBoid(_boids[i]);
+				
+				if (_boids[i].isPanic() == true)
+				{
+					normDir = dangerDir;
+				}
+				
 				normDir = normDir.normalize();
 				
 				_boids[i].setDir(normDir);
