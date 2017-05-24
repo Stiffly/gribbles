@@ -44,6 +44,7 @@ package Systems
 		private var _distanceVector:Vector.<int>;
 		private var _speed : Number;
 		
+		private var rotatate:Number = 0;
 		
 	
 		public function Boid()
@@ -78,7 +79,7 @@ package Systems
 			textureVec[4] = b4BM;
 			textureVec[5] = tailBM;
 			
-			_speed = 2.1;
+			_speed = 0;
 			
 			spawnAtRandomPoint();
 			
@@ -87,7 +88,7 @@ package Systems
 			_dir = _dir.normalize();
 			
 
-			for (var n:int; n < textureVec.length; n++ )
+			for (var n:int; n < 1; n++ )
 			{
 				textureVec[n].scaleX = 0.2;
 				textureVec[n].scaleY = 0.2;
@@ -135,20 +136,23 @@ package Systems
 			//textureVec[0].x = int(lastPos._x);
 			//textureVec[0].y = int(lastPos._y);
 			
-				
+			textureVec[0].transform.matrix.rotate(Math.PI/2);
 			for (n = 0; n < textureVec.length; n++ )
 			{
+				
+				//textureVec[n].rotation = ;
+				
+				textureVec[n].x = lastPos._x - textureVec[n].width/2;
+				textureVec[n].y = lastPos._y + textureVec[n].height;
+				
+				lastPos._x = lastPos._x - (_dirVector[countDown]._x * _distanceVector[n]);
+				lastPos._y = lastPos._y - (_dirVector[countDown]._y *_distanceVector[n]);
+				
 				rotToFront = _dirVector[countDown];
 				
 				rotation = Math.atan2(rotToFront._y, rotToFront._x);
 				
-				rotateAroundPoint(textureVec[n], radianToDegree(rotation));
-				//textureVec[n].rotation = radianToDegree(rotation);
-				textureVec[n].x = lastPos._x - textureVec[n].width/2;
-				textureVec[n].y = lastPos._y + textureVec[n].height;
-				
-				lastPos._x = lastPos._x - (_dirVector[countDown]._x * _distanceVector[n] );
-				lastPos._y = lastPos._y - (_dirVector[countDown]._y *_distanceVector[n]);
+				//rotateAroundPoint(textureVec[n], radianToDegree(rotation));
 				
 				countDown += 4;
 			}
@@ -158,22 +162,15 @@ package Systems
 		{
 		}
 		
-		private function rotateAroundPoint(image:Bitmap,value:Number):void
+		private function rotateAroundPoint(image:Bitmap,angleDegree:Number):void
 		{
-			var center:Point = new Point(image.parent.width / 2, image.parent.height);
-			center = image.parent.localToGlobal(center);
-			center = image.globalToLocal(center);
-			var angle:Number = value;// - image.rotation;
-			var radians:Number = angle * (Math.PI / 180.0);
-			var shiftByX:Number = center.x;
-			var shiftByY:Number = center.y;
-			
-			image.transform.matrix.translate(-shiftByX, -shiftByY);
-			image.transform.matrix.rotate(radians);
-			image.transform.matrix.translate(+shiftByX, +shiftByY);
-			image.transform.matrix.concat(image.transform.matrix);
-			image.rotation = Math.round(image.rotation);
-			
+			//var m:flash.geom.Matrix = image.transform.matrix;
+			//m.tx -= (image.x + image.width / 2);
+			//m.ty -= (image.y + image.height);
+			//m.rotate (angleDegree * (Math.PI / 180));
+			//m.tx += (image.x + image.width / 2);
+			//m.ty += (image.y + image.height);
+			//image.transform.matrix = m;
 		}
 		
 		public function setPos(newPos : Vector2D):void
