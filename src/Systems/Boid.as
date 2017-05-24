@@ -6,6 +6,7 @@ package Systems
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import Math;
+	import flash.geom.Matrix3D;
 	import flash.geom.Point;
 	import flashx.textLayout.formats.Float;
 	/**
@@ -27,7 +28,8 @@ package Systems
 		[Embed(source = "../../bin/images/Carp/b4.png")]
 		private var b4Class:Class;
 		private var b4BM:Bitmap = new b4Class();
-		[Embed(source = "../../bin/images/Carp/head.png")]
+		//[Embed(source = "../../bin/images/Carp/head.png")]
+		[Embed(source="../../bin/images/ff.jpg")]
 		private var headClass:Class;
 		private var headBM:Bitmap = new headClass();
 		[Embed(source = "../../bin/images/Carp/tail.png")]
@@ -45,6 +47,8 @@ package Systems
 		private var _speed : Number;
 		
 		private var rotatate:Number = 0;
+		
+		private var referenceMatrix:flash.geom.Matrix;
 		
 	
 		public function Boid()
@@ -81,6 +85,8 @@ package Systems
 			
 			_speed = 0;
 			
+			
+			
 			spawnAtRandomPoint();
 			
 			_dir._x = (Math.random());
@@ -94,6 +100,8 @@ package Systems
 				textureVec[n].scaleY = 0.2;
 				stage.addChild(textureVec[n]);
 			}
+			
+			referenceMatrix = headBM.transform.matrix.clone();
 		}
 		
 		public function Update():void
@@ -136,12 +144,13 @@ package Systems
 			//textureVec[0].x = int(lastPos._x);
 			//textureVec[0].y = int(lastPos._y);
 			
-			textureVec[0].transform.matrix.rotate(Math.PI/2);
+			//textureVec[0].parent.transform.matrix.rotate(Math.PI / 180);
+			
 			for (n = 0; n < textureVec.length; n++ )
 			{
 				
 				//textureVec[n].rotation = ;
-				
+		
 				textureVec[n].x = lastPos._x - textureVec[n].width/2;
 				textureVec[n].y = lastPos._y + textureVec[n].height;
 				
@@ -152,7 +161,11 @@ package Systems
 				
 				rotation = Math.atan2(rotToFront._y, rotToFront._x);
 				
-				//rotateAroundPoint(textureVec[n], radianToDegree(rotation));
+				textureVec[n].rotationY = rotatate += 0.4;
+				//textureVec[n].transform.matrix.
+				
+				
+				//rotateAroundPoint(textureVec[n], 44);
 				
 				countDown += 4;
 			}
@@ -164,12 +177,16 @@ package Systems
 		
 		private function rotateAroundPoint(image:Bitmap,angleDegree:Number):void
 		{
-			//var m:flash.geom.Matrix = image.transform.matrix;
-			//m.tx -= (image.x + image.width / 2);
-			//m.ty -= (image.y + image.height);
-			//m.rotate (angleDegree * (Math.PI / 180));
-			//m.tx += (image.x + image.width / 2);
-			//m.ty += (image.y + image.height);
+			//var point:Point = new Point( 100, 100 ); // pivot point local to the object's coordinates
+
+			var matrix:flash.geom.Matrix = referenceMatrix.clone();
+			
+			matrix.translate(-image.width / 2,image.height / 2);
+			matrix.rotate(angleDegree * (Math.PI / 180));
+			matrix.translate(image.width / 2,-image.height / 2);
+			image.transform.matrix = matrix;
+			//image.x += (image.x + image.width / 2);
+			//image.y += (image.y + image.height);
 			//image.transform.matrix = m;
 		}
 		
