@@ -39,18 +39,14 @@ package Systems
 			_sprite.graphics.drawCircle(0, 0, 20);
 			_sprite.graphics.endFill();
 			
-			spawnAtRandomPoint();
-			
-			_dir._x = (Math.random());
-			_dir._y = (Math.random());
-			_dir = _dir.normalize();
-			
 			_spriteHead = new Sprite();
 			_spriteHead.graphics.beginFill(0x000000);
 			_spriteHead.graphics.drawCircle(0, 0, 10);
 			_spriteHead.x = _sprite.x + (_dir._x * _OFFSET);
 			_spriteHead.y = _sprite.y + (_dir._y * _OFFSET);
 			_spriteHead.graphics.endFill();
+			
+			spawnAtRandomPoint();
 			
 			if (showVisDist == true)
 			{
@@ -173,8 +169,18 @@ package Systems
 		
 		public function spawnAtRandomPoint():void 
 		{
-			_sprite.x = (Math.random() * 1920);
-		    _sprite.y = (Math.random() * 1920);
+			var spawnPoint : Vector2D;
+			var center : Vector2D;
+			var dirToCenter : Vector2D;
+			
+			//find vector to point
+			spawnPoint = new Vector2D(1920 -(Math.random() * 1000), 1080 -(Math.random() * 1000));
+			center = new Vector2D(1920 / 2, 1080 / 2);
+			dirToCenter = spawnPoint.findVector(center);
+					
+			//respawn boid
+			this.setPos(spawnPoint);
+			this.setDir(dirToCenter);
 		}
 		
 		public function setRed() : void
