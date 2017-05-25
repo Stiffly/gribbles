@@ -166,31 +166,31 @@ package Systems
 			for (n = 0; n < textureVec.length; n++ )
 			{
 
-				_spriteVec[n].x = 0;
-				_spriteVec[n].y = 0;
+				//_spriteVec[n].x = 0;
+				//_spriteVec[n].y = 0;
 				
-				_spriteVec[n].rotation = rotatate++;
+				//_spriteVec[n].rotation = rotatate++;
 				
-				_spriteVec[n].x = 500;
-				_spriteVec[n].y = 500;
+				//_spriteVec[n].x = 500;
+				//_spriteVec[n].y = 500;
 				
 				//some code that we maybe need
 				//get matrix
-				//var orgMatrix : flash.geom.Matrix = textureVec[n].transform.matrix;
+				var orgMatrix : flash.geom.Matrix = _spriteVec[n].transform.matrix;
 				
 				//get the rect of the obj
-				//var rect : Rectangle = textureVec[n].getBounds(textureVec[n].parent);
+				var rect : Rectangle = _spriteVec[n].getBounds(textureVec[n].parent);
 				
 				//translate
-				//orgMatrix.translate(- (rect.left + (rect.width/2)), - (rect.top + (rect.height/2)));
+				orgMatrix.translate(- (rect.left + (rect.width/2)), - (rect.top + (rect.height/2)));
 				
 				// Rotation (note: the parameter is in radian) 
-				//orgMatrix.rotate((90 / 180) * Math.PI); 
+				orgMatrix.rotate(0.1); 
 				
 				// Translating the object back to the original position.
-				//orgMatrix.translate(rect.left + (rect.width/2), rect.top + (rect.height/2)); 
+				orgMatrix.translate(rect.left + (rect.width/2), rect.top + (rect.height/2)); 
 				
-				//textureVec[n].transform.matrix = orgMatrix;
+				_spriteVec[n].transform.matrix = orgMatrix;
 			
 				countDown += 4;
 			}
