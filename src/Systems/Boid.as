@@ -53,7 +53,9 @@ package Systems
 		private var _speed : Number;
 		
 		private var _spriteVec : Vector.<Sprite>;
+		
 		private var rotatate:Number = 0;
+		private var _oldRotate: Number;
 		
 		private var referenceMatrix:flash.geom.Matrix;
 		
@@ -109,6 +111,9 @@ package Systems
 				_spriteVec[i].graphics.endFill();
 				
 				stage.addChild(_spriteVec[i]);
+				
+				//_spriteVecRotationOrg[i] = new flash.geom.Matrix;
+				//_spriteVecRotationOrg[i] = new flash.geom.Matrix(_spriteVec[i].transform.matrix);
 			}
 			
 		
@@ -124,6 +129,7 @@ package Systems
 			
 			referenceMatrix = headBM.transform.matrix.clone();
 			translateSprite(new Vector2D(500, 500), 0);
+			_oldRotate = 0;
 		}
 		
 		public function Update():void
@@ -168,7 +174,7 @@ package Systems
 			for (n = 0; n < 1; n++ )
 			{
 				translateSprite(new Vector2D(1.0, 0.0), n);
-				rotateAroundCenter(0.1, n);
+				rotateAroundCenter(40, n);
 				
 				countDown += 4;
 			}
@@ -229,8 +235,12 @@ package Systems
 			return radians * 180 / Math.PI;
 		}
 		
-		private function rotateAroundCenter(radian:Number, spriteIndex : int):void 
+		private function rotateAroundCenter(degree:Number, spriteIndex : int):void 
 		{
+			var toRotate : Number = 0;
+			toRotate =  -_oldRotate + degree;
+			
+			
 				var orgMatrix : flash.geom.Matrix = _spriteVec[spriteIndex].transform.matrix;
 				
 				//get the rect of the obj
@@ -243,12 +253,14 @@ package Systems
 				orgMatrix.translate(transX, transY);
 				
 				// Rotation (note: the parameter is in radian) 
-				orgMatrix.rotate(0.1); 
+				orgMatrix.rotate(toRotate); 
 				
 				// Translating the object back to the original position.
 				orgMatrix.translate(-transX, -transY); 
 				
 				_spriteVec[spriteIndex].transform.matrix = orgMatrix;
+				
+				_oldRotate = degree;
 		}
 		
 		private function translateSprite(newPos : Vector2D, spriteIndex : int):void 
