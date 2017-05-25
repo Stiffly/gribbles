@@ -80,28 +80,22 @@ package Systems
 		
 		public function Init(stage:Stage):void
 		{
-			
 			textureVec = new Vector.<Bitmap>(6);
 			
 			textureVec[0] = headBM;
-			//textureVec[1] = b1BM;
-			//textureVec[2] = b2BM;
-			//textureVec[3] = b3BM;
-			//textureVec[4] = b4BM;
-			//textureVec[5] = tailBM;
+			textureVec[1] = b1BM;
+			textureVec[2] = b2BM;
+			textureVec[3] = b3BM;
+			textureVec[4] = b4BM;
+			textureVec[5] = tailBM;
 			
-			_speed = 0;
+			_speed = 2;
 			
-			for (var n:int; n < 1; n++ )
-			{
-				//textureVec[n].scaleX = 0.2;
-				//textureVec[n].scaleY = 0.2;
-			}
 			
 			_spriteVec = new Vector.<Sprite>(6);
 			
 			var i : int;
-			for (i = 0; i < 1; i++ )
+			for (i = 0; i < textureVec.length; i++ )
 			{
 				_spriteVec[i] = new Sprite();
 				_spriteVec[i].graphics.beginBitmapFill(textureVec[i].bitmapData, null, true, true);
@@ -123,26 +117,18 @@ package Systems
 
 			
 			referenceMatrix = headBM.transform.matrix.clone();
-			translateSprite(new Vector2D(500, 500), 0);
+			for (i = 0; i < textureVec.length; i++ )
+			{
+				_spriteVec[i].scaleX = 0.2;
+				_spriteVec[i].scaleY = 0.2;
+				translateSprite(new Vector2D( - textureVec[i].width / 2, textureVec[i].height), i);
+			}
 		}
 		
 		public function Update():void
 		{	
 			//var pos : Vector2D = this.getPos();
-			/*
-			//if the fish escapes the sceen it will reset to a random position from above
-			if (_pos._x > 1920 || pos._y > 1080)
-			{
-				//find vector to point
-				var spawnPoint : Vector2D = new Vector2D(1920 -(Math.random() * 1000), 0);
-				var center : Vector2D = new Vector2D(1920 / 2, 1080 / 2);
-				var dirToCenter : Vector2D = spawnPoint.findVector(center);
-				
-				//respawn boid
-				this.setPos(spawnPoint);
-				this.setDir(dirToCenter);
-			}
-			*/
+			
 			//temp update head and body
 			_dir = _dir.normalize();
 			this._pos._x += (_dir._x * _speed);
@@ -155,6 +141,8 @@ package Systems
                 _dirVector[n] = _dirVector[n - 1];
             }
 			
+			reinitializeBoidPosition();
+			
 			//Set fishBody Positions
 			var rotation:Number = Math.atan2(_dir._y, _dir._x);
 			var rotToFront:Vector2D = new Vector2D(0,0);
@@ -165,10 +153,26 @@ package Systems
 			
 			
 			
-			for (n = 0; n < 1; n++ )
+			for (n = 0; n < _spriteVec.length; n++ )
 			{
 				
-				rotateAroundCenter(0.1, n);
+				//textureVec[n].x = lastPos._x;// - textureVec[n].width / 2;
+				//textureVec[n].y = lastPos._y;// + textureVec[n].height;
+				
+				translateSprite(new Vector2D(lastPos._x - _spriteVec[n].x,lastPos._y - _spriteVec[n].y),n);
+				
+				lastPos._x = lastPos._x - (_dirVector[countDown]._x * _distanceVector[n]);
+				lastPos._y = lastPos._y - (_dirVector[countDown]._y *_distanceVector[n]);
+				
+				rotToFront = _dirVector[countDown];
+				
+				rotation = Math.atan2(rotToFront._y, rotToFront._x);
+				
+				//textureVec[n].rotationY = rotatate += 0.4;
+				//textureVec[n].transform.matrix.
+				
+				//rotateAroundCenter(0.1, n);
+				//rotateAroundPoint(textureVec[n], 44);
 				
 				countDown += 4;
 			}
@@ -213,6 +217,31 @@ package Systems
 			return toReturn;
 		}
 		
+		public function reinitializeBoidPosition():void
+		{
+			
+			 if (_pos._x > 1920)
+                {
+					_dir._x = -_dir._x;
+					_dir._y = -_dir._y;
+                }
+                if (_pos._y > 1080)
+                {
+                    _dir._x = -_dir._x;
+					_dir._y = -_dir._y;
+                }
+                if (_pos._x < -100)
+                {
+                    _dir._x = -_dir._x;
+					_dir._y = -_dir._y;
+                }
+                if (_pos._y < -100)
+                {
+                    _dir._x = -_dir._x;
+					_dir._y = -_dir._y;
+                }
+		}
+		
 		public function getDir():Vector2D 
 		{
 			return _dir;
@@ -240,7 +269,7 @@ package Systems
 				orgMatrix.translate(- (rect.left + (rect.width/2)), - (rect.top + (rect.height/2)));
 				
 				// Rotation (note: the parameter is in radian) 
-				orgMatrix.rotate(0.1); 
+				orgMatrix.rotate(radian); 
 				
 				// Translating the object back to the original position.
 				orgMatrix.translate(rect.left + (rect.width/2), rect.top + (rect.height/2)); 

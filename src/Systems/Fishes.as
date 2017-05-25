@@ -26,7 +26,7 @@ package Systems
 		{
 			_viewDistance = 120;
 			_keepdistance = 50;
-			_amountOfFish = 25;		
+			_amountOfFish = 1;		
 			
 			
 			_boids = new Vector.<Boid>(_amountOfFish);
