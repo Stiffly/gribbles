@@ -122,14 +122,17 @@ package Systems
 
 			
 			referenceMatrix = headBM.transform.matrix.clone();
+<<<<<<< HEAD
 			for (i = 0; i < textureVec.length; i++ )
 			{
-			
 				_spriteVec[i].scaleX = 0.2;
 				_spriteVec[i].scaleY = 0.2;
 				translateSprite(new Vector2D( - textureVec[i].width / 2, textureVec[i].height), i);
 			}
+=======
+			translateSprite(new Vector2D(500, 500), 0);
 			_oldRotate = 0;
+>>>>>>> d46a6223fc55f0087e445a2fa7e5aa4cb36f378f
 		}
 		
 		public function Update():void
@@ -162,7 +165,8 @@ package Systems
 			
 			for (n = 0; n < _spriteVec.length; n++ )
 			{
-				translateSprite(new Vector2D(1.0, 0.0), n);
+<<<<<<< HEAD
+				
 				//textureVec[n].x = lastPos._x;// - textureVec[n].width / 2;
 				//textureVec[n].y = lastPos._y;// + textureVec[n].height;
 				
@@ -178,8 +182,12 @@ package Systems
 				//textureVec[n].rotationY = rotatate += 0.4;
 				//textureVec[n].transform.matrix.
 				
-				rotateAroundCenter(radianToDegree(rotation) +45, n);
+				//rotateAroundCenter(0.1, n);
 				//rotateAroundPoint(textureVec[n], 44);
+=======
+				translateSprite(new Vector2D(1.0, 0.0), n);
+				rotateAroundCenter(40, n);
+>>>>>>> d46a6223fc55f0087e445a2fa7e5aa4cb36f378f
 				
 				countDown += 4;
 			}
@@ -283,7 +291,11 @@ package Systems
 				orgMatrix.translate(transX, transY);
 				
 				// Rotation (note: the parameter is in radian) 
+<<<<<<< HEAD
+				orgMatrix.rotate(radian); 
+=======
 				orgMatrix.rotate(toRotate); 
+>>>>>>> d46a6223fc55f0087e445a2fa7e5aa4cb36f378f
 				
 				// Translating the object back to the original position.
 				orgMatrix.translate(-transX, -transY); 
