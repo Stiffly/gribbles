@@ -167,7 +167,7 @@ package Systems
 			
 			for (n = 0; n < 1; n++ )
 			{
-				
+				translateSprite(new Vector2D(1.0, 0.0), n);
 				rotateAroundCenter(0.1, n);
 				
 				countDown += 4;
@@ -236,14 +236,17 @@ package Systems
 				//get the rect of the obj
 				var rect : Rectangle = _spriteVec[spriteIndex].getBounds(_spriteVec[spriteIndex].parent);
 				
+				var transX : Number = - (rect.left + (rect.width / 2));
+				var transY : Number = - (rect.top + (rect.height / 2));
+				
 				//translate
-				orgMatrix.translate(- (rect.left + (rect.width/2)), - (rect.top + (rect.height/2)));
+				orgMatrix.translate(transX, transY);
 				
 				// Rotation (note: the parameter is in radian) 
 				orgMatrix.rotate(0.1); 
 				
 				// Translating the object back to the original position.
-				orgMatrix.translate(rect.left + (rect.width/2), rect.top + (rect.height/2)); 
+				orgMatrix.translate(-transX, -transY); 
 				
 				_spriteVec[spriteIndex].transform.matrix = orgMatrix;
 		}
