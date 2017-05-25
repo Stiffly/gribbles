@@ -10,6 +10,14 @@ package Systems
 	import air.update.descriptors.StateDescriptor;
 	import flash.display.Stage;
 	import flash.sampler.NewObjectSample;
+	
+	import flash.display.Bitmap;
+	import flash.display.Sprite;
+	import flash.events.MouseEvent;
+	
+	import com.gestureworks.core.GestureWorks;
+	import com.gestureworks.core.TouchSprite
+	import flash.events.TouchEvent;
 	public class Fishes 
 	{
 		private var _viewDistance : Number;
@@ -26,7 +34,7 @@ package Systems
 		{
 			_viewDistance = 100;
 			_keepdistance = 80;
-			_amountOfFish = 25;		
+			_amountOfFish = 0;		
 			
 			/*
 			_boids = new Vector.<Boid>(_amountOfFish);
@@ -81,12 +89,18 @@ package Systems
 			_enemy.Init(stage, _viewDistance, false);
 			
 			_enemy.setRed();
-			_enemy.setSpeed(4);
+			_enemy.setSpeed(1);
 			
 			var centerPos : Vector2D = new Vector2D(1920 / 2, -1080 / 2);
 			var pos : Vector2D = _enemy.getPos();
 			
 			_enemy.setDir(pos.findVector(centerPos).normalize());
+			_enemy.getSprite().addEventListener(MouseEvent.MOUSE_MOVE, moveEnemy);
+		}
+		
+		private function moveEnemy(event:MouseEvent):void 
+		{
+			_enemy.setPos(new Vector2D(event.stageX, event.stageY));
 		}
 		
 		public function Update():void 
