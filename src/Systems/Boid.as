@@ -3,11 +3,13 @@ package Systems
 	import Systems.Vector2D;
 	import com.leapmotion.leap.Matrix;
 	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import Math;
 	import flash.geom.Matrix3D;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flashx.textLayout.formats.Float;
 	/**
 	 * ...
@@ -19,19 +21,23 @@ package Systems
 		[Embed(source = "../../bin/images/Carp/b1.png")]
 		private var b1Class:Class;
 		private var b1BM:Bitmap = new b1Class();
+		
 		[Embed(source = "../../bin/images/Carp/b2.png")]
 		private var b2Class:Class;
 		private var b2BM:Bitmap = new b2Class();
+		
 		[Embed(source = "../../bin/images/Carp/b3.png")]
 		private var b3Class:Class;
 		private var b3BM:Bitmap = new b3Class();
+		
 		[Embed(source = "../../bin/images/Carp/b4.png")]
 		private var b4Class:Class;
 		private var b4BM:Bitmap = new b4Class();
-		//[Embed(source = "../../bin/images/Carp/head.png")]
-		[Embed(source="../../bin/images/ff.jpg")]
+		
+		[Embed(source = "../../bin/images/Carp/head.png")]
 		private var headClass:Class;
 		private var headBM:Bitmap = new headClass();
+		
 		[Embed(source = "../../bin/images/Carp/tail.png")]
 		private var tailClass:Class;
 		private var tailBM:Bitmap = new tailClass();
@@ -46,6 +52,7 @@ package Systems
 		private var _distanceVector:Vector.<int>;
 		private var _speed : Number;
 		
+		private var _spriteVec : Vector.<Sprite>;
 		private var rotatate:Number = 0;
 		
 		private var referenceMatrix:flash.geom.Matrix;
@@ -85,7 +92,26 @@ package Systems
 			
 			_speed = 0;
 			
+			for (var n:int; n < 1; n++ )
+			{
+				textureVec[n].scaleX = 0.2;
+				textureVec[n].scaleY = 0.2;
+			}
 			
+			_spriteVec = new Vector.<Sprite>(6);
+			
+			var i : int;
+			for (i = 0; i < 6; i++ )
+			{
+				_spriteVec[i] = new Sprite();
+				_spriteVec[i].graphics.beginBitmapFill(textureVec[i].bitmapData, null, true, true);
+				_spriteVec[i].graphics.drawRect(0, 0, textureVec[i].width, textureVec[i].height);
+				_spriteVec[i].graphics.endFill();
+				
+				stage.addChild(_spriteVec[i]);
+			}
+			
+		
 			
 			spawnAtRandomPoint();
 			
@@ -94,12 +120,7 @@ package Systems
 			_dir = _dir.normalize();
 			
 
-			for (var n:int; n < 1; n++ )
-			{
-				textureVec[n].scaleX = 0.2;
-				textureVec[n].scaleY = 0.2;
-				stage.addChild(textureVec[n]);
-			}
+
 			
 			referenceMatrix = headBM.transform.matrix.clone();
 		}
@@ -141,32 +162,36 @@ package Systems
 			lastPos._x = _pos._x;
 			lastPos._y = _pos._y;
 			
-			//textureVec[0].x = int(lastPos._x);
-			//textureVec[0].y = int(lastPos._y);
-			
-			//textureVec[0].parent.transform.matrix.rotate(Math.PI / 180);
 			
 			for (n = 0; n < textureVec.length; n++ )
 			{
+
+				_spriteVec[n].x = 0;
+				_spriteVec[n].y = 0;
 				
-				//textureVec[n].rotation = ;
-		
-				textureVec[n].x = lastPos._x - textureVec[n].width/2;
-				textureVec[n].y = lastPos._y + textureVec[n].height;
+				_spriteVec[n].rotation = rotatate++;
 				
-				lastPos._x = lastPos._x - (_dirVector[countDown]._x * _distanceVector[n]);
-				lastPos._y = lastPos._y - (_dirVector[countDown]._y *_distanceVector[n]);
+				_spriteVec[n].x = 500;
+				_spriteVec[n].y = 500;
 				
-				rotToFront = _dirVector[countDown];
+				//some code that we maybe need
+				//get matrix
+				//var orgMatrix : flash.geom.Matrix = textureVec[n].transform.matrix;
 				
-				rotation = Math.atan2(rotToFront._y, rotToFront._x);
+				//get the rect of the obj
+				//var rect : Rectangle = textureVec[n].getBounds(textureVec[n].parent);
 				
-				textureVec[n].rotationY = rotatate += 0.4;
-				//textureVec[n].transform.matrix.
+				//translate
+				//orgMatrix.translate(- (rect.left + (rect.width/2)), - (rect.top + (rect.height/2)));
 				
+				// Rotation (note: the parameter is in radian) 
+				//orgMatrix.rotate((90 / 180) * Math.PI); 
 				
-				//rotateAroundPoint(textureVec[n], 44);
+				// Translating the object back to the original position.
+				//orgMatrix.translate(rect.left + (rect.width/2), rect.top + (rect.height/2)); 
 				
+				//textureVec[n].transform.matrix = orgMatrix;
+			
 				countDown += 4;
 			}
 		}
