@@ -84,24 +84,24 @@ package Systems
 			textureVec = new Vector.<Bitmap>(6);
 			
 			textureVec[0] = headBM;
-			textureVec[1] = b1BM;
-			textureVec[2] = b2BM;
-			textureVec[3] = b3BM;
-			textureVec[4] = b4BM;
-			textureVec[5] = tailBM;
+			//textureVec[1] = b1BM;
+			//textureVec[2] = b2BM;
+			//textureVec[3] = b3BM;
+			//textureVec[4] = b4BM;
+			//textureVec[5] = tailBM;
 			
 			_speed = 0;
 			
 			for (var n:int; n < 1; n++ )
 			{
-				textureVec[n].scaleX = 0.2;
-				textureVec[n].scaleY = 0.2;
+				//textureVec[n].scaleX = 0.2;
+				//textureVec[n].scaleY = 0.2;
 			}
 			
 			_spriteVec = new Vector.<Sprite>(6);
 			
 			var i : int;
-			for (i = 0; i < 6; i++ )
+			for (i = 0; i < 1; i++ )
 			{
 				_spriteVec[i] = new Sprite();
 				_spriteVec[i].graphics.beginBitmapFill(textureVec[i].bitmapData, null, true, true);
@@ -123,6 +123,7 @@ package Systems
 
 			
 			referenceMatrix = headBM.transform.matrix.clone();
+			translateSprite(new Vector2D(500, 500), 0);
 		}
 		
 		public function Update():void
@@ -163,8 +164,10 @@ package Systems
 			lastPos._y = _pos._y;
 			
 			
-			for (n = 0; n < textureVec.length; n++ )
+			
+			for (n = 0; n < 1; n++ )
 			{
+				
 				rotateAroundCenter(0.1, n);
 				
 				countDown += 4;
@@ -231,7 +234,7 @@ package Systems
 				var orgMatrix : flash.geom.Matrix = _spriteVec[spriteIndex].transform.matrix;
 				
 				//get the rect of the obj
-				var rect : Rectangle = _spriteVec[spriteIndex].getBounds(textureVec[spriteIndex].parent);
+				var rect : Rectangle = _spriteVec[spriteIndex].getBounds(_spriteVec[spriteIndex].parent);
 				
 				//translate
 				orgMatrix.translate(- (rect.left + (rect.width/2)), - (rect.top + (rect.height/2)));
@@ -241,6 +244,19 @@ package Systems
 				
 				// Translating the object back to the original position.
 				orgMatrix.translate(rect.left + (rect.width/2), rect.top + (rect.height/2)); 
+				
+				_spriteVec[spriteIndex].transform.matrix = orgMatrix;
+		}
+		
+		private function translateSprite(newPos : Vector2D, spriteIndex : int):void 
+		{
+				var orgMatrix : flash.geom.Matrix = _spriteVec[spriteIndex].transform.matrix;
+				
+				//get the rect of the obj
+				var rect : Rectangle = _spriteVec[spriteIndex].getBounds(_spriteVec[spriteIndex].parent);
+				
+				//translate
+				orgMatrix.translate(newPos._x, newPos._y); 
 				
 				_spriteVec[spriteIndex].transform.matrix = orgMatrix;
 		}
