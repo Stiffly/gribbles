@@ -165,33 +165,8 @@ package Systems
 			
 			for (n = 0; n < textureVec.length; n++ )
 			{
-
-				//_spriteVec[n].x = 0;
-				//_spriteVec[n].y = 0;
+				rotateAroundCenter(0.1, n);
 				
-				//_spriteVec[n].rotation = rotatate++;
-				
-				//_spriteVec[n].x = 500;
-				//_spriteVec[n].y = 500;
-				
-				//some code that we maybe need
-				//get matrix
-				var orgMatrix : flash.geom.Matrix = _spriteVec[n].transform.matrix;
-				
-				//get the rect of the obj
-				var rect : Rectangle = _spriteVec[n].getBounds(textureVec[n].parent);
-				
-				//translate
-				orgMatrix.translate(- (rect.left + (rect.width/2)), - (rect.top + (rect.height/2)));
-				
-				// Rotation (note: the parameter is in radian) 
-				orgMatrix.rotate(0.1); 
-				
-				// Translating the object back to the original position.
-				orgMatrix.translate(rect.left + (rect.width/2), rect.top + (rect.height/2)); 
-				
-				_spriteVec[n].transform.matrix = orgMatrix;
-			
 				countDown += 4;
 			}
 		}
@@ -249,6 +224,25 @@ package Systems
 		private function radianToDegree(radians:Number):Number
 		{
 			return radians * 180 / Math.PI;
+		}
+		
+		private function rotateAroundCenter(radian:Number, spriteIndex : int):void 
+		{
+				var orgMatrix : flash.geom.Matrix = _spriteVec[spriteIndex].transform.matrix;
+				
+				//get the rect of the obj
+				var rect : Rectangle = _spriteVec[spriteIndex].getBounds(textureVec[spriteIndex].parent);
+				
+				//translate
+				orgMatrix.translate(- (rect.left + (rect.width/2)), - (rect.top + (rect.height/2)));
+				
+				// Rotation (note: the parameter is in radian) 
+				orgMatrix.rotate(0.1); 
+				
+				// Translating the object back to the original position.
+				orgMatrix.translate(rect.left + (rect.width/2), rect.top + (rect.height/2)); 
+				
+				_spriteVec[spriteIndex].transform.matrix = orgMatrix;
 		}
 	}
 	
