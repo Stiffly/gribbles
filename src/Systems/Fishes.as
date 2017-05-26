@@ -34,7 +34,7 @@ package Systems
 		{
 			_viewDistance = 100;
 			_keepdistance = 80;
-			_amountOfFish = 0;		
+			_amountOfFish = 25;		
 			
 			/*
 			_boids = new Vector.<Boid>(_amountOfFish);
@@ -96,6 +96,7 @@ package Systems
 			
 			_enemy.setDir(pos.findVector(centerPos).normalize());
 			_enemy.getSprite().addEventListener(MouseEvent.MOUSE_MOVE, moveEnemy);
+			_enemy.getSprite().visible = true;
 		}
 		
 		private function moveEnemy(event:MouseEvent):void 
@@ -267,6 +268,11 @@ package Systems
 			
 			boidToScare.setSpeed(speed);
 			return avoidVec;
+		}
+		
+		public function scareFishPos(pos:Vector2D):void 
+		{
+			_enemy.setPos(pos);
 		}
 	}
 

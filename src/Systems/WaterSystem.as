@@ -79,11 +79,17 @@ package Systems
 		private function handleDrag(event:TouchEvent):void
 		{
 			_rippler.drawRipple(event.stageX, event.stageY, 20, 1);
+			
+			var mousePos : Vector2D = new Vector2D(event.stageX, event.stageY);
+			_flock.scareFishPos(mousePos);
 		}
 		
 		private function handleMouseMove(event:MouseEvent):void
 		{
 			_rippler.drawRipple(event.stageX, event.stageY, 20, 1);
+			
+			var mousePos : Vector2D = new Vector2D(event.stageX, event.stageY);
+			_flock.scareFishPos(mousePos);
 		}
 		
 		public function Deactivate():void
