@@ -32,9 +32,9 @@ package Systems
 		
 		public function Init(stage:Stage):void
 		{
-			_viewDistance = 100;
-			_keepdistance = 80;
-			_amountOfFish = 25;		
+			_viewDistance = 120;
+			_keepdistance = 50;
+			_amountOfFish = 20;		
 			
 			/*
 			_boids = new Vector.<Boid>(_amountOfFish);
@@ -88,14 +88,12 @@ package Systems
 			_enemy = new Boid();
 			_enemy.Init(stage, _viewDistance, false);
 			
-			_enemy.setRed();
 			_enemy.setSpeed(0);
 			
 			var centerPos : Vector2D = new Vector2D(1920 / 2, -1080 / 2);
 			var pos : Vector2D = _enemy.getPos();
 			
 			_enemy.setDir(pos.findVector(centerPos).normalize());
-			_enemy.hideBoid();
 		}
 		
 		private function moveEnemy(event:MouseEvent):void 
@@ -108,32 +106,30 @@ package Systems
 			//this.BoidAlgorithm();
 			this.boidsFirstRules();
 			
-			var i : uint;
-			for (i = 0; i < _amountOfFish; i++)
+			for (var i : int = 0; i < _boids.length; i++)
 			{
-				var normDir : Vector2D = _boids[i].getDir();
-				var dangerDir : Vector2D = new Vector2D(0, 0);
-				dangerDir = AvoidEnemyBoid(_boids[i]);
 				
-				if (_boids[i].isPanic() == true)
-				{
-					normDir = dangerDir;
-				}
-				
-				normDir = normDir.normalize();
-				
-				_boids[i].setDir(normDir);
 				_boids[i].Update();
 			}
+			
 			_enemy.Update();
 		}
 		
-		public function Shutdown():void 
+		public function Activate():void 
 		{
-			var i : int = 0;
+			var i : uint;
 			for (i = 0; i < _amountOfFish; i++)
 			{
-				delete _boids[i];
+				_boids[i].Activate();
+			}
+		}
+		
+		public function Deactivate():void 
+		{
+			var i : uint;
+			for (i = 0; i < _amountOfFish; i++)
+			{
+				_boids[i].Deactivate();
 			}
 		}
 		

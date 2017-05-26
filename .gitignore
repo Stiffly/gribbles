@@ -7,3 +7,4 @@ bin/images/
 bin/videos/
 bin/audio/
 *.swf
+obj/NewProjectConfig.xml

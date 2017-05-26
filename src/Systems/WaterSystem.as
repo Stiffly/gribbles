@@ -97,6 +97,7 @@ package Systems
 			_rippler.destroy();
 			_touchSprite.visible = false;
 			_dustEmitter.Deactivate();
+			_flock.Deactivate();
 		}
 		
 		public function Activate():void
@@ -104,6 +105,7 @@ package Systems
 			_rippler = new Rippler(_touchSprite, 20, 10);
 			_touchSprite.visible = true;
 			_dustEmitter.Activate();
+			_flock.Activate();
 		}
 	}
 }
