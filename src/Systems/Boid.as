@@ -91,7 +91,7 @@ package Systems
 			textureVec[4] = b4BM;
 			textureVec[5] = tailBM;
 			
-			_speed = 20;
+			_speed = 1;
 			
 			
 			_spriteVec = new Vector.<Sprite>(6);
@@ -137,7 +137,7 @@ package Systems
 		
 		public function Update():void
 		{	
-			//_dir = _dir.normalize();
+			_dir = _dir.normalize();
 			
 			this._pos._x += (_dir._x * _speed);
 			this._pos._y += (_dir._y * _speed);
@@ -178,7 +178,7 @@ package Systems
 				//rotateAroundCenter((Math.PI / 180 * ( rotatate)), n);
 				//rotateAroundPoint(textureVec[n], 44);
 				
-				countDown += 5;
+				countDown += 3;
 			}
 		}
 		public function Activate():void
