@@ -63,7 +63,7 @@ package Systems
 		{
 			_pos = new Vector2D(0, 0);
 			_dir = new Vector2D(0, 0);
-			_dirVector = new Vector.<Vector2D>(24);
+			_dirVector = new Vector.<Vector2D>(50);
 			for (var n:int; n < _dirVector.length; n++ )
 			{
 				_dirVector[n] = new Vector2D(0, 0);
@@ -91,7 +91,7 @@ package Systems
 			textureVec[4] = b4BM;
 			textureVec[5] = tailBM;
 			
-			_speed = 2;
+			_speed = 20;
 			
 			
 			_spriteVec = new Vector.<Sprite>(6);
@@ -112,9 +112,9 @@ package Systems
 			
 		
 			
-			//spawnAtRandomPoint();
-			_pos._x = 400;
-		    _pos._y = 400;
+			spawnAtRandomPoint();
+			//_pos._x = 400;
+		    //_pos._y = 400;
 			
 			_dir._x = (Math.random());
 			_dir._y = (Math.random());
@@ -137,7 +137,8 @@ package Systems
 		
 		public function Update():void
 		{	
-			_dir = _dir.normalize();
+			//_dir = _dir.normalize();
+			
 			this._pos._x += (_dir._x * _speed);
 			this._pos._y += (_dir._y * _speed);
 			
@@ -177,7 +178,7 @@ package Systems
 				//rotateAroundCenter((Math.PI / 180 * ( rotatate)), n);
 				//rotateAroundPoint(textureVec[n], 44);
 				
-				countDown += 4;
+				countDown += 5;
 			}
 		}
 		public function Activate():void
@@ -203,8 +204,8 @@ package Systems
 		
 		public function setPos(newPos : Vector2D):void
 		{
-			_pos._x = _pos._x;
-			_pos._y = _pos._y;
+			_pos._x = newPos._x;
+			_pos._y = newPos._y;
 		}
 		
 		public function setDir(newDir : Vector2D):void 
@@ -274,7 +275,7 @@ package Systems
 			var dirToCenter : Vector2D;
 			
 			//find vector to point
-			spawnPoint = new Vector2D(1920 -(Math.random() * 1000), 1080 -(Math.random() * 1000));
+			spawnPoint = new Vector2D(300 + (Math.random() * 300), 300 + (Math.random() * 300));
 			center = new Vector2D(1920 / 2, 1080 / 2);
 			dirToCenter = spawnPoint.findVector(center);
 					

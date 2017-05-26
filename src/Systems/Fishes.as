@@ -32,46 +32,9 @@ package Systems
 		
 		public function Init(stage:Stage):void
 		{
-			_viewDistance = 120;
+			_viewDistance = 70;
 			_keepdistance = 50;
-			_amountOfFish = 20;		
-			
-			/*
-			_boids = new Vector.<Boid>(_amountOfFish);
-			
-			_boids[0] = new Boid();
-			_boids[0].Init(stage, _viewDistance, true);
-			_boids[0].setPos(new Vector2D(800, 400));
-			_boids[0].setDir(_boids[0].getPos().findVector(new Vector2D(840, 440)).normalize());
-			_boids[0].setSpeed(1.0);
-			
-			_boids[1] = new Boid();
-			_boids[1].Init(stage, _viewDistance, false);
-			_boids[1].setPos(new Vector2D(840, 440));
-			_boids[1].setSpeed(0.0);
-			
-			_boids[2] = new Boid();
-			_boids[2].Init(stage, _viewDistance, false);
-			_boids[2].setPos(new Vector2D(760, 360));
-			_boids[2].setSpeed(0.0);
-			
-			
-			_boids[3] = new Boid();
-			_boids[3].Init(stage, _viewDistance, false);
-			_boids[3].setPos(new Vector2D(820, 450));
-			_boids[3].setSpeed(0.0);
-			
-			_boids[4] = new Boid();
-			_boids[4].Init(stage, _viewDistance, false);
-			_boids[4].setPos(new Vector2D(760, 340));
-			_boids[4].setSpeed(0.0);
-			
-			_boids[5] = new Boid();
-			_boids[5].Init(stage, _viewDistance, false);
-			_boids[5].setPos(new Vector2D(847, 450));
-			_boids[5].setSpeed(0.0);
-			
-			*/
+			_amountOfFish = 40;		
 			
 			_boids = new Vector.<Boid>(_amountOfFish);
 			var i:int;
@@ -89,6 +52,7 @@ package Systems
 			_enemy.Init(stage, _viewDistance, false);
 			
 			_enemy.setSpeed(0);
+			_enemy.Deactivate();
 			
 			var centerPos : Vector2D = new Vector2D(1920 / 2, -1080 / 2);
 			var pos : Vector2D = _enemy.getPos();
@@ -108,7 +72,6 @@ package Systems
 			
 			for (var i : int = 0; i < _boids.length; i++)
 			{
-				
 				_boids[i].Update();
 			}
 			
@@ -143,7 +106,6 @@ package Systems
 				var averageDirection : Vector2D = new Vector2D(0, 0);
 				var boidsInVisibalDistance : int = 0;
 				var boidsKeepDistance : int = 0;
-				var averageSpeed : Number = 0.0;
 				
 				//we walk through and process each boid here, different from boidtest
 				newAveragePosition.addition(_boids[i].getPos());
@@ -164,8 +126,6 @@ package Systems
 							averageDirection.addition(_boids[n].getDir());
 							
 							boidsInVisibalDistance++;
-							
-							averageSpeed += _boids[i].getSpeed();
 							
 							if (boidLen < _keepdistance)
 							{
