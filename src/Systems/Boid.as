@@ -203,8 +203,8 @@ package Systems
 		
 		public function setPos(newPos : Vector2D):void
 		{
-			_pos._x = _pos._x;
-			_pos._y = _pos._y;
+			_pos._x = newPos._x;
+			_pos._y = newPos._y;
 		}
 		
 		public function setDir(newDir : Vector2D):void 

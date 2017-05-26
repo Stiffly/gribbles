@@ -24,7 +24,7 @@ package Systems
 		private var _keepdistance : Number;
 		private var _amountOfFish : int;
 		private var _boids:Vector.<Boid>;
-		private var _enemy : Boid;
+		private var _enemy : Vector2D;
 		
 		public function Fishes() 
 		{
@@ -32,11 +32,11 @@ package Systems
 		
 		public function Init(stage:Stage):void
 		{
-			_viewDistance = 120;
-			_keepdistance = 50;
-			_amountOfFish = 20;		
+			_viewDistance = 200;
+			_keepdistance = 150;
+			_amountOfFish = 6;		
 			
-			/*
+			
 			_boids = new Vector.<Boid>(_amountOfFish);
 			
 			_boids[0] = new Boid();
@@ -71,8 +71,8 @@ package Systems
 			_boids[5].setPos(new Vector2D(847, 450));
 			_boids[5].setSpeed(0.0);
 			
-			*/
 			
+			/*
 			_boids = new Vector.<Boid>(_amountOfFish);
 			var i:int;
 			for (i = 0; i < _amountOfFish; i++)
@@ -83,36 +83,26 @@ package Systems
 				_boids[i].setSpeed(1);
 				
 			}
-			
+			*/
 
-			_enemy = new Boid();
-			_enemy.Init(stage, _viewDistance, false);
-			
-			_enemy.setSpeed(0);
-			
-			var centerPos : Vector2D = new Vector2D(1920 / 2, -1080 / 2);
-			var pos : Vector2D = _enemy.getPos();
-			
-			_enemy.setDir(pos.findVector(centerPos).normalize());
-		}
-		
-		private function moveEnemy(event:MouseEvent):void 
-		{
-			_enemy.setPos(new Vector2D(event.stageX, event.stageY));
+			_enemy = new Vector2D(0,0);
 		}
 		
 		public function Update():void 
-		{
-			//this.BoidAlgorithm();
+		{		
 			this.boidsFirstRules();
+			
+			var EnemyVec : Vector2D = new Vector2D(0,0);
 			
 			for (var i : int = 0; i < _boids.length; i++)
 			{
-				
+				EnemyVec = this.AvoidEnemyBoid(_boids[i]);
+				if (EnemyVec._x != 0 && EnemyVec._y != 0)
+				{
+					_boids[i].setDir(EnemyVec);
+				}
 				_boids[i].Update();
 			}
-			
-			_enemy.Update();
 		}
 		
 		public function Activate():void 
@@ -214,7 +204,7 @@ package Systems
 			var speed : Number = boidToScare.getSpeed();
 			
 			//not sure if right way
-			var OtherVec : Vector2D = _enemy.getPos().findVector(boidToScare.getPos());
+			var OtherVec : Vector2D = _enemy.findVector(boidToScare.getPos());
 			var OtherLen : Number = OtherVec.length();
 			if (OtherLen < _viewDistance)
 			{
@@ -267,7 +257,7 @@ package Systems
 		
 		public function scareFishPos(pos:Vector2D):void 
 		{
-			_enemy.setPos(pos);
+			_enemy = pos;
 		}
 	}
 
