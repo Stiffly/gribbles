@@ -69,13 +69,6 @@ package Systems
 				_dirVector[n] = new Vector2D(0, 0);
 			}
 			
-			_distanceVector = new Vector.<int>(6);
-			_distanceVector[0] = 20;
-			_distanceVector[1] = 14;
-			_distanceVector[2] = 11;
-			_distanceVector[3] = 20;
-			_distanceVector[4] = 21;
-			_distanceVector[5] = 20;
 		}
 		
 		
@@ -123,8 +116,8 @@ package Systems
 			for (i = 0; i < _spriteVec.length; i++ )
 			{
 			
-				_spriteVec[i].scaleX = 0.2;
-				_spriteVec[i].scaleY = 0.2;
+				_spriteVec[i].scaleX = 0.4;
+				_spriteVec[i].scaleY = 0.4;
 				//translateSprite(new Vector2D( - textureVec[i].width / 2, textureVec[i].height/2), i);
 			}
 			
@@ -133,6 +126,14 @@ package Systems
 			{
 				_oldRotate[i] = 0;
 			}
+			
+			_distanceVector = new Vector.<int>(6);
+			_distanceVector[0] = 20 * (_spriteVec[0].scaleX/0.2);
+			_distanceVector[1] = 14* (_spriteVec[1].scaleX/0.2);
+			_distanceVector[2] = 11* ( _spriteVec[2].scaleX/0.2);
+			_distanceVector[3] = 20* (_spriteVec[3].scaleX/0.2);
+			_distanceVector[4] = 21* (_spriteVec[4].scaleX/0.2);
+			_distanceVector[5] = 20* (_spriteVec[5].scaleX/0.2);
 		}
 		
 		public function Update():void
@@ -306,7 +307,7 @@ package Systems
 				var rect : Rectangle = _spriteVec[spriteIndex].getBounds(_spriteVec[spriteIndex].parent);
 				
 				var transX : Number = - (rect.left + (rect.width / 2));
-				var transY : Number = - (rect.top + (rect.height / 2));
+				var transY : Number = - (rect.top + (rect.height));
 				
 				//translate
 				orgMatrix.translate(transX, transY);

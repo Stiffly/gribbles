@@ -54,7 +54,7 @@ package Systems
 		
 		public function Update():void 
 		{		
-			//this.boidsFirstRules();
+			this.boidsFirstRules();
 			
 			var EnemyVec : Vector2D = new Vector2D(0,0);
 			
@@ -139,7 +139,7 @@ package Systems
 						//alignment
 						averageDirection = averageDirection.normalize();
 						
-						_boids[i].increaseDir(averageDirection);
+						//_boids[i].increaseDir(averageDirection);
 					}
 					
 					//Cohesion, take the average point position and find the vector to that pos from boid
@@ -147,7 +147,7 @@ package Systems
 					
 					var dirToCenter : Vector2D = _boids[i].getPos().findVector(newAveragePosition);
 					dirToCenter = dirToCenter.normalize();
-					_boids[i].increaseDir(dirToCenter);
+					//_boids[i].increaseDir(dirToCenter);
 					
 					if (boidsKeepDistance > 0)
 					{
