@@ -200,6 +200,18 @@ package Systems
 		{
 			return _inPanic;
 		}
+		
+		public function hideBoid():void 
+		{
+			_sprite.visible = false;
+			_spriteHead.visible = false;
+		}
+		
+		public function showBoid():void 
+		{
+			_sprite.visible = true;
+			_spriteHead.visible = true;
+		}
 	}
 
 }

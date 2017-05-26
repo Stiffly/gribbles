@@ -89,14 +89,13 @@ package Systems
 			_enemy.Init(stage, _viewDistance, false);
 			
 			_enemy.setRed();
-			_enemy.setSpeed(1);
+			_enemy.setSpeed(0);
 			
 			var centerPos : Vector2D = new Vector2D(1920 / 2, -1080 / 2);
 			var pos : Vector2D = _enemy.getPos();
 			
 			_enemy.setDir(pos.findVector(centerPos).normalize());
-			_enemy.getSprite().addEventListener(MouseEvent.MOUSE_MOVE, moveEnemy);
-			_enemy.getSprite().visible = true;
+			_enemy.hideBoid();
 		}
 		
 		private function moveEnemy(event:MouseEvent):void 
