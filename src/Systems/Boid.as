@@ -144,6 +144,7 @@ package Systems
 		
 		public function Update():void
 		{	
+			
 			//var pos : Vector2D = this.getPos();
 			
 			//temp update head and body
@@ -168,14 +169,14 @@ package Systems
 			lastPos._x = _pos._x;
 			lastPos._y = _pos._y;
 			
-
 			for (n = 0; n < _spriteVec.length; n++ )
 			{
 				//translateSprite(new Vector2D(1.0, 0.0), n);
 				//textureVec[n].x = lastPos._x;// - textureVec[n].width / 2;
 				//textureVec[n].y = lastPos._y;// + textureVec[n].height;
 				
-				translateSprite(new Vector2D(lastPos._x - _spriteVec[n].x,lastPos._y - _spriteVec[n].y),n);
+				translateSprite(new Vector2D(lastPos._x,lastPos._y),n);
+				//translateSprite(new Vector2D(lastPos._x - _spriteVec[n].x,lastPos._y - _spriteVec[n].y),n);
 				
 				lastPos._x = lastPos._x - (_dirVector[countDown]._x * _distanceVector[n]);
 				lastPos._y = lastPos._y - (_dirVector[countDown]._y *_distanceVector[n]);
@@ -188,13 +189,29 @@ package Systems
 				//textureVec[n].transform.matrix.
 				
 				rotateAroundCenter(rotation +(Math.PI / 180 * ( -90)), n);
-
+				//rotateAroundCenter((Math.PI / 180 * ( rotatate)), n);
 				//rotateAroundPoint(textureVec[n], 44);
 				
 				countDown += 4;
 			}
 		}
+		public function Activate():void
+		{
+			for (var i:int = 0; i < _spriteVec.length; i++ )
+			{
+				_spriteVec[i].visible = true;
+			}
+			
+		}
 		
+		public function Deactivate():void
+		{
+			for (var i:int = 0; i < _spriteVec.length; i++ )
+			{
+				_spriteVec[i].visible = false;
+			}
+			
+		}
 		public function Render():void 
 		{
 		}
@@ -310,8 +327,13 @@ package Systems
 				//get the rect of the obj
 				var rect : Rectangle = _spriteVec[spriteIndex].getBounds(_spriteVec[spriteIndex].parent);
 				
+				var transX : Number = - (rect.left + (rect.width / 2))+ newPos._x;
+				var transY : Number = - (rect.top + (rect.height / 2))+ newPos._y;
+				
 				//translate
-				orgMatrix.translate(newPos._x, newPos._y); 
+				orgMatrix.translate(transX, transY); 
+				
+				orgMatrix.rotate(0);
 				
 				_spriteVec[spriteIndex].transform.matrix = orgMatrix;
 		}

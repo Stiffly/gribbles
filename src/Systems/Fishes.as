@@ -26,7 +26,7 @@ package Systems
 		{
 			_viewDistance = 120;
 			_keepdistance = 50;
-			_amountOfFish = 1;		
+			_amountOfFish = 20;		
 			
 			
 			_boids = new Vector.<Boid>(_amountOfFish);
@@ -49,8 +49,22 @@ package Systems
 			}
 		}
 		
-		public function Shutdown():void 
+		public function Activate():void 
 		{
+			var i : uint;
+			for (i = 0; i < _amountOfFish; i++)
+			{
+				_boids[i].Activate();
+			}
+		}
+		
+		public function Deactivate():void 
+		{
+			var i : uint;
+			for (i = 0; i < _amountOfFish; i++)
+			{
+				_boids[i].Deactivate();
+			}
 		}
 		
 		private function BoidAlgorithm():void 
