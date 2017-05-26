@@ -9,6 +9,7 @@ package Systems
 	import Systems.Boid;
 	import air.update.descriptors.StateDescriptor;
 	import flash.display.Stage;
+	import flash.geom.Vector3D;
 	import flash.sampler.NewObjectSample;
 	
 	import flash.display.Bitmap;
@@ -89,8 +90,9 @@ package Systems
 		}
 		
 		public function Update():void 
-		{		
-			this.boidsFirstRules();
+		{	
+			var boidVec : Vector2D = new Vector2D(0,0);
+			boidVec = this.boidsFirstRules();
 			
 			var EnemyVec : Vector2D = new Vector2D(0,0);
 			
@@ -100,6 +102,10 @@ package Systems
 				if (EnemyVec._x != 0 && EnemyVec._y != 0)
 				{
 					_boids[i].setDir(EnemyVec);
+				}
+				else
+				{
+					_boids[i].setDir(boidVec);
 				}
 				_boids[i].Update();
 			}
@@ -123,9 +129,15 @@ package Systems
 			}
 		}
 		
-		private function boidsFirstRules() : void
+		private function boidsFirstRules() : Vector2D
 		{
 			var i : int;
+			var v1 : Vector2D = new Vector2D(0, 0);
+			var v2 : Vector2D = new Vector2D(0, 0);
+			var v3 : Vector2D = new Vector2D(0, 0);
+			
+			
+			
 			for (i = 0; i < _amountOfFish; i++)
 			{
 				var averageSepForce : Vector2D = new Vector2D(0, 0);
@@ -178,7 +190,8 @@ package Systems
 						//alignment
 						averageDirection = averageDirection.normalize();
 						
-						_boids[i].increaseDir(averageDirection);
+						//_boids[i].increaseDir(averageDirection);
+						v1 = averageDirection;
 					}
 					
 					//Cohesion, take the average point position and find the vector to that pos from boid
@@ -186,15 +199,30 @@ package Systems
 					
 					var dirToCenter : Vector2D = _boids[i].getPos().findVector(newAveragePosition);
 					dirToCenter = dirToCenter.normalize();
-					_boids[i].increaseDir(dirToCenter);
+					//_boids[i].increaseDir(dirToCenter);
+					v3 = dirToCenter;
 					
 					if (boidsKeepDistance > 0)
 					{
 						averageSepForce = averageSepForce.normalize();
-						_boids[i].increaseDir(averageSepForce);
+						//_boids[i].increaseDir(averageSepForce);
+						v2 = averageSepForce;
 					}					
 				}
 			}
+		
+			
+			v1 = v1.normalize();
+			v2 = v2.normalize();
+			v3 = v3.normalize();
+			var toReturn : Vector2D = new Vector2D(0, 0);
+			
+			toReturn.addition(v1);
+			toReturn.addition(v2);
+			toReturn.addition(v3);
+			
+			toReturn = toReturn.normalize();
+			return toReturn;
 		}
 		
 		private function AvoidEnemyBoid(boidToScare:Boid):Vector2D

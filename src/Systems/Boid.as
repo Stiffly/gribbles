@@ -210,15 +210,17 @@ package Systems
 		public function setDir(newDir : Vector2D):void 
 		{
 			_dir = newDir;
-			
-			//_pos._x = _pos._x + (_dir._x * _OFFSET);
-			//_pos._y = _pos._y + (_dir._y * _OFFSET);
+			_dir = _dir.normalize();
 		}
 		
 		public function increaseDir(toAdd : Vector2D) : void
 		{
+			toAdd = toAdd.normalize()
+			
 			_dir._x += toAdd._x;
 			_dir._y += toAdd._y;
+			
+			_dir = _dir.normalize();
 		}
 		
 		public function getPos(): Vector2D
@@ -234,21 +236,25 @@ package Systems
                 {
 					_dir._x = -_dir._x;
 					_dir._y = -_dir._y;
+					_dir = _dir.normalize();
                 }
                 if (_pos._y > 1080)
                 {
                     _dir._x = -_dir._x;
 					_dir._y = -_dir._y;
+					_dir = _dir.normalize();
                 }
                 if (_pos._x < -100)
                 {
                     _dir._x = -_dir._x;
 					_dir._y = -_dir._y;
+					_dir = _dir.normalize();
                 }
                 if (_pos._y < -100)
                 {
                     _dir._x = -_dir._x;
 					_dir._y = -_dir._y;
+					_dir = _dir.normalize();
                 }
 		}
 		
@@ -277,6 +283,7 @@ package Systems
 			spawnPoint = new Vector2D(1920 -(Math.random() * 1000), 1080 -(Math.random() * 1000));
 			center = new Vector2D(1920 / 2, 1080 / 2);
 			dirToCenter = spawnPoint.findVector(center);
+			
 					
 			//respawn boid
 			this.setPos(spawnPoint);
