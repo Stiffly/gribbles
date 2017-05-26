@@ -55,7 +55,8 @@ package Systems
 		private var _spriteVec : Vector.<Sprite>;
 		
 		private var rotatate:Number = 0;
-		private var _oldRotate: Number;
+		
+		private var _oldRotate:Vector.<Number>;
 		
 		private var referenceMatrix:flash.geom.Matrix;
 		
@@ -97,7 +98,7 @@ package Systems
 			_spriteVec = new Vector.<Sprite>(6);
 			
 			var i : int;
-			for (i = 0; i < textureVec.length; i++ )
+			for (i = 0; i < _spriteVec.length; i++ )
 			{
 				_spriteVec[i] = new Sprite();
 				_spriteVec[i].graphics.beginBitmapFill(textureVec[i].bitmapData, null, true, true);
@@ -112,7 +113,9 @@ package Systems
 			
 		
 			
-			spawnAtRandomPoint();
+			//spawnAtRandomPoint();
+			_pos._x = 400;
+		    _pos._y = 400;
 			
 			_dir._x = (Math.random());
 			_dir._y = (Math.random());
@@ -122,14 +125,21 @@ package Systems
 
 			
 			referenceMatrix = headBM.transform.matrix.clone();
-			for (i = 0; i < textureVec.length; i++ )
+			for (i = 0; i < _spriteVec.length; i++ )
 			{
 			
 				_spriteVec[i].scaleX = 0.2;
 				_spriteVec[i].scaleY = 0.2;
-				translateSprite(new Vector2D( - textureVec[i].width / 2, textureVec[i].height), i);
+				//translateSprite(new Vector2D( - textureVec[i].width / 2, textureVec[i].height/2), i);
 			}
-			_oldRotate = 0;
+			
+			_oldRotate = new Vector.<Number>(6);
+			for (i = 0; i < _oldRotate.length; i++ )
+			{
+				_oldRotate[i] = 0;
+			}
+			
+			
 		}
 		
 		public function Update():void
@@ -158,11 +168,10 @@ package Systems
 			lastPos._x = _pos._x;
 			lastPos._y = _pos._y;
 			
-			
-			
+
 			for (n = 0; n < _spriteVec.length; n++ )
 			{
-				translateSprite(new Vector2D(1.0, 0.0), n);
+				//translateSprite(new Vector2D(1.0, 0.0), n);
 				//textureVec[n].x = lastPos._x;// - textureVec[n].width / 2;
 				//textureVec[n].y = lastPos._y;// + textureVec[n].height;
 				
@@ -178,7 +187,8 @@ package Systems
 				//textureVec[n].rotationY = rotatate += 0.4;
 				//textureVec[n].transform.matrix.
 				
-				rotateAroundCenter(radianToDegree(rotation) +45, n);
+				rotateAroundCenter(rotation +(Math.PI / 180 * ( -90)), n);
+
 				//rotateAroundPoint(textureVec[n], 44);
 				
 				countDown += 4;
@@ -268,7 +278,7 @@ package Systems
 		private function rotateAroundCenter(degree:Number, spriteIndex : int):void 
 		{
 			var toRotate : Number = 0;
-			toRotate =  -_oldRotate + degree;
+			toRotate =  -_oldRotate[spriteIndex] + degree;
 			
 			
 				var orgMatrix : flash.geom.Matrix = _spriteVec[spriteIndex].transform.matrix;
@@ -290,7 +300,7 @@ package Systems
 				
 				_spriteVec[spriteIndex].transform.matrix = orgMatrix;
 				
-				_oldRotate = degree;
+				_oldRotate[spriteIndex] = degree;
 		}
 		
 		private function translateSprite(newPos : Vector2D, spriteIndex : int):void 
