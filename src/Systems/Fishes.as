@@ -56,20 +56,21 @@ package Systems
 		public function Update():void 
 		{	
 			var boidVec : Vector2D = new Vector2D(0,0);
-			boidVec = this.boidsFirstRules();
 			
 			var EnemyVec : Vector2D = new Vector2D(0,0);
 			
 			for (var i : int = 0; i < _boids.length; i++)
 			{
-				EnemyVec = this.AvoidEnemyBoid(_boids[i]);
+				boidVec = this.boidsFirstRules(i);
+				EnemyVec = this.NewAvoidEnemyBoid(_boids[i]);
+				//boidVec.addition(this.AvoidEnemyBoid(_boids[i]));
 				if (EnemyVec._x != 0 && EnemyVec._y != 0)
 				{
 					_boids[i].setDir(EnemyVec);
 				}
 				else
 				{
-					_boids[i].setDir(boidVec);
+				_boids[i].setDir(boidVec);
 				}
 				_boids[i].Update();
 			}
@@ -93,84 +94,81 @@ package Systems
 			}
 		}
 		
-		private function boidsFirstRules() : Vector2D
+		private function boidsFirstRules(i:int) : Vector2D
 		{
-			var i : int;
 			var v1 : Vector2D = new Vector2D(0, 0);
 			var v2 : Vector2D = new Vector2D(0, 0);
 			var v3 : Vector2D = new Vector2D(0, 0);
 			
+
+			var averageSepForce : Vector2D = new Vector2D(0, 0);
+			var newAveragePosition : Vector2D = new Vector2D(0, 0);
+			var averageDirection : Vector2D = new Vector2D(0, 0);
+			var boidsInVisibalDistance : int = 0;
+			var boidsKeepDistance : int = 0;
 			
+			//we walk through and process each boid here, different from boidtest
+			//newAveragePosition.addition(_boids[i].getPos());
 			
-			for (i = 0; i < _amountOfFish; i++)
+			var n : int;
+			for (n = 0; n < _amountOfFish; n++)
 			{
-				var averageSepForce : Vector2D = new Vector2D(0, 0);
-				var newAveragePosition : Vector2D = new Vector2D(0, 0);
-				var averageDirection : Vector2D = new Vector2D(0, 0);
-				var boidsInVisibalDistance : int = 0;
-				var boidsKeepDistance : int = 0;
-				
-				//we walk through and process each boid here, different from boidtest
-				newAveragePosition.addition(_boids[i].getPos());
-				
-				var n : int;
-				for (n = 0; n < _amountOfFish; n++)
+				if (i != n)
 				{
-					if (i != n)
+					var boidVec : Vector2D = _boids[i].getPos().findVector(_boids[n].getPos());
+					var boidLen : Number = boidVec.length();
+					
+					if (boidLen < _viewDistance)
 					{
-						var boidVec : Vector2D = _boids[i].getPos().findVector(_boids[n].getPos());
-						var boidLen : Number = boidVec.length();
+						//calculate the avg data for Alignment and cohesion
+						newAveragePosition.addition(_boids[n].getPos());
 						
-						if (boidLen < _viewDistance)
+						averageDirection.addition(_boids[n].getDir());
+						
+						boidsInVisibalDistance++;
+						
+						if (boidLen < _keepdistance)
 						{
-							//calculate the avg data for Alignment and cohesion
-							newAveragePosition.addition(_boids[n].getPos());
+							//separation, the closer to a flockmate, the more they are repelled
+							var normVec : Vector2D = boidVec;
+							normVec.multiplyNormVec((boidLen / _keepdistance) - 1);
 							
-							averageDirection.addition(_boids[n].getDir());
-							
-							boidsInVisibalDistance++;
-							
-							if (boidLen < _keepdistance)
-							{
-								//separation, the closer to a flockmate, the more they are repelled
-								var normVec : Vector2D = boidVec;
-								normVec.multiplyNormVec((boidLen / _keepdistance) - 1);
-								
-								averageSepForce.addition(normVec);
-								boidsKeepDistance++;
-							}
+							averageSepForce.addition(normVec);
+							boidsKeepDistance++;
 						}
 					}
 				}
-				
-				if (boidsInVisibalDistance > 0)
-				{
-					//Adjust boid to follow thw flocks average position, cohation
-					if (averageDirection.isEqvivalentTo(_boids[i].getDir()) == false)
-					{
-						//alignment
-						averageDirection = averageDirection.normalize();
-						
-						//_boids[i].increaseDir(averageDirection);
-						v1 = averageDirection;
-					}
-					
-					//Cohesion, take the average point position and find the vector to that pos from boid
-					newAveragePosition.dividePoint(boidsInVisibalDistance + 1);
-					
-					var dirToCenter : Vector2D = _boids[i].getPos().findVector(newAveragePosition);
-					dirToCenter = dirToCenter.normalize();
-					//_boids[i].increaseDir(dirToCenter);
-					v3 = dirToCenter;
-					
-					if (boidsKeepDistance > 0)
-					{
-						averageSepForce = averageSepForce.normalize();
-						//_boids[i].increaseDir(averageSepForce);
-						v2 = averageSepForce;
-					}					
-				}
 			}
+			
+			if (boidsInVisibalDistance > 0)
+			{
+				//Adjust boid to follow thw flocks average position, cohation
+				if (averageDirection.isEqvivalentTo(_boids[i].getDir()) == false)
+				{
+					//alignment OLD
+					averageDirection = averageDirection.normalize();
+
+					//_boids[i].increaseDir(averageDirection);
+					v1 = averageDirection;
+				}
+				
+				//Cohesion, take the average point position and find the vector to that pos from boid
+				newAveragePosition.dividePoint(boidsInVisibalDistance);
+				
+
+				var dirToCenter : Vector2D = _boids[i].getPos().findVector(newAveragePosition);
+				dirToCenter = dirToCenter.normalize();
+				//_boids[i].increaseDir(dirToCenter);
+				v3 = dirToCenter;
+				
+				if (boidsKeepDistance > 0)
+				{
+					averageSepForce = averageSepForce.normalize();
+					//_boids[i].increaseDir(averageSepForce);
+					v2 = averageSepForce;
+				}					
+			}
+			
 		
 			
 			v1 = v1.normalize();
@@ -238,6 +236,52 @@ package Systems
 					
 					boidToScare.panicSwitch();
 				}
+			}
+			
+			boidToScare.setSpeed(speed);
+			return avoidVec;
+		}
+		
+		private function NewAvoidEnemyBoid(boidToScare:Boid):Vector2D
+		{
+			var avoidVec : Vector2D = new Vector2D(0, 0);
+			var fallOffSpeed : Number = boidToScare.getSpeed();
+			var speed : Number = boidToScare.getSpeed();
+			
+			//not sure if right way
+			var OtherVec : Vector2D = _enemy.findVector(boidToScare.getPos());
+			var OtherLen : Number = OtherVec.length();
+			if (OtherLen < _viewDistance)
+			{	
+				var constant : Number = (OtherLen / _viewDistance)-1;
+				OtherVec.dividePoint(OtherLen);
+				OtherVec.rescale(constant)
+				
+				avoidVec = OtherVec;
+				
+				var speedMod : Number = OtherLen / _viewDistance; 
+				
+				speed = boidToScare.getSpeed() * (9+speedMod);
+				
+				if (4.0 < speed)
+				{
+					speed = 4;
+				}
+				
+				
+				//avoidVec.rescale(w);
+			}
+			else
+			{
+				if (speed <= 4.0 && speed > 1.0)
+				{
+					speed -= speed * 0.01;
+				}
+				else if (speed < 1.0 )
+				{
+					speed = 1.0;
+				}
+				
 			}
 			
 			boidToScare.setSpeed(speed);

@@ -138,6 +138,8 @@ package Systems
 		
 		public function Update():void
 		{	
+			reinitializeBoidPosition();
+			
 			_dir = _dir.normalize();
 			
 			this._pos._x += (_dir._x * _speed);
@@ -150,7 +152,7 @@ package Systems
                 _dirVector[n] = _dirVector[n - 1];
             }
 			
-			reinitializeBoidPosition();
+			
 			
 			//Set fishBody Positions
 			var rotation:Number = Math.atan2(_dir._y, _dir._x);
@@ -179,7 +181,7 @@ package Systems
 				//rotateAroundCenter((Math.PI / 180 * ( rotatate)), n);
 				//rotateAroundPoint(textureVec[n], 44);
 				
-				countDown += 3;
+				countDown += 4;
 			}
 		}
 		public function Activate():void
@@ -314,7 +316,7 @@ package Systems
 				var rect : Rectangle = _spriteVec[spriteIndex].getBounds(_spriteVec[spriteIndex].parent);
 				
 				var transX : Number = - (rect.left + (rect.width / 2));
-				var transY : Number = - (rect.top + (rect.height));
+				var transY : Number = - (rect.top + (rect.height)/2);
 				
 				//translate
 				orgMatrix.translate(transX, transY);
