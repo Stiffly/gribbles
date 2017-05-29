@@ -63,19 +63,12 @@ package Systems
 		{
 			_pos = new Vector2D(0, 0);
 			_dir = new Vector2D(0, 0);
-			_dirVector = new Vector.<Vector2D>(24);
+			_dirVector = new Vector.<Vector2D>(50);
 			for (var n:int; n < _dirVector.length; n++ )
 			{
 				_dirVector[n] = new Vector2D(0, 0);
 			}
 			
-			_distanceVector = new Vector.<int>(6);
-			_distanceVector[0] = 20;
-			_distanceVector[1] = 14;
-			_distanceVector[2] = 11;
-			_distanceVector[3] = 20;
-			_distanceVector[4] = 21;
-			_distanceVector[5] = 20;
 		}
 		
 		
@@ -91,7 +84,7 @@ package Systems
 			textureVec[4] = b4BM;
 			textureVec[5] = tailBM;
 			
-			_speed = 2;
+			_speed = 1;
 			
 			
 			_spriteVec = new Vector.<Sprite>(6);
@@ -112,9 +105,9 @@ package Systems
 			
 		
 			
-			//spawnAtRandomPoint();
-			_pos._x = 400;
-		    _pos._y = 400;
+			spawnAtRandomPoint();
+			//_pos._x = 400;
+		    //_pos._y = 400;
 			
 			_dir._x = (Math.random());
 			_dir._y = (Math.random());
@@ -123,8 +116,8 @@ package Systems
 			for (i = 0; i < _spriteVec.length; i++ )
 			{
 			
-				_spriteVec[i].scaleX = 0.2;
-				_spriteVec[i].scaleY = 0.2;
+				_spriteVec[i].scaleX = 0.4;
+				_spriteVec[i].scaleY = 0.4;
 				//translateSprite(new Vector2D( - textureVec[i].width / 2, textureVec[i].height/2), i);
 			}
 			
@@ -133,11 +126,20 @@ package Systems
 			{
 				_oldRotate[i] = 0;
 			}
+			
+			_distanceVector = new Vector.<int>(6);
+			_distanceVector[0] = 20 * (_spriteVec[0].scaleX/0.2);
+			_distanceVector[1] = 14* (_spriteVec[1].scaleX/0.2);
+			_distanceVector[2] = 11* ( _spriteVec[2].scaleX/0.2);
+			_distanceVector[3] = 20* (_spriteVec[3].scaleX/0.2);
+			_distanceVector[4] = 21* (_spriteVec[4].scaleX/0.2);
+			_distanceVector[5] = 20* (_spriteVec[5].scaleX/0.2);
 		}
 		
 		public function Update():void
 		{	
 			_dir = _dir.normalize();
+			
 			this._pos._x += (_dir._x * _speed);
 			this._pos._y += (_dir._y * _speed);
 			
@@ -177,7 +179,7 @@ package Systems
 				//rotateAroundCenter((Math.PI / 180 * ( rotatate)), n);
 				//rotateAroundPoint(textureVec[n], 44);
 				
-				countDown += 4;
+				countDown += 3;
 			}
 		}
 		public function Activate():void
@@ -280,7 +282,7 @@ package Systems
 			var dirToCenter : Vector2D;
 			
 			//find vector to point
-			spawnPoint = new Vector2D(1920 -(Math.random() * 1000), 1080 -(Math.random() * 1000));
+			spawnPoint = new Vector2D(300 + (Math.random() * 300), 300 + (Math.random() * 300));
 			center = new Vector2D(1920 / 2, 1080 / 2);
 			dirToCenter = spawnPoint.findVector(center);
 			
@@ -312,7 +314,7 @@ package Systems
 				var rect : Rectangle = _spriteVec[spriteIndex].getBounds(_spriteVec[spriteIndex].parent);
 				
 				var transX : Number = - (rect.left + (rect.width / 2));
-				var transY : Number = - (rect.top + (rect.height / 2));
+				var transY : Number = - (rect.top + (rect.height));
 				
 				//translate
 				orgMatrix.translate(transX, transY);
