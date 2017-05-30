@@ -14,16 +14,14 @@ package Systems
 		// Embed an image which will be used as a background
 		private var _dir:Vector2D;
 		private var _speed : Number;
-		
-		private var _sprite:Sprite;
-		private var _spriteHead:Sprite;
-		private var _spriteVisDist:Sprite;
 		private var _inPanic : Boolean;
-		private var _showVisDist : Boolean;
+		
+		private var _fishSprite:BoidBody;
 		
 		public function Boid()
 		{
 			_dir = new Vector2D(0, 0);
+			_fishSprite = new BoidBody();
 		}
 		
 		
@@ -31,36 +29,7 @@ package Systems
 		{
 			_speed = 1;
 			_inPanic = false;
-			_showVisDist = showVisDist;
-			
-			_sprite = new Sprite();
-			_sprite.graphics.clear();
-			_sprite.graphics.beginFill(0xFFCC00);
-			_sprite.graphics.drawCircle(0, 0, 20);
-			_sprite.graphics.endFill();
-			
-			_spriteHead = new Sprite();
-			_spriteHead.graphics.beginFill(0x000000);
-			_spriteHead.graphics.drawCircle(0, 0, 10);
-			_spriteHead.x = _sprite.x + (_dir._x * _OFFSET);
-			_spriteHead.y = _sprite.y + (_dir._y * _OFFSET);
-			_spriteHead.graphics.endFill();
-			
-			spawnAtRandomPoint();
-			
-			if (showVisDist == true)
-			{
-				_spriteVisDist = new Sprite();
-				_spriteVisDist.graphics.clear();
-				_spriteVisDist.graphics.beginFill(0x0000CC);
-				_spriteVisDist.graphics.drawCircle(0, 0, viewDist);
-				_spriteVisDist.graphics.endFill();
-				
-				stage.addChild(_spriteVisDist);
-			}
-			
-			stage.addChild(_sprite);
-			stage.addChild(_spriteHead);
+			_fishSprite.Init(stage);
 		}
 		
 		public function Update():void
@@ -96,18 +65,7 @@ package Systems
 				this.setDir(dirToCenter);
 			}
 			
-			//temp update head and body
-			this._sprite.x += (_dir._x * _speed);
-			this._sprite.y += (_dir._y * _speed);
-			
-			this._spriteHead.x += (_dir._x * _speed);
-			this._spriteHead.y += (_dir._y * _speed);
-			
-			if (_showVisDist == true)
-			{
-				_spriteVisDist.x = _sprite.x;
-				_spriteVisDist.y = _sprite.y;
-			}
+			_fishSprite.Update(_dir);
 		}
 		
 		public function Render():void 
@@ -116,25 +74,13 @@ package Systems
 		
 		public function setPos(newPos : Vector2D):void
 		{
-			_sprite.x = newPos._x;
-			_sprite.y = newPos._y;
-			
-			_spriteHead.x = _sprite.x + (_dir._x * _OFFSET);
-			_spriteHead.y = _sprite.y + (_dir._y * _OFFSET);
-			
-			if (_showVisDist == true)
-			{
-				_spriteVisDist.x = _sprite.x;
-				_spriteVisDist.y = _sprite.y;
-			}
+			//translate
+			_fishSprite.Translate(newPos);
 		}
 		
 		public function setDir(newDir : Vector2D):void 
 		{
 			_dir = newDir;
-			
-			_spriteHead.x = _sprite.x + (_dir._x * _OFFSET);
-			_spriteHead.y = _sprite.y + (_dir._y * _OFFSET);
 		}
 		
 		public function increaseDir(toAdd : Vector2D) : void
@@ -142,16 +88,15 @@ package Systems
 			_dir._x += toAdd._x;
 			_dir._y += toAdd._y;
 		}
-		
+		/*
 		public function getSprite():Sprite
 		{
-			return this._sprite;
 		}
-		
+		*/
 		public function getPos(): Vector2D
 		{
-			var toReturn : Vector2D = new Vector2D(_sprite.x, _sprite.y);
-			return toReturn;
+			//var toReturn : Vector2D = new Vector2D(_sprite.x, _sprite.y);
+			return new Vector2D(0,0);
 		}
 		
 		public function getDir():Vector2D 
@@ -184,13 +129,7 @@ package Systems
 			this.setPos(spawnPoint);
 			this.setDir(dirToCenter);
 		}
-		
-		public function setRed() : void
-		{
-			_sprite.graphics.beginFill(0xFF0000);
-			_sprite.graphics.drawCircle(0, 0, 20);
-		}
-		
+
 		public function panicSwitch() : void
 		{
 			_inPanic = !_inPanic;
@@ -199,18 +138,6 @@ package Systems
 		public function isPanic() : Boolean
 		{
 			return _inPanic;
-		}
-		
-		public function hideBoid():void 
-		{
-			_sprite.visible = false;
-			_spriteHead.visible = false;
-		}
-		
-		public function showBoid():void 
-		{
-			_sprite.visible = true;
-			_spriteHead.visible = true;
 		}
 	}
 

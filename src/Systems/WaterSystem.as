@@ -71,9 +71,9 @@ package Systems
 		
 		public function Update():void
 		{
+			_flock.Update();
 			_rippler.Update();
 			_dustEmitter.Update();
-			_flock.Update();
 		}
 		
 		private function handleDrag(event:TouchEvent):void

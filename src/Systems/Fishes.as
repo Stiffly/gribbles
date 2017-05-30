@@ -24,7 +24,7 @@ package Systems
 		private var _keepdistance : Number;
 		private var _amountOfFish : int;
 		private var _boids:Vector.<Boid>;
-		private var _enemy : Boid;
+		private var _mousePos : Vector2D;
 		
 		public function Fishes() 
 		{
@@ -34,44 +34,9 @@ package Systems
 		{
 			_viewDistance = 100;
 			_keepdistance = 80;
-			_amountOfFish = 25;		
+			_amountOfFish = 1;
 			
-			/*
-			_boids = new Vector.<Boid>(_amountOfFish);
-			
-			_boids[0] = new Boid();
-			_boids[0].Init(stage, _viewDistance, true);
-			_boids[0].setPos(new Vector2D(800, 400));
-			_boids[0].setDir(_boids[0].getPos().findVector(new Vector2D(840, 440)).normalize());
-			_boids[0].setSpeed(1.0);
-			
-			_boids[1] = new Boid();
-			_boids[1].Init(stage, _viewDistance, false);
-			_boids[1].setPos(new Vector2D(840, 440));
-			_boids[1].setSpeed(0.0);
-			
-			_boids[2] = new Boid();
-			_boids[2].Init(stage, _viewDistance, false);
-			_boids[2].setPos(new Vector2D(760, 360));
-			_boids[2].setSpeed(0.0);
-			
-			
-			_boids[3] = new Boid();
-			_boids[3].Init(stage, _viewDistance, false);
-			_boids[3].setPos(new Vector2D(820, 450));
-			_boids[3].setSpeed(0.0);
-			
-			_boids[4] = new Boid();
-			_boids[4].Init(stage, _viewDistance, false);
-			_boids[4].setPos(new Vector2D(760, 340));
-			_boids[4].setSpeed(0.0);
-			
-			_boids[5] = new Boid();
-			_boids[5].Init(stage, _viewDistance, false);
-			_boids[5].setPos(new Vector2D(847, 450));
-			_boids[5].setSpeed(0.0);
-			
-			*/
+			_mousePos = new Vector2D(0, 0);
 			
 			_boids = new Vector.<Boid>(_amountOfFish);
 			var i:int;
@@ -83,49 +48,20 @@ package Systems
 				_boids[i].setSpeed(1);
 				
 			}
-			
-
-			_enemy = new Boid();
-			_enemy.Init(stage, _viewDistance, false);
-			
-			_enemy.setRed();
-			_enemy.setSpeed(0);
-			
-			var centerPos : Vector2D = new Vector2D(1920 / 2, -1080 / 2);
-			var pos : Vector2D = _enemy.getPos();
-			
-			_enemy.setDir(pos.findVector(centerPos).normalize());
-			_enemy.hideBoid();
+			var pos : Vector2D = new Vector2D(200, 200);
+			_boids[0].setPos(pos);
 		}
 		
 		private function moveEnemy(event:MouseEvent):void 
 		{
-			_enemy.setPos(new Vector2D(event.stageX, event.stageY));
+			_mousePos._x = event.stageX;
+			_mousePos._y = event.stageY;
 		}
 		
 		public function Update():void 
 		{
-			//this.BoidAlgorithm();
-			this.boidsFirstRules();
+			_boids[0].Update();
 			
-			var i : uint;
-			for (i = 0; i < _amountOfFish; i++)
-			{
-				var normDir : Vector2D = _boids[i].getDir();
-				var dangerDir : Vector2D = new Vector2D(0, 0);
-				dangerDir = AvoidEnemyBoid(_boids[i]);
-				
-				if (_boids[i].isPanic() == true)
-				{
-					normDir = dangerDir;
-				}
-				
-				normDir = normDir.normalize();
-				
-				_boids[i].setDir(normDir);
-				_boids[i].Update();
-			}
-			_enemy.Update();
 		}
 		
 		public function Shutdown():void 
@@ -218,7 +154,7 @@ package Systems
 			var speed : Number = boidToScare.getSpeed();
 			
 			//not sure if right way
-			var OtherVec : Vector2D = _enemy.getPos().findVector(boidToScare.getPos());
+			var OtherVec : Vector2D = _mousePos.findVector(boidToScare.getPos());
 			var OtherLen : Number = OtherVec.length();
 			if (OtherLen < _viewDistance)
 			{
@@ -271,7 +207,8 @@ package Systems
 		
 		public function scareFishPos(pos:Vector2D):void 
 		{
-			_enemy.setPos(pos);
+			_mousePos._x = pos._x;
+			_mousePos._y = pos._y;
 		}
 	}
 
