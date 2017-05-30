@@ -60,7 +60,7 @@ package Systems
 		
 		public function Update():void 
 		{
-			_boids[0].Update();
+			_boids[0].Update(_mousePos);
 			
 		}
 		

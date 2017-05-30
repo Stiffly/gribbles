@@ -51,7 +51,7 @@ package Systems
 		
 		public function dot(vec : Vector2D): Number 
 		{ 
-			return _x * vec._x + _y * vec._y;
+			return (_x * vec._x + _y * vec._y);
 		}
 		
 		public function addition(value : Vector2D) : void

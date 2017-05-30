@@ -20,6 +20,9 @@ package Systems
 		private var _b1BM:Bitmap = new b1Class();
 		private var _spriteHead : Sprite;
 		
+		private var _forward : Vector2D;
+		private var _oldRotation : Number;
+		
 		/*
 		[Embed(source = "../../bin/images/Carp/b2.png")]
 		private var b2Class:Class;
@@ -54,6 +57,13 @@ package Systems
 			_spriteHead.graphics.endFill();
 			
 			stage.addChild(_spriteHead);
+			
+			//ugly hack to make rotation less of a pain
+			_oldRotation = 0;
+			
+			
+			_forward = new Vector2D(0, -1);
+			_forward = _forward.normalize();
 		}
 		
 		public function Shutdown():void 
@@ -63,10 +73,33 @@ package Systems
 		
 		public function Update(dir:Vector2D): void
 		{
-			RotateAroundCenter(0.01);
+			var spritePos : Vector2D = new Vector2D(0, 0);
+			spritePos._x = _spriteHead.x;
+			spritePos._y = _spriteHead.y;
+			
+			var newDir : Vector2D = new Vector2D(0, 0);
+			var centerIsh : Vector2D = new Vector2D(0, 0);
+			
+			newDir = spritePos.findVector(dir);
+			newDir = newDir.normalize();
+			
+			//find out angle between the vectors
+			var angle : Number = 0;
+			angle = _forward.dot(newDir);
+			//var angle2 :Number = newDir.dot(_forward);
+			
+			//cos(angle)
+			angle = Math.acos(angle);
+			
+			var test :Number = (Math.PI / 180) * -90;
+			
+			RotateAroundCenter(angle);
+			
+			//linear interpolation to this point
+			
 		}
 		
-		public function RotateAroundCenter(degree : Number):void 
+		public function RotateAroundCenter(radian : Number):void 
 		{
 			var orgMatrix : flash.geom.Matrix = _spriteHead.transform.matrix;
  				
@@ -76,8 +109,12 @@ package Systems
 			//translate
 			orgMatrix.translate(- (rect.left + (rect.width/2)), - (rect.top + (rect.height/2)));
 			
+			//rotate back to org pos
+			orgMatrix.rotate( -1 * _oldRotation);
+			
 			// Rotation (note: the parameter is in radian) 
-			orgMatrix.rotate(degree); 
+			orgMatrix.rotate(radian); 
+			_oldRotation = radian;
 			
 			// Translating the object back to the original position.
 			orgMatrix.translate(rect.left + (rect.width/2), rect.top + (rect.height/2)); 

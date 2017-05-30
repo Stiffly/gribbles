@@ -32,7 +32,7 @@ package Systems
 			_fishSprite.Init(stage);
 		}
 		
-		public function Update():void
+		public function Update(mousePos : Vector2D):void
 		{	
 			var pos : Vector2D = this.getPos();
 			
@@ -41,6 +41,7 @@ package Systems
 			var dirToCenter : Vector2D;
 			
 			//if the fish escapes the sceen it will reset to a random position from above
+			/*
 			if (pos._x > 1920 || pos._y > 1080)
 			{
 				//find vector to point
@@ -64,8 +65,8 @@ package Systems
 				this.setPos(spawnPoint);
 				this.setDir(dirToCenter);
 			}
-			
-			_fishSprite.Update(_dir);
+			*/
+			_fishSprite.Update(mousePos);
 		}
 		
 		public function Render():void 
