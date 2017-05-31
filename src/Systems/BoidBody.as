@@ -4,11 +4,10 @@ package Systems
 	 * ...
 	 * @author sebMax
 	 */
-	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
-	import flash.display.Stage
+	import flash.display.Stage;
 	
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
@@ -61,8 +60,7 @@ package Systems
 			//ugly hack to make rotation less of a pain
 			_oldRotation = 0;
 			
-			
-			_forward = new Vector2D(0, -1);
+			_forward = new Vector2D(0, 1);
 			_forward = _forward.normalize();
 		}
 		
@@ -71,7 +69,7 @@ package Systems
 			
 		}
 		
-		public function Update(dir:Vector2D): void
+		public function Update(dir:Vector2D, debugger:TextBox): void
 		{
 			var spritePos : Vector2D = new Vector2D(0, 0);
 			spritePos._x = _spriteHead.x;
@@ -81,19 +79,26 @@ package Systems
 			var centerIsh : Vector2D = new Vector2D(0, 0);
 			
 			newDir = spritePos.findVector(dir);
+			
 			newDir = newDir.normalize();
 			
 			//find out angle between the vectors
 			var angle : Number = 0;
 			angle = _forward.dot(newDir);
+			
 			//var angle2 :Number = newDir.dot(_forward);
 			
 			//cos(angle)
 			angle = Math.acos(angle);
+			angle = Math.atan2(newDir._x, -newDir._y);
 			
 			var test :Number = (Math.PI / 180) * -90;
 			
-			RotateAroundCenter(angle);
+			RotateAroundCenter(test);
+			debugger.DebugAngle(test);
+			
+			
+			
 			
 			//linear interpolation to this point
 			
@@ -106,7 +111,7 @@ package Systems
  			//get the rect of the obj
 			var rect : Rectangle = _spriteHead.getBounds(_spriteHead.parent);
 			
-			//translate
+			//translate the anchor point to the middle of the image
 			orgMatrix.translate(- (rect.left + (rect.width/2)), - (rect.top + (rect.height/2)));
 			
 			//rotate back to org pos

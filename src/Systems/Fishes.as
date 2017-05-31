@@ -58,9 +58,10 @@ package Systems
 			_mousePos._y = event.stageY;
 		}
 		
-		public function Update():void 
+		public function Update(debugger:TextBox):void 
 		{
-			_boids[0].Update(_mousePos);
+			
+			_boids[0].Update(_mousePos, debugger);
 			
 		}
 		

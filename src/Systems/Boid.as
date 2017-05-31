@@ -32,7 +32,7 @@ package Systems
 			_fishSprite.Init(stage);
 		}
 		
-		public function Update(mousePos : Vector2D):void
+		public function Update(mousePos : Vector2D, debugger:TextBox ):void
 		{	
 			var pos : Vector2D = this.getPos();
 			
@@ -66,7 +66,7 @@ package Systems
 				this.setDir(dirToCenter);
 			}
 			*/
-			_fishSprite.Update(mousePos);
+			_fishSprite.Update(mousePos, debugger);
 		}
 		
 		public function Render():void 
