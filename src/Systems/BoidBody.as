@@ -27,6 +27,9 @@ package Systems
 		private var _dPos : Sprite;
 		private var _dAnchor : Sprite;
 		
+		private var _spriteWidth : Number;
+		private var _spriteHeight :Number;
+		
 		/*
 		[Embed(source = "../../bin/images/Carp/b2.png")]
 		private var b2Class:Class;
@@ -61,8 +64,6 @@ package Systems
 			_spriteHead.graphics.endFill();
 			
 			stage.addChild(_spriteHead);
-
-			
 			
 			_dPos = new Sprite();
 			_dPos.graphics.beginFill(0x0000FF);
@@ -84,10 +85,15 @@ package Systems
 			_forward = new Vector2D(0, 1);
 			_forward = _forward.normalize();
 			
-			_pos = new Vector2D(500, 500);
+
+			_spriteHeight = _spriteHead.height;
+			_spriteWidth = _spriteHead.width;
+			
+			//_anchor = new Vector2D(500, 500);
+			_pos =  new Vector2D(500, 500);
 			
 			SetPos(_pos);
-			//Translate(_pos);
+			//ranslate(_pos);
 		}
 		
 		public function Shutdown():void 
@@ -96,7 +102,7 @@ package Systems
 		}
 		
 		public function Update(dir:Vector2D, debugger:TextBox): void
-		{		
+		{	
 			var newDir : Vector2D = new Vector2D(0, 0);
 			var centerIsh : Vector2D = new Vector2D(0, 0);
 			
@@ -123,6 +129,13 @@ package Systems
 			
 			RotateAroundCenter(angle);
 			
+			Move(new Vector2D(1, 0));
+			
+			//SetPos(new Vector2D(_pos._x +1, _pos._y));
+			
+			_dPos.x = _pos._x;
+			_dPos.y = _pos._y;
+			
 			//linear interpolation to this point
 			
 		}
@@ -135,7 +148,7 @@ package Systems
 			var rect : Rectangle = _spriteHead.getBounds(_spriteHead.parent);
 			
 			//translate the anchor point to the middle of the image
-			orgMatrix.translate(- (rect.left + (rect.width/2)), - (rect.top + (rect.height/2)));
+			orgMatrix.translate(-1*_anchor._x,-1*_anchor._y);
 			
 			//rotate back to org pos
 			orgMatrix.rotate( -1 * _oldRotation);
@@ -145,7 +158,7 @@ package Systems
 			_oldRotation = radian;
 			
 			// Translating the object back to the original position.
-			orgMatrix.translate(rect.left + (rect.width/2), rect.top + (rect.height/2)); 
+			orgMatrix.translate(_anchor._x,_anchor._y); 
 			
 			_spriteHead.transform.matrix = orgMatrix;
 		}
@@ -175,8 +188,9 @@ package Systems
 			_spriteHead.x = newPos._x;
 			_spriteHead.y = newPos._y;
 			
+			_pos = newPos;
+			
 			UpdateAnchor();
-
 		}
 		
 		public function GetAnchor(): Vector2D 
@@ -188,14 +202,28 @@ package Systems
 		{
 			var rect : Rectangle = _spriteHead.getBounds(_spriteHead.parent);
 			
-			_dPos.x = _pos._x;
-			_dPos.y = _pos._y;
+			var a : Number = 0;
+			var b : Number = 0;
 			
+			a = rect.width;
+			b = rect.height;
 			
-			_anchor = new Vector2D(_pos._x + (rect.width / 2), _pos._y + (rect.height/2));
+			//_anchor = new Vector2D(_pos._x + (rect.width / 2), _pos._y + (rect.height/2));
+			_anchor = new Vector2D(_pos._x + _spriteWidth/2, _pos._y + _spriteHeight);
+			
 			
 			_dAnchor.x = _anchor._x;
 			_dAnchor.y = _anchor._y;
+		}
+		
+		public function Move(toPoint : Vector2D):void 
+		{
+			Translate(toPoint);
+			_pos._x += toPoint._x;
+			_pos._y += toPoint._y;
+			
+			UpdateAnchor();
+			
 		}
 	}
 }
