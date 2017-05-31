@@ -34,8 +34,6 @@ package Systems
 		
 		public function Update(mousePos : Vector2D, debugger:TextBox ):void
 		{	
-			var pos : Vector2D = this.getPos();
-			
 			var spawnPoint : Vector2D;
 			var center : Vector2D;
 			var dirToCenter : Vector2D;
@@ -76,7 +74,7 @@ package Systems
 		public function setPos(newPos : Vector2D):void
 		{
 			//translate
-			_fishSprite.Translate(newPos);
+			_fishSprite.SetPos(newPos);
 		}
 		
 		public function setDir(newDir : Vector2D):void 

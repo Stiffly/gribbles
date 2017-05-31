@@ -55,6 +55,7 @@ package Systems
 			var str : String = "";
 			
 			str += "Sprite Pos: : (" + body.GetPos()._x + ", " + body.GetPos()._y + ")\n";
+			str += "Anchor Pos: : (" + body.GetAnchor()._x + ", " + body.GetAnchor()._y + ")\n";
 			str += "Sprite Forward: (" + body.GetForward()._x + ", " + body.GetForward()._y + ")\n";
 			str += "************\n";
 			str += "Target Point: (" + targetPoint._x + ", " + targetPoint._y + ")\n";

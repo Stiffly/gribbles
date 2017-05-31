@@ -48,8 +48,6 @@ package Systems
 				_boids[i].setSpeed(1);
 				
 			}
-			var pos : Vector2D = new Vector2D(200, 200);
-			_boids[0].setPos(pos);
 		}
 		
 		private function moveEnemy(event:MouseEvent):void 

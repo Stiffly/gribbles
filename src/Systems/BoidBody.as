@@ -21,6 +21,11 @@ package Systems
 		
 		private var _forward : Vector2D;
 		private var _oldRotation : Number;
+		private var _pos : Vector2D;
+		private var _anchor : Vector2D;
+		
+		private var _dPos : Sprite;
+		private var _dAnchor : Sprite;
 		
 		/*
 		[Embed(source = "../../bin/images/Carp/b2.png")]
@@ -56,12 +61,33 @@ package Systems
 			_spriteHead.graphics.endFill();
 			
 			stage.addChild(_spriteHead);
+
 			
+			
+			_dPos = new Sprite();
+			_dPos.graphics.beginFill(0x0000FF);
+			_dPos.graphics.drawRect(0, 0, 5, 5);
+			_dPos.graphics.endFill();
+			
+			stage.addChild(_dPos);
+			
+			_dAnchor = new Sprite();
+			_dAnchor.graphics.beginFill(0x00FF00);
+			_dAnchor.graphics.drawRect(0, 0, 5, 5);
+			_dAnchor.graphics.endFill();
+			
+			stage.addChild(_dAnchor);
 			//ugly hack to make rotation less of a pain
 			_oldRotation = 0;
 			
+
 			_forward = new Vector2D(0, 1);
 			_forward = _forward.normalize();
+			
+			_pos = new Vector2D(0, 700);
+			
+			SetPos(_pos);
+			//Translate(_pos);
 		}
 		
 		public function Shutdown():void 
@@ -70,10 +96,11 @@ package Systems
 		}
 		
 		public function Update(dir:Vector2D, debugger:TextBox): void
-		{
+		{		
 			var spritePos : Vector2D = new Vector2D(0, 0);
-			spritePos._x = _spriteHead.x;
-			spritePos._y = _spriteHead.y;
+			//spritePos._x = _spriteHead.x;
+			//spritePos._y = _spriteHead.y;
+			spritePos = _anchor;
 			
 			var newDir : Vector2D = new Vector2D(0, 0);
 			var centerIsh : Vector2D = new Vector2D(0, 0);
@@ -86,17 +113,16 @@ package Systems
 			var angle : Number = 0;
 			angle = _forward.dot(newDir);
 			
+			
 			//var angle2 :Number = newDir.dot(_forward);
 			
 			//cos(angle)
 			angle = Math.acos(angle);
-			angle = Math.atan2(newDir._x, -newDir._y);
+			//angle = Math.atan2(newDir._x, -newDir._y);
 			
-			var test :Number = (Math.PI / 180) * 90;
-			
-			RotateAroundCenter(angle);
+			var test :Number = (Math.PI / 180) * 1;
 			debugger.DebugBoid(this, dir, newDir, angle);
-			
+			RotateAroundCenter(angle);
 			
 			
 			
@@ -131,9 +157,6 @@ package Systems
 		{
 			var orgMatrix : flash.geom.Matrix = _spriteHead.transform.matrix;
 			
-			//get the rect of the obj
-			var rect : Rectangle = _spriteHead.getBounds(_spriteHead.parent);
-			
 			//translate
 			orgMatrix.translate(newPos._x, newPos._y); 
 			
@@ -147,11 +170,35 @@ package Systems
 		
 		public function GetPos():Vector2D
 		{
-			var pos : Vector2D = new Vector2D(0, 0);
-			pos._x = _spriteHead.x;
-			pos._y = _spriteHead.y;
+			return _pos;
+		}
+		
+		public function SetPos(newPos : Vector2D):void 
+		{
+			_spriteHead.x = newPos._x;
+			_spriteHead.y = newPos._y;
 			
-			return pos;
+			UpdateAnchor();
+
+		}
+		
+		public function GetAnchor(): Vector2D 
+		{
+			return _anchor;
+		}
+		
+		private function UpdateAnchor():void 
+		{
+			var rect : Rectangle = _spriteHead.getBounds(_spriteHead.parent);
+			
+			_dPos.x = _pos._x;
+			_dPos.y = _pos._y;
+			
+			
+			_anchor = new Vector2D(_pos._x + (rect.width / 2), _pos._y + (rect.height / 2));
+			
+			_dAnchor.x = _anchor._x;
+			_dAnchor.y = _anchor._y;
 		}
 	}
 }
