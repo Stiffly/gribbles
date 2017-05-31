@@ -56,7 +56,7 @@ package Systems
 		{	
 			for (var i : int = 0; i < _boids.length; i++)
 			{
-				_boids[i].Update(_boids,_enemy,_viewDistance,_keepdistance);
+				_boids[i].Update(i,_boids,_enemy,_viewDistance,_keepdistance);
 			}
 		}
 		

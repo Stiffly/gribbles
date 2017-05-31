@@ -80,7 +80,7 @@ package Systems
 		
 		public function Init(stage:Stage, viewDist : Number, showVisDist : Boolean):void
 		{	
-			_speed = 1;
+			_speed = 2;
 			
 			
 			_spriteVec = new Vector.<Sprite>(1);
@@ -127,9 +127,9 @@ package Systems
 			_distanceVector[5] = 20* (_spriteVec[0].scaleX/0.2);
 		}
 		
-		public function Update(boids:Vector.<Boid>,enemy:Vector2D,viewDistance:Number,keepDistance:Number):void
+		public function Update(currentBoid:int,boids:Vector.<Boid>,enemy:Vector2D,viewDistance:Number,keepDistance:Number):void
 		{	
-			BoidsFirstRules(boids, viewDistance,keepDistance);
+			BoidsFirstRules(currentBoid,boids, viewDistance,keepDistance);
 			
             //this.NewAvoidEnemy(obst);
             //
@@ -231,7 +231,7 @@ package Systems
 			
 		}
 			
-		public function BoidsFirstRules(_boids:Vector.<Boid>,_viewDistance:Number,_keepDistance:Number):void
+		public function BoidsFirstRules(currentBoid:int,_boids:Vector.<Boid>,_viewDistance:Number,_keepDistance:Number):void
 		{
 			var averageSepForce : Vector2D = new Vector2D(0, 0);
 			var newAveragePosition : Vector2D = new Vector2D(0, 0);
@@ -243,7 +243,7 @@ package Systems
 			
 			for (var n:int = 0; n < _boids.length; n++ )
 			{
-				if (_boids[n] != this)
+				if (currentBoid != n)
 				{
 					var boidVec : Vector2D = _boids[n]._pos.findVector(_boids[n]._pos);
 					var boidVecLength : Number = boidVec.length();
@@ -275,14 +275,14 @@ package Systems
 			if (boidsInVisibalDistance > 0)
 			{
 				//Adjust boid to follow thw flocks average position, cohation
-				//if (averageDirection.isEqvivalentTo(_dir) == false)
-				//{
+				if (averageDirection.isEqvivalentTo(_dir) == false)
+				{
 					//alignment OLD
 					averageDirection = averageDirection.normalize();
 
 					//_boids[i].increaseDir(averageDirection);
 					_dir.addition(averageDirection);
-				//}
+				}
 				
 				//Cohesion, take the average point position and find the vector to that pos from boid
 				newAveragePosition.dividePoint(boidsInVisibalDistance+1);
