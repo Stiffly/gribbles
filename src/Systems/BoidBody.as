@@ -90,7 +90,7 @@ package Systems
 			_spriteWidth = _spriteHead.width;
 			
 			//_anchor = new Vector2D(500, 500);
-			_pos =  new Vector2D(500, 500);
+			_pos =  new Vector2D(0, 0);
 			
 			SetPos(_pos);
 			//ranslate(_pos);
@@ -129,7 +129,7 @@ package Systems
 			
 			RotateAroundCenter(angle);
 			
-			Move(new Vector2D(1, 0));
+			//Move(new Vector2D(1, 0));
 			
 			//SetPos(new Vector2D(_pos._x +1, _pos._y));
 			
@@ -223,7 +223,6 @@ package Systems
 			_pos._y += toPoint._y;
 			
 			UpdateAnchor();
-			
 		}
 	}
 }
