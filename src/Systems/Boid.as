@@ -44,8 +44,6 @@ package Systems
 		
 		private var textureVec:Vector.<Bitmap>;
 		
-		private var _OFFSET : uint = 20;
-		// Embed an image which will be used as a background
 		
 		private var _pos:Vector2D;
 		private var _dir:Vector2D;
@@ -69,25 +67,25 @@ package Systems
 				_dirVector[n] = new Vector2D(0, 0);
 			}
 			
+			textureVec = new Vector.<Bitmap>(1);
+			
+			textureVec[0] = headBM;
+			//textureVec[1] = b1BM;
+			//textureVec[2] = b2BM;
+			//textureVec[3] = b3BM;
+			//textureVec[4] = b4BM;
+			//textureVec[5] = tailBM;
 		}
 		
 		
 		public function Init(stage:Stage, viewDist : Number, showVisDist : Boolean):void
 		{	
-			_inPanic = false;
-			textureVec = new Vector.<Bitmap>(6);
 			
-			textureVec[0] = headBM;
-			textureVec[1] = b1BM;
-			textureVec[2] = b2BM;
-			textureVec[3] = b3BM;
-			textureVec[4] = b4BM;
-			textureVec[5] = tailBM;
 			
 			_speed = 1;
 			
 			
-			_spriteVec = new Vector.<Sprite>(6);
+			_spriteVec = new Vector.<Sprite>(1);
 			
 			var i : int;
 			for (i = 0; i < _spriteVec.length; i++ )
@@ -98,16 +96,11 @@ package Systems
 				_spriteVec[i].graphics.endFill();
 				
 				stage.addChild(_spriteVec[i]);
-				
-				//_spriteVecRotationOrg[i] = new flash.geom.Matrix;
-				//_spriteVecRotationOrg[i] = new flash.geom.Matrix(_spriteVec[i].transform.matrix);
 			}
 			
 		
 			
 			spawnAtRandomPoint();
-			//_pos._x = 400;
-		    //_pos._y = 400;
 			
 			_dir._x = (Math.random());
 			_dir._y = (Math.random());
@@ -116,8 +109,8 @@ package Systems
 			for (i = 0; i < _spriteVec.length; i++ )
 			{
 			
-				_spriteVec[i].scaleX = 0.4;
-				_spriteVec[i].scaleY = 0.4;
+				_spriteVec[i].scaleX = 1;
+				_spriteVec[i].scaleY = 1;
 				//translateSprite(new Vector2D( - textureVec[i].width / 2, textureVec[i].height/2), i);
 			}
 			
@@ -129,11 +122,11 @@ package Systems
 			
 			_distanceVector = new Vector.<int>(6);
 			_distanceVector[0] = 20 * (_spriteVec[0].scaleX/0.2);
-			_distanceVector[1] = 14* (_spriteVec[1].scaleX/0.2);
-			_distanceVector[2] = 11* ( _spriteVec[2].scaleX/0.2);
-			_distanceVector[3] = 20* (_spriteVec[3].scaleX/0.2);
-			_distanceVector[4] = 21* (_spriteVec[4].scaleX/0.2);
-			_distanceVector[5] = 20* (_spriteVec[5].scaleX/0.2);
+			_distanceVector[1] = 14* (_spriteVec[0].scaleX/0.2);
+			_distanceVector[2] = 11* ( _spriteVec[0].scaleX/0.2);
+			_distanceVector[3] = 20* (_spriteVec[0].scaleX/0.2);
+			_distanceVector[4] = 21* (_spriteVec[0].scaleX/0.2);
+			_distanceVector[5] = 20* (_spriteVec[0].scaleX/0.2);
 		}
 		
 		public function Update():void
@@ -152,8 +145,16 @@ package Systems
                 _dirVector[n] = _dirVector[n - 1];
             }
 			
+			_spriteVec[0].x = this._pos._x;
+			_spriteVec[0].y = this._pos._y;
 			
 			
+			//{ Translate and rotate
+			
+			
+			
+			
+			/*
 			//Set fishBody Positions
 			var rotation:Number = Math.atan2(_dir._y, _dir._x);
 			var rotToFront:Vector2D = new Vector2D(0,0);
@@ -183,6 +184,8 @@ package Systems
 				
 				countDown += 4;
 			}
+			*/
+			//} endregion
 		}
 		public function Activate():void
 		{
@@ -195,6 +198,7 @@ package Systems
 		
 		public function Deactivate():void
 		{
+			
 			for (var i:int = 0; i < _spriteVec.length; i++ )
 			{
 				_spriteVec[i].visible = false;
@@ -292,16 +296,6 @@ package Systems
 			//respawn boid
 			this.setPos(spawnPoint);
 			this.setDir(dirToCenter);
-		}
-		
-		public function panicSwitch() : void
-		{
-			_inPanic = !_inPanic;
-		}
-		
-		public function isPanic() : Boolean
-		{
-			return _inPanic;
 		}
 			
 		private function rotateAroundCenter(degree:Number, spriteIndex : int):void 

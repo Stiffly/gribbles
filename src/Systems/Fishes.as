@@ -211,11 +211,6 @@ package Systems
 				
 				
 				avoidVec.rescale(w);
-				//switch to panic
-				if (boidToScare.isPanic() == false)
-				{
-					boidToScare.panicSwitch();
-				}
 			}
 			else
 			{
@@ -228,14 +223,6 @@ package Systems
 					speed = 1.0;
 				}
 				
-				//no panic
-				if (boidToScare.isPanic() == true)
-				{
-					//if not panic
-					
-					
-					boidToScare.panicSwitch();
-				}
 			}
 			
 			boidToScare.setSpeed(speed);
