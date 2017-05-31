@@ -84,7 +84,7 @@ package Systems
 			_forward = new Vector2D(0, 1);
 			_forward = _forward.normalize();
 			
-			_pos = new Vector2D(0, 700);
+			_pos = new Vector2D(500, 500);
 			
 			SetPos(_pos);
 			//Translate(_pos);
@@ -109,15 +109,19 @@ package Systems
 			var cosAngle : Number = 0;
 			cosAngle = _forward.dot(newDir);
 			
-			
 			//cos(angle)
 			angle = Math.acos(cosAngle);
+			
+			if (dir._x > _anchor._x)
+			{
+				angle *= -1;
+			}
 			
 			var test :Number = (Math.PI / 180) * 1;
 	
 			debugger.DebugBoid(this, dir, newDir, angle, cosAngle);
 			
-			//RotateAroundCenter(angle);
+			RotateAroundCenter(angle);
 			
 			//linear interpolation to this point
 			
@@ -188,7 +192,7 @@ package Systems
 			_dPos.y = _pos._y;
 			
 			
-			_anchor = new Vector2D(_pos._x + (rect.width / 2), _pos._y + (rect.height / 2));
+			_anchor = new Vector2D(_pos._x + (rect.width / 2), _pos._y + (rect.height/2));
 			
 			_dAnchor.x = _anchor._x;
 			_dAnchor.y = _anchor._y;
