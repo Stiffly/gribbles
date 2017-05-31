@@ -92,10 +92,10 @@ package Systems
 			angle = Math.acos(angle);
 			angle = Math.atan2(newDir._x, -newDir._y);
 			
-			var test :Number = (Math.PI / 180) * -90;
+			var test :Number = (Math.PI / 180) * 90;
 			
-			RotateAroundCenter(test);
-			debugger.DebugAngle(test);
+			RotateAroundCenter(angle);
+			debugger.DebugBoid(this, dir, newDir, angle);
 			
 			
 			
@@ -138,6 +138,20 @@ package Systems
 			orgMatrix.translate(newPos._x, newPos._y); 
 			
 			_spriteHead.transform.matrix = orgMatrix;
+		}
+		
+		public function GetForward():Vector2D 
+		{
+			return _forward;
+		}
+		
+		public function GetPos():Vector2D
+		{
+			var pos : Vector2D = new Vector2D(0, 0);
+			pos._x = _spriteHead.x;
+			pos._y = _spriteHead.y;
+			
+			return pos;
 		}
 	}
 }

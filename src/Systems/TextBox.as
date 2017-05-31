@@ -14,7 +14,7 @@ package Systems
 	public class TextBox extends Sprite
 	{
 		private var _debugTextBox : TextField;
-        private var _debugText:String = "<p>This is <b>some</b> content to <i>test</i> and <i>see</i></p><p><img src='eye.jpg' width='20' height='20'></p><p>what can be rendered.</p><p>You should see an eye image and some <u>HTML</u> text.</p>"; 		
+        private var _debugText:String;
 		
 		public function TextBox() 
 		{	
@@ -26,7 +26,7 @@ package Systems
 			_debugTextBox = new TextField();
 			_debugText = "Derp"
 			
-			_debugTextBox.width = 200;
+			_debugTextBox.width = 500;
 			_debugTextBox.height = 200;
 			_debugTextBox.multiline = true;
 			_debugTextBox.border = false;
@@ -42,18 +42,25 @@ package Systems
 			_debugTextBox.text = _debugText;
 		}
 		
-		public function SetDebugText(toPrint : Number):void 
-		{
-			var str : String = "Angle: ";
-			str = str + toPrint;
-			
-			_debugText = str;
-		}
-		
-		public function DebugAngle(angle : Number):void 
+		private function DebugAngle(angle : Number):String 
 		{
 			var str : String = "Radians: " + angle + "\n";
 			str = str + "Degree: " + (180 / Math.PI) * angle;
+			
+			return str;
+		}
+		
+		public function DebugBoid(body:BoidBody, targetPoint : Vector2D, targetVec: Vector2D, angle:Number):void 
+		{
+			var str : String = "";
+			
+			str += "Sprite Pos: : (" + body.GetPos()._x + ", " + body.GetPos()._y + ")\n";
+			str += "Sprite Forward: (" + body.GetForward()._x + ", " + body.GetForward()._y + ")\n";
+			str += "************\n";
+			str += "Target Point: (" + targetPoint._x + ", " + targetPoint._y + ")\n";
+			str += "Target Norm Vec: (" + targetVec._x + ", " + targetVec._y + ")\n";
+			str += "************\n";
+			str += DebugAngle(angle);
 			
 			_debugText = str;
 		}
