@@ -80,8 +80,6 @@ package Systems
 		
 		public function Init(stage:Stage, viewDist : Number, showVisDist : Boolean):void
 		{	
-			
-			
 			_speed = 1;
 			
 			
@@ -100,7 +98,7 @@ package Systems
 			
 		
 			
-			spawnAtRandomPoint();
+			SpawnAtRandomPoint();
 			
 			_dir._x = (Math.random());
 			_dir._y = (Math.random());
@@ -129,63 +127,38 @@ package Systems
 			_distanceVector[5] = 20* (_spriteVec[0].scaleX/0.2);
 		}
 		
-		public function Update():void
+		public function Update(boids:Vector.<Boid>,enemy:Vector2D,viewDistance:Number,keepDistance:Number):void
 		{	
-			reinitializeBoidPosition();
+			BoidsFirstRules(boids, viewDistance,keepDistance);
+			
+            //this.NewAvoidEnemy(obst);
+            //
+            ////simple function that moves the boids back to the screen
+            //this.ReinitializeBoidPosition(loopAround);
+            //
+            ////the direction should be normailized to maintain speed reliability
+            //dir.Normalize();
+            //pos += (dir * speed) * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //dirArr[0] = dir;
+            //for (int n = dirArr.Length - 1; n > 0; n--)
+            //{
+            //    dirArr[n] = dirArr[n - 1];
+            //}
 			
 			_dir = _dir.normalize();
 			
 			this._pos._x += (_dir._x * _speed);
 			this._pos._y += (_dir._y * _speed);
 			
-			_dirVector[0] = _dir;
-			var n:int  = 0;
-            for (n = _dirVector.length - 1; n > 0; n--)
-            {
-                _dirVector[n] = _dirVector[n - 1];
-            }
+			_spriteVec[0].x = _pos._x;
+			_spriteVec[0].y = _pos._y;
 			
-			_spriteVec[0].x = this._pos._x;
-			_spriteVec[0].y = this._pos._y;
+			Draw();
+		}
+		
+		private function Draw():void
+		{
 			
-			
-			//{ Translate and rotate
-			
-			
-			
-			
-			/*
-			//Set fishBody Positions
-			var rotation:Number = Math.atan2(_dir._y, _dir._x);
-			var rotToFront:Vector2D = new Vector2D(0,0);
-			var countDown:int = 0;
-			var lastPos:Vector2D = new Vector2D(0, 0);
-			lastPos._x = _pos._x;
-			lastPos._y = _pos._y;
-			
-			for (n = 0; n < _spriteVec.length; n++ )
-			{
-				
-				translateSprite(new Vector2D(lastPos._x,lastPos._y),n);
-				
-				lastPos._x = lastPos._x - (_dirVector[countDown]._x * _distanceVector[n]);
-				lastPos._y = lastPos._y - (_dirVector[countDown]._y *_distanceVector[n]);
-				
-				rotToFront = _dirVector[countDown];
-				
-				rotation = Math.atan2(rotToFront._y, rotToFront._x);
-				
-				//textureVec[n].rotationY = rotatate += 0.4;
-				//textureVec[n].transform.matrix.
-				
-				rotateAroundCenter(rotation +(Math.PI / 180 * ( -90)), n);
-				//rotateAroundCenter((Math.PI / 180 * ( rotatate)), n);
-				//rotateAroundPoint(textureVec[n], 44);
-				
-				countDown += 4;
-			}
-			*/
-			//} endregion
 		}
 		public function Activate():void
 		{
@@ -205,39 +178,8 @@ package Systems
 			}
 			
 		}
-		public function Render():void 
-		{
-		}
 		
-		public function setPos(newPos : Vector2D):void
-		{
-			_pos._x = newPos._x;
-			_pos._y = newPos._y;
-		}
-		
-		public function setDir(newDir : Vector2D):void 
-		{
-			_dir = newDir;
-			_dir = _dir.normalize();
-		}
-		
-		public function increaseDir(toAdd : Vector2D) : void
-		{
-			toAdd = toAdd.normalize()
-			
-			_dir._x += toAdd._x;
-			_dir._y += toAdd._y;
-			
-			_dir = _dir.normalize();
-		}
-		
-		public function getPos(): Vector2D
-		{
-			var toReturn : Vector2D = new Vector2D(_pos._x, _pos._y);
-			return toReturn;
-		}
-		
-		public function reinitializeBoidPosition():void
+		public function ReinitializeBoidPosition():void
 		{
 			
 			 if (_pos._x > 1920)
@@ -266,22 +208,7 @@ package Systems
                 }
 		}
 		
-		public function getDir():Vector2D 
-		{
-			return _dir;
-		}
-		
-		public function getSpeed():Number
-		{
-			return _speed;
-		}
-		
-		public function setSpeed(newSpeed:Number):void 
-		{
-			_speed = newSpeed;
-		}
-		
-		public function spawnAtRandomPoint():void 
+		public function SpawnAtRandomPoint():void 
 		{
 			var spawnPoint : Vector2D;
 			var center : Vector2D;
@@ -294,54 +221,82 @@ package Systems
 			
 					
 			//respawn boid
-			this.setPos(spawnPoint);
-			this.setDir(dirToCenter);
+			_pos._x = spawnPoint._x;
+			_pos._y = spawnPoint._y;
+			
+			
+			
+			//this.setPos(spawnPoint);
+			//this.setDir(dirToCenter);
+			
 		}
 			
-		private function rotateAroundCenter(degree:Number, spriteIndex : int):void 
+		public function BoidsFirstRules(_boids:Vector.<Boid>,_viewDistance:Number,_keepDistance:Number):void
 		{
-			var toRotate : Number = 0;
-			toRotate =  -_oldRotate[spriteIndex] + degree;
+			var averageSepForce : Vector2D = new Vector2D(0, 0);
+			var newAveragePosition : Vector2D = new Vector2D(0, 0);
+			var averageDirection : Vector2D = new Vector2D(0, 0);
+			var boidsInVisibalDistance : int = 0;
+			var boidsKeepDistance : int = 0;
 			
+			for (var n:int = 0; n < _boids.length; n++ )
+			{
+				if (_boids[n] != this)
+				{
+					var boidVec : Vector2D = _boids[n]._pos.findVector(_boids[n]._pos);
+					var boidVecLength : Number = boidVec.length();
+					
+					if (boidVecLength < _viewDistance)
+					{
+						newAveragePosition.addition(_boids[n]._pos);
+						
+						averageDirection.addition(_boids[n]._dir);
+						
+						boidsInVisibalDistance++;
+						
+					}
+					if (boidVecLength  < _keepDistance)
+					{
+						//separation, the closer to a flockmate, the more they are repelled
+						var dumbNumb:Number = (boidVecLength / _keepDistance)-1;
+						var normVec : Vector2D = boidVec;
+						normVec =  normVec.normalize();
+						normVec.rescale(dumbNumb);
+						
+						averageSepForce.addition(normVec);
+						boidsKeepDistance++;
+					}
+				}
+			}
 			
-				var orgMatrix : flash.geom.Matrix = _spriteVec[spriteIndex].transform.matrix;
+			if (boidsInVisibalDistance > 0)
+			{
+				//Adjust boid to follow thw flocks average position, cohation
+				//if (averageDirection.isEqvivalentTo(_dir) == false)
+				//{
+					//alignment OLD
+					averageDirection = averageDirection.normalize();
+
+					//_boids[i].increaseDir(averageDirection);
+					_dir.addition(averageDirection);
+				//}
 				
-				//get the rect of the obj
-				var rect : Rectangle = _spriteVec[spriteIndex].getBounds(_spriteVec[spriteIndex].parent);
+				//Cohesion, take the average point position and find the vector to that pos from boid
+				newAveragePosition.dividePoint(boidsInVisibalDistance);
 				
-				var transX : Number = - (rect.left + (rect.width / 2));
-				var transY : Number = - (rect.top + (rect.height)/2);
+
+				var dirToCenter : Vector2D = _pos.findVector(newAveragePosition);
+				dirToCenter = dirToCenter.normalize();
+				//_boids[i].increaseDir(dirToCenter);
+				_dir.addition(dirToCenter);
 				
-				//translate
-				orgMatrix.translate(transX, transY);
-				
-				// Rotation (note: the parameter is in radian) 
-				orgMatrix.rotate(toRotate); 
-				
-				// Translating the object back to the original position.
-				orgMatrix.translate(-transX, -transY); 
-				
-				_spriteVec[spriteIndex].transform.matrix = orgMatrix;
-				
-				_oldRotate[spriteIndex] = degree;
-		}
-		
-		private function translateSprite(newPos : Vector2D, spriteIndex : int):void 
-		{
-				var orgMatrix : flash.geom.Matrix = _spriteVec[spriteIndex].transform.matrix;
-				
-				//get the rect of the obj
-				var rect : Rectangle = _spriteVec[spriteIndex].getBounds(_spriteVec[spriteIndex].parent);
-				
-				var transX : Number = - (rect.left + (rect.width / 2))+ newPos._x;
-				var transY : Number = - (rect.top + (rect.height / 2))+ newPos._y;
-				
-				//translate
-				orgMatrix.translate(transX, transY); 
-				
-				orgMatrix.rotate(0);
-				
-				_spriteVec[spriteIndex].transform.matrix = orgMatrix;
+				if (boidsKeepDistance > 0)
+				{
+					//averageSepForce = averageSepForce.normalize();
+					//_boids[i].increaseDir(averageSepForce);
+					_dir.addition(averageSepForce);
+				}	
+			}
 		}
 	}
 }

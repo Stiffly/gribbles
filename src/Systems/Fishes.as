@@ -45,7 +45,6 @@ package Systems
 
 				_boids[i] = new Boid();
 				_boids[i].Init(stage, _viewDistance, false);
-				_boids[i].setSpeed(1);
 				
 			}
 
@@ -55,24 +54,9 @@ package Systems
 		
 		public function Update():void 
 		{	
-			var boidVec : Vector2D = new Vector2D(0,0);
-			
-			var EnemyVec : Vector2D = new Vector2D(0,0);
-			
 			for (var i : int = 0; i < _boids.length; i++)
 			{
-				boidVec = this.boidsFirstRules(i);
-				EnemyVec = this.NewAvoidEnemyBoid(_boids[i]);
-				//boidVec.addition(this.AvoidEnemyBoid(_boids[i]));
-				if (EnemyVec._x != 0 && EnemyVec._y != 0)
-				{
-					_boids[i].setDir(EnemyVec);
-				}
-				else
-				{
-				_boids[i].setDir(boidVec);
-				}
-				_boids[i].Update();
+				_boids[i].Update(_boids,_enemy,_viewDistance,_keepdistance);
 			}
 		}
 		
@@ -92,187 +76,6 @@ package Systems
 			{
 				_boids[i].Deactivate();
 			}
-		}
-		
-		private function boidsFirstRules(i:int) : Vector2D
-		{
-			var v1 : Vector2D = new Vector2D(0, 0);
-			var v2 : Vector2D = new Vector2D(0, 0);
-			var v3 : Vector2D = new Vector2D(0, 0);
-			
-
-			var averageSepForce : Vector2D = new Vector2D(0, 0);
-			var newAveragePosition : Vector2D = new Vector2D(0, 0);
-			var averageDirection : Vector2D = new Vector2D(0, 0);
-			var boidsInVisibalDistance : int = 0;
-			var boidsKeepDistance : int = 0;
-			
-			//we walk through and process each boid here, different from boidtest
-			//newAveragePosition.addition(_boids[i].getPos());
-			
-			var n : int;
-			for (n = 0; n < _amountOfFish; n++)
-			{
-				if (i != n)
-				{
-					var boidVec : Vector2D = _boids[i].getPos().findVector(_boids[n].getPos());
-					var boidLen : Number = boidVec.length();
-					
-					if (boidLen < _viewDistance)
-					{
-						//calculate the avg data for Alignment and cohesion
-						newAveragePosition.addition(_boids[n].getPos());
-						
-						averageDirection.addition(_boids[n].getDir());
-						
-						boidsInVisibalDistance++;
-						
-						if (boidLen < _keepdistance)
-						{
-							//separation, the closer to a flockmate, the more they are repelled
-							var normVec : Vector2D = boidVec;
-							normVec.multiplyNormVec((boidLen / _keepdistance) - 1);
-							
-							averageSepForce.addition(normVec);
-							boidsKeepDistance++;
-						}
-					}
-				}
-			}
-			
-			if (boidsInVisibalDistance > 0)
-			{
-				//Adjust boid to follow thw flocks average position, cohation
-				if (averageDirection.isEqvivalentTo(_boids[i].getDir()) == false)
-				{
-					//alignment OLD
-					averageDirection = averageDirection.normalize();
-
-					//_boids[i].increaseDir(averageDirection);
-					v1 = averageDirection;
-				}
-				
-				//Cohesion, take the average point position and find the vector to that pos from boid
-				newAveragePosition.dividePoint(boidsInVisibalDistance);
-				
-
-				var dirToCenter : Vector2D = _boids[i].getPos().findVector(newAveragePosition);
-				dirToCenter = dirToCenter.normalize();
-				//_boids[i].increaseDir(dirToCenter);
-				v3 = dirToCenter;
-				
-				if (boidsKeepDistance > 0)
-				{
-					averageSepForce = averageSepForce.normalize();
-					//_boids[i].increaseDir(averageSepForce);
-					v2 = averageSepForce;
-				}					
-			}
-			
-		
-			
-			v1 = v1.normalize();
-			v2 = v2.normalize();
-			v3 = v3.normalize();
-			var toReturn : Vector2D = new Vector2D(0, 0);
-			
-			toReturn.addition(v1);
-			toReturn.addition(v2);
-			toReturn.addition(v3);
-			
-			toReturn = toReturn.normalize();
-			return toReturn;
-		}
-		
-		private function AvoidEnemyBoid(boidToScare:Boid):Vector2D
-		{
-			var avoidVec : Vector2D = new Vector2D(0, 0);
-			var fallOffSpeed : Number = boidToScare.getSpeed();
-			var speed : Number = boidToScare.getSpeed();
-			
-			//not sure if right way
-			var OtherVec : Vector2D = _enemy.findVector(boidToScare.getPos());
-			var OtherLen : Number = OtherVec.length();
-			if (OtherLen < _viewDistance)
-			{
-				var constant : Number = OtherLen / _viewDistance;
-				avoidVec = OtherVec.rescale(OtherLen);
-				avoidVec = avoidVec.rescale(constant);
-				
-				var w : Number = 2.0;
-				var speedMod : Number = OtherLen / _viewDistance; 
-				
-				speed += speedMod;
-				
-				if (3.0 < speed)
-				{
-					speed = 3;
-				}
-				
-				
-				avoidVec.rescale(w);
-			}
-			else
-			{
-				if (speed <= 3.0 && speed > 1.0)
-				{
-					speed -= speed * 0.01;
-				}
-				else if (speed < 1.0 )
-				{
-					speed = 1.0;
-				}
-				
-			}
-			
-			boidToScare.setSpeed(speed);
-			return avoidVec;
-		}
-		
-		private function NewAvoidEnemyBoid(boidToScare:Boid):Vector2D
-		{
-			var avoidVec : Vector2D = new Vector2D(0, 0);
-			var fallOffSpeed : Number = boidToScare.getSpeed();
-			var speed : Number = boidToScare.getSpeed();
-			
-			//not sure if right way
-			var OtherVec : Vector2D = _enemy.findVector(boidToScare.getPos());
-			var OtherLen : Number = OtherVec.length();
-			if (OtherLen < _viewDistance)
-			{	
-				var constant : Number = (OtherLen / _viewDistance)-1;
-				OtherVec.dividePoint(OtherLen);
-				OtherVec.rescale(constant)
-				
-				avoidVec = OtherVec;
-				
-				var speedMod : Number = OtherLen / _viewDistance; 
-				
-				speed = boidToScare.getSpeed() * (9+speedMod);
-				
-				if (4.0 < speed)
-				{
-					speed = 4;
-				}
-				
-				
-				//avoidVec.rescale(w);
-			}
-			else
-			{
-				if (speed <= 4.0 && speed > 1.0)
-				{
-					speed -= speed * 0.01;
-				}
-				else if (speed < 1.0 )
-				{
-					speed = 1.0;
-				}
-				
-			}
-			
-			boidToScare.setSpeed(speed);
-			return avoidVec;
 		}
 		
 		public function scareFishPos(pos:Vector2D):void 
