@@ -42,15 +42,17 @@ package Systems
 			_debugTextBox.text = _debugText;
 		}
 		
-		private function DebugAngle(angle : Number):String 
+		private function DebugAngle(angle : Number, cosAngle : Number):String 
 		{
 			var str : String = "Radians: " + angle + "\n";
-			str = str + "Degree: " + (180 / Math.PI) * angle;
+			str += "Degree: " + (180 / Math.PI) * angle + "\n";
+			str += "cosAngle: " + cosAngle;
+			
 			
 			return str;
 		}
 		
-		public function DebugBoid(body:BoidBody, targetPoint : Vector2D, targetVec: Vector2D, angle:Number):void 
+		public function DebugBoid(body:BoidBody, targetPoint : Vector2D, targetVec: Vector2D, angle:Number, cosAngle:Number):void 
 		{
 			var str : String = "";
 			
@@ -61,7 +63,7 @@ package Systems
 			str += "Target Point: (" + targetPoint._x + ", " + targetPoint._y + ")\n";
 			str += "Target Norm Vec: (" + targetVec._x + ", " + targetVec._y + ")\n";
 			str += "************\n";
-			str += DebugAngle(angle);
+			str += DebugAngle(angle, cosAngle);
 			
 			_debugText = str;
 		}

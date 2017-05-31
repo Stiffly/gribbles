@@ -97,34 +97,27 @@ package Systems
 		
 		public function Update(dir:Vector2D, debugger:TextBox): void
 		{		
-			var spritePos : Vector2D = new Vector2D(0, 0);
-			//spritePos._x = _spriteHead.x;
-			//spritePos._y = _spriteHead.y;
-			spritePos = _anchor;
-			
 			var newDir : Vector2D = new Vector2D(0, 0);
 			var centerIsh : Vector2D = new Vector2D(0, 0);
 			
-			newDir = spritePos.findVector(dir);
-			
+			//draw vector between anchor and mousePos
+			newDir = _anchor.findVector(dir);
 			newDir = newDir.normalize();
 			
 			//find out angle between the vectors
 			var angle : Number = 0;
-			angle = _forward.dot(newDir);
+			var cosAngle : Number = 0;
+			cosAngle = _forward.dot(newDir);
 			
-			
-			//var angle2 :Number = newDir.dot(_forward);
 			
 			//cos(angle)
-			angle = Math.acos(angle);
-			//angle = Math.atan2(newDir._x, -newDir._y);
+			angle = Math.acos(cosAngle);
 			
 			var test :Number = (Math.PI / 180) * 1;
-			debugger.DebugBoid(this, dir, newDir, angle);
-			RotateAroundCenter(angle);
+	
+			debugger.DebugBoid(this, dir, newDir, angle, cosAngle);
 			
-			
+			//RotateAroundCenter(angle);
 			
 			//linear interpolation to this point
 			
