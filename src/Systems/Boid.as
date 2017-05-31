@@ -239,6 +239,8 @@ package Systems
 			var boidsInVisibalDistance : int = 0;
 			var boidsKeepDistance : int = 0;
 			
+			newAveragePosition.addition(_pos);
+			
 			for (var n:int = 0; n < _boids.length; n++ )
 			{
 				if (_boids[n] != this)
@@ -254,18 +256,19 @@ package Systems
 						
 						boidsInVisibalDistance++;
 						
+						if (boidVecLength  < _keepDistance)
+						{
+							//separation, the closer to a flockmate, the more they are repelled
+							//var dumbNumb:Number = (boidVecLength / _keepDistance)-1;
+							var normVec : Vector2D = boidVec;
+							normVec.multiplyNormVec((boidVecLength / _keepDistance) - 1);// =  normVec.normalize();
+							//normVec.rescale(dumbNumb);
+							
+							averageSepForce.addition(normVec);
+							boidsKeepDistance++;
+						}
 					}
-					if (boidVecLength  < _keepDistance)
-					{
-						//separation, the closer to a flockmate, the more they are repelled
-						var dumbNumb:Number = (boidVecLength / _keepDistance)-1;
-						var normVec : Vector2D = boidVec;
-						normVec =  normVec.normalize();
-						normVec.rescale(dumbNumb);
-						
-						averageSepForce.addition(normVec);
-						boidsKeepDistance++;
-					}
+					
 				}
 			}
 			
@@ -282,7 +285,7 @@ package Systems
 				//}
 				
 				//Cohesion, take the average point position and find the vector to that pos from boid
-				newAveragePosition.dividePoint(boidsInVisibalDistance);
+				newAveragePosition.dividePoint(boidsInVisibalDistance+1);
 				
 
 				var dirToCenter : Vector2D = _pos.findVector(newAveragePosition);
@@ -292,7 +295,7 @@ package Systems
 				
 				if (boidsKeepDistance > 0)
 				{
-					//averageSepForce = averageSepForce.normalize();
+					averageSepForce = averageSepForce.normalize();
 					//_boids[i].increaseDir(averageSepForce);
 					_dir.addition(averageSepForce);
 				}	
