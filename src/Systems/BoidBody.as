@@ -190,6 +190,14 @@ package Systems
 			UpdateAnchor();
 		}
 		
+		public function Move(toPoint : Vector2D):void 
+		{
+			Translate(toPoint);
+			_pos._x += toPoint._x;
+			_pos._y += toPoint._y;
+			
+			UpdateAnchor();
+		}
 		public function GetAnchor(): Vector2D 
 		{
 			return _anchor;
@@ -208,15 +216,6 @@ package Systems
 			//_anchor = new Vector2D(_pos._x + (rect.width / 2), _pos._y + (rect.height/2));
 			_anchor = new Vector2D(_pos._x + _spriteWidth/2, _pos._y + _spriteHeight);
 			
-		}
-		
-		public function Move(toPoint : Vector2D):void 
-		{
-			Translate(toPoint);
-			_pos._x += toPoint._x;
-			_pos._y += toPoint._y;
-			
-			UpdateAnchor();
 		}
 		
 		private function updateDebugPoints():void 
