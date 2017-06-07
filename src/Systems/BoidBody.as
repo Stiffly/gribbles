@@ -94,6 +94,7 @@ package Systems
 			
 			SetPos(_pos);
 			//ranslate(_pos);
+			SetPos(new Vector2D(500, 500));
 		}
 		
 		public function Shutdown():void 
@@ -129,12 +130,9 @@ package Systems
 			
 			RotateAroundCenter(angle);
 			
-			//Move(new Vector2D(1, 0));
+			updateDebugPoints();
 			
 			//SetPos(new Vector2D(_pos._x +1, _pos._y));
-			
-			_dPos.x = _pos._x;
-			_dPos.y = _pos._y;
 			
 			//linear interpolation to this point
 			
@@ -158,7 +156,7 @@ package Systems
 			_oldRotation = radian;
 			
 			// Translating the object back to the original position.
-			orgMatrix.translate(_anchor._x,_anchor._y); 
+			orgMatrix.translate(_anchor._x, _anchor._y);
 			
 			_spriteHead.transform.matrix = orgMatrix;
 		}
@@ -185,10 +183,9 @@ package Systems
 		
 		public function SetPos(newPos : Vector2D):void 
 		{
-			_spriteHead.x = newPos._x;
-			_spriteHead.y = newPos._y;
-			
-			_pos = newPos;
+			Translate(newPos);
+			_pos._x = newPos._x;
+			_pos._y = newPos._y;
 			
 			UpdateAnchor();
 		}
@@ -211,9 +208,6 @@ package Systems
 			//_anchor = new Vector2D(_pos._x + (rect.width / 2), _pos._y + (rect.height/2));
 			_anchor = new Vector2D(_pos._x + _spriteWidth/2, _pos._y + _spriteHeight);
 			
-			
-			_dAnchor.x = _anchor._x;
-			_dAnchor.y = _anchor._y;
 		}
 		
 		public function Move(toPoint : Vector2D):void 
@@ -223,6 +217,15 @@ package Systems
 			_pos._y += toPoint._y;
 			
 			UpdateAnchor();
+		}
+		
+		private function updateDebugPoints():void 
+		{
+			_dAnchor.x = _anchor._x;
+			_dAnchor.y = _anchor._y;
+			
+			_dPos.x = _pos._x;
+			_dPos.y = _pos._y;
 		}
 	}
 }
