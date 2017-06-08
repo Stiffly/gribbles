@@ -15,6 +15,13 @@ package Systems
 	public class BoidBody 
 	{
 		private var _spriteArr : Vector.<Sprite>;
+		private var _spritePos : Vector.<Vector2D>;
+		private var _spriteBounds : Vector.<Vector2D>;
+		private var _spriteAnchor : Vector.<Vector2D>;
+		private var _oldRotation : Vector.<Number>;
+		
+		private const NR_OF_SPRITES : Number = 2;
+		
 		
 		[Embed(source = "../../bin/images/Carp/b1.png")]
 		private var b1Class:Class;
@@ -24,15 +31,10 @@ package Systems
 		private var _spriteHeight :Number;
 		
 		private var _forward : Vector2D;
-		private var _oldRotation : Vector.<Number>;
+
 		private var _pos : Vector2D;
-		private var _anchor : Vector2D;
-		
 		private var _dPos : Sprite;
 		private var _dAnchor : Sprite;
-		
-
-		
 		
 		[Embed(source = "../../bin/images/Carp/b2.png")]
 		private var b2Class:Class;
@@ -64,31 +66,19 @@ package Systems
 		
 		public function Init(stage:Stage) : void
 		{
-			_spriteArr = new Vector.<Sprite>(2);
-			_oldRotation = new Vector.<Number>(_spriteArr.length);
-			var i : int;
-			for (i = 0; i < _oldRotation.length; i++ )
-			{
-				_oldRotation[i] = 0;
-			}
+			_spriteArr = new Vector.<Sprite>(NR_OF_SPRITES);
 			
 			_spriteArr[0] = new Sprite();
-			_spriteArr[0].graphics.beginBitmapFill(_b2BM.bitmapData, null, true, true);
-			_spriteArr[0].graphics.drawRect(0, 0, _b2BM.bitmapData.width, _b2BM.bitmapData.height);
+			_spriteArr[0].graphics.beginBitmapFill(_b1BM.bitmapData, null, true, true);
+			_spriteArr[0].graphics.drawRect(0, 0, _b1BM.bitmapData.width, _b1BM.bitmapData.height);
 			_spriteArr[0].graphics.endFill();
-			
-			_spriteHeight = _spriteArr[0].height;
-			_spriteWidth = _spriteArr[0].width;
 			
 			stage.addChild(_spriteArr[0]);
 			
 			_spriteArr[1] = new Sprite();
-			_spriteArr[1].graphics.beginBitmapFill(_b1BM.bitmapData, null, true, true);
-			_spriteArr[1].graphics.drawRect(0, 0, _b1BM.bitmapData.width, _b1BM.bitmapData.height);
+			_spriteArr[1].graphics.beginBitmapFill(_b2BM.bitmapData, null, true, true);
+			_spriteArr[1].graphics.drawRect(0, 0, _b2BM.bitmapData.width, _b2BM.bitmapData.height);
 			_spriteArr[1].graphics.endFill();
-			
-			_spriteB2BMHeight = _spriteArr[1].height;
-			_spriteB2BMWidth = _spriteArr[1].width;
 			
 			stage.addChild(_spriteArr[1]);
 			
@@ -105,18 +95,27 @@ package Systems
 			_dAnchor.graphics.endFill();
 			
 			stage.addChild(_dAnchor);
-			//ugly hack to make rotation less of a pain
 			
+			//ugly hack to make rotation less of a pain
 
+			_spritePos = new Vector.<Vector2D>(NR_OF_SPRITES);
+			_oldRotation = new Vector.<Number>(NR_OF_SPRITES);
+			_spriteBounds = new Vector.<Vector2D>(NR_OF_SPRITES);
+			_spriteAnchor = new Vector.<Vector2D>(NR_OF_SPRITES);
+			
+			var i : int;
+			for (i = 0; i < NR_OF_SPRITES; i++ )
+			{
+				_oldRotation[i] = 0;
+				_spritePos[i] = new Vector2D(0, 0);
+				_spriteBounds[i] = new Vector2D(_spriteArr[i].width, _spriteArr[i].height);
+				_spriteAnchor[i] = new Vector2D(0, 0);
+			}
+			_pos = new Vector2D(0, 0);
+			
 			_forward = new Vector2D(0, 1);
 			_forward = _forward.normalize();
 			
-			
-			//_anchor = new Vector2D(500, 500);
-			_pos =  new Vector2D(0, 0);
-			
-			SetPos(_pos);
-			//ranslate(_pos);
 			SetPos(new Vector2D(500, 500));
 		}
 		
@@ -131,7 +130,7 @@ package Systems
 			var centerIsh : Vector2D = new Vector2D(0, 0);
 			
 			//draw vector between anchor and mousePos
-			newDir = _anchor.findVector(dir);
+			newDir = _spriteAnchor[0].findVector(dir);
 			newDir = newDir.normalize();
 			
 			//find out angle between the vectors
@@ -142,17 +141,15 @@ package Systems
 			//cos(angle)
 			angle = Math.acos(cosAngle);
 			
-			if (dir._x > _anchor._x)
+			if (dir._x > _spriteAnchor[0]._x)
 			{
 				angle *= -1;
 			}
-			
-			var test :Number = (Math.PI / 180) * 1;
 	
 			debugger.DebugBoid(this, dir, newDir, angle, cosAngle);
 			
 			var i : Number;
-			for (i = 0; i < _spriteArr.length; i++ )
+			for (i = 0; i < NR_OF_SPRITES; i++ )
 			{
 				RotateAroundCenter(i, angle);
 			}
@@ -173,7 +170,7 @@ package Systems
 			var rect : Rectangle = _spriteArr[index].getBounds(_spriteArr[index].parent);
 			
 			//translate the anchor point to the middle of the image
-			orgMatrix.translate(-1*_anchor._x,-1*_anchor._y);
+			orgMatrix.translate(-1*_spriteAnchor[index]._x,-1*_spriteAnchor[index]._y);
 			
 			//rotate back to org pos
 			orgMatrix.rotate( -1 * _oldRotation[index]);
@@ -183,7 +180,7 @@ package Systems
 			_oldRotation[index] = radian;
 			
 			// Translating the object back to the original position.
-			orgMatrix.translate(_anchor._x, _anchor._y);
+			orgMatrix.translate(_spriteAnchor[index]._x, _spriteAnchor[index]._y);
 			
 			_spriteArr[index].transform.matrix = orgMatrix;
 		}
@@ -212,19 +209,22 @@ package Systems
 		{
 			var i : Number;
 			
-			for (i = 0; i < _spriteArr.length; i++)
+			for (i = 0; i < NR_OF_SPRITES; i++)
 			{
 				//for every iteration add to new pos
 				var bodyPos : Vector2D = new Vector2D(newPos._x, newPos._y);
 				bodyPos._x += 100 * i;
 				
 				Translate(_spriteArr[i], bodyPos);
+				_spritePos[i]._x = newPos._x;
+				_spritePos[i]._y = newPos._y;
+				
+				//update anchor, to the nose of the sprite
+				_spriteAnchor[i] = new Vector2D(_spritePos[i]._x + _spriteBounds[i]._x/2, _spritePos[i]._y + _spriteBounds[i]._y);
 			}
 			
 			_pos._x = newPos._x;
-			_pos._y = newPos._y;
-			
-			UpdateAnchor();
+			_pos._y = newPos._y;			
 		}
 		
 		public function Move(toPoint : Vector2D):void 
@@ -232,41 +232,28 @@ package Systems
 			//move all sprites accordingly
 			var i : Number;
 			
-			for (i = 0; i < _spriteArr.length; i++ )
+			for (i = 0; i < NR_OF_SPRITES; i++ )
 			{
-				Translate(_spriteArr[i],toPoint);
+				Translate(_spriteArr[i], toPoint);
+				
+				//update anchor, to the nose of the sprite
+				_spriteAnchor[i] = new Vector2D(_spritePos[i]._x + _spriteBounds[i]._x/2, _spritePos[i]._y + _spriteBounds[i]._y);
 			}
-			
 			
 			_pos._x += toPoint._x;
 			_pos._y += toPoint._y;
 			
-			UpdateAnchor();
+			
 		}
 		public function GetAnchor(): Vector2D 
 		{
-			return _anchor;
-		}
-		
-		private function UpdateAnchor():void 
-		{
-			var rect : Rectangle = _spriteArr[0].getBounds(_spriteArr[0].parent);
-			
-			var a : Number = 0;
-			var b : Number = 0;
-			
-			a = rect.width;
-			b = rect.height;
-			
-			//_anchor = new Vector2D(_pos._x + (rect.width / 2), _pos._y + (rect.height/2));
-			_anchor = new Vector2D(_pos._x + _spriteWidth/2, _pos._y + _spriteHeight);
-			
+			return _spriteAnchor[0];
 		}
 		
 		private function updateDebugPoints():void 
 		{
-			_dAnchor.x = _anchor._x;
-			_dAnchor.y = _anchor._y;
+			_dAnchor.x = _spriteAnchor[0]._x;
+			_dAnchor.y = _spriteAnchor[0]._y;
 			
 			_dPos.x = _pos._x;
 			_dPos.y = _pos._y;
