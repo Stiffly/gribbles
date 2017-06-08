@@ -33,8 +33,12 @@ package Systems
 		private var _forward : Vector2D;
 
 		private var _pos : Vector2D;
-		private var _dPos : Sprite;
-		private var _dAnchor : Sprite;
+		//private var _dPos : Sprite;
+		//private var _dAnchor : Sprite;
+		
+		private var _dPos : Vector.<Sprite>;
+		private var _dAnchor : Vector.<Sprite>;
+		
 		
 		[Embed(source = "../../bin/images/Carp/b2.png")]
 		private var b2Class:Class;
@@ -67,6 +71,9 @@ package Systems
 		public function Init(stage:Stage) : void
 		{
 			_spriteArr = new Vector.<Sprite>(NR_OF_SPRITES);
+			_dPos = new Vector.<Sprite>(NR_OF_SPRITES);
+			_dAnchor = new Vector.<Sprite>(NR_OF_SPRITES);
+			
 			
 			_spriteArr[0] = new Sprite();
 			_spriteArr[0].graphics.beginBitmapFill(_b1BM.bitmapData, null, true, true);
@@ -104,20 +111,24 @@ package Systems
 			
 			stage.addChild(_spriteArr[4]);
 			
-			_dPos = new Sprite();
-			_dPos.graphics.beginFill(0x0000FF);
-			_dPos.graphics.drawRect(0, 0, 5, 5);
-			_dPos.graphics.endFill();
 			
-			stage.addChild(_dPos);
-			
-			_dAnchor = new Sprite();
-			_dAnchor.graphics.beginFill(0x00FF00);
-			_dAnchor.graphics.drawRect(0, 0, 5, 5);
-			_dAnchor.graphics.endFill();
-			
-			stage.addChild(_dAnchor);
-			
+			var i : Number;
+			for (i = 0; i < NR_OF_SPRITES; i++ )
+			{
+				_dPos[i] = new Sprite();
+				_dPos[i].graphics.beginFill(0x0000FF);
+				_dPos[i].graphics.drawRect(0, 0, 5, 5);
+				_dPos[i].graphics.endFill();
+				
+				stage.addChild(_dPos[i]);
+				
+				_dAnchor[i] = new Sprite();
+				_dAnchor[i].graphics.beginFill(0x00FF00);
+				_dAnchor[i].graphics.drawRect(0, 0, 5, 5);
+				_dAnchor[i].graphics.endFill();
+				
+				stage.addChild(_dAnchor[i]);
+			}
 			//ugly hack to make rotation less of a pain
 
 			_spritePos = new Vector.<Vector2D>(NR_OF_SPRITES);
@@ -125,7 +136,6 @@ package Systems
 			_spriteBounds = new Vector.<Vector2D>(NR_OF_SPRITES);
 			_spriteAnchor = new Vector.<Vector2D>(NR_OF_SPRITES);
 			
-			var i : int;
 			for (i = 0; i < NR_OF_SPRITES; i++ )
 			{
 				_oldRotation[i] = 0;
@@ -173,10 +183,12 @@ package Systems
 			var i : Number;
 			for (i = 0; i < NR_OF_SPRITES; i++ )
 			{
+				Translate(i, new Vector2D(0.5, 0));
 				RotateAroundCenter(i, angle);
 			}
 			
 			updateDebugPoints();
+			
 			
 			//linear interpolation to this point
 			
@@ -205,14 +217,18 @@ package Systems
 			_spriteArr[index].transform.matrix = orgMatrix;
 		}
 		
-		public function Translate(sprite : Sprite ,newPos:Vector2D):void 
+		public function Translate(index : Number ,newPos:Vector2D):void 
 		{
-			var orgMatrix : flash.geom.Matrix = sprite.transform.matrix;
+			var orgMatrix : flash.geom.Matrix = _spriteArr[index].transform.matrix;
 			
 			//translate
-			orgMatrix.translate(newPos._x, newPos._y); 
+			orgMatrix.translate(newPos._x, newPos._y);
 			
-			sprite.transform.matrix = orgMatrix;
+			//move anchor
+			_spriteAnchor[index] = new Vector2D(_spritePos[index]._x + _spriteBounds[index]._x/2, _spritePos[index]._y + _spriteBounds[index]._y);
+			
+			
+			_spriteArr[index].transform.matrix = orgMatrix;
 		}
 		
 		public function GetForward():Vector2D 
@@ -235,7 +251,7 @@ package Systems
 				var bodyPos : Vector2D = new Vector2D(newPos._x, newPos._y);
 				bodyPos._x += 400 * i;
 				
-				Translate(_spriteArr[i], bodyPos);
+				Translate(i, bodyPos);
 				_spritePos[i]._x = bodyPos._x;
 				_spritePos[i]._y = bodyPos._y;
 				
@@ -254,10 +270,10 @@ package Systems
 			
 			for (i = 0; i < NR_OF_SPRITES; i++ )
 			{
-				Translate(_spriteArr[i], toPoint);
+				Translate(i, toPoint);
 				
 				//update anchor, to the nose of the sprite
-				_spriteAnchor[i] = new Vector2D(_spritePos[i]._x + _spriteBounds[i]._x/2, _spritePos[i]._y + _spriteBounds[i]._y);
+				//_spriteAnchor[i] = new Vector2D(_spritePos[i]._x + _spriteBounds[i]._x/2, _spritePos[i]._y + _spriteBounds[i]._y);
 			}
 			
 			_pos._x += toPoint._x;
@@ -272,11 +288,16 @@ package Systems
 		
 		private function updateDebugPoints():void 
 		{
-			_dAnchor.x = _spriteAnchor[1]._x;
-			_dAnchor.y = _spriteAnchor[1]._y;
+			var i : Number;
 			
-			_dPos.x = _spritePos[1]._x;
-			_dPos.y = _spritePos[1]._y;
+			for (i = 0; i < NR_OF_SPRITES; i++)
+			{
+				_dAnchor[i].x = _spriteAnchor[i]._x;
+				_dAnchor[i].y = _spriteAnchor[i]._y;
+			
+				_dPos[i].x = _spritePos[i]._x;
+				_dPos[i].y = _spritePos[i]._y;
+			}
 		}
 	}
 }
