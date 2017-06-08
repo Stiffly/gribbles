@@ -14,26 +14,32 @@ package Systems
 	
 	public class BoidBody 
 	{
+		private var _spriteArr : Vector.<Sprite>;
+		
 		[Embed(source = "../../bin/images/Carp/b1.png")]
 		private var b1Class:Class;
 		private var _b1BM:Bitmap = new b1Class();
-		private var _spriteHead : Sprite;
+		//private var _spriteHead : Sprite;
+		private var _spriteWidth : Number;
+		private var _spriteHeight :Number;
 		
 		private var _forward : Vector2D;
-		private var _oldRotation : Number;
+		private var _oldRotation : Vector.<Number>;
 		private var _pos : Vector2D;
 		private var _anchor : Vector2D;
 		
 		private var _dPos : Sprite;
 		private var _dAnchor : Sprite;
 		
-		private var _spriteWidth : Number;
-		private var _spriteHeight :Number;
+
 		
-		/*
+		
 		[Embed(source = "../../bin/images/Carp/b2.png")]
 		private var b2Class:Class;
-		private var b2BM:Bitmap = new b2Class();
+		private var _b2BM:Bitmap = new b2Class();
+		//private var _spriteB2BM : Sprite;
+		private var _spriteB2BMWidth : Number;
+		private var _spriteB2BMHeight :Number;
 		
 		[Embed(source = "../../bin/images/Carp/b3.png")]
 		private var b3Class:Class;
@@ -50,7 +56,7 @@ package Systems
 		[Embed(source = "../../bin/images/Carp/tail.png")]
 		private var tailClass:Class;
 		private var tailBM:Bitmap = new tailClass();
-		*/
+		
 		public function BoidBody() 
 		{
 			
@@ -58,12 +64,33 @@ package Systems
 		
 		public function Init(stage:Stage) : void
 		{
-			_spriteHead = new Sprite();
-			_spriteHead.graphics.beginBitmapFill(_b1BM.bitmapData, null, true, true);
-			_spriteHead.graphics.drawRect(0, 0, _b1BM.bitmapData.width, _b1BM.bitmapData.height);
-			_spriteHead.graphics.endFill();
+			_spriteArr = new Vector.<Sprite>(2);
+			_oldRotation = new Vector.<Number>(_spriteArr.length);
+			var i : int;
+			for (i = 0; i < _oldRotation.length; i++ )
+			{
+				_oldRotation[i] = 0;
+			}
 			
-			stage.addChild(_spriteHead);
+			_spriteArr[0] = new Sprite();
+			_spriteArr[0].graphics.beginBitmapFill(_b2BM.bitmapData, null, true, true);
+			_spriteArr[0].graphics.drawRect(0, 0, _b2BM.bitmapData.width, _b2BM.bitmapData.height);
+			_spriteArr[0].graphics.endFill();
+			
+			_spriteHeight = _spriteArr[0].height;
+			_spriteWidth = _spriteArr[0].width;
+			
+			stage.addChild(_spriteArr[0]);
+			
+			_spriteArr[1] = new Sprite();
+			_spriteArr[1].graphics.beginBitmapFill(_b1BM.bitmapData, null, true, true);
+			_spriteArr[1].graphics.drawRect(0, 0, _b1BM.bitmapData.width, _b1BM.bitmapData.height);
+			_spriteArr[1].graphics.endFill();
+			
+			_spriteB2BMHeight = _spriteArr[1].height;
+			_spriteB2BMWidth = _spriteArr[1].width;
+			
+			stage.addChild(_spriteArr[1]);
 			
 			_dPos = new Sprite();
 			_dPos.graphics.beginFill(0x0000FF);
@@ -79,15 +106,11 @@ package Systems
 			
 			stage.addChild(_dAnchor);
 			//ugly hack to make rotation less of a pain
-			_oldRotation = 0;
 			
 
 			_forward = new Vector2D(0, 1);
 			_forward = _forward.normalize();
 			
-
-			_spriteHeight = _spriteHead.height;
-			_spriteWidth = _spriteHead.width;
 			
 			//_anchor = new Vector2D(500, 500);
 			_pos =  new Vector2D(0, 0);
@@ -128,7 +151,11 @@ package Systems
 	
 			debugger.DebugBoid(this, dir, newDir, angle, cosAngle);
 			
-			RotateAroundCenter(angle);
+			var i : Number;
+			for (i = 0; i < _spriteArr.length; i++ )
+			{
+				RotateAroundCenter(i, angle);
+			}
 			
 			updateDebugPoints();
 			
@@ -138,37 +165,37 @@ package Systems
 			
 		}
 		
-		public function RotateAroundCenter(radian : Number):void 
+		public function RotateAroundCenter(index : Number ,radian : Number):void 
 		{
-			var orgMatrix : flash.geom.Matrix = _spriteHead.transform.matrix;
+			var orgMatrix : flash.geom.Matrix = _spriteArr[index].transform.matrix;
  				
  			//get the rect of the obj
-			var rect : Rectangle = _spriteHead.getBounds(_spriteHead.parent);
+			var rect : Rectangle = _spriteArr[index].getBounds(_spriteArr[index].parent);
 			
 			//translate the anchor point to the middle of the image
 			orgMatrix.translate(-1*_anchor._x,-1*_anchor._y);
 			
 			//rotate back to org pos
-			orgMatrix.rotate( -1 * _oldRotation);
+			orgMatrix.rotate( -1 * _oldRotation[index]);
 			
 			// Rotation (note: the parameter is in radian) 
 			orgMatrix.rotate(radian); 
-			_oldRotation = radian;
+			_oldRotation[index] = radian;
 			
 			// Translating the object back to the original position.
 			orgMatrix.translate(_anchor._x, _anchor._y);
 			
-			_spriteHead.transform.matrix = orgMatrix;
+			_spriteArr[index].transform.matrix = orgMatrix;
 		}
 		
-		public function Translate(newPos:Vector2D):void 
+		public function Translate(sprite : Sprite ,newPos:Vector2D):void 
 		{
-			var orgMatrix : flash.geom.Matrix = _spriteHead.transform.matrix;
+			var orgMatrix : flash.geom.Matrix = sprite.transform.matrix;
 			
 			//translate
 			orgMatrix.translate(newPos._x, newPos._y); 
 			
-			_spriteHead.transform.matrix = orgMatrix;
+			sprite.transform.matrix = orgMatrix;
 		}
 		
 		public function GetForward():Vector2D 
@@ -183,7 +210,17 @@ package Systems
 		
 		public function SetPos(newPos : Vector2D):void 
 		{
-			Translate(newPos);
+			var i : Number;
+			
+			for (i = 0; i < _spriteArr.length; i++)
+			{
+				//for every iteration add to new pos
+				var bodyPos : Vector2D = new Vector2D(newPos._x, newPos._y);
+				bodyPos._x += 100 * i;
+				
+				Translate(_spriteArr[i], bodyPos);
+			}
+			
 			_pos._x = newPos._x;
 			_pos._y = newPos._y;
 			
@@ -192,7 +229,15 @@ package Systems
 		
 		public function Move(toPoint : Vector2D):void 
 		{
-			Translate(toPoint);
+			//move all sprites accordingly
+			var i : Number;
+			
+			for (i = 0; i < _spriteArr.length; i++ )
+			{
+				Translate(_spriteArr[i],toPoint);
+			}
+			
+			
 			_pos._x += toPoint._x;
 			_pos._y += toPoint._y;
 			
@@ -205,7 +250,7 @@ package Systems
 		
 		private function UpdateAnchor():void 
 		{
-			var rect : Rectangle = _spriteHead.getBounds(_spriteHead.parent);
+			var rect : Rectangle = _spriteArr[0].getBounds(_spriteArr[0].parent);
 			
 			var a : Number = 0;
 			var b : Number = 0;
