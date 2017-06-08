@@ -20,7 +20,7 @@ package Systems
 		private var _spriteAnchor : Vector.<Vector2D>;
 		private var _oldRotation : Vector.<Number>;
 		
-		private const NR_OF_SPRITES : Number = 2;
+		private const NR_OF_SPRITES : Number = 5;
 		
 		
 		[Embed(source = "../../bin/images/Carp/b1.png")]
@@ -45,19 +45,19 @@ package Systems
 		
 		[Embed(source = "../../bin/images/Carp/b3.png")]
 		private var b3Class:Class;
-		private var b3BM:Bitmap = new b3Class();
+		private var _b3BM:Bitmap = new b3Class();
 		
 		[Embed(source = "../../bin/images/Carp/b4.png")]
 		private var b4Class:Class;
-		private var b4BM:Bitmap = new b4Class();
+		private var _b4BM:Bitmap = new b4Class();
 		
 		[Embed(source = "../../bin/images/Carp/head.png")]
 		private var headClass:Class;
-		private var headBM:Bitmap = new headClass();
+		private var _headBM:Bitmap = new headClass();
 		
 		[Embed(source = "../../bin/images/Carp/tail.png")]
 		private var tailClass:Class;
-		private var tailBM:Bitmap = new tailClass();
+		private var _tailBM:Bitmap = new tailClass();
 		
 		public function BoidBody() 
 		{
@@ -81,6 +81,28 @@ package Systems
 			_spriteArr[1].graphics.endFill();
 			
 			stage.addChild(_spriteArr[1]);
+			
+			
+			_spriteArr[2] = new Sprite();
+			_spriteArr[2].graphics.beginBitmapFill(_b3BM.bitmapData, null, true, true);
+			_spriteArr[2].graphics.drawRect(0, 0, _b3BM.bitmapData.width, _b3BM.bitmapData.height);
+			_spriteArr[2].graphics.endFill();
+			
+			stage.addChild(_spriteArr[2]);
+			
+			_spriteArr[3] = new Sprite();
+			_spriteArr[3].graphics.beginBitmapFill(_b4BM.bitmapData, null, true, true);
+			_spriteArr[3].graphics.drawRect(0, 0, _b4BM.bitmapData.width, _b4BM.bitmapData.height);
+			_spriteArr[3].graphics.endFill();
+			
+			stage.addChild(_spriteArr[3]);
+			
+			_spriteArr[4] = new Sprite();
+			_spriteArr[4].graphics.beginBitmapFill(_tailBM.bitmapData, null, true, true);
+			_spriteArr[4].graphics.drawRect(0, 0, _tailBM.bitmapData.width, _tailBM.bitmapData.height);
+			_spriteArr[4].graphics.endFill();
+			
+			stage.addChild(_spriteArr[4]);
 			
 			_dPos = new Sprite();
 			_dPos.graphics.beginFill(0x0000FF);
@@ -116,7 +138,7 @@ package Systems
 			_forward = new Vector2D(0, 1);
 			_forward = _forward.normalize();
 			
-			SetPos(new Vector2D(500, 500));
+			SetPos(new Vector2D(0, 500));
 		}
 		
 		public function Shutdown():void 
@@ -155,8 +177,6 @@ package Systems
 			}
 			
 			updateDebugPoints();
-			
-			//SetPos(new Vector2D(_pos._x +1, _pos._y));
 			
 			//linear interpolation to this point
 			
@@ -213,11 +233,11 @@ package Systems
 			{
 				//for every iteration add to new pos
 				var bodyPos : Vector2D = new Vector2D(newPos._x, newPos._y);
-				bodyPos._x += 100 * i;
+				bodyPos._x += 400 * i;
 				
 				Translate(_spriteArr[i], bodyPos);
-				_spritePos[i]._x = newPos._x;
-				_spritePos[i]._y = newPos._y;
+				_spritePos[i]._x = bodyPos._x;
+				_spritePos[i]._y = bodyPos._y;
 				
 				//update anchor, to the nose of the sprite
 				_spriteAnchor[i] = new Vector2D(_spritePos[i]._x + _spriteBounds[i]._x/2, _spritePos[i]._y + _spriteBounds[i]._y);
@@ -252,11 +272,11 @@ package Systems
 		
 		private function updateDebugPoints():void 
 		{
-			_dAnchor.x = _spriteAnchor[0]._x;
-			_dAnchor.y = _spriteAnchor[0]._y;
+			_dAnchor.x = _spriteAnchor[1]._x;
+			_dAnchor.y = _spriteAnchor[1]._y;
 			
-			_dPos.x = _pos._x;
-			_dPos.y = _pos._y;
+			_dPos.x = _spritePos[1]._x;
+			_dPos.y = _spritePos[1]._y;
 		}
 	}
 }
