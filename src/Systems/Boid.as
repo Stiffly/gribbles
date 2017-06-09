@@ -153,7 +153,34 @@ package Systems
 		{
 			_speed = newSpeed;
 		}
-		
+		private function ReinitializeBoidPosition():void
+		{
+			
+			 if (_pos._x > 1920)
+                {
+					_dir._x = -_dir._x;
+					_dir._y = -_dir._y;
+					_dir = _dir.normalize();
+                }
+                if (_pos._y > 1080)
+                {
+                    _dir._x = -_dir._x;
+					_dir._y = -_dir._y;
+					_dir = _dir.normalize();
+                }
+                if (_pos._x < -100)
+                {
+                    _dir._x = -_dir._x;
+					_dir._y = -_dir._y;
+					_dir = _dir.normalize();
+                }
+                if (_pos._y < -100)
+                {
+                    _dir._x = -_dir._x;
+					_dir._y = -_dir._y;
+					_dir = _dir.normalize();
+                }
+		}
 		public function spawnAtRandomPoint():void 
 		{
 			var spawnPoint : Vector2D;
