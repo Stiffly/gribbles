@@ -40,7 +40,7 @@ package Systems
 			
 			_boids = new Vector.<Boid>(_amountOfFish);
 			var i:int;
-			for (i = 0; i < _amountOfFish; i++)
+			for (var i:int = 0; i < _amountOfFish; i++)
 			{
 				_boids[i] = new Boid();
 				_boids[i].Init(stage);
@@ -50,7 +50,7 @@ package Systems
 		
 		public function Activate()
 		{
-			for (i = 0; i < _amountOfFish; i++)
+			for (var i:int = 0; i < _amountOfFish; i++)
 			{
 					_boids[i].Activate();
 			}
@@ -58,7 +58,7 @@ package Systems
 		
 		public function Deactivate()
 		{
-			for (i = 0; i < _amountOfFish; i++)
+			for (var i:int = 0; i < _amountOfFish; i++)
 			{
 					_boids[i].Deactivate();
 			}

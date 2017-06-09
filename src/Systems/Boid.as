@@ -15,9 +15,9 @@ package Systems
 		private var _pos:Vector2D;
 		
 		private var _dir:Vector2D;
-		private var _dirVector:Vector<Vector2D>;
+		private var _dirVector:Vector.<Vector2D>;
 		
-		private var _distanceVector:Vector<int>;
+		private var _distanceVector:Vector.<int>;
 		
 		private var _speed : Number;
 		private var _inPanic : Boolean;
@@ -45,7 +45,7 @@ package Systems
 			
 			_dirVector = new Vector.<Vector2D>(50);
 			
-			for (var i:int = 0; n < _dirVector.length; n++ )
+			for (var n:int = 0; n < _dirVector.length; n++ )
 			{
 				_dirVector[n] = new Vector2D(_dir._x,_dir._y);
 			}
@@ -80,7 +80,7 @@ package Systems
 			
 			_dirVector[0] = _dir;
 			
-			for (var i:int = _dirVector.length-1; n > 0; n-- )
+			for (var i:int = _dirVector.length-1; i > 0; i-- )
 			{
 				_dirVector[i] = _dirVector[i-1];
 			}
@@ -90,32 +90,38 @@ package Systems
 		
 		private function SetBodyPosDir()
 		{
-			float rotation = (float)(Math.Atan2(dir.Y, dir.X));// / (2 * Math.PI));
-            Vector2 rotToFront = new Vector2();
-            int countDown = 0;
-            Vector2 lastPos = pos;
-            float distance = 0;
-            for (int n = 0; n < fishTex.Length; n++)
-            {
-                rotToFront = dirArr[countDown];
-                //rotToFront.Normalize();
-                
-                rotation = (float)(Math.Atan2(rotToFront.Y, rotToFront.X));// / (2 * Math.PI));
-
-                rotation += MathHelper.ToRadians(-90);
-                spriteBatch.Draw(fishTex[n], lastPos, new Rectangle(0, 0, fishTex[n].Width, fishTex[n].Height), new Color(color.R + (n * 2), color.G + (n * 2), color.B + (n * 2)),
-                    rotation,
-                    new Vector2(fishTex[n].Width / 2, (fishTex[n].Height)),
-                    size,
-                    SpriteEffects.None, 1
-                    );
-
-
-
-                    lastPos = lastPos - (dirArr[countDown] * distanceArr[n]);
-                    countDown += 4;
-                    
-            }
+			/*
+			//Set fishBody Positions
+			var rotation:Number = Math.atan2(_dir._y, _dir._x);
+			var rotToFront:Vector2D = new Vector2D(0,0);
+			var countDown:int = 0;
+			var lastPos:Vector2D = new Vector2D(0, 0);
+			lastPos._x = _pos._x;
+			lastPos._y = _pos._y;
+			
+			for (n = 0; n < _spriteVec.length; n++ )
+			{
+				
+				translateSprite(new Vector2D(lastPos._x,lastPos._y),n);
+				
+				lastPos._x = lastPos._x - (_dirVector[countDown]._x * _distanceVector[n]);
+				lastPos._y = lastPos._y - (_dirVector[countDown]._y *_distanceVector[n]);
+				
+				rotToFront = _dirVector[countDown];
+				
+				rotation = Math.atan2(rotToFront._y, rotToFront._x);
+				
+				//textureVec[n].rotationY = rotatate += 0.4;
+				//textureVec[n].transform.matrix.
+				
+				rotateAroundCenter(rotation +(Math.PI / 180 * ( -90)), n);
+				//rotateAroundCenter((Math.PI / 180 * ( rotatate)), n);
+				//rotateAroundPoint(textureVec[n], 44);
+				
+				countDown += 4;
+			}
+			*/
+			//} endregion
 		}
 		
 		public function setPos(newPos : Vector2D):void
