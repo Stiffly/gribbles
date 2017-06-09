@@ -12,7 +12,13 @@ package Systems
 	{
 		private var _OFFSET : uint = 20;
 		// Embed an image which will be used as a background
+		private var _pos:Vector2D;
+		
 		private var _dir:Vector2D;
+		private var _dirVector:Vector<Vector2D>;
+		
+		private var _distanceVector:Vector<int>;
+		
 		private var _speed : Number;
 		private var _inPanic : Boolean;
 		
@@ -22,14 +28,45 @@ package Systems
 		{
 			_dir = new Vector2D(0, 0);
 			_fishSprite = new BoidBody();
+			
+			_pos = new Vector2D(0, 0);
+			
+	
 		}
 		
 		
-		public function Init(stage:Stage, viewDist : Number, showVisDist : Boolean):void
+		public function Init(stage:Stage):void
 		{
 			_speed = 1;
 			_inPanic = false;
 			_fishSprite.Init(stage);
+			
+			spawnAtRandomPoint();
+			
+			_dirVector = new Vector.<Vector2D>(50);
+			
+			for (var i:int = 0; n < _dirVector.length; n++ )
+			{
+				_dirVector[n] = new Vector2D(_dir._x,_dir._y);
+			}
+			
+			_distanceVector = new Vector.<int>(6);
+			_distanceVector[0] =  20;
+            _distanceVector[1] = 14;
+            _distanceVector[2] = 11;
+            _distanceVector[3] = 20;
+            _distanceVector[4] = 21;
+            _distanceVector[5] = 20;
+		}
+		
+		public function Activate()
+		{
+			
+		}
+		
+		public function Deactivate()
+		{
+			
 		}
 		
 		public function Update(mousePos : Vector2D, debugger:TextBox ):void
@@ -38,43 +75,52 @@ package Systems
 			var center : Vector2D;
 			var dirToCenter : Vector2D;
 			
-			//if the fish escapes the sceen it will reset to a random position from above
-			/*
-			if (pos._x > 1920 || pos._y > 1080)
+			_fishSprite.Update(mousePos, debugger);
+			
+			
+			_dirVector[0] = _dir;
+			
+			for (var i:int = _dirVector.length-1; n > 0; n-- )
 			{
-				//find vector to point
-				spawnPoint = new Vector2D(1920 -(Math.random() * 1000), 0);
-				center = new Vector2D(1920 / 2, 1080 / 2);
-				dirToCenter = spawnPoint.findVector(center);
-				dirToCenter = dirToCenter.normalize();
-					
-				//respawn boid
-				this.setPos(spawnPoint);
-				this.setDir(dirToCenter);
+				_dirVector[i] = _dirVector[i-1];
 			}
 			
-			if (pos._x < -10 || pos._y < -10)
-			{
-				spawnPoint = new Vector2D(1920 -(Math.random() * 1000), 0);
-				center = new Vector2D(1920 / 2, 1080 / 2);
-				dirToCenter = spawnPoint.findVector(center);
-				dirToCenter = dirToCenter.normalize();
-				
-				this.setPos(spawnPoint);
-				this.setDir(dirToCenter);
-			}
-			*/
-			_fishSprite.Update(mousePos, debugger);
+			
 		}
 		
-		public function Render():void 
+		private function SetBodyPosDir()
 		{
+			float rotation = (float)(Math.Atan2(dir.Y, dir.X));// / (2 * Math.PI));
+            Vector2 rotToFront = new Vector2();
+            int countDown = 0;
+            Vector2 lastPos = pos;
+            float distance = 0;
+            for (int n = 0; n < fishTex.Length; n++)
+            {
+                rotToFront = dirArr[countDown];
+                //rotToFront.Normalize();
+                
+                rotation = (float)(Math.Atan2(rotToFront.Y, rotToFront.X));// / (2 * Math.PI));
+
+                rotation += MathHelper.ToRadians(-90);
+                spriteBatch.Draw(fishTex[n], lastPos, new Rectangle(0, 0, fishTex[n].Width, fishTex[n].Height), new Color(color.R + (n * 2), color.G + (n * 2), color.B + (n * 2)),
+                    rotation,
+                    new Vector2(fishTex[n].Width / 2, (fishTex[n].Height)),
+                    size,
+                    SpriteEffects.None, 1
+                    );
+
+
+
+                    lastPos = lastPos - (dirArr[countDown] * distanceArr[n]);
+                    countDown += 4;
+                    
+            }
 		}
 		
 		public function setPos(newPos : Vector2D):void
 		{
-			//translate
-			_fishSprite.SetPos(newPos);
+			_pos = newPos;
 		}
 		
 		public function setDir(newDir : Vector2D):void 
@@ -87,15 +133,10 @@ package Systems
 			_dir._x += toAdd._x;
 			_dir._y += toAdd._y;
 		}
-		/*
-		public function getSprite():Sprite
-		{
-		}
-		*/
+
 		public function getPos(): Vector2D
 		{
-			//var toReturn : Vector2D = new Vector2D(_sprite.x, _sprite.y);
-			return new Vector2D(0,0);
+			return _pos;
 		}
 		
 		public function getDir():Vector2D 

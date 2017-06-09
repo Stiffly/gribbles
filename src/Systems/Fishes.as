@@ -42,11 +42,25 @@ package Systems
 			var i:int;
 			for (i = 0; i < _amountOfFish; i++)
 			{
-
 				_boids[i] = new Boid();
-				_boids[i].Init(stage, _viewDistance, false);
-				_boids[i].setSpeed(1);
-				
+				_boids[i].Init(stage);
+				//_boids[i].setSpeed(1);
+			}
+		}
+		
+		public function Activate()
+		{
+			for (i = 0; i < _amountOfFish; i++)
+			{
+					_boids[i].Activate();
+			}
+		}
+		
+		public function Deactivate()
+		{
+			for (i = 0; i < _amountOfFish; i++)
+			{
+					_boids[i].Deactivate();
 			}
 		}
 		
@@ -58,7 +72,7 @@ package Systems
 		
 		public function Update(debugger:TextBox):void 
 		{
-			
+			boidsFirstRules();
 			_boids[0].Update(_mousePos, debugger);
 			
 		}

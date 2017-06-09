@@ -104,6 +104,7 @@ package Systems
 			_rippler.destroy();
 			_touchSprite.visible = false;
 			_dustEmitter.Deactivate();
+			_flock.Deactivate();
 		}
 		
 		public function Activate():void
