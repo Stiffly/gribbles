@@ -43,7 +43,7 @@ package Systems
 			for (var i:int = 0; i < _amountOfFish; i++)
 			{
 				_boids[i] = new Boid();
-				_boids[i].Init(stage);
+				_boids[i].Init(stage,_viewDistance,true);
 				//_boids[i].setSpeed(1);
 			}
 		}
