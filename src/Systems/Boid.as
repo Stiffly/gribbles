@@ -1,6 +1,8 @@
 package Systems 
 {
 	import Systems.Vector2D;
+	import com.gestureworks.cml.away3d.textures.BitmapTexture;
+	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import Math;
@@ -10,6 +12,10 @@ package Systems
 	 */
 	public class Boid
 	{
+		[Embed(source = "../../bin/images/Carp/head.png")]
+		private var headBitmapClass:Class;
+		private var headBitmap:Bitmap = new headBitmapClass();
+		
 		private var _OFFSET : uint = 20;
 		// Embed an image which will be used as a background
 		private var _pos:Vector2D;
@@ -39,7 +45,7 @@ package Systems
 		{
 			_speed = 1;
 			_inPanic = false;
-			_fishSprite.Init(stage);
+			_fishSprite.Init(stage,headBitmap);
 			
 			spawnAtRandomPoint();
 			
@@ -90,7 +96,7 @@ package Systems
 		
 		private function SetBodyPosDir()
 		{
-			/*
+			
 			//Set fishBody Positions
 			var rotation:Number = Math.atan2(_dir._y, _dir._x);
 			var rotToFront:Vector2D = new Vector2D(0,0);
@@ -99,10 +105,10 @@ package Systems
 			lastPos._x = _pos._x;
 			lastPos._y = _pos._y;
 			
-			for (n = 0; n < _spriteVec.length; n++ )
+			for (var n:int = 0; n < 3; n++ )
 			{
 				
-				translateSprite(new Vector2D(lastPos._x,lastPos._y),n);
+				//translateSprite(new Vector2D(lastPos._x,lastPos._y),n);
 				
 				lastPos._x = lastPos._x - (_dirVector[countDown]._x * _distanceVector[n]);
 				lastPos._y = lastPos._y - (_dirVector[countDown]._y *_distanceVector[n]);
@@ -114,13 +120,13 @@ package Systems
 				//textureVec[n].rotationY = rotatate += 0.4;
 				//textureVec[n].transform.matrix.
 				
-				rotateAroundCenter(rotation +(Math.PI / 180 * ( -90)), n);
+				//rotateAroundCenter(rotation +(Math.PI / 180 * ( -90)), n);
 				//rotateAroundCenter((Math.PI / 180 * ( rotatate)), n);
 				//rotateAroundPoint(textureVec[n], 44);
 				
 				countDown += 4;
 			}
-			*/
+			
 			//} endregion
 		}
 		
