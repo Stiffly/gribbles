@@ -149,7 +149,8 @@ package Systems
 			_forward = _forward.normalize();
 			
 			//Move(new Vector2D(0, 700));
-			SetPos(new Vector2D(0,700));
+			SetPos(new Vector2D(0, 700));
+		
 		}
 		
 		public function Shutdown():void 
@@ -162,7 +163,7 @@ package Systems
 			var newDir : Vector2D = new Vector2D(0, 0);
 			var centerIsh : Vector2D = new Vector2D(0, 0);
 			
-			//SetPos(new Vector2D(0, 200));
+			//SetPos(new Vector2D(200, 0));
 			
 			
 			//draw vector between anchor and mousePos
@@ -188,12 +189,14 @@ package Systems
 			for (i = 0; i < NR_OF_SPRITES; i++ )
 			{
 				//Translate(i, new Vector2D(1.5, 0));
-				SetPos(new Vector2D(0,1));
+				//SetPos(new Vector2D(0,1));
 				RotateAroundCenter(i, angle);
 			}
 			
 			updateDebugPoints();
-			//Move(new Vector2D(0, 1));
+			Move(new Vector2D(0, -1));
+			//SetPos(new Vector2D(120, 700));
+
 			
 			
 			//linear interpolation to this point
@@ -244,7 +247,7 @@ package Systems
 		
 		public function GetPos():Vector2D
 		{
-			return _pos;
+			return _spritePos[0];
 		}
 		
 		public function Move(newPos : Vector2D):void 
@@ -277,7 +280,8 @@ package Systems
 			var toMove : Vector2D = new Vector2D(0, 0);
 			var tempPos :Vector2D = new Vector2D(0, 0);
 			
-			tempPos = GetPos();
+			//the front sprite indicate the position
+			tempPos = _spritePos[0];
 			toMove = tempPos.findVector(newPos);
 			
 			Move(toMove);
