@@ -20,7 +20,7 @@ package Systems
 		private var _spriteAnchor : Vector2D;
 		private var _oldRotation : Number;
 	
-		
+		private var _rotationRadians : Number;
 		
 		private var _spriteWidth : Number;
 		private var _spriteHeight :Number;
@@ -34,6 +34,7 @@ package Systems
 		private var _dPos : Sprite;
 		private var _dAnchor :Sprite;
 		
+		private var origRefMatrix:Matrix;
 		
 		public function BoidBody() 
 		{
@@ -53,7 +54,7 @@ package Systems
 			
 			stage.addChild(_sprite);
 			
-			
+			_rotationRadians = 0;
 
 			_dPos = new Sprite();
 			_dPos.graphics.beginFill(0x0000FF);
@@ -85,8 +86,10 @@ package Systems
 			_forward = _forward.normalize();
 			
 			//Move(new Vector2D(0, 700));
-			SetPos(new Vector2D(0, 400));
+			origRefMatrix = _sprite.transform.matrix.clone();
+			SetPos(new Vector2D(0, 0));
 		
+			origRefMatrix = _sprite.transform.matrix.clone();
 		}
 		
 		public function Shutdown():void 
@@ -116,12 +119,12 @@ package Systems
 			
 			if (dir._x > _spriteAnchor._x)
 			{
-				angle *= -1;
+				angle *= -1.0;
 			}
 	
 			debugger.DebugBoid(this, dir, newDir, angle, cosAngle);
 			
-
+			_rotationRadians = angle;
 			//Translate(new Vector2D(0.5, 0));
 			//RotateAroundCenter( angle);
 			
@@ -139,16 +142,16 @@ package Systems
 		
 		public function RotateAroundCenter(radian : Number):void 
 		{
-			var orgMatrix : flash.geom.Matrix = _sprite.transform.matrix;
+			var orgMatrix : flash.geom.Matrix = _sprite.transform.matrix.clone();
  				
  			//get the rect of the obj
 			var rect : Rectangle = _sprite.getBounds(_sprite.parent);
 			
 			//translate the anchor point to the middle of the image
-			orgMatrix.translate(-1*_spriteAnchor._x,-1*_spriteAnchor._y);
+			orgMatrix.translate(-1.0*_spriteAnchor._x,-1.0*_spriteAnchor._y);
 			
 			//rotate back to org pos
-			orgMatrix.rotate( -1 * _oldRotation);
+			orgMatrix.rotate( -1.0 * _oldRotation);
 			
 			// Rotation (note: the parameter is in radian) 
 			orgMatrix.rotate(radian); 
@@ -162,18 +165,42 @@ package Systems
 		
 		public function Translate(newPos:Vector2D):void 
 		{
-			var orgMatrix : flash.geom.Matrix = _sprite.transform.matrix;
+			var orgMatrix : flash.geom.Matrix = origRefMatrix.clone();
 			
 			//translate
 			orgMatrix.translate(newPos._x, newPos._y);
 			
-			//move anchor
-			_spriteAnchor = new Vector2D(_spritePos._x + _spriteBounds._x/2, _spritePos._y + _spriteBounds._y);
+			_sprite.transform.matrix = orgMatrix;
+			
+		}
+		
+		private function SuperUpdateMatrix()
+		{
+			var radian:Number = _rotationRadians;
+			var orgMatrix : flash.geom.Matrix = origRefMatrix.clone();
+ 			
+			orgMatrix.translate(_spritePos._x, _spritePos._y);
+ 			//get the rect of the obj
+			var rect : Rectangle = _sprite.getBounds(_sprite.parent);
+			
+			//translate the anchor point to the middle of the image
+			orgMatrix.translate(-1.0*_spriteAnchor._x,-1.0*_spriteAnchor._y);
+			
+			//rotate back to org pos
+			//orgMatrix.rotate( -1.0 * _oldRotation);
+			
+			// Rotation (note: the parameter is in radian) 
+			orgMatrix.rotate(radian); 
+			_oldRotation = radian;
+			
+			// Translating the object back to the original position.
+			orgMatrix.translate(_spriteAnchor._x, _spriteAnchor._y);
+			
+			
 			
 			
 			_sprite.transform.matrix = orgMatrix;
 		}
-		
 		public function GetForward():Vector2D 
 		{
 			return _forward;
@@ -191,17 +218,19 @@ package Systems
 			var bodyPos : Vector2D = new Vector2D(_spritePos._x, _spritePos._y);
 			bodyPos._x += newPos._x;
 			bodyPos._y += newPos._y;
-				
-				
-				
-			Translate(newPos);
+			
+			
+			
+			//Translate(bodyPos);
+			SuperUpdateMatrix();
 			_spritePos._x = bodyPos._x;
 			_spritePos._y = bodyPos._y;
 			
 			
-				
-				//update anchor, to the nose of the sprite
-			_spriteAnchor = new Vector2D(_spritePos._x + _spriteBounds._x/2, _spritePos._y + _spriteBounds._y);
+			
+			//update anchor, to the nose of the sprite
+			_spriteAnchor = new Vector2D(bodyPos._x + _spriteBounds._x/2.00, bodyPos._y + _spriteBounds._y);
+			
 		
 		}
 		
@@ -209,6 +238,9 @@ package Systems
 		{
 			var toMove : Vector2D = new Vector2D(0, 0);
 			var tempPos :Vector2D = new Vector2D(0, 0);
+			
+			//newPos._x -= _spriteBounds._x/2;
+			//newPos._y -= _spriteBounds._y;
 			
 			tempPos = GetPos();
 			toMove = tempPos.findVector(newPos);

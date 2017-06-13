@@ -41,6 +41,8 @@ package Systems
 			_inPanic = false;
 			_fishSprite.Init(stage, headBitmap);
 			
+			spawnAtRandomPoint();
+			
 			_dirVector = new Vector.<Vector2D>(50);
 			
 			for (var n:int = 0; n < _dirVector.length; n++ )
@@ -72,14 +74,15 @@ package Systems
 			var spawnPoint : Vector2D;
 			var center : Vector2D;
 			var dirToCenter : Vector2D;
-
+			//ReinitializeBoidPosition()
 			//CalculateDir();
 			_dir = _dir.normalize();
-			_pos._x += _dir._x * _speed;
-			_pos._y += _dir._y * _speed;
+			//_pos._x -= 1;
+			_pos._y += 0.8;
+			//_pos._y += _dir._y * _speed;
 			
 			_fishSprite.SetPos(_pos);
-			//_fishSprite.RotateAroundCenter(Math.atan2(_dir._y,_dir._x));
+			//_fishSprite.RotateAroundCenter(Math.atan2(_dir._y,_dir._x)+ (-90 * Math.PI/180));
 			_fishSprite.Update(mousePos, debugger);
 			
 		}
@@ -122,8 +125,8 @@ package Systems
 		
 		public function setPos(newPos : Vector2D):void
 		{
-			//translate
-			//_fishSprite.SetPos(newPos);
+			_pos._x =  800;
+			_pos._y = 100;
 		}
 		
 		public function setDir(newDir : Vector2D):void 
@@ -144,7 +147,7 @@ package Systems
 		public function getPos(): Vector2D
 		{
 			//var toReturn : Vector2D = new Vector2D(_sprite.x, _sprite.y);
-			return new Vector2D(0,0);
+			return _pos;
 		}
 		
 		public function getDir():Vector2D 
@@ -169,7 +172,7 @@ package Systems
 			var dirToCenter : Vector2D;
 			
 			//find vector to point
-			spawnPoint = new Vector2D(1920 -(Math.random() * 1000), 1080 -(Math.random() * 1000));
+			spawnPoint = new Vector2D(1600 -(Math.random() * 1000), 900 -(Math.random() * 1000));
 			center = new Vector2D(1920 / 2, 1080 / 2);
 			dirToCenter = spawnPoint.findVector(center);
 					
@@ -191,29 +194,29 @@ package Systems
 		private function ReinitializeBoidPosition():void
 		{
 			
-			 if (_pos._x > 1920)
+			 if (_pos._x > 1820)
                 {
 					_dir._x = -_dir._x;
 					_dir._y = -_dir._y;
-					_dir = _dir.normalize();
+					//_dir = _dir.normalize();
                 }
-                if (_pos._y > 1080)
+                if (_pos._y > 800)
                 {
                     _dir._x = -_dir._x;
 					_dir._y = -_dir._y;
-					_dir = _dir.normalize();
+					//_dir = _dir.normalize();
                 }
                 if (_pos._x < -100)
                 {
                     _dir._x = -_dir._x;
 					_dir._y = -_dir._y;
-					_dir = _dir.normalize();
+					//_dir = _dir.normalize();
                 }
                 if (_pos._y < -100)
                 {
                     _dir._x = -_dir._x;
 					_dir._y = -_dir._y;
-					_dir = _dir.normalize();
+					//_dir = _dir.normalize();
                 }
 		}
 	}

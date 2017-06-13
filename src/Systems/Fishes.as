@@ -72,8 +72,9 @@ package Systems
 		
 		public function Update(debugger:TextBox):void 
 		{
-			boidsFirstRules();
-			_boids[0].Update(_mousePos, debugger);
+			//boidsFirstRules();
+			for (var i:int = 0; i < _amountOfFish; i++)
+				_boids[i].Update(_mousePos, debugger);
 			
 		}
 		
