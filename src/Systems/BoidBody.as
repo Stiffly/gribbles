@@ -86,6 +86,7 @@ package Systems
 			
 			//Move(new Vector2D(0, 700));
 			SetPos(new Vector2D(0,400));
+		
 		}
 		
 		public function Shutdown():void 
@@ -98,7 +99,7 @@ package Systems
 			var newDir : Vector2D = new Vector2D(0, 0);
 			var centerIsh : Vector2D = new Vector2D(0, 0);
 			
-			//SetPos(new Vector2D(0, 200));
+			//SetPos(new Vector2D(200, 0));
 			
 			
 			//draw vector between anchor and mousePos
@@ -127,7 +128,9 @@ package Systems
 				//SetPos(new Vector2D(0,1));
 			
 			updateDebugPoints();
-			//Move(new Vector2D(0, 1));
+			Move(new Vector2D(0, -1));
+			//SetPos(new Vector2D(120, 700));
+
 			
 			
 			//linear interpolation to this point
@@ -178,7 +181,7 @@ package Systems
 		
 		public function GetPos():Vector2D
 		{
-			return _pos;
+			return _spritePos[0];
 		}
 		
 		public function Move(newPos : Vector2D):void 
@@ -188,6 +191,7 @@ package Systems
 				var bodyPos : Vector2D = new Vector2D(_spritePos._x, _spritePos._y);
 				bodyPos._x += newPos._x;
 				bodyPos._y += newPos._y;
+				
 				
 				
 				Translate(bodyPos);
@@ -210,8 +214,9 @@ package Systems
 			toMove = tempPos.findVector(newPos);
 			
 			Move(toMove);
-			
 		}
+		
+
 		
 		public function GetAnchor(): Vector2D 
 		{
