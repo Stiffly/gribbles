@@ -29,7 +29,7 @@ package Systems
 		
 		public function Boid()
 		{
-			_dir = new Vector2D(0, 0);
+			_dir = new Vector2D(0, 1);
 			_fishSprite = new BoidBody();
 			_pos = new Vector2D(0, 0);
 		}
@@ -37,7 +37,7 @@ package Systems
 		
 		public function Init(stage:Stage, viewDist : Number, showVisDist : Boolean):void
 		{
-			_speed = 3;
+			_speed = 1;
 			_inPanic = false;
 			_fishSprite.Init(stage, headBitmap);
 			
@@ -74,12 +74,12 @@ package Systems
 			var dirToCenter : Vector2D;
 
 			//CalculateDir();
-			
+			_dir = _dir.normalize();
 			_pos._x += _dir._x * _speed;
 			_pos._y += _dir._y * _speed;
 			
 			_fishSprite.SetPos(_pos);
-			_fishSprite.RotateAroundCenter(Math.atan2(_dir._y,_dir._x));
+			//_fishSprite.RotateAroundCenter(Math.atan2(_dir._y,_dir._x));
 			_fishSprite.Update(mousePos, debugger);
 			
 		}
