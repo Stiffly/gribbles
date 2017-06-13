@@ -14,12 +14,22 @@ package Systems
 	
 	public class BoidBody 
 	{
+<<<<<<< HEAD
 		private var _sprite :Sprite;
 		private var _spritePos : Vector2D;
 		private var _spriteBounds :Vector2D;
 		private var _spriteAnchor : Vector2D;
 		private var _oldRotation : Number;
 	
+=======
+		private var _spriteArr : Vector.<Sprite>;
+		private var _spritePos : Vector.<Vector2D>;
+		private var _spriteBounds : Vector.<Vector2D>;
+		private var _spriteAnchor : Vector.<Vector2D>;
+		private var _oldRotation : Vector.<Number>;
+		
+		private const NR_OF_SPRITES : Number = 1;
+>>>>>>> origin/sebRotation
 		
 		
 		private var _spriteWidth : Number;
@@ -42,23 +52,71 @@ package Systems
 		
 		public function Init(stage:Stage, bitmapIn:Bitmap) : void
 		{
+<<<<<<< HEAD
 			_dPos = new Sprite();
 			_dAnchor = new Sprite();
+=======
+			_spriteArr = new Vector.<Sprite>(NR_OF_SPRITES);
+			_dPos = new Vector.<Sprite>(NR_OF_SPRITES);
+			_dAnchor = new Vector.<Sprite>(NR_OF_SPRITES);
 			
 			
+			_spriteArr[0] = new Sprite();
+			_spriteArr[0].graphics.beginBitmapFill(_b1BM.bitmapData, null, true, true);
+			_spriteArr[0].graphics.drawRect(0, 0, _b1BM.bitmapData.width, _b1BM.bitmapData.height);
+			_spriteArr[0].graphics.endFill();
+			
+			stage.addChild(_spriteArr[0]);
+			
+			_spriteArr[1] = new Sprite();
+			_spriteArr[1].graphics.beginBitmapFill(_b2BM.bitmapData, null, true, true);
+			_spriteArr[1].graphics.drawRect(0, 0, _b2BM.bitmapData.width, _b2BM.bitmapData.height);
+			_spriteArr[1].graphics.endFill();
+			
+			//stage.addChild(_spriteArr[1]);
+			
+>>>>>>> origin/sebRotation
+			
+			
+<<<<<<< HEAD
 			_sprite= new Sprite();
 			_sprite.graphics.beginBitmapFill(bitmapIn.bitmapData, null, true, true);
 			_sprite.graphics.drawRect(0, 0, bitmapIn.bitmapData.width, bitmapIn.bitmapData.height);
 			_sprite.graphics.endFill();
+=======
+			//stage.addChild(_spriteArr[2]);
+>>>>>>> origin/sebRotation
 			
 			stage.addChild(_sprite);
 			
+<<<<<<< HEAD
 			
 
 			_dPos = new Sprite();
 			_dPos.graphics.beginFill(0x0000FF);
 			_dPos.graphics.drawRect(0, 0, 5, 5);
 			stage.addChild(_dPos);
+=======
+			//stage.addChild(_spriteArr[3]);
+			
+			_spriteArr[4] = new Sprite();
+			_spriteArr[4].graphics.beginBitmapFill(_tailBM.bitmapData, null, true, true);
+			_spriteArr[4].graphics.drawRect(0, 0, _tailBM.bitmapData.width, _tailBM.bitmapData.height);
+			_spriteArr[4].graphics.endFill();
+			
+			//stage.addChild(_spriteArr[4]);
+			
+			
+			var i : Number;
+			for (i = 0; i < NR_OF_SPRITES; i++ )
+			{
+				_dPos[i] = new Sprite();
+				_dPos[i].graphics.beginFill(0x0000FF);
+				_dPos[i].graphics.drawRect(0, 0, 5, 5);
+				_dPos[i].graphics.endFill();
+				
+				stage.addChild(_dPos[i]);
+>>>>>>> origin/sebRotation
 				
 			_dAnchor = new Sprite();
 			_dAnchor.graphics.beginFill(0x00FF00);
@@ -74,10 +132,10 @@ package Systems
 			//_spriteAnchor = new Vector2D();
 			
 
-			_oldRotation = 0;
-			_spritePos = new Vector2D(0, 0);
-			_spriteBounds = new Vector2D(_sprite.width, _sprite.height);
-			_spriteAnchor = new Vector2D(0, 0);
+				_oldRotation = 0;
+				_spritePos = new Vector2D(0, 0);
+				_spriteBounds = new Vector2D(_sprite.width, _sprite.height);
+				_spriteAnchor = new Vector2D(0, 0);
 			
 			_pos = new Vector2D(0, 0);
 			
@@ -85,8 +143,12 @@ package Systems
 			_forward = _forward.normalize();
 			
 			//Move(new Vector2D(0, 700));
-			SetPos(new Vector2D(0, 400));
+<<<<<<< HEAD
+			SetPos(new Vector2D(0,400));
+=======
+			SetPos(new Vector2D(0, 700));
 		
+>>>>>>> origin/sebRotation
 		}
 		
 		public function Shutdown():void 
@@ -99,7 +161,11 @@ package Systems
 			var newDir : Vector2D = new Vector2D(0, 0);
 			var centerIsh : Vector2D = new Vector2D(0, 0);
 			
+<<<<<<< HEAD
+			//SetPos(new Vector2D(0, 200));
+=======
 			//SetPos(new Vector2D(200, 0));
+>>>>>>> origin/sebRotation
 			
 			
 			//draw vector between anchor and mousePos
@@ -121,6 +187,7 @@ package Systems
 	
 			debugger.DebugBoid(this, dir, newDir, angle, cosAngle);
 			
+<<<<<<< HEAD
 
 			//Translate(new Vector2D(0.5, 0));
 			RotateAroundCenter( angle);
@@ -129,8 +196,20 @@ package Systems
 			
 			updateDebugPoints();
 			//Move(new Vector2D(0, 1));
-			//SetPos(new Vector2D(500,40));
+=======
+			var i : Number;
+			for (i = 0; i < NR_OF_SPRITES; i++ )
+			{
+				//Translate(i, new Vector2D(1.5, 0));
+				//SetPos(new Vector2D(0,1));
+				RotateAroundCenter(i, angle);
+			}
+			
+			updateDebugPoints();
+			Move(new Vector2D(0, -1));
+			//SetPos(new Vector2D(120, 700));
 
+>>>>>>> origin/sebRotation
 			
 			
 			//linear interpolation to this point
@@ -160,7 +239,11 @@ package Systems
 			_sprite.transform.matrix = orgMatrix;
 		}
 		
+<<<<<<< HEAD
 		public function Translate(newPos:Vector2D):void 
+=======
+		private function Translate(index : Number ,newPos:Vector2D):void 
+>>>>>>> origin/sebRotation
 		{
 			var orgMatrix : flash.geom.Matrix = _sprite.transform.matrix;
 			
@@ -181,42 +264,60 @@ package Systems
 		
 		public function GetPos():Vector2D
 		{
-			return _spritePos;
+			return _spritePos[0];
 		}
 		
 		public function Move(newPos : Vector2D):void 
 		{
 
-			//for every iteration add to new pos
-			var bodyPos : Vector2D = new Vector2D(_spritePos._x, _spritePos._y);
-			bodyPos._x += newPos._x;
-			bodyPos._y += newPos._y;
+				//for every iteration add to new pos
+<<<<<<< HEAD
+				var bodyPos : Vector2D = new Vector2D(_spritePos._x, _spritePos._y);
+				bodyPos._x += newPos._x;
+				bodyPos._y += newPos._y;
 				
 				
+				Translate(bodyPos);
+				_spritePos._x = bodyPos._x;
+				_spritePos._y = bodyPos._y;
+=======
+				var bodyPos : Vector2D = new Vector2D(_spritePos[i]._x, _spritePos[i]._y);
+				bodyPos._x += newPos._x;
+				bodyPos._y += newPos._y;
 				
-			Translate(newPos);
-			_spritePos._x = bodyPos._x;
-			_spritePos._y = bodyPos._y;
-			
-			
+				bodyPos._x += 400 * i;
+				
+				Translate(i, newPos);
+				_spritePos[i]._x = bodyPos._x;
+				_spritePos[i]._y = bodyPos._y;
+>>>>>>> origin/sebRotation
 				
 				//update anchor, to the nose of the sprite
-			_spriteAnchor = new Vector2D(_spritePos._x + _spriteBounds._x/2, _spritePos._y + _spriteBounds._y);
-		
+				_spriteAnchor = new Vector2D(_spritePos._x + _spriteBounds._x/2, _spritePos._y + _spriteBounds._y);
+			
+			_pos._x = newPos._x;
+			_pos._y = newPos._y;			
 		}
 		
 		public function SetPos(newPos : Vector2D):void 
 		{
 			var toMove : Vector2D = new Vector2D(0, 0);
 			var tempPos :Vector2D = new Vector2D(0, 0);
+<<<<<<< HEAD
 			
 			tempPos = GetPos();
 			toMove = tempPos.findVector(newPos);
 			
 			Move(toMove);
+=======
+			
+			//the front sprite indicate the position
+			tempPos = _spritePos[0];
+			toMove = tempPos.findVector(newPos);
+>>>>>>> origin/sebRotation
+			
+			Move(toMove);
 		}
-		
-
 		
 		public function GetAnchor(): Vector2D 
 		{

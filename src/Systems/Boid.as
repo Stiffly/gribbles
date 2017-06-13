@@ -73,8 +73,9 @@ package Systems
 			var center : Vector2D;
 			var dirToCenter : Vector2D;
 
-			CalculateDir();
+			//CalculateDir();
 			
+			_fishSprite.SetPos(_pos);
 			_fishSprite.Update(mousePos, debugger);
 			
 		}
