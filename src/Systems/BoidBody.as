@@ -123,7 +123,7 @@ package Systems
 			
 
 			//Translate(new Vector2D(0.5, 0));
-			RotateAroundCenter( angle);
+			//RotateAroundCenter( angle);
 			
 				//SetPos(new Vector2D(0,1));
 			

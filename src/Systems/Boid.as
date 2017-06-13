@@ -37,7 +37,7 @@ package Systems
 		
 		public function Init(stage:Stage, viewDist : Number, showVisDist : Boolean):void
 		{
-			_speed = 1;
+			_speed = 3;
 			_inPanic = false;
 			_fishSprite.Init(stage, headBitmap);
 			
@@ -75,7 +75,11 @@ package Systems
 
 			//CalculateDir();
 			
+			_pos._x += _dir._x * _speed;
+			_pos._y += _dir._y * _speed;
+			
 			_fishSprite.SetPos(_pos);
+			_fishSprite.RotateAroundCenter(Math.atan2(_dir._y,_dir._x));
 			_fishSprite.Update(mousePos, debugger);
 			
 		}
