@@ -74,7 +74,7 @@ package Systems
 		public function setPos(newPos : Vector2D):void
 		{
 			//translate
-			_fishSprite.SetPos(newPos);
+			//_fishSprite.SetPos(newPos);
 		}
 		
 		public function setDir(newDir : Vector2D):void 
