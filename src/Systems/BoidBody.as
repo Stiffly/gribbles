@@ -32,7 +32,6 @@ package Systems
 		
 		private var _forward : Vector2D;
 
-		private var _pos : Vector2D;
 		//private var _dPos : Sprite;
 		//private var _dAnchor : Sprite;
 		
@@ -143,14 +142,11 @@ package Systems
 				_spriteBounds[i] = new Vector2D(_spriteArr[i].width, _spriteArr[i].height);
 				_spriteAnchor[i] = new Vector2D(0, 0);
 			}
-			_pos = new Vector2D(0, 0);
 			
 			_forward = new Vector2D(0, 1);
 			_forward = _forward.normalize();
 			
-			//Move(new Vector2D(0, 700));
 			SetPos(new Vector2D(0, 700));
-		
 		}
 		
 		public function Shutdown():void 
@@ -162,9 +158,6 @@ package Systems
 		{	
 			var newDir : Vector2D = new Vector2D(0, 0);
 			var centerIsh : Vector2D = new Vector2D(0, 0);
-			
-			//SetPos(new Vector2D(200, 0));
-			
 			
 			//draw vector between anchor and mousePos
 			newDir = _spriteAnchor[0].findVector(dir);
@@ -188,19 +181,10 @@ package Systems
 			var i : Number;
 			for (i = 0; i < NR_OF_SPRITES; i++ )
 			{
-				//Translate(i, new Vector2D(1.5, 0));
-				//SetPos(new Vector2D(0,1));
 				RotateAroundCenter(i, angle);
 			}
 			
 			updateDebugPoints();
-			Move(new Vector2D(0, -1));
-			//SetPos(new Vector2D(120, 700));
-
-			
-			
-			//linear interpolation to this point
-			
 		}
 		
 		public function RotateAroundCenter(index : Number ,radian : Number):void 
@@ -269,10 +253,7 @@ package Systems
 				
 				//update anchor, to the nose of the sprite
 				_spriteAnchor[i] = new Vector2D(_spritePos[i]._x + _spriteBounds[i]._x/2, _spritePos[i]._y + _spriteBounds[i]._y);
-			}
-			
-			_pos._x = newPos._x;
-			_pos._y = newPos._y;			
+			}	
 		}
 		
 		public function SetPos(newPos : Vector2D):void 
