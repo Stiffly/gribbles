@@ -8,6 +8,7 @@ package Systems
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.display.Stage;
+	import flash.geom.Vector3D;
 	
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
@@ -128,16 +129,15 @@ package Systems
 			//Translate(new Vector2D(0.5, 0));
 			//RotateAroundCenter( angle);
 			
-				//SetPos(new Vector2D(0,1));
+		    //SetPos(new Vector2D(0,1));
 			
 			updateDebugPoints();
-			//Move(new Vector2D(0, 1));
-			//SetPos(new Vector2D(500,40));
-
 			
+			var toMove : Vector2D = new Vector2D(0, 0);
+			var tempPos :Vector2D = new Vector2D(0, 0);
 			
-			//linear interpolation to this point
-			
+			tickPos();
+			//Move(toMove);
 		}
 		
 		public function RotateAroundCenter(radian : Number):void 
@@ -163,15 +163,16 @@ package Systems
 			_sprite.transform.matrix = orgMatrix;
 		}
 		
-		public function Translate(newPos:Vector2D):void 
+		public function tickPos():void 
 		{
 			var orgMatrix : flash.geom.Matrix = origRefMatrix.clone();
 			
 			//translate
-			orgMatrix.translate(newPos._x, newPos._y);
+			orgMatrix.translate(_spritePos._x, _spritePos._y);
+			
+			_spriteAnchor = new Vector2D(_spritePos._x + _spriteBounds._x/2.00, _spritePos._y + _spriteBounds._y);
 			
 			_sprite.transform.matrix = orgMatrix;
-			
 		}
 		
 		private function SuperUpdateMatrix()
@@ -211,31 +212,9 @@ package Systems
 			return _spritePos;
 		}
 		
-		public function Move(newPos : Vector2D):void 
-		{
-
-			//for every iteration add to new pos
-			var bodyPos : Vector2D = new Vector2D(_spritePos._x, _spritePos._y);
-			bodyPos._x += newPos._x;
-			bodyPos._y += newPos._y;
-			
-			
-			
-			//Translate(bodyPos);
-			SuperUpdateMatrix();
-			_spritePos._x = bodyPos._x;
-			_spritePos._y = bodyPos._y;
-			
-			
-			
-			//update anchor, to the nose of the sprite
-			_spriteAnchor = new Vector2D(bodyPos._x + _spriteBounds._x/2.00, bodyPos._y + _spriteBounds._y);
-			
-		
-		}
-		
 		public function SetPos(newPos : Vector2D):void 
 		{
+			/*
 			var toMove : Vector2D = new Vector2D(0, 0);
 			var tempPos :Vector2D = new Vector2D(0, 0);
 			
@@ -246,6 +225,8 @@ package Systems
 			toMove = tempPos.findVector(newPos);
 			
 			Move(toMove);
+			*/
+			_spritePos = newPos;
 		}
 		
 

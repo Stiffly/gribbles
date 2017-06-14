@@ -32,7 +32,7 @@ package Systems
 		
 		public function Init(stage:Stage):void
 		{
-			_viewDistance = 100;
+			_viewDistance = 800;
 			_keepdistance = 80;
 			_amountOfFish = 3;
 			
@@ -67,12 +67,13 @@ package Systems
 		private function moveEnemy(event:MouseEvent):void 
 		{
 			_mousePos._x = event.stageX;
+			
 			_mousePos._y = event.stageY;
 		}
 		
 		public function Update(debugger:TextBox):void 
 		{
-			boidsFirstRules();
+			//boidsFirstRules();
 			for (var i:int = 0; i < _amountOfFish; i++)
 				_boids[i].Update(_mousePos, debugger);
 			
