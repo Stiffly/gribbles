@@ -125,8 +125,8 @@ package Systems
 		
 		public function setPos(newPos : Vector2D):void
 		{
-			_pos._x =  800;
-			_pos._y = 100;
+			_pos._x =  newPos._x;
+			_pos._y = newPos._y;
 		}
 		
 		public function setDir(newDir : Vector2D):void 
@@ -172,7 +172,9 @@ package Systems
 			var dirToCenter : Vector2D;
 			
 			//find vector to point
-			spawnPoint = new Vector2D(1600 -(Math.random() * 1000), 900 -(Math.random() * 1000));
+			//spawnPoint = new Vector2D(1600 -(Math.random() * 1000), 900 -(Math.random() * 1000));
+			spawnPoint = new Vector2D(900 -(Math.random() * 1000), 0);
+			
 			center = new Vector2D(1920 / 2, 1080 / 2);
 			dirToCenter = spawnPoint.findVector(center);
 					
