@@ -32,9 +32,9 @@ package Systems
 		
 		public function Init(stage:Stage):void
 		{
-			_viewDistance = 800;
+			_viewDistance = 200;
 			_keepdistance = 80;
-			_amountOfFish = 3;
+			_amountOfFish = 10;
 			
 			_mousePos = new Vector2D(0, 0);
 			
@@ -74,7 +74,10 @@ package Systems
 		{
 			boidsFirstRules();
 			for (var i:int = 0; i < _amountOfFish; i++)
+			{
+				AvoidEnemyBoid(_boids[i]);
 				_boids[i].Update(_mousePos, debugger);
+			}
 			
 		}
 		
@@ -209,8 +212,6 @@ package Systems
 				if (boidToScare.isPanic() == true)
 				{
 					//if not panic
-					
-					
 					boidToScare.panicSwitch();
 				}
 			}

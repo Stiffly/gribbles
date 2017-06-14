@@ -124,22 +124,15 @@ package Systems
 			}
 	
 			debugger.DebugBoid(this, dir, newDir, angle, cosAngle);
-			
 			_rotationRadians = angle;
-			//Translate(new Vector2D(0.5, 0));
-			//RotateAroundCenter( angle);
-			
-		    //SetPos(new Vector2D(0,1));
-			
-			
 			
 			tickPos();
-			RotateAroundCenter(angle);
+			tickRotation();
 			
 			updateDebugPoints();
 		}
 		
-		public function RotateAroundCenter(radian : Number):void 
+		public function tickRotation():void 
 		{
 			var orgMatrix : flash.geom.Matrix = _sprite.transform.matrix.clone();
  				
@@ -153,8 +146,8 @@ package Systems
 			//orgMatrix.rotate( -1.0 * _oldRotation);
 			
 			// Rotation (note: the parameter is in radian) 
-			orgMatrix.rotate(radian); 
-			_oldRotation = radian;
+			orgMatrix.rotate(_rotationRadians); 
+			_oldRotation = _rotationRadians;
 			
 			// Translating the object back to the original position.
 			orgMatrix.translate(_spriteAnchor._x, _spriteAnchor._y);
@@ -226,8 +219,6 @@ package Systems
 		private function updateDebugPoints():void 
 		{
 			var i : Number;
-			
-
 			_dAnchor.x = _spriteAnchor._x;
 			_dAnchor.y = _spriteAnchor._y;
 			
