@@ -113,7 +113,7 @@ package Systems
 			//find out angle between the vectors
 			var angle : Number = 0;
 			var cosAngle : Number = 0;
-			cosAngle = _forward.dot(newDir);
+			cosAngle = _forward.dot(dir);
 			
 			//cos(angle)
 			angle = Math.acos(cosAngle);
@@ -131,14 +131,12 @@ package Systems
 			
 		    //SetPos(new Vector2D(0,1));
 			
-			updateDebugPoints();
 			
-			var toMove : Vector2D = new Vector2D(0, 0);
-			var tempPos :Vector2D = new Vector2D(0, 0);
 			
 			tickPos();
 			RotateAroundCenter(angle);
-			//Move(toMove);
+			
+			updateDebugPoints();
 		}
 		
 		public function RotateAroundCenter(radian : Number):void 
@@ -210,7 +208,7 @@ package Systems
 		
 		public function GetPos():Vector2D
 		{
-			return _spritePos;
+			return _spriteAnchor
 		}
 		
 		public function SetPos(newPos : Vector2D):void 

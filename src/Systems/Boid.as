@@ -83,11 +83,11 @@ package Systems
 			
 			//here super mega rotation applies :S:S:S:S:
 			_pos._x += _dir._x * _speed;
-			_pos._y += _dir._y * _speed;			
+			_pos._y += _dir._y * _speed;
 			
 			_fishSprite.SetPos(_pos);
 			//_fishSprite.RotateAroundCenter(Math.atan2(_dir._y,_dir._x)+ (-90 * Math.PI/180));
-			_fishSprite.Update(mousePos, debugger);
+			_fishSprite.Update(_dir, debugger);
 			
 		}
 		
