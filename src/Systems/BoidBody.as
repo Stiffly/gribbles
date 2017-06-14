@@ -137,6 +137,7 @@ package Systems
 			var tempPos :Vector2D = new Vector2D(0, 0);
 			
 			tickPos();
+			RotateAroundCenter(angle);
 			//Move(toMove);
 		}
 		
@@ -151,7 +152,7 @@ package Systems
 			orgMatrix.translate(-1.0*_spriteAnchor._x,-1.0*_spriteAnchor._y);
 			
 			//rotate back to org pos
-			orgMatrix.rotate( -1.0 * _oldRotation);
+			//orgMatrix.rotate( -1.0 * _oldRotation);
 			
 			// Rotation (note: the parameter is in radian) 
 			orgMatrix.rotate(radian); 
@@ -214,18 +215,6 @@ package Systems
 		
 		public function SetPos(newPos : Vector2D):void 
 		{
-			/*
-			var toMove : Vector2D = new Vector2D(0, 0);
-			var tempPos :Vector2D = new Vector2D(0, 0);
-			
-			//newPos._x -= _spriteBounds._x/2;
-			//newPos._y -= _spriteBounds._y;
-			
-			tempPos = GetPos();
-			toMove = tempPos.findVector(newPos);
-			
-			Move(toMove);
-			*/
 			_spritePos = newPos;
 		}
 		

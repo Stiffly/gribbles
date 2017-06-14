@@ -87,7 +87,7 @@ package Systems
 			
 			_fishSprite.SetPos(_pos);
 			//_fishSprite.RotateAroundCenter(Math.atan2(_dir._y,_dir._x)+ (-90 * Math.PI/180));
-			_fishSprite.Update(_dir, debugger);
+			_fishSprite.Update(mousePos, debugger);
 			
 		}
 		
