@@ -75,8 +75,16 @@ package Systems
 			boidsFirstRules();
 			for (var i:int = 0; i < _amountOfFish; i++)
 			{
-				AvoidEnemyBoid(_boids[i]);
-				_boids[i].Update(_mousePos, debugger);
+				var avoidEnemy : Vector2D = new Vector2D(0, 0);
+				avoidEnemy = AvoidEnemyBoid(_boids[i]);
+				if (avoidEnemy._x != 0 && avoidEnemy._y != 0)
+				{
+					_boids[i].Update(avoidEnemy, debugger);
+				}
+				else
+				{
+					_boids[i].Update(_mousePos, debugger);
+				}
 			}
 			
 		}

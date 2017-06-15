@@ -113,6 +113,8 @@ package Systems
 			//find out angle between the vectors
 			var angle : Number = 0;
 			var cosAngle : Number = 0;
+			
+			dir = dir.normalize();
 			cosAngle = _forward.dot(dir);
 			
 			//cos(angle)
@@ -127,7 +129,9 @@ package Systems
 			_rotationRadians = angle;
 			
 			tickPos();
+			
 			tickRotation();
+			_forward = dir;
 			
 			updateDebugPoints();
 		}
