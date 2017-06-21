@@ -1,6 +1,7 @@
 package Systems 
 {
 	import Systems.Vector2D;
+	import adobe.utils.CustomActions;
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.display.Stage;
@@ -13,8 +14,27 @@ package Systems
 	{
 		[Embed(source="../../bin/images/Carp/head.png")]
 		private var headSpriteBit:Class;
-
 		var headBitmap:Bitmap = new headSpriteBit();
+		
+		[Embed(source="../../bin/images/Carp/b1.png")]
+		private var b1SpriteBit:Class;
+		var b1Bitmap:Bitmap = new b1SpriteBit();
+		
+		[Embed(source="../../bin/images/Carp/b2.png")]
+		private var b2SpriteBit:Class;
+		var b2Bitmap:Bitmap = new b2SpriteBit();
+		
+		[Embed(source="../../bin/images/Carp/b3.png")]
+		private var b3SpriteBit:Class;
+		var b3Bitmap:Bitmap = new b3SpriteBit();
+		
+		[Embed(source="../../bin/images/Carp/b4.png")]
+		private var b4SpriteBit:Class;
+		var b4Bitmap:Bitmap = new b4SpriteBit();
+		
+		[Embed(source="../../bin/images/Carp/tail.png")]
+		private var tailSpriteBit:Class;
+		var tailBitmap:Bitmap = new tailSpriteBit();
 
 		// Embed an image which will be used as a background
 		private var _pos:Vector2D;
@@ -23,23 +43,32 @@ package Systems
 		private var _speed : Number;
 		private var _inPanic : Boolean;
 		
-		private var _fishSprite:BoidBody;
+		private var _fishSprites:Vector.<BoidBody>;
 		
 		var _distanceVector:Vector.<int>;
 		
 		public function Boid()
 		{
 			_dir = new Vector2D(0, 1);
-			_fishSprite = new BoidBody();
+			_fishSprites = new Vector.<BoidBody>(6);
+			for (var i:int = 0; i < _fishSprites.length; i++ )
+			{
+				_fishSprites[i] = new BoidBody();
+			}
 			_pos = new Vector2D(0, 0);
 		}
 		
 		
 		public function Init(stage:Stage, viewDist : Number, showVisDist : Boolean):void
 		{
-			_speed = 1;
+			_speed = 4;
 			_inPanic = false;
-			_fishSprite.Init(stage, headBitmap);
+			_fishSprites[0].Init(stage, headBitmap);
+			_fishSprites[1].Init(stage, b1Bitmap);
+			_fishSprites[2].Init(stage, b2Bitmap);
+			_fishSprites[3].Init(stage, b3Bitmap);
+			_fishSprites[4].Init(stage, b4Bitmap);
+			_fishSprites[5].Init(stage, tailBitmap);
 			
 			spawnAtRandomPoint();
 			
@@ -74,16 +103,28 @@ package Systems
 			var spawnPoint : Vector2D;
 			var center : Vector2D;
 			var dirToCenter : Vector2D;
-			//ReinitializeBoidPosition()
+			ReinitializeBoidPosition()
 			//CalculateDir();
 			_dir = _dir.normalize();
-			//_pos._x -= 1;
-			_pos._y += 0.8;
-			//_pos._y += _dir._y * _speed;
+			_pos._x += _dir._x * _speed;
+			_pos._y += _dir._y * _speed;
 			
-			_fishSprite.SetPos(_pos);
+			_dirVector[0] = _dir;
+			
+			for (var i:int = _dirVector.length-1; i > 0; i-- )
+			{
+				_dirVector[i] = _dirVector[i-1];
+			}
+			
+			//_fishSprite.SetPos(_pos);
 			//_fishSprite.RotateAroundCenter(Math.atan2(_dir._y,_dir._x)+ (-90 * Math.PI/180));
-			_fishSprite.Update(mousePos, debugger);
+			//_fishSprite.Update(mousePos, debugger);
+			CalculateDir();
+			
+			for (var i:int = 0; i < _fishSprites.length; i++ )
+			{
+				_fishSprites[i].SuperUpdateMatrix();
+			}
 			
 		}
 		
@@ -98,17 +139,19 @@ package Systems
 			lastPos._x = _pos._x;
 			lastPos._y = _pos._y;
 			
-			for (var n:int = 0; n < 3; n++ )
+			for (var n:int = 0; n < _fishSprites.length; n++ )
 			{
 				
 				//translateSprite(new Vector2D(lastPos._x,lastPos._y),n);
 				
-				lastPos._x = lastPos._x - (_dirVector[countDown]._x * _distanceVector[n]);
-				lastPos._y = lastPos._y - (_dirVector[countDown]._y *_distanceVector[n]);
+				
 				
 				rotToFront = _dirVector[countDown];
 				
-				rotation = Math.atan2(rotToFront._y, rotToFront._x);
+				rotation = Math.atan2(rotToFront._y, rotToFront._x)+ (-90 * Math.PI/180);
+				
+				_fishSprites[n].SetPos(lastPos);
+				_fishSprites[n].SetRoation(rotation);
 				
 				//textureVec[n].rotationY = rotatate += 0.4;
 				//textureVec[n].transform.matrix.
@@ -116,6 +159,8 @@ package Systems
 				//rotateAroundCenter(rotation +(Math.PI / 180 * ( -90)), n);
 				//rotateAroundCenter((Math.PI / 180 * ( rotatate)), n);
 				//rotateAroundPoint(textureVec[n], 44);
+				lastPos._x = lastPos._x - (_dirVector[countDown]._x ) * (_distanceVector[n]);
+				lastPos._y = lastPos._y - (_dirVector[countDown]._y) * (_distanceVector[n]);
 				
 				countDown += 4;
 			}

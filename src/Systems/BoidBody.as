@@ -174,7 +174,7 @@ package Systems
 			
 		}
 		
-		private function SuperUpdateMatrix()
+		public function SuperUpdateMatrix()
 		{
 			var radian:Number = _rotationRadians;
 			var orgMatrix : flash.geom.Matrix = origRefMatrix.clone();
@@ -222,7 +222,7 @@ package Systems
 			
 			
 			//Translate(bodyPos);
-			SuperUpdateMatrix();
+			
 			_spritePos._x = bodyPos._x;
 			_spritePos._y = bodyPos._y;
 			
@@ -239,6 +239,9 @@ package Systems
 			var toMove : Vector2D = new Vector2D(0, 0);
 			var tempPos :Vector2D = new Vector2D(0, 0);
 			
+			//newPos._x -= _spriteBounds._x / 2;
+			//newPos._y -= _spriteBounds._y / 2;
+			
 			//newPos._x -= _spriteBounds._x/2;
 			//newPos._y -= _spriteBounds._y;
 			
@@ -248,7 +251,10 @@ package Systems
 			Move(toMove);
 		}
 		
-
+		public function SetRoation(inRot:Number):void
+		{
+			_rotationRadians = inRot;
+		}
 		
 		public function GetAnchor(): Vector2D 
 		{
