@@ -244,6 +244,13 @@ package Systems
 		
 		private function ReinitializeBoidPosition():void
 		{
+		
+			
+			
+			
+			
+
+	
 			
 			 if (_pos._x > 1820)
                 {
@@ -269,6 +276,11 @@ package Systems
 					_dir._y = -_dir._y;
 					//_dir = _dir.normalize();
                 }
+		}
+	
+		public function GetWorldUnit():Number
+		{
+			return worldUnit;
 		}
 	}
 

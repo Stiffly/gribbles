@@ -32,8 +32,6 @@ package Systems
 		
 		public function Init(stage:Stage):void
 		{
-			_viewDistance = 100;
-			_keepdistance = 80;
 			_amountOfFish = 2;
 			
 			_mousePos = new Vector2D(0, 0);
@@ -46,6 +44,9 @@ package Systems
 				_boids[i].Init(stage,_viewDistance,true);
 				//_boids[i].setSpeed(1);
 			}
+			
+			_viewDistance = 100;// * _boids[0].worldUnit;
+			_keepdistance = 80;// * _boids[0].worldUnit;
 		}
 		
 		public function Activate()
@@ -72,10 +73,10 @@ package Systems
 		
 		public function Update(debugger:TextBox):void 
 		{
-			boidsFirstRules();
+			
 			for (var i:int = 0; i < _amountOfFish; i++)
 				_boids[i].Update(_mousePos, debugger);
-			
+			boidsFirstRules();
 		}
 		
 		public function Shutdown():void 
@@ -140,7 +141,7 @@ package Systems
 					if (averageDirection.isEqvivalentTo(_boids[i].getDir()) == false)
 					{
 						//alignment
-						averageDirection = averageDirection.normalize();
+						averageDirection.dividePoint(boidsInVisibalDistance + 1);
 						
 						_boids[i].increaseDir(averageDirection);
 					}
