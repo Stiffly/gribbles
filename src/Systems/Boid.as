@@ -113,7 +113,7 @@ package Systems
 			_pos._x += _dir._x * _speed;
 			_pos._y += _dir._y * _speed;
 			
-			_dirVector[0] = _dir;
+			_dirVector[0] = _dir.normalize();
 			
 			for (var i:int = _dirVector.length-1; i > 0; i-- )
 			{

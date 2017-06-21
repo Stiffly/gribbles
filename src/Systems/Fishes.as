@@ -32,7 +32,7 @@ package Systems
 		
 		public function Init(stage:Stage):void
 		{
-			_amountOfFish = 2;
+			_amountOfFish = 8;
 			
 			_mousePos = new Vector2D(0, 0);
 			
@@ -45,8 +45,8 @@ package Systems
 				//_boids[i].setSpeed(1);
 			}
 			
-			_viewDistance = 100;// * _boids[0].worldUnit;
-			_keepdistance = 80;// * _boids[0].worldUnit;
+			_viewDistance = 80 * _boids[0].worldUnit;
+			_keepdistance = 40 * _boids[0].worldUnit;
 		}
 		
 		public function Activate()
@@ -141,13 +141,13 @@ package Systems
 					if (averageDirection.isEqvivalentTo(_boids[i].getDir()) == false)
 					{
 						//alignment
-						averageDirection.dividePoint(boidsInVisibalDistance + 1);
+						averageDirection.dividePoint(boidsInVisibalDistance);
 						
 						_boids[i].increaseDir(averageDirection);
 					}
 					
 					//Cohesion, take the average point position and find the vector to that pos from boid
-					newAveragePosition.dividePoint(boidsInVisibalDistance + 1);
+					newAveragePosition.dividePoint(boidsInVisibalDistance);
 					
 					var dirToCenter : Vector2D = _boids[i].getPos().findVector(newAveragePosition);
 					dirToCenter = dirToCenter.normalize();
@@ -155,7 +155,7 @@ package Systems
 					
 					if (boidsKeepDistance > 0)
 					{
-						averageSepForce = averageSepForce.normalize();
+						//averageSepForce = averageSepForce.normalize();
 						_boids[i].increaseDir(averageSepForce);
 					}					
 				}
