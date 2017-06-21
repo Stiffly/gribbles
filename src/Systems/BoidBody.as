@@ -78,7 +78,7 @@ package Systems
 			_oldRotation = 0;
 			_spritePos = new Vector2D(0, 0);
 			_spriteBounds = new Vector2D(_sprite.width, _sprite.height);
-			_spriteAnchor = new Vector2D(0, 0);
+			_spriteAnchor = new Vector2D(_sprite.width/2, _sprite.height);
 			
 			_pos = new Vector2D(0, 0);
 			
@@ -124,53 +124,9 @@ package Systems
 	
 			debugger.DebugBoid(this, dir, newDir, angle, cosAngle);
 			
-			_rotationRadians = angle;
-			//Translate(new Vector2D(0.5, 0));
-			//RotateAroundCenter( angle);
-			
-				//SetPos(new Vector2D(0,1));
-			
-			updateDebugPoints();
-			//Move(new Vector2D(0, 1));
-			//SetPos(new Vector2D(500,40));
 
-			
-			
-			//linear interpolation to this point
-			
-		}
-		
-		public function RotateAroundCenter(radian : Number):void 
-		{
-			var orgMatrix : flash.geom.Matrix = _sprite.transform.matrix.clone();
- 				
- 			//get the rect of the obj
-			var rect : Rectangle = _sprite.getBounds(_sprite.parent);
-			
-			//translate the anchor point to the middle of the image
-			orgMatrix.translate(-1.0*_spriteAnchor._x,-1.0*_spriteAnchor._y);
-			
-			//rotate back to org pos
-			orgMatrix.rotate( -1.0 * _oldRotation);
-			
-			// Rotation (note: the parameter is in radian) 
-			orgMatrix.rotate(radian); 
-			_oldRotation = radian;
-			
-			// Translating the object back to the original position.
-			orgMatrix.translate(_spriteAnchor._x, _spriteAnchor._y);
-			
-			_sprite.transform.matrix = orgMatrix;
-		}
-		
-		public function Translate(newPos:Vector2D):void 
-		{
-			var orgMatrix : flash.geom.Matrix = origRefMatrix.clone();
-			
-			//translate
-			orgMatrix.translate(newPos._x, newPos._y);
-			
-			_sprite.transform.matrix = orgMatrix;
+			updateDebugPoints();
+
 			
 		}
 		
@@ -179,7 +135,7 @@ package Systems
 			var radian:Number = _rotationRadians;
 			var orgMatrix : flash.geom.Matrix = origRefMatrix.clone();
  			
-			orgMatrix.translate(_spritePos._x, _spritePos._y);
+			
  			//get the rect of the obj
 			var rect : Rectangle = _sprite.getBounds(_sprite.parent);
 			
@@ -197,7 +153,7 @@ package Systems
 			orgMatrix.translate(_spriteAnchor._x, _spriteAnchor._y);
 			
 			
-			
+			orgMatrix.translate(_spritePos._x - _spriteAnchor._x, _spritePos._y- _spriteAnchor._y);
 			
 			_sprite.transform.matrix = orgMatrix;
 		}
@@ -216,8 +172,8 @@ package Systems
 
 			//for every iteration add to new pos
 			var bodyPos : Vector2D = new Vector2D(_spritePos._x, _spritePos._y);
-			bodyPos._x += newPos._x;
-			bodyPos._y += newPos._y;
+			bodyPos._x += newPos._x ;// - _spriteBounds._x / 2;
+			bodyPos._y += newPos._y;// - _spriteBounds._y;
 			
 			
 			
@@ -229,7 +185,7 @@ package Systems
 			
 			
 			//update anchor, to the nose of the sprite
-			_spriteAnchor = new Vector2D(bodyPos._x + _spriteBounds._x/2.00, bodyPos._y + _spriteBounds._y);
+			//_spriteAnchor = new Vector2D(bodyPos._x - (_spriteBounds._x/2) , bodyPos._y- (_spriteBounds._x/2));
 			
 		
 		}
@@ -239,9 +195,7 @@ package Systems
 			var toMove : Vector2D = new Vector2D(0, 0);
 			var tempPos :Vector2D = new Vector2D(0, 0);
 			
-			//newPos._x -= _spriteBounds._x / 2;
-			//newPos._y -= _spriteBounds._y / 2;
-			
+
 			//newPos._x -= _spriteBounds._x/2;
 			//newPos._y -= _spriteBounds._y;
 			
@@ -265,7 +219,7 @@ package Systems
 		{
 			var i : Number;
 			
-
+			
 			_dAnchor.x = _spriteAnchor._x;
 			_dAnchor.y = _spriteAnchor._y;
 			

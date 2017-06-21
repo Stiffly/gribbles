@@ -34,7 +34,7 @@ package Systems
 		{
 			_viewDistance = 100;
 			_keepdistance = 80;
-			_amountOfFish = 1;
+			_amountOfFish = 2;
 			
 			_mousePos = new Vector2D(0, 0);
 			
@@ -72,7 +72,7 @@ package Systems
 		
 		public function Update(debugger:TextBox):void 
 		{
-			//boidsFirstRules();
+			boidsFirstRules();
 			for (var i:int = 0; i < _amountOfFish; i++)
 				_boids[i].Update(_mousePos, debugger);
 			

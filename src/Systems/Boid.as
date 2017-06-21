@@ -47,6 +47,8 @@ package Systems
 		
 		var _distanceVector:Vector.<int>;
 		
+		var worldUnit:Number;
+		
 		public function Boid()
 		{
 			_dir = new Vector2D(0, 1);
@@ -61,6 +63,8 @@ package Systems
 		
 		public function Init(stage:Stage, viewDist : Number, showVisDist : Boolean):void
 		{
+			worldUnit = headBitmap.width / 16;
+			
 			_speed = 4;
 			_inPanic = false;
 			_fishSprites[0].Init(stage, headBitmap);
@@ -80,12 +84,12 @@ package Systems
 			}
 			
 			_distanceVector = new Vector.<int>(6);
-			_distanceVector[0] =  20;
-            _distanceVector[1] = 14;
-            _distanceVector[2] = 11;
-            _distanceVector[3] = 20;
-            _distanceVector[4] = 21;
-            _distanceVector[5] = 20;
+			_distanceVector[0] =  20 * worldUnit;
+            _distanceVector[1] = 14 * worldUnit;
+            _distanceVector[2] = 11 * worldUnit;
+            _distanceVector[3] = 20 * worldUnit;
+            _distanceVector[4] = 21 * worldUnit; 
+            _distanceVector[5] = 20 * worldUnit;
 		}
 		
 		public function Activate()
@@ -118,11 +122,12 @@ package Systems
 			
 			//_fishSprite.SetPos(_pos);
 			//_fishSprite.RotateAroundCenter(Math.atan2(_dir._y,_dir._x)+ (-90 * Math.PI/180));
-			//_fishSprite.Update(mousePos, debugger);
+			
 			CalculateDir();
 			
 			for (var i:int = 0; i < _fishSprites.length; i++ )
 			{
+				_fishSprites[i].Update(mousePos, debugger);
 				_fishSprites[i].SuperUpdateMatrix();
 			}
 			
@@ -159,6 +164,7 @@ package Systems
 				//rotateAroundCenter(rotation +(Math.PI / 180 * ( -90)), n);
 				//rotateAroundCenter((Math.PI / 180 * ( rotatate)), n);
 				//rotateAroundPoint(textureVec[n], 44);
+				
 				lastPos._x = lastPos._x - (_dirVector[countDown]._x ) * (_distanceVector[n]);
 				lastPos._y = lastPos._y - (_dirVector[countDown]._y) * (_distanceVector[n]);
 				
