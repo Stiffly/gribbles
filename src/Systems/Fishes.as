@@ -78,7 +78,7 @@ package Systems
 		{
 			for (var i:int = 0; i < _amountOfFish; i++)
 			{
-				//_boids[i].increaseDir(AvoidEnemyBoid(_boids[i]));
+				NewAvoidEnemy(_boids[i])
 				boidsFirstRules(i);
 				_boids[i].Update();
 			}
@@ -238,11 +238,43 @@ package Systems
 			return avoidVec;
 		}
 		
+		private function NewAvoidEnemy(boidToScare:Boid):void
+		{
+			var speed:Number = Number(boidToScare.getSpeed());
+			//not sure if right way
+			var OtherVec : Vector2D = boidToScare.getPos().findVector(_mousePos);
+			var OtherLen : Number = OtherVec.length();
+			if (OtherLen < _viewDistance)
+			{
+				var constant : Number = OtherLen / _viewDistance;
+				
+				OtherVec = OtherVec.normalize();
+				OtherVec.multiplyNormVec((constant- 1));
+				boidToScare.increaseDir(OtherVec.normalize());
+				
+				speed = speed * (9 + constant);
+				
+				if (10 < speed)
+                        speed = 10;
+			}
+			else
+			{
+				if (speed <= 10.0 && speed > 4.0)
+					{
+						speed -= speed * 0.01;
+					}
+					else if (speed < 4.0 )
+					{
+						speed = 4.0;
+					}
+			}
+			boidToScare.setSpeed(speed);
+		}
+		
 		public function scareFishPos(pos:Vector2D):void 
 		{
 			_mousePos._x = pos._x;
 			_mousePos._y = pos._y;
 		}
 	}
-
 }
