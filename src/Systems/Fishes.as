@@ -42,7 +42,9 @@ package Systems
 			{
 				_boids[i] = new Boid();
 				_boids[i].Init(stage,_viewDistance,true);
+
 				//_boids[i].setSpeed(1);
+				_boids[i].Update();
 			}
 			scary = new Vector.<Vector2D>(_amountOfFish);
 			
@@ -74,24 +76,12 @@ package Systems
 		
 		public function Update(debugger:TextBox):void 
 		{
-
 			for (var i:int = 0; i < _amountOfFish; i++)
 			{
-				_boids[i].Update(_mousePos, debugger);
-				scary[i] = new Vector2D(0, 0);
-				scary[i] = AvoidEnemyBoid(_boids[i]);
+				//_boids[i].increaseDir(AvoidEnemyBoid(_boids[i]));
+				boidsFirstRules(i);
+				_boids[i].Update();
 			}
-			boidsFirstRules();
-			
-			for (var i:int = 0; i < _amountOfFish; i++)
-			{
-				if (scary[i]._x != 0 && scary[i]._y != 0)
-				{
-					_boids[i].setDir(scary[i]);
-				}
-			}
-			
-			
 		}
 		
 		public function Shutdown():void 
@@ -103,14 +93,13 @@ package Systems
 			}
 		}
 		
-		private function boidsFirstRules() : void
+		private function boidsFirstRules(i:int) : void
 		{
-			var i : int;
-			for (i = 0; i < _amountOfFish; i++)
-			{
+
 				var averageSepForce : Vector2D = new Vector2D(0, 0);
 				var newAveragePosition : Vector2D = new Vector2D(0, 0);
 				var averageDirection : Vector2D = new Vector2D(0, 0);
+				var neighboorPos : Vector2D = new Vector2D(0, 0);
 				var boidsInVisibalDistance : int = 0;
 				var boidsKeepDistance : int = 0;
 				var averageSpeed : Number = 0.0;
@@ -125,8 +114,15 @@ package Systems
 					{
 						var boidVec : Vector2D = _boids[i].getPos().findVector(_boids[n].getPos());
 						var boidLen : Number = boidVec.length();
+						neighboorPos = _boids[i].getPos();
 						
-						if (boidLen < _viewDistance)
+						if (
+						boidLen < _viewDistance 
+						&& 
+						(neighboorPos._x > 0) && (neighboorPos._y > 0)
+						&&
+						(neighboorPos._x < 1800) && (neighboorPos._y < 1080)
+						)
 						{
 							//calculate the avg data for Alignment and cohesion
 							newAveragePosition.addition(_boids[n].getPos());
@@ -174,7 +170,7 @@ package Systems
 						_boids[i].increaseDir(averageSepForce);
 					}					
 				}
-			}
+			
 		}
 		
 		private function AvoidEnemyBoid(boidToScare:Boid):Vector2D
@@ -199,7 +195,7 @@ package Systems
 				
 				if (10.0 < speed)
 				{
-					speed = 4;
+					speed = 10;
 				}
 				
 				
@@ -212,13 +208,13 @@ package Systems
 			}
 			else
 			{
-				if (speed <= 10.0 && speed > 4.0)
+				if (speed <= 10.0 && speed > 3.0)
 				{
 					speed -= speed * 0.05;
 				}
-				else if (speed < 4.0 )
+				else if (speed < 3.0 )
 				{
-					speed = 4.0;
+					speed =3.0;
 				}
 				
 				//no panic
@@ -232,6 +228,9 @@ package Systems
 			}
 			
 			boidToScare.setSpeed(speed);
+			//avoidVec = avoidVec.normalize();
+			avoidVec._x = avoidVec._x * 10;
+			avoidVec._y = avoidVec._y * 10;
 			return avoidVec;
 		}
 		

@@ -88,8 +88,8 @@ package Systems
 			_distanceVector[0] =  20 * worldUnit;
             _distanceVector[1] = 14 * worldUnit;
             _distanceVector[2] = 11 * worldUnit;
-            _distanceVector[3] = 20 * worldUnit;
-            _distanceVector[4] = 21 * worldUnit; 
+            _distanceVector[3] = 14 * worldUnit;
+            _distanceVector[4] = 19 * worldUnit; 
             _distanceVector[5] = 20 * worldUnit;
 		}
 		
@@ -103,9 +103,10 @@ package Systems
 			
 		}
 		
-		public function Update(mousePos : Vector2D, debugger:TextBox ):void
+		public function Update():void
 		{	
 			ReinitializeBoidPosition()
+			//CalculateDir();
 			_dir = _dir.normalize();
 			
 			_pos._x += _dir._x * _speed;
@@ -122,7 +123,6 @@ package Systems
 			
 			for (var i:int = 0; i < _fishSprites.length; i++ )
 			{
-				_fishSprites[i].Update(mousePos, debugger);
 				_fishSprites[i].SuperUpdateMatrix();
 			}
 			
@@ -248,36 +248,35 @@ package Systems
 			return _inPanic;
 		}
 		
-		private function ReinitializeBoidPosition():void
+		public function ReinitializeBoidPosition():void
 		{
-			
-			 if (_pos._x > 1900)
+			 if (_pos._x > 2000)
                 {
-					_dir._x = -_dir._x;
+					//_dir._x = -_dir._x;
 					//_dir._y = -_dir._y;
-					//spawnAtRandomPoint();
+					spawnAtRandomPoint();
 					
-					_dir = _dir.normalize();
+					//_dir = _dir.normalize();
                 }
-                if (_pos._y > 1300)
+                if (_pos._y > 1500)
                 {
-					//spawnAtRandomPoint();
+					spawnAtRandomPoint();
                     //_dir._x = -_dir._x;
-					_dir._y = -_dir._y;
-					//_dir = _dir.normalize();
-					
-                }
-                if (_pos._x < -400)
-                {
-					//spawnAtRandomPoint();
-                    _dir._x = -_dir._x;
 					//_dir._y = -_dir._y;
 					//_dir = _dir.normalize();
 					
                 }
-                if (_pos._y < -400)
+                if (_pos._x < -800)
                 {
-					//spawnAtRandomPoint();
+					spawnAtRandomPoint();
+                    //ir._x = -_dir._x;
+					//_dir._y = -_dir._y;
+					//_dir = _dir.normalize();
+					
+                }
+                if (_pos._y < -800)
+                {
+					spawnAtRandomPoint();
                     //_dir._x = -_dir._x;
 					_dir._y = -_dir._y;
 					//_dir = _dir.normalize();

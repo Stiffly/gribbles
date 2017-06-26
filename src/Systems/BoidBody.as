@@ -123,13 +123,9 @@ package Systems
 			}
 	
 			debugger.DebugBoid(this, dir, newDir, angle, cosAngle);
-			
-
-			updateDebugPoints();
-
+			//updateDebugPoints();
 			
 		}
-		
 		public function SuperUpdateMatrix()
 		{
 			var radian:Number = _rotationRadians;
@@ -169,7 +165,6 @@ package Systems
 		
 		public function Move(newPos : Vector2D):void 
 		{
-
 			//for every iteration add to new pos
 			var bodyPos : Vector2D = new Vector2D(_spritePos._x, _spritePos._y);
 			bodyPos._x += newPos._x ;// - _spriteBounds._x / 2;
@@ -195,7 +190,6 @@ package Systems
 			var toMove : Vector2D = new Vector2D(0, 0);
 			var tempPos :Vector2D = new Vector2D(0, 0);
 			
-
 			//newPos._x -= _spriteBounds._x/2;
 			//newPos._y -= _spriteBounds._y;
 			
@@ -215,7 +209,7 @@ package Systems
 			return _spriteAnchor;
 		}
 		
-		private function updateDebugPoints():void 
+		public function updateDebugPoints():void 
 		{
 			var i : Number;
 			
