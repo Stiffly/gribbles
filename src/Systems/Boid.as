@@ -250,7 +250,7 @@ package Systems
 		
 		public function ReinitializeBoidPosition():void
 		{
-			 if (_pos._x > 2000)
+			 if (_pos._x > 3000)
                 {
 					//_dir._x = -_dir._x;
 					//_dir._y = -_dir._y;

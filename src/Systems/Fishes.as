@@ -110,12 +110,14 @@ package Systems
 				var n : int;
 				for (n = 0; n < _amountOfFish; n++)
 				{
+					_boids[i].increaseDir(_boids[i].getDir().normalize());
 					if (i != n)
 					{
 						var boidVec : Vector2D = _boids[i].getPos().findVector(_boids[n].getPos());
 						var boidLen : Number = boidVec.length();
 						neighboorPos = _boids[i].getPos();
 						
+						//this check makes sure that the flock does not consider fishes outside the scene
 						if (
 						boidLen < _viewDistance 
 						&& 
@@ -152,8 +154,9 @@ package Systems
 					if (averageDirection.isEqvivalentTo(_boids[i].getDir()) == false)
 					{
 						//alignment
-						averageDirection.dividePoint(boidsInVisibalDistance);
-						averageDirection.multiplyNormVec(2);
+						averageDirection.dividePoint(boidsInVisibalDistance + 1);
+						//averageDirection.multiplyNormVec(2)
+						averageDirection = averageDirection.normalize();
 						_boids[i].increaseDir(averageDirection);
 					}
 					
@@ -162,6 +165,7 @@ package Systems
 					
 					var dirToCenter : Vector2D = _boids[i].getPos().findVector(newAveragePosition);
 					dirToCenter = dirToCenter.normalize();
+					dirToCenter.multiplyNormVec(0.5);
 					_boids[i].increaseDir(dirToCenter);
 					
 					if (boidsKeepDistance > 0)
