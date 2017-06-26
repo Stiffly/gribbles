@@ -51,6 +51,9 @@ package Systems
 			_sprite.graphics.beginBitmapFill(bitmapIn.bitmapData, null, true, true);
 			_sprite.graphics.drawRect(0, 0, bitmapIn.bitmapData.width, bitmapIn.bitmapData.height);
 			_sprite.graphics.endFill();
+			_sprite.scaleX = 0.5;
+			_sprite.scaleY = 0.5;
+			
 			
 			stage.addChild(_sprite);
 			
@@ -59,6 +62,7 @@ package Systems
 			_dPos = new Sprite();
 			_dPos.graphics.beginFill(0x0000FF);
 			_dPos.graphics.drawRect(0, 0, 5, 5);
+
 			stage.addChild(_dPos);
 				
 			_dAnchor = new Sprite();

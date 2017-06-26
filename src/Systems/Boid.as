@@ -85,12 +85,12 @@ package Systems
 			}
 			
 			_distanceVector = new Vector.<int>(6);
-			_distanceVector[0] =  20 * worldUnit;
-            _distanceVector[1] = 14 * worldUnit;
-            _distanceVector[2] = 11 * worldUnit;
-            _distanceVector[3] = 14 * worldUnit;
-            _distanceVector[4] = 19 * worldUnit; 
-            _distanceVector[5] = 20 * worldUnit;
+			_distanceVector[0] = 10 * worldUnit;
+            _distanceVector[1] = 7 * worldUnit;
+            _distanceVector[2] = 5 * worldUnit;
+            _distanceVector[3] = 7 * worldUnit;
+            _distanceVector[4] = 10 * worldUnit; 
+            _distanceVector[5] = 10 * worldUnit;
 		}
 		
 		public function Activate()

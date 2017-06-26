@@ -33,7 +33,7 @@ package Systems
 		
 		public function Init(stage:Stage):void
 		{
-			_amountOfFish = 4;
+			_amountOfFish = 50;
 			_mousePos = new Vector2D(0, 0);
 			
 			_boids = new Vector.<Boid>(_amountOfFish);
@@ -48,8 +48,8 @@ package Systems
 			}
 			scary = new Vector.<Vector2D>(_amountOfFish);
 			
-			_viewDistance = 40 * _boids[0].worldUnit;
-			_keepdistance = 10 * _boids[0].worldUnit;
+			_viewDistance = 50 * _boids[0].worldUnit;
+			_keepdistance = 40 * _boids[0].worldUnit;
 		}
 		
 		public function Activate()
