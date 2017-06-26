@@ -25,6 +25,7 @@ package Systems
 		private var _amountOfFish : int;
 		private var _boids:Vector.<Boid>;
 		private var _mousePos : Vector2D;
+		private var scary : Vector.<Vector2D>;
 		
 		public function Fishes() 
 		{
@@ -32,8 +33,7 @@ package Systems
 		
 		public function Init(stage:Stage):void
 		{
-			_amountOfFish = 8;
-			
+			_amountOfFish = 10;
 			_mousePos = new Vector2D(0, 0);
 			
 			_boids = new Vector.<Boid>(_amountOfFish);
@@ -44,9 +44,10 @@ package Systems
 				_boids[i].Init(stage,_viewDistance,true);
 				//_boids[i].setSpeed(1);
 			}
+			scary = new Vector.<Vector2D>(_amountOfFish);
 			
-			_viewDistance = 80 * _boids[0].worldUnit;
-			_keepdistance = 40 * _boids[0].worldUnit;
+			_viewDistance = 40 * _boids[0].worldUnit;
+			_keepdistance = 10 * _boids[0].worldUnit;
 		}
 		
 		public function Activate()
@@ -73,10 +74,24 @@ package Systems
 		
 		public function Update(debugger:TextBox):void 
 		{
+
+			for (var i:int = 0; i < _amountOfFish; i++)
+			{
+				_boids[i].Update(_mousePos, debugger);
+				scary[i] = new Vector2D(0, 0);
+				scary[i] = AvoidEnemyBoid(_boids[i]);
+			}
+			boidsFirstRules();
 			
 			for (var i:int = 0; i < _amountOfFish; i++)
-				_boids[i].Update(_mousePos, debugger);
-			boidsFirstRules();
+			{
+				if (scary[i]._x != 0 && scary[i]._y != 0)
+				{
+					_boids[i].setDir(scary[i]);
+				}
+			}
+			
+			
 		}
 		
 		public function Shutdown():void 
@@ -142,12 +157,12 @@ package Systems
 					{
 						//alignment
 						averageDirection.dividePoint(boidsInVisibalDistance);
-						
+						averageDirection.multiplyNormVec(2);
 						_boids[i].increaseDir(averageDirection);
 					}
 					
 					//Cohesion, take the average point position and find the vector to that pos from boid
-					newAveragePosition.dividePoint(boidsInVisibalDistance);
+					newAveragePosition.dividePoint(boidsInVisibalDistance + 1);
 					
 					var dirToCenter : Vector2D = _boids[i].getPos().findVector(newAveragePosition);
 					dirToCenter = dirToCenter.normalize();
@@ -155,7 +170,7 @@ package Systems
 					
 					if (boidsKeepDistance > 0)
 					{
-						//averageSepForce = averageSepForce.normalize();
+						averageSepForce = averageSepForce.normalize();
 						_boids[i].increaseDir(averageSepForce);
 					}					
 				}
@@ -182,9 +197,9 @@ package Systems
 				
 				speed += speedMod;
 				
-				if (3.0 < speed)
+				if (10.0 < speed)
 				{
-					speed = 3;
+					speed = 4;
 				}
 				
 				
@@ -197,13 +212,13 @@ package Systems
 			}
 			else
 			{
-				if (speed <= 3.0 && speed > 1.0)
+				if (speed <= 10.0 && speed > 4.0)
 				{
-					speed -= speed * 0.01;
+					speed -= speed * 0.05;
 				}
-				else if (speed < 1.0 )
+				else if (speed < 4.0 )
 				{
-					speed = 1.0;
+					speed = 4.0;
 				}
 				
 				//no panic

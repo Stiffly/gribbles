@@ -65,8 +65,9 @@ package Systems
 		{
 			worldUnit = headBitmap.width / 16;
 			
-			_speed = 4;
+			_speed = 5;
 			_inPanic = false;
+
 			_fishSprites[0].Init(stage, headBitmap);
 			_fishSprites[1].Init(stage, b1Bitmap);
 			_fishSprites[2].Init(stage, b2Bitmap);
@@ -104,12 +105,9 @@ package Systems
 		
 		public function Update(mousePos : Vector2D, debugger:TextBox ):void
 		{	
-			var spawnPoint : Vector2D;
-			var center : Vector2D;
-			var dirToCenter : Vector2D;
 			ReinitializeBoidPosition()
-			//CalculateDir();
 			_dir = _dir.normalize();
+			
 			_pos._x += _dir._x * _speed;
 			_pos._y += _dir._y * _speed;
 			
@@ -119,9 +117,6 @@ package Systems
 			{
 				_dirVector[i] = _dirVector[i-1];
 			}
-			
-			//_fishSprite.SetPos(_pos);
-			//_fishSprite.RotateAroundCenter(Math.atan2(_dir._y,_dir._x)+ (-90 * Math.PI/180));
 			
 			CalculateDir();
 			
@@ -176,8 +171,8 @@ package Systems
 		
 		public function setPos(newPos : Vector2D):void
 		{
-			_pos._x =  800;
-			_pos._y = 100;
+			_pos._x =  newPos._x;
+			_pos._y = newPos._y;
 		}
 		
 		public function setDir(newDir : Vector2D):void 
@@ -190,11 +185,6 @@ package Systems
 			_dir._x += toAdd._x;
 			_dir._y += toAdd._y;
 		}
-		/*
-		public function getSprite():Sprite
-		{
-		}
-		*/
 		public function getPos(): Vector2D
 		{
 			//var toReturn : Vector2D = new Vector2D(_sprite.x, _sprite.y);
@@ -221,9 +211,25 @@ package Systems
 			var spawnPoint : Vector2D;
 			var center : Vector2D;
 			var dirToCenter : Vector2D;
+			var dice : int = -1;
+			
+			//vänster eller höger sida
+			dice = int(Math.random() * 1000);
+			dice %= 2;
+			
+			//spawn random point utanför skärm
+			if (dice == 0)
+			{
+				spawnPoint = new Vector2D(-100, 900 - Math.random() * 1000);
+			}
+			else
+			{
+				spawnPoint = new Vector2D(1800, 900 - Math.random() * 1000);
+			}
+			
 			
 			//find vector to point
-			spawnPoint = new Vector2D(1600 -(Math.random() * 1000), 900 -(Math.random() * 1000));
+			//spawnPoint = new Vector2D(1600 -(Math.random() * 1000), 900 -(Math.random() * 1000));
 			center = new Vector2D(1920 / 2, 1080 / 2);
 			dirToCenter = spawnPoint.findVector(center);
 					
@@ -244,35 +250,35 @@ package Systems
 		
 		private function ReinitializeBoidPosition():void
 		{
-		
 			
-			
-			
-			
-
-	
-			
-			 if (_pos._x > 1820)
+			 if (_pos._x > 1900)
                 {
 					_dir._x = -_dir._x;
+					//_dir._y = -_dir._y;
+					//spawnAtRandomPoint();
+					
+					_dir = _dir.normalize();
+                }
+                if (_pos._y > 1300)
+                {
+					//spawnAtRandomPoint();
+                    //_dir._x = -_dir._x;
 					_dir._y = -_dir._y;
 					//_dir = _dir.normalize();
+					
                 }
-                if (_pos._y > 800)
+                if (_pos._x < -400)
                 {
+					//spawnAtRandomPoint();
                     _dir._x = -_dir._x;
-					_dir._y = -_dir._y;
+					//_dir._y = -_dir._y;
 					//_dir = _dir.normalize();
+					
                 }
-                if (_pos._x < -100)
+                if (_pos._y < -400)
                 {
-                    _dir._x = -_dir._x;
-					_dir._y = -_dir._y;
-					//_dir = _dir.normalize();
-                }
-                if (_pos._y < -100)
-                {
-                    _dir._x = -_dir._x;
+					//spawnAtRandomPoint();
+                    //_dir._x = -_dir._x;
 					_dir._y = -_dir._y;
 					//_dir = _dir.normalize();
                 }
