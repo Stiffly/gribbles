@@ -25,14 +25,8 @@ package Systems
 		private var _spriteWidth : Number;
 		private var _spriteHeight :Number;
 		
-		private var _forward : Vector2D;
 
 		private var _pos : Vector2D;
-		//private var _dPos : Sprite;
-		//private var _dAnchor : Sprite;
-		
-		private var _dPos : Sprite;
-		private var _dAnchor :Sprite;
 		
 		private var origRefMatrix:Matrix;
 		
@@ -43,9 +37,6 @@ package Systems
 		
 		public function Init(stage:Stage, bitmapIn:Bitmap) : void
 		{
-			_dPos = new Sprite();
-			_dAnchor = new Sprite();
-			
 			
 			_sprite= new Sprite();
 			_sprite.graphics.beginBitmapFill(bitmapIn.bitmapData, null, true, true);
@@ -56,28 +47,6 @@ package Systems
 			
 			
 			stage.addChild(_sprite);
-			
-			_rotationRadians = 0;
-
-			_dPos = new Sprite();
-			_dPos.graphics.beginFill(0x0000FF);
-			_dPos.graphics.drawRect(0, 0, 5, 5);
-
-			stage.addChild(_dPos);
-				
-			_dAnchor = new Sprite();
-			_dAnchor.graphics.beginFill(0x00FF00);
-			_dAnchor.graphics.drawRect(0, 0, 5, 5);
-			_dAnchor.graphics.endFill();
-				
-			stage.addChild(_dAnchor);
-			//ugly hack to make rotation less of a pain
-
-			//_spritePos = new Vector2D();
-			//_oldRotation = new Number();
-			//_spriteBounds = new Vector2D();
-			//_spriteAnchor = new Vector2D();
-			
 
 			_oldRotation = 0;
 			_spritePos = new Vector2D(0, 0);
@@ -86,9 +55,6 @@ package Systems
 			
 			_pos = new Vector2D(0, 0);
 			
-			_forward = new Vector2D(0, 1);
-			_forward = _forward.normalize();
-			
 			//Move(new Vector2D(0, 700));
 			origRefMatrix = _sprite.transform.matrix.clone();
 			SetPos(new Vector2D(0, 0));
@@ -96,40 +62,20 @@ package Systems
 			origRefMatrix = _sprite.transform.matrix.clone();
 		}
 		
+		public function Activate()
+		{
+			_sprite.visible = true;
+		
+		}
+		public function Deactivate()
+		{
+			_sprite.visible = false;
+		}
 		public function Shutdown():void 
 		{
 			
 		}
 		
-		public function Update(dir:Vector2D, debugger:TextBox): void
-		{	
-			var newDir : Vector2D = new Vector2D(0, 0);
-			var centerIsh : Vector2D = new Vector2D(0, 0);
-			
-			//SetPos(new Vector2D(200, 0));
-			
-			
-			//draw vector between anchor and mousePos
-			newDir = _spriteAnchor.findVector(dir);
-			newDir = newDir.normalize();
-			
-			//find out angle between the vectors
-			var angle : Number = 0;
-			var cosAngle : Number = 0;
-			cosAngle = _forward.dot(newDir);
-			
-			//cos(angle)
-			angle = Math.acos(cosAngle);
-			
-			if (dir._x > _spriteAnchor._x)
-			{
-				angle *= -1.0;
-			}
-	
-			debugger.DebugBoid(this, dir, newDir, angle, cosAngle);
-			//updateDebugPoints();
-			
-		}
 		public function SuperUpdateMatrix()
 		{
 			var radian:Number = _rotationRadians;
@@ -156,10 +102,6 @@ package Systems
 			orgMatrix.translate(_spritePos._x - _spriteAnchor._x, _spritePos._y- _spriteAnchor._y);
 			
 			_sprite.transform.matrix = orgMatrix;
-		}
-		public function GetForward():Vector2D 
-		{
-			return _forward;
 		}
 		
 		public function GetPos():Vector2D
@@ -208,21 +150,6 @@ package Systems
 			_rotationRadians = inRot;
 		}
 		
-		public function GetAnchor(): Vector2D 
-		{
-			return _spriteAnchor;
-		}
-		
-		public function updateDebugPoints():void 
-		{
-			var i : Number;
-			
-			
-			_dAnchor.x = _spriteAnchor._x;
-			_dAnchor.y = _spriteAnchor._y;
-			
-			_dPos.x = _spritePos._x;
-			_dPos.y = _spritePos._y;
-		}
+	
 	}
 }

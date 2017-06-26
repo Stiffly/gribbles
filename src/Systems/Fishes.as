@@ -22,6 +22,7 @@ package Systems
 	{
 		private var _viewDistance : Number;
 		private var _keepdistance : Number;
+		private var _enemydistance : Number;
 		private var _amountOfFish : int;
 		private var _boids:Vector.<Boid>;
 		private var _mousePos : Vector2D;
@@ -33,7 +34,7 @@ package Systems
 		
 		public function Init(stage:Stage):void
 		{
-			_amountOfFish = 50;
+			_amountOfFish = 35;
 			_mousePos = new Vector2D(0, 0);
 			
 			_boids = new Vector.<Boid>(_amountOfFish);
@@ -50,6 +51,7 @@ package Systems
 			
 			_viewDistance = 50 * _boids[0].worldUnit;
 			_keepdistance = 40 * _boids[0].worldUnit;
+			_enemydistance = 20 * _boids[0].worldUnit;
 		}
 		
 		public function Activate()
@@ -74,7 +76,7 @@ package Systems
 			_mousePos._y = event.stageY;
 		}
 		
-		public function Update(debugger:TextBox):void 
+		public function Update():void 
 		{
 			for (var i:int = 0; i < _amountOfFish; i++)
 			{
@@ -242,14 +244,14 @@ package Systems
 		{
 			var speed:Number = Number(boidToScare.getSpeed());
 			//not sure if right way
-			var OtherVec : Vector2D = boidToScare.getPos().findVector(_mousePos);
+			var OtherVec : Vector2D = _mousePos.findVector(boidToScare.getPos() );
 			var OtherLen : Number = OtherVec.length();
-			if (OtherLen < _viewDistance)
+			if (OtherLen < _enemydistance)
 			{
-				var constant : Number = OtherLen / _viewDistance;
+				var constant : Number = OtherLen / _enemydistance;
 				
 				OtherVec = OtherVec.normalize();
-				OtherVec.multiplyNormVec((constant- 1));
+				OtherVec.multiplyNormVec((constant));
 				boidToScare.increaseDir(OtherVec.normalize());
 				
 				speed = speed * (9 + constant);

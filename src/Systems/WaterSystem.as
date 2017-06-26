@@ -37,7 +37,6 @@ package Systems
 		//
 		private var _flock:Fishes;
 		// Constructor
-		private var _debugger : TextBox;
 		
 		public function WaterSystem()
 		{
@@ -69,16 +68,13 @@ package Systems
 			
 			//we should implement the boids here
 			_flock.Init(stage);
-			
-			_debugger = new TextBox();
-			_debugger.Init(stage);
+		
 			
 		}
 		
 		public function Update():void
 		{
-			_flock.Update(_debugger);
-			_debugger.Update();
+			_flock.Update();
 			_rippler.Update();
 			_dustEmitter.Update();
 		}

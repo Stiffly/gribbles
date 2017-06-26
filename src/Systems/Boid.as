@@ -2,6 +2,7 @@ package Systems
 {
 	import Systems.Vector2D;
 	import adobe.utils.CustomActions;
+	import com.adobe.utils.IntUtil;
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.display.Stage;
@@ -95,12 +96,14 @@ package Systems
 		
 		public function Activate()
 		{
-			
+			for (var i:int = 0; i < _fishSprites.length; i++ )
+				_fishSprites[i].Activate();
 		}
 		
 		public function Deactivate()
 		{
-			
+			for (var i:int = 0; i < _fishSprites.length; i++ )
+				_fishSprites[i].Deactivate();
 		}
 		
 		public function Update():void
@@ -163,7 +166,7 @@ package Systems
 				lastPos._x = lastPos._x - (_dirVector[countDown]._x ) * (_distanceVector[n]);
 				lastPos._y = lastPos._y - (_dirVector[countDown]._y) * (_distanceVector[n]);
 				
-				countDown += 4;
+				countDown += 3;
 			}
 			
 			//} endregion
