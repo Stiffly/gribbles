@@ -33,7 +33,7 @@ package Systems
 		
 		public function Init(stage:Stage):void
 		{
-			_amountOfFish = 10;
+			_amountOfFish = 4;
 			_mousePos = new Vector2D(0, 0);
 			
 			_boids = new Vector.<Boid>(_amountOfFish);
