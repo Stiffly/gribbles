@@ -87,8 +87,8 @@ package Systems
 			_distanceVector[0] =  20 * worldUnit;
             _distanceVector[1] = 14 * worldUnit;
             _distanceVector[2] = 11 * worldUnit;
-            _distanceVector[3] = 20 * worldUnit;
-            _distanceVector[4] = 21 * worldUnit; 
+            _distanceVector[3] = 14 * worldUnit;
+            _distanceVector[4] = 19 * worldUnit; 
             _distanceVector[5] = 20 * worldUnit;
 		}
 		
@@ -102,13 +102,12 @@ package Systems
 			
 		}
 		
-		public function Update(mousePos : Vector2D, debugger:TextBox ):void
+		public function Update():void
 		{	
-			var spawnPoint : Vector2D;
-			var center : Vector2D;
-			var dirToCenter : Vector2D;
-			ReinitializeBoidPosition()
+			
+			//ReinitializeBoidPosition()
 			//CalculateDir();
+
 			_dir = _dir.normalize();
 			_pos._x += _dir._x * _speed;
 			_pos._y += _dir._y * _speed;
@@ -127,7 +126,6 @@ package Systems
 			
 			for (var i:int = 0; i < _fishSprites.length; i++ )
 			{
-				_fishSprites[i].Update(mousePos, debugger);
 				_fishSprites[i].SuperUpdateMatrix();
 			}
 			
@@ -242,40 +240,34 @@ package Systems
 			return _inPanic;
 		}
 		
-		private function ReinitializeBoidPosition():void
+		public function ReinitializeBoidPosition():void
 		{
-		
-			
-			
-			
-			
+				if (_pos._x > 1920)
+                {
+					_dir._x = _dir._x * -1;
+					_dir._y = _dir._y * -1;
+					
+					//_dir = _dir.normaliz-1();
+                }
+                if (_pos._y > 1080)
+                {
+                    _dir._x = -_dir._x;
+					_dir._y = -_dir._y;
+					//_dir = _dir.normalize();
+                }
+                if (_pos._x < 0)
+                {
+                    _dir._x = _dir._x* -1;
+					_dir._y = _dir._y * -1;
+					//_dir = _dir.normalize();
+                }
+                if (_pos._y < 0)
+                {
+                    _dir._x = _dir._x* -1;
+					_dir._y = _dir._y * -1;
+					//_dir = _dir.normalize();
+                }
 
-	
-			
-			 if (_pos._x > 1820)
-                {
-					_dir._x = -_dir._x;
-					_dir._y = -_dir._y;
-					//_dir = _dir.normalize();
-                }
-                if (_pos._y > 800)
-                {
-                    _dir._x = -_dir._x;
-					_dir._y = -_dir._y;
-					//_dir = _dir.normalize();
-                }
-                if (_pos._x < -100)
-                {
-                    _dir._x = -_dir._x;
-					_dir._y = -_dir._y;
-					//_dir = _dir.normalize();
-                }
-                if (_pos._y < -100)
-                {
-                    _dir._x = -_dir._x;
-					_dir._y = -_dir._y;
-					//_dir = _dir.normalize();
-                }
 		}
 	
 		public function GetWorldUnit():Number

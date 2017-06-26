@@ -42,11 +42,14 @@ package Systems
 			{
 				_boids[i] = new Boid();
 				_boids[i].Init(stage,_viewDistance,true);
+
 				//_boids[i].setSpeed(1);
+				_boids[i].Update();
 			}
 			
-			_viewDistance = 80 * _boids[0].worldUnit;
+			_viewDistance = 50 * _boids[0].worldUnit;
 			_keepdistance = 40 * _boids[0].worldUnit;
+			
 		}
 		
 		public function Activate()
@@ -73,10 +76,13 @@ package Systems
 		
 		public function Update(debugger:TextBox):void 
 		{
-			
 			for (var i:int = 0; i < _amountOfFish; i++)
-				_boids[i].Update(_mousePos, debugger);
-			boidsFirstRules();
+			{
+				_boids[i].increaseDir(AvoidEnemyBoid(_boids[i]));
+				boidsFirstRules(i);
+				
+				_boids[i].Update();
+			}
 		}
 		
 		public function Shutdown():void 
@@ -88,11 +94,9 @@ package Systems
 			}
 		}
 		
-		private function boidsFirstRules() : void
+		private function boidsFirstRules(i:int) : void
 		{
-			var i : int;
-			for (i = 0; i < _amountOfFish; i++)
-			{
+
 				var averageSepForce : Vector2D = new Vector2D(0, 0);
 				var newAveragePosition : Vector2D = new Vector2D(0, 0);
 				var averageDirection : Vector2D = new Vector2D(0, 0);
@@ -159,7 +163,7 @@ package Systems
 						_boids[i].increaseDir(averageSepForce);
 					}					
 				}
-			}
+			
 		}
 		
 		private function AvoidEnemyBoid(boidToScare:Boid):Vector2D
@@ -182,9 +186,9 @@ package Systems
 				
 				speed += speedMod;
 				
-				if (3.0 < speed)
+				if (10.0 < speed)
 				{
-					speed = 3;
+					speed = 10;
 				}
 				
 				
@@ -197,13 +201,13 @@ package Systems
 			}
 			else
 			{
-				if (speed <= 3.0 && speed > 1.0)
+				if (speed <= 10.0 && speed > 3.0)
 				{
 					speed -= speed * 0.01;
 				}
-				else if (speed < 1.0 )
+				else if (speed < 3.0 )
 				{
-					speed = 1.0;
+					speed =3.0;
 				}
 				
 				//no panic
@@ -217,6 +221,9 @@ package Systems
 			}
 			
 			boidToScare.setSpeed(speed);
+			//avoidVec = avoidVec.normalize();
+			avoidVec._x = avoidVec._x * 10;
+			avoidVec._y = avoidVec._y * 10;
 			return avoidVec;
 		}
 		
