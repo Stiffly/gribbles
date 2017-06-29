@@ -33,9 +33,14 @@ package Systems
 		// The touch object, in this case the entire screen
 		private var _touchSprite:TouchSprite;
 		
+		private var _flockFishes:Fishes;
+		
+		private var _active:Boolean;
+		
 		// Constructor
 		public function WaterSystem()
 		{
+			_flockFishes = new Fishes();
 			super();
 		}
 		
@@ -56,40 +61,61 @@ package Systems
 			_rippler = new Rippler(_touchSprite, 20, 10);
 			
 			// Make the TouchSprite listen to the TOUCH_MOVE event
-			_touchSprite.addEventListener(TouchEvent.TOUCH_MOVE, handleDrag);
-			_touchSprite.addEventListener(MouseEvent.MOUSE_MOVE, handleMouseMove);
+			//_touchSprite.addEventListener(TouchEvent.TOUCH_MOVE, handleDrag);
+			stage.addEventListener(TouchEvent.TOUCH_MOVE, handleDrag);
+			
+			//_touchSprite.addEventListener(MouseEvent.MOUSE_MOVE, handleMouseMove);
 			
 			_dustEmitter = new DustEmitter(100, stage);
+			
+			_flockFishes.Init(stage);
 		}
 		
 		public function Update():void
 		{
+			_flockFishes.Update();
 			_rippler.Update();
 			_dustEmitter.Update();
 		}
 		
 		private function handleDrag(event:TouchEvent):void
 		{
-			_rippler.drawRipple(event.stageX, event.stageY, 20, 1);
+			if (_active)
+			{
+				_rippler.drawRipple(event.stageX, event.stageY, 20, 1);
+				
+				var mousePos:Vector2D = new Vector2D(event.stageX, event.stageY);
+				_flockFishes.scareFishPos(mousePos);
+			}
 		}
 		
 		private function handleMouseMove(event:MouseEvent):void
 		{
+			/*
 			_rippler.drawRipple(event.stageX, event.stageY, 20, 1);
+			
+			var mousePos:Vector2D = new Vector2D(event.stageX, event.stageY);
+			_flockFishes.scareFishPos(mousePos);
+			*/
 		}
 		
 		public function Deactivate():void
 		{
+			_active = false;
 			_rippler.destroy();
 			_touchSprite.visible = false;
 			_dustEmitter.Deactivate();
+			
+			_flockFishes.Deactivate();
 		}
 		
 		public function Activate():void
 		{
+			_active = true;
 			_rippler = new Rippler(_touchSprite, 20, 10);
 			_touchSprite.visible = true;
 			_dustEmitter.Activate();
+			_flockFishes.Activate();
 		}
 		
 		public function Ripple():void
