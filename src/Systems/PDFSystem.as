@@ -95,6 +95,14 @@ package Systems
 			component.visible = false;
 		}
 		
+		override public function Deactivate():void 
+		{
+			for each (var pdf:HTMLViewer in _pdfMap)
+			{
+				hideComponent(Component(pdf));
+			}
+		}
+		
 		public function ShowComponent(x:int, y:int, component:Component):void
 		{
 			component.x = ((stage.stageWidth - component.width) >> 1);
