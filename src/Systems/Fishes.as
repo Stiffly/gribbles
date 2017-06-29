@@ -40,7 +40,6 @@ package Systems
 			_nrOfTouches = 0;
 			
 			_boids = new Vector.<Boid>(_amountOfFish);
-			var i:int;
 			for (var i:int = 0; i < _amountOfFish; i++)
 			{
 				_boids[i] = new Boid();
@@ -56,7 +55,7 @@ package Systems
 			_enemydistance = 20 * _boids[0].worldUnit;
 		}
 		
-		public function Activate()
+		public function Activate():void
 		{
 			for (var i:int = 0; i < _amountOfFish; i++)
 			{
@@ -64,11 +63,11 @@ package Systems
 			}
 		}
 		
-		public function Deactivate()
+		public function Deactivate():void
 		{
 			for (var i:int = 0; i < _amountOfFish; i++)
 			{
-					_boids[i].Deactivate();
+				_boids[i].Deactivate();
 			}
 		}
 		

@@ -63,22 +63,23 @@ package Systems
 			origRefMatrix = _sprite.transform.matrix.clone();
 		}
 		
-		public function Activate()
+		public function Activate():void
 		{
 			_sprite.visible = true;
 			LayerHandler.BRING_TO_FRONT(_sprite);
-		
 		}
-		public function Deactivate()
+		
+		public function Deactivate():void
 		{
 			_sprite.visible = false;
 		}
+		
 		public function Shutdown():void 
 		{
 			
 		}
 		
-		public function SuperUpdateMatrix()
+		public function SuperUpdateMatrix():void
 		{
 			var radian:Number = _rotationRadians;
 			var orgMatrix : flash.geom.Matrix = origRefMatrix.clone();

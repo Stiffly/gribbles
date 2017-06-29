@@ -15,27 +15,27 @@ package Systems
 	{
 		[Embed(source="../../bin/images/Carp/head.png")]
 		private var headSpriteBit:Class;
-		var headBitmap:Bitmap = new headSpriteBit();
+		private var headBitmap:Bitmap = new headSpriteBit();
 		
 		[Embed(source="../../bin/images/Carp/b1.png")]
 		private var b1SpriteBit:Class;
-		var b1Bitmap:Bitmap = new b1SpriteBit();
+		private var b1Bitmap:Bitmap = new b1SpriteBit();
 		
 		[Embed(source="../../bin/images/Carp/b2.png")]
 		private var b2SpriteBit:Class;
-		var b2Bitmap:Bitmap = new b2SpriteBit();
+		private var b2Bitmap:Bitmap = new b2SpriteBit();
 		
 		[Embed(source="../../bin/images/Carp/b3.png")]
 		private var b3SpriteBit:Class;
-		var b3Bitmap:Bitmap = new b3SpriteBit();
+		private var b3Bitmap:Bitmap = new b3SpriteBit();
 		
 		[Embed(source="../../bin/images/Carp/b4.png")]
 		private var b4SpriteBit:Class;
-		var b4Bitmap:Bitmap = new b4SpriteBit();
+		private var b4Bitmap:Bitmap = new b4SpriteBit();
 		
 		[Embed(source="../../bin/images/Carp/tail.png")]
 		private var tailSpriteBit:Class;
-		var tailBitmap:Bitmap = new tailSpriteBit();
+		private var tailBitmap:Bitmap = new tailSpriteBit();
 
 		// Embed an image which will be used as a background
 		private var _pos:Vector2D;
@@ -46,9 +46,9 @@ package Systems
 		
 		private var _fishSprites:Vector.<BoidBody>;
 		
-		var _distanceVector:Vector.<int>;
+		private var _distanceVector:Vector.<int>;
 		
-		var worldUnit:Number;
+		public var worldUnit:Number;
 		
 		public function Boid()
 		{
@@ -94,13 +94,13 @@ package Systems
             _distanceVector[5] = 10 * worldUnit;
 		}
 		
-		public function Activate()
+		public function Activate():void
 		{
 			for (var i:int = 0; i < _fishSprites.length; i++ )
 				_fishSprites[i].Activate();
 		}
 		
-		public function Deactivate()
+		public function Deactivate():void
 		{
 			for (var i:int = 0; i < _fishSprites.length; i++ )
 				_fishSprites[i].Deactivate();
@@ -116,15 +116,15 @@ package Systems
 			_pos._y += _dir._y * _speed;
 			
 			_dirVector[0] = _dir.normalize();
-			
-			for (var i:int = _dirVector.length-1; i > 0; i-- )
+			var i:int;
+			for (i = _dirVector.length-1; i > 0; i-- )
 			{
 				_dirVector[i] = _dirVector[i-1];
 			}
 			
 			CalculateDir();
 			
-			for (var i:int = 0; i < _fishSprites.length; i++ )
+			for (i = 0; i < _fishSprites.length; i++ )
 			{
 				_fishSprites[i].SuperUpdateMatrix();
 			}
