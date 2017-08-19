@@ -104,7 +104,7 @@ package
 			// Create a button for switching to mainapp
 			createMiddleButton();
 			// Create a button for switching to screensaver
-			createBackButton();
+			//createBackButton();
 			
 			addChildAt(_loaderImage, numChildren - 1);
 			
@@ -138,7 +138,7 @@ package
 			createTutorialBox();
 			
 			// Hide mouse
-			//Mouse.hide();
+			Mouse.hide();
 			
 			// Show FPS-counter
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<button>
+	<type>Album</type>
+	<description>Karta</description>
+	<width>64</width>
+	<height>64</height>
+	<x>100</x>
+	<y>100</y>
+</button>
