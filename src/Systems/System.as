@@ -207,6 +207,7 @@ package Systems
 		protected function onTouch(event:TouchEvent):void
 		{
 			LayerHandler.BRING_TO_FRONT(Component(event.currentTarget));
+			stage.dispatchEvent(new ShowFishes(ShowFishes.SHOWFISH));
 		}
 		
 		public function Deactivate():void
