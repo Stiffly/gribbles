@@ -20,8 +20,7 @@ package Systems
 	{
 		// The webpage map ...
 		private var _webMap:Object = new Object();
-		private var _approvedURLs:Array = ["http://www.blekingemuseum.se/pages/275", "http://www.blekingemuseum.se/pages/377", "http://www.blekingemuseum.se/pages/378", "http://www.blekingemuseum.se/pages/379", "http://www.blekingemuseum.se/pages/380", "http://www.blekingemuseum.se/pages/403", "http://www.blekingemuseum.se/pages/423", "http://www.blekingemuseum.se/pages/1223"];
-		
+		private var _approvedURLs:Array = new Array();
 		public function WebPageSystem()
 		{
 			super();
@@ -74,7 +73,9 @@ package Systems
 		{
 			return function(event:Event):void
 			{
-				var webURL:String = URLLoader(event.currentTarget).data;
+				var data:String = URLLoader(event.currentTarget).data;
+				_approvedURLs = data.split("\r\n");
+				
 				var htmlViewer:HTMLViewer = createViewer(new HTMLViewer(), 0, 0, 800, 900) as HTMLViewer;
 				
 				// Create the HTML Element, the actual html content
@@ -82,7 +83,7 @@ package Systems
 				html.className = "html_element";
 				html.width = 800;
 				html.height = 900;
-				html.src = webURL;
+				html.src = _approvedURLs[0];
 				html.hideFlash = true;
 				html.smooth = true;
 				html.hideFlashType = "display:none;";
@@ -105,18 +106,9 @@ package Systems
 		{
 			return function (e:LocationChangeEvent):void
 			{
-				// Iterate through the list of approved URL's and compare with the new location
-				var isSafeURL:Boolean = false;
-				for each (var safeURL:String in _approvedURLs)
-				{
-					if (h.html.location == safeURL)
-					{
-						// The new location was safe, continue as normal
-						isSafeURL = true;
-						return;
-					}
-				}
-				if (isSafeURL == false)
+				// Check if the array of safe URL's contains the new URL
+				var destination:String = h.html.location;
+				if (_approvedURLs.indexOf(destination) == -1)
 				{
 					// The new URL was not safe, reload the page. This will clear the load request.
 					h.html.reload();
