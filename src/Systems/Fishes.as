@@ -18,7 +18,7 @@ package Systems
 	import com.gestureworks.core.GestureWorks;
 	import com.gestureworks.core.TouchSprite
 	import flash.events.TouchEvent;
-	public class Fishes 
+	public class Fishes extends Sprite
 	{
 		private var _viewDistance : Number;
 		private var _keepdistance : Number;
@@ -33,9 +33,9 @@ package Systems
 		{
 		}
 		
-		public function Init(stage:Stage):void
+		public function Init(stage:Stage, amountOfFish:int=25):void
 		{
-			_amountOfFish = 25;
+			_amountOfFish = amountOfFish;
 			_touchPos = new Array(new Vector2D(0,0), new Vector2D(0,0), new Vector2D(0,0), new Vector2D(0,0));
 			_nrOfTouches = 0;
 			

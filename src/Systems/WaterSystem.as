@@ -68,7 +68,7 @@ package Systems
 			
 			_dustEmitter = new DustEmitter(100, stage);
 			
-			_flockFishes.Init(stage);
+			_flockFishes.Init(stage, 16);
 		}
 		
 		public function Update():void

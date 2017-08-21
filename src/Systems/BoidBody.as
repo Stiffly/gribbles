@@ -8,12 +8,13 @@ package Systems
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.display.Stage;
+	import flash.geom.ColorTransform;
 	import util.LayerHandler;
 	
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
 	
-	public class BoidBody 
+	public class BoidBody extends Sprite
 	{
 		private var _sprite :Sprite;
 		private var _spritePos : Vector2D;
@@ -25,7 +26,6 @@ package Systems
 		
 		private var _spriteWidth : Number;
 		private var _spriteHeight :Number;
-		
 
 		private var _pos : Vector2D;
 		
@@ -36,7 +36,7 @@ package Systems
 			
 		}
 		
-		public function Init(stage:Stage, bitmapIn:Bitmap) : void
+		public function Init(stage:Stage, bitmapIn:Bitmap, color:ColorTransform) : void
 		{
 			
 			_sprite= new Sprite();
@@ -46,6 +46,11 @@ package Systems
 			_sprite.scaleX = 0.5;
 			_sprite.scaleY = 0.5;
 			
+			// Uncomment for very randomly colored fishes
+			//_sprite.transform.colorTransform = new ColorTransform(Math.random(), Math.random(), Math.random(), 0.9);
+			
+			// Uncomment for moderate randomly colored fishes
+			_sprite.transform.colorTransform = color;
 			
 			stage.addChild(_sprite);
 
@@ -83,7 +88,6 @@ package Systems
 		{
 			var radian:Number = _rotationRadians;
 			var orgMatrix : flash.geom.Matrix = origRefMatrix.clone();
- 			
 			
  			//get the rect of the obj
 			var rect : Rectangle = _sprite.getBounds(_sprite.parent);
@@ -100,7 +104,6 @@ package Systems
 			
 			// Translating the object back to the original position.
 			orgMatrix.translate(_spriteAnchor._x, _spriteAnchor._y);
-			
 			
 			orgMatrix.translate(_spritePos._x - _spriteAnchor._x, _spritePos._y- _spriteAnchor._y);
 			
@@ -119,19 +122,13 @@ package Systems
 			bodyPos._x += newPos._x ;// - _spriteBounds._x / 2;
 			bodyPos._y += newPos._y;// - _spriteBounds._y;
 			
-			
-			
 			//Translate(bodyPos);
 			
 			_spritePos._x = bodyPos._x;
 			_spritePos._y = bodyPos._y;
 			
-			
-			
 			//update anchor, to the nose of the sprite
 			//_spriteAnchor = new Vector2D(bodyPos._x - (_spriteBounds._x/2) , bodyPos._y- (_spriteBounds._x/2));
-			
-		
 		}
 		
 		public function SetPos(newPos : Vector2D):void 
@@ -152,7 +149,5 @@ package Systems
 		{
 			_rotationRadians = inRot;
 		}
-		
-	
 	}
 }

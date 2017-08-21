@@ -2,6 +2,7 @@ package Systems
 {
 	import Components.Audio;
 	import Components.TextBox;
+	import Events.ShowFishes;
 	import com.gestureworks.cml.elements.Album;
 	import com.gestureworks.cml.elements.Image;
 	import flash.display.DisplayObjectContainer;
@@ -84,6 +85,8 @@ package Systems
 			component.y = y;
 			component.rotation = 1;
 			LayerHandler.BRING_TO_FRONT(component);
+			stage.dispatchEvent(new ShowFishes(ShowFishes.SHOWFISH));
+			
 		}
 		
 		// Loads an image from the disc

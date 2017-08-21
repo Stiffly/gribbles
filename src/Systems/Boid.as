@@ -7,6 +7,7 @@ package Systems
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import Math;
+	import flash.geom.ColorTransform;
 	/**
 	 * ...
 	 * @author Sebastian Lundgren and Max Larsson
@@ -55,7 +56,7 @@ package Systems
 			_dir = new Vector2D(0, 1);
 			_fishSprites = new Vector.<BoidBody>(6);
 			for (var i:int = 0; i < _fishSprites.length; i++ )
-			{
+			{	
 				_fishSprites[i] = new BoidBody();
 			}
 			_pos = new Vector2D(0, 0);
@@ -69,12 +70,13 @@ package Systems
 			_speed = 5;
 			_inPanic = false;
 
-			_fishSprites[0].Init(stage, headBitmap);
-			_fishSprites[1].Init(stage, b1Bitmap);
-			_fishSprites[2].Init(stage, b2Bitmap);
-			_fishSprites[3].Init(stage, b3Bitmap);
-			_fishSprites[4].Init(stage, b4Bitmap);
-			_fishSprites[5].Init(stage, tailBitmap);
+			var colorTransform:ColorTransform = new ColorTransform(Math.random(), Math.random(), Math.random());
+			_fishSprites[0].Init(stage, headBitmap, colorTransform);
+			_fishSprites[1].Init(stage, b1Bitmap, colorTransform);
+			_fishSprites[2].Init(stage, b2Bitmap, colorTransform);
+			_fishSprites[3].Init(stage, b3Bitmap, colorTransform);
+			_fishSprites[4].Init(stage, b4Bitmap, colorTransform);
+			_fishSprites[5].Init(stage, tailBitmap, colorTransform);
 			
 			spawnAtRandomPoint();
 			
@@ -143,12 +145,7 @@ package Systems
 			lastPos._y = _pos._y;
 			
 			for (var n:int = 0; n < _fishSprites.length; n++ )
-			{
-				
-				//translateSprite(new Vector2D(lastPos._x,lastPos._y),n);
-				
-				
-				
+			{	
 				rotToFront = _dirVector[countDown];
 				
 				rotation = Math.atan2(rotToFront._y, rotToFront._x)+ (-90 * Math.PI/180);
@@ -156,20 +153,11 @@ package Systems
 				_fishSprites[n].SetPos(lastPos);
 				_fishSprites[n].SetRoation(rotation);
 				
-				//textureVec[n].rotationY = rotatate += 0.4;
-				//textureVec[n].transform.matrix.
-				
-				//rotateAroundCenter(rotation +(Math.PI / 180 * ( -90)), n);
-				//rotateAroundCenter((Math.PI / 180 * ( rotatate)), n);
-				//rotateAroundPoint(textureVec[n], 44);
-				
 				lastPos._x = lastPos._x - (_dirVector[countDown]._x ) * (_distanceVector[n]);
 				lastPos._y = lastPos._y - (_dirVector[countDown]._y) * (_distanceVector[n]);
 				
 				countDown += 3;
 			}
-			
-			//} endregion
 		}
 		
 		public function setPos(newPos : Vector2D):void
@@ -188,9 +176,9 @@ package Systems
 			_dir._x += toAdd._x;
 			_dir._y += toAdd._y;
 		}
+		
 		public function getPos(): Vector2D
 		{
-			//var toReturn : Vector2D = new Vector2D(_sprite.x, _sprite.y);
 			return _pos;
 		}
 		

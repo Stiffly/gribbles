@@ -2,6 +2,8 @@ package
 {
 	import Components.TextBox;
 	import Events.PDFEvent;
+	import Events.ShowFishes;
+	import Systems.Fishes;
 	import com.gestureworks.cml.elements.Container;
 	import com.gestureworks.cml.elements.Text;
 	import flash.display.Sprite;
@@ -64,6 +66,7 @@ package
 		private var _idleStart:Number = .0;
 		private var _idle:Boolean = true;
 		private var _letItRip:Boolean = true;
+		private var _flockFishes:Fishes = new Fishes();
 		
 		private var _currentState:String = State.SCREENSAVER;
 		
@@ -137,13 +140,15 @@ package
 			
 			createTutorialBox();
 			
+			_flockFishes.Init(stage, 2);
+			
 			// Hide mouse
-			Mouse.hide();
+			//Mouse.hide();
 			
 			// Show FPS-counter
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			addEventListener(MouseEvent.MOUSE_MOVE, onInteraction);
-			//addChild(_FPSCounter);
+			stage.addEventListener(ShowFishes.SHOWFISH, showFishes);
 			_elapsedTimeText.y = 10;
 		}
 		
@@ -289,6 +294,7 @@ package
 					}
 					for each (var s:System in _systems)
 						s.Update();
+					_flockFishes.Update();
 					break;
 				case State.SCREENSAVER: 
 					_screenSaver.Update();
@@ -346,6 +352,12 @@ package
 			{ // F6
 				fullscreen = true;
 			}
+		}
+		
+		private function showFishes(event:ShowFishes):void
+		{
+			//LayerHandler.BRING_TO_FRONT(_flockFishes);
+			_flockFishes.Activate();
 		}
 		
 		private function getCircle(color:uint, width:int, height:int, alpha:Number = 1):Graphic
@@ -408,11 +420,14 @@ package
 			_currentState = State.MAINAPP;
 			_mainButton.visible = false;
 			//_backButton.visible = true;
+			
+			_flockFishes.Activate();
 		}
 		
 		private function switchToScreenSaver():void
 		{
 			_screenSaver.Activate();
+			_flockFishes.Deactivate();
 			for each (var s:System in _systems)
 			{
 				s.Deactivate();
