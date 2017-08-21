@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<button>
+	<type>Video</type>
+	<description>Video</description>
+	<width>80</width>
+	<height>80</height>
+	<x>400</x>
+	<y>180</y>
+</button>
