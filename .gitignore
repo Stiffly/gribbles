@@ -4,6 +4,8 @@ swfobject.js
 *.swf
 *.swc
 *.pdf
+*.p12
+*.air
 
 
 # Build folders and assets
