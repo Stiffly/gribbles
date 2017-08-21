@@ -47,10 +47,10 @@ package Systems
 			_sprite.scaleY = 0.5;
 			
 			// Uncomment for very randomly colored fishes
-			//_sprite.transform.colorTransform = new ColorTransform(Math.random(), Math.random(), Math.random(), 0.9);
+			_sprite.transform.colorTransform = new ColorTransform(Math.random(), Math.random(), Math.random(), 1);
 			
 			// Uncomment for moderate randomly colored fishes
-			_sprite.transform.colorTransform = color;
+			//_sprite.transform.colorTransform = color;
 			
 			stage.addChild(_sprite);
 
