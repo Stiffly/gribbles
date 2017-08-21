@@ -143,7 +143,7 @@ package
 			_flockFishes.Init(stage, 2);
 			
 			// Hide mouse
-			//Mouse.hide();
+			Mouse.hide();
 			
 			// Show FPS-counter
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
