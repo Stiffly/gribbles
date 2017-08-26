@@ -21,4 +21,8 @@
   <android>
     <manifestAdditions><![CDATA[<manifest android:installLocation="auto" xmlns:android="http://schemas.android.com/apk/res/android" />]]></manifestAdditions>
   </android>
+  <icon>
+    <image16x16>icons/16.png</image16x16>
+    <image32x32>icons/32.png</image32x32>
+  </icon>
 </application>
