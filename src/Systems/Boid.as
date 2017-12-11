@@ -25,9 +25,9 @@ package Systems
 		private var b2SpriteBit:Class;
 		var b2Bitmap:Bitmap = new b2SpriteBit();
 		
-		[Embed(source="../../bin/images/Carp/b3.png")]
-		private var b3SpriteBit:Class;
-		var b3Bitmap:Bitmap = new b3SpriteBit();
+		//[Embed(source="../../bin/images/Carp/b3.png")]
+		//private var b3SpriteBit:Class;
+		//var b3Bitmap:Bitmap = new b3SpriteBit();
 		
 		[Embed(source="../../bin/images/Carp/b4.png")]
 		private var b4SpriteBit:Class;
@@ -53,7 +53,7 @@ package Systems
 		public function Boid()
 		{
 			_dir = new Vector2D(0, 1);
-			_fishSprites = new Vector.<BoidBody>(6);
+			_fishSprites = new Vector.<BoidBody>(5);
 			for (var i:int = 0; i < _fishSprites.length; i++ )
 			{
 				_fishSprites[i] = new BoidBody();
@@ -69,12 +69,16 @@ package Systems
 			_speed = 5;
 			_inPanic = false;
 
-			_fishSprites[0].Init(stage, headBitmap);
-			_fishSprites[1].Init(stage, b1Bitmap);
+			
+			
+			
+			//_fishSprites[3].Init(stage, b3Bitmap);
+			
+			_fishSprites[4].Init(stage, tailBitmap);
+			_fishSprites[3].Init(stage, b4Bitmap);
 			_fishSprites[2].Init(stage, b2Bitmap);
-			_fishSprites[3].Init(stage, b3Bitmap);
-			_fishSprites[4].Init(stage, b4Bitmap);
-			_fishSprites[5].Init(stage, tailBitmap);
+			_fishSprites[1].Init(stage, b1Bitmap);
+			_fishSprites[0].Init(stage, headBitmap);
 			
 			spawnAtRandomPoint();
 			
